@@ -1,11 +1,12 @@
 import { Add, Remove } from "@material-ui/icons";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
-import Footer from "../components/Footer";
+// import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import NavbarBottom from "../components/NavbarBottom";
 import Newsletter from "../components/Newsletter";
 import { mobile } from "../responsive";
+import FooterNew from "../components/FooterNew";
 
 const Container = styled.div``;
 
@@ -166,7 +167,10 @@ const Product = () => {
 				</InfoContainer>
 			</Wrapper>
 			<Newsletter />
-			<Footer />
+			{/* <Footer /> */}
+			<FooterNew />
+			
+			{/* <MobileMenu /> */}
 		</Container>
 	);
 };

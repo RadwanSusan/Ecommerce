@@ -3,14 +3,16 @@ import "./catog.css";
 import { AiOutlineEye } from "react-icons/ai";
 import { BsHeart } from "react-icons/bs";
 import { IoGitCompareOutline } from "react-icons/io5";
-const Catog = () => {
+import { Link } from "react-router-dom";
+const Catog = ({item}) => {
+	// console.log(item ,"checking")
 	return (
 		<div
 			id="listingtabs_0"
 			className="block sm-listing-tabs tab-cms-block slider snipcss-X3nN9">
 			
 			
-			<h2>Smartphone &amp; Tablet</h2>
+			<h2>{item.title}</h2>
 			
 			<div className="block-content">
 				<div className="ltabs-wrap">
@@ -24,16 +26,17 @@ const Catog = () => {
 					<div className="listingtabs-cms">
 						<div className="cms-container">
 							<div className="banner-image container-hidd">
-								<a href="#" title="Banner Image">
+								<Link to={`/products/${item.cat}`}> 
 									<img 
 										className="mark-lazy new-lazy"
 										src="http://magento2.magentech.com/themes/sm_venuse/pub/media/wysiwyg/banner/item-6.jpg"
 										data-src="http://magento2.magentech.com/themes/sm_venuse/pub/media/wysiwyg/banner/item-6.jpg"
 										alt="Banner Image"
 										width="350"
-										height="390"
+										height="370"
 									/>
-								</a>
+									</Link>
+								
 							</div>
 						</div>
 						<div className="ltabs-items-container ">

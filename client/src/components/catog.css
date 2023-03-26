@@ -1412,6 +1412,10 @@ print {
     position: absolute;
     width: 1px;
   }
+  .RfiUC {
+    display: flex;
+    flex-direction: column;
+  }
 
   .product-item .special-price .price {
     font-size: 1.4rem;

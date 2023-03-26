@@ -1,6 +1,6 @@
 import React from "react";
 import Announcement from "../components/Announcement";
-// import Categories from "../components/Categories";
+import Categories from "../components/Categories";
 // import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import NavbarBottom from "../components/NavbarBottom";
@@ -13,9 +13,9 @@ import Image from "../components/Image";
 // import Products from "../components/Products";
 import Slider from "../components/Slider";
 import Welcom from "../components/Welcom";
-import Catog2 from "../components/Catog2";
-import Catog3 from "../components/Catog3";
-import Catog from "../components/Catog";
+// import Catog2 from "../components/Catog2";
+// import Catog3 from "../components/Catog3";
+// import Catog from "../components/Catog";
 import Bloges from "../components/Bloges";
 import FooterNew from "../components/FooterNew";
 
@@ -29,15 +29,17 @@ const Home = () => {
 			<MobileSearch />
 			{/* <MobileMenu /> */}
 			<Slider />
+
 			{/* <Offer /> */}
 			<Welcom />
-			<Catog />
-			<Catog2 />
-			<Catog3 />
+			<Categories />
+			{/* <Catog  /> */}
+			{/* <Catog2 /> */}
+			{/* <Catog3 /> */}
 			<Image />
 			<Bloges />
 			<FooterNew />
-			{/* <Categories /> */}
+			
 			{/* <Products/> */}
 			{/* <Newsletter/> */}
 			{/* <Footer /> */}
