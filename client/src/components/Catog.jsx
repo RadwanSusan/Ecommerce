@@ -5,7 +5,6 @@ import { BsHeart } from "react-icons/bs";
 import { IoGitCompareOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 const Catog = ({item}) => {
-	// console.log(item ,"checking")
 	return (
 		<div
 			id="listingtabs_0"
