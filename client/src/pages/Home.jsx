@@ -29,7 +29,6 @@ const Home = () => {
 			<MobileSearch />
 			{/* <MobileMenu /> */}
 			<Slider />
-
 			{/* <Offer /> */}
 			<Welcom />
 			<Categories />
@@ -39,8 +38,7 @@ const Home = () => {
 			<Image />
 			<Bloges />
 			<FooterNew />
-			
-			<Products/>
+			<Products />
 			{/* <Newsletter/> */}
 			{/* <Footer /> */}
 		</div>

@@ -1,18 +1,40 @@
 import React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import "./catog.css";
 import { AiOutlineEye } from "react-icons/ai";
 import { BsHeart } from "react-icons/bs";
 import { IoGitCompareOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
-const Catog = ({item}) => {
+
+const Catog = ({ item }) => {
+	const [products, setProducts] = useState([]);
+	useEffect(() => {
+		const getProducts = async () => {
+			try {
+				const res = await axios.get(
+					item.cat
+						? `http://localhost:4000/api/products?category=${item.cat}`
+						: "http://localhost:4000/api/products",
+				);
+				setProducts(res.data);
+			} catch (err) {}
+		};
+		getProducts(getProducts);
+	}, [item.cat]);
+	console.log(products);
+	console.log(products.length);
+	if (products[0] === undefined) {
+		return null;
+	} else {
+		console.log(products[0].title);
+	}
 	return (
 		<div
 			id="listingtabs_0"
-			className="block sm-listing-tabs tab-cms-block slider snipcss-X3nN9">
-			
-			
+			className="block sm-listing-tabs tab-cms-block slider snipcss-X3nN9"
+		>
 			<h2>{item.title}</h2>
-			
 			<div className="block-content">
 				<div className="ltabs-wrap">
 					<div className="ltabs-tabs-container">
@@ -25,8 +47,8 @@ const Catog = ({item}) => {
 					<div className="listingtabs-cms">
 						<div className="cms-container">
 							<div className="banner-image container-hidd">
-								<Link to={`/products/${item.cat}`}> 
-									<img 
+								<Link to={`/products/${item.cat}`}>
+									<img
 										className="mark-lazy new-lazy"
 										src="http://magento2.magentech.com/themes/sm_venuse/pub/media/wysiwyg/banner/item-6.jpg"
 										data-src="http://magento2.magentech.com/themes/sm_venuse/pub/media/wysiwyg/banner/item-6.jpg"
@@ -34,8 +56,7 @@ const Catog = ({item}) => {
 										width="350"
 										height="370"
 									/>
-									</Link>
-								
+								</Link>
 							</div>
 						</div>
 						<div className="ltabs-items-container ">
@@ -70,12 +91,14 @@ const Catog = ({item}) => {
 																			>
 																				<img
 																					className="product-image-photo"
-																					src="http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-01.jpg"
+																					src={products ? products[0]?.img : ""}
 																					data-src="http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-01.jpg"
 																					loading="lazy"
 																					width="300"
 																					height="300"
-																					alt="Apple iPhone 6s Plus a1687"
+																					alt={
+																						products ? products[0]?.title : ""
+																					}
 																				/>
 																			</span>
 																		</span>
@@ -91,9 +114,11 @@ const Catog = ({item}) => {
 																</div>
 																<div className="product details product-item-details">
 																	<strong className="product name product-item-name">
-																		<a className="product-item-link" href="">
-																			Apple iPhone 6s Plus a1687
-																		</a>
+																		{products ? products[0]?.title : ""}
+																		<a
+																			className="product-item-link"
+																			href=""
+																		></a>
 																	</strong>
 																	<div
 																		className="price-box price-final_price"
@@ -108,7 +133,9 @@ const Catog = ({item}) => {
 																				data-price-type="finalPrice"
 																				className="price-wrapper "
 																			>
-																				<span className="price">$250.00</span>
+																				<span className="price">
+																					$ {products ? products[0]?.price : ""}
+																				</span>
 																			</span>
 																		</span>
 																	</div>
@@ -152,8 +179,8 @@ const Catog = ({item}) => {
 														</li>
 													</div>
 													<div
-														className="owl-item active style-TgWkF"
-														id="style-TgWkF"
+														className="owl-item active style-SmoEo"
+														id="style-SmoEo"
 													>
 														<li className="item product product-item ">
 															<div
@@ -167,21 +194,23 @@ const Catog = ({item}) => {
 																		tabindex="-1"
 																	>
 																		<span
-																			className="product-image-container product-image-container-8 style-lfkFz"
-																			id="style-lfkFz"
+																			className="product-image-container product-image-container-1 style-bH5WH"
+																			id="style-bH5WH"
 																		>
 																			<span
-																				className="product-image-wrapper style-eeoN4"
-																				id="style-eeoN4"
+																				className="product-image-wrapper style-MbttD"
+																				id="style-MbttD"
 																			>
 																				<img
 																					className="product-image-photo"
-																					src="http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-08_1.jpg"
-																					data-src="http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-08_1.jpg"
+																					src={products ? products[0]?.img : ""}
+																					data-src="http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-01.jpg"
 																					loading="lazy"
 																					width="300"
 																					height="300"
-																					alt="Apple iPhone Verizon Unlocked"
+																					alt={
+																						products ? products[0]?.title : ""
+																					}
 																				/>
 																			</span>
 																		</span>
@@ -197,24 +226,28 @@ const Catog = ({item}) => {
 																</div>
 																<div className="product details product-item-details">
 																	<strong className="product name product-item-name">
-																		<a className="product-item-link" href="">
-																			Apple iPhone Verizon Unlocked
-																		</a>
+																		{products ? products[0]?.title : ""}
+																		<a
+																			className="product-item-link"
+																			href=""
+																		></a>
 																	</strong>
 																	<div
 																		className="price-box price-final_price"
 																		data-role="priceBox"
-																		data-product-id="8"
-																		data-price-box="product-id-8"
+																		data-product-id="1"
+																		data-price-box="product-id-1"
 																	>
 																		<span className="price-container price-final_price tax weee">
 																			<span
-																				id="product-price-8"
-																				data-price-amount="520"
+																				id="product-price-1"
+																				data-price-amount="250"
 																				data-price-type="finalPrice"
 																				className="price-wrapper "
 																			>
-																				<span className="price">$520.00</span>
+																				<span className="price">
+																					$ {products ? products[0]?.price : ""}
+																				</span>
 																			</span>
 																		</span>
 																	</div>
@@ -228,14 +261,12 @@ const Catog = ({item}) => {
 																			<button className="Add-to-Cart-new">
 																				Add to Cart
 																			</button>
-
 																			<div
 																				className="actions-secondary"
 																				data-role="add-to-links"
 																			>
 																				<a
 																					href="#"
-																					data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/wishlist\/index\/add\/","data":{"product":8,"uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
 																					className="action towishlist"
 																					data-action="add-to-wishlist"
 																					title="Add to Wish List"
@@ -246,7 +277,7 @@ const Catog = ({item}) => {
 																				<a
 																					href="#"
 																					className="action tocompare"
-																					data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/catalog\/product_compare\/add\/","data":{"product":"8","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
+																					data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/catalog\/product_compare\/add\/","data":{"product":"1","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
 																					title="Add to Compare"
 																				>
 																					<IoGitCompareOutline />
@@ -260,8 +291,8 @@ const Catog = ({item}) => {
 														</li>
 													</div>
 													<div
-														className="owl-item active style-XfG6f"
-														id="style-XfG6f"
+														className="owl-item active style-SmoEo"
+														id="style-SmoEo"
 													>
 														<li className="item product product-item ">
 															<div
@@ -275,30 +306,27 @@ const Catog = ({item}) => {
 																		tabindex="-1"
 																	>
 																		<span
-																			className="product-image-container product-image-container-4 style-bJHjQ"
-																			id="style-bJHjQ"
+																			className="product-image-container product-image-container-1 style-bH5WH"
+																			id="style-bH5WH"
 																		>
 																			<span
-																				className="product-image-wrapper style-7LQJV"
-																				id="style-7LQJV"
+																				className="product-image-wrapper style-MbttD"
+																				id="style-MbttD"
 																			>
 																				<img
 																					className="product-image-photo"
-																					src="http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-04_3.jpg"
-																					data-src="http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-04_3.jpg"
+																					src={products ? products[0]?.img : ""}
+																					data-src="http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-01.jpg"
 																					loading="lazy"
 																					width="300"
 																					height="300"
-																					alt="Besiva Phone Case Compatible"
+																					alt={
+																						products ? products[0]?.title : ""
+																					}
 																				/>
 																			</span>
 																		</span>
 																	</a>
-																	<div className="product-labels">
-																		<div className="product-label sale-label">
-																			Sale
-																		</div>
-																	</div>
 																	<a
 																		className="action quickview-handler sm_quickview_handler"
 																		title="Quick View"
@@ -310,43 +338,27 @@ const Catog = ({item}) => {
 																</div>
 																<div className="product details product-item-details">
 																	<strong className="product name product-item-name">
-																		<a className="product-item-link" href="">
-																			Besiva Phone Case Compatible
-																		</a>
+																		{products ? products[0]?.title : ""}
+																		<a
+																			className="product-item-link"
+																			href=""
+																		></a>
 																	</strong>
 																	<div
 																		className="price-box price-final_price"
 																		data-role="priceBox"
-																		data-product-id="4"
-																		data-price-box="product-id-4"
+																		data-product-id="1"
+																		data-price-box="product-id-1"
 																	>
-																		<span className="special-price">
-																			<span className="price-container price-final_price tax weee">
-																				<span className="price-label">
-																					Special Price
-																				</span>
-																				<span
-																					id="product-price-4"
-																					data-price-amount="450"
-																					data-price-type="finalPrice"
-																					className="price-wrapper "
-																				>
-																					<span className="price">$450.00</span>
-																				</span>
-																			</span>
-																		</span>
-																		<span className="old-price">
-																			<span className="price-container price-final_price tax weee">
-																				<span className="price-label">
-																					Regular Price
-																				</span>
-																				<span
-																					id="old-price-4"
-																					data-price-amount="500"
-																					data-price-type="oldPrice"
-																					className="price-wrapper "
-																				>
-																					<span className="price">$500.00</span>
+																		<span className="price-container price-final_price tax weee">
+																			<span
+																				id="product-price-1"
+																				data-price-amount="250"
+																				data-price-type="finalPrice"
+																				className="price-wrapper "
+																			>
+																				<span className="price">
+																					$ {products ? products[0]?.price : ""}
 																				</span>
 																			</span>
 																		</span>
@@ -361,14 +373,12 @@ const Catog = ({item}) => {
 																			<button className="Add-to-Cart-new">
 																				Add to Cart
 																			</button>
-
 																			<div
 																				className="actions-secondary"
 																				data-role="add-to-links"
 																			>
 																				<a
 																					href="#"
-																					data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/wishlist\/index\/add\/","data":{"product":4,"uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
 																					className="action towishlist"
 																					data-action="add-to-wishlist"
 																					title="Add to Wish List"
@@ -379,7 +389,7 @@ const Catog = ({item}) => {
 																				<a
 																					href="#"
 																					className="action tocompare"
-																					data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/catalog\/product_compare\/add\/","data":{"product":"4","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
+																					data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/catalog\/product_compare\/add\/","data":{"product":"1","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
 																					title="Add to Compare"
 																				>
 																					<IoGitCompareOutline />
@@ -393,8 +403,8 @@ const Catog = ({item}) => {
 														</li>
 													</div>
 													<div
-														className="owl-item active style-8BeF9"
-														id="style-8BeF9"
+														className="owl-item active style-SmoEo"
+														id="style-SmoEo"
 													>
 														<li className="item product product-item ">
 															<div
@@ -408,21 +418,23 @@ const Catog = ({item}) => {
 																		tabindex="-1"
 																	>
 																		<span
-																			className="product-image-container product-image-container-10 style-lHCFN"
-																			id="style-lHCFN"
+																			className="product-image-container product-image-container-1 style-bH5WH"
+																			id="style-bH5WH"
 																		>
 																			<span
-																				className="product-image-wrapper style-xzFWw"
-																				id="style-xzFWw"
+																				className="product-image-wrapper style-MbttD"
+																				id="style-MbttD"
 																			>
 																				<img
 																					className="product-image-photo"
-																					src="http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-10.jpg"
-																					data-src="http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-10.jpg"
+																					src={products ? products[0]?.img : ""}
+																					data-src="http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-01.jpg"
 																					loading="lazy"
 																					width="300"
 																					height="300"
-																					alt="Cover Samsung Galaxy Note 9"
+																					alt={
+																						products ? products[0]?.title : ""
+																					}
 																				/>
 																			</span>
 																		</span>
@@ -438,45 +450,47 @@ const Catog = ({item}) => {
 																</div>
 																<div className="product details product-item-details">
 																	<strong className="product name product-item-name">
-																		<a className="product-item-link" href="">
-																			Cover Samsung Galaxy Note 9
-																		</a>
+																		{products ? products[0]?.title : ""}
+																		<a
+																			className="product-item-link"
+																			href=""
+																		></a>
 																	</strong>
 																	<div
 																		className="price-box price-final_price"
 																		data-role="priceBox"
-																		data-product-id="10"
-																		data-price-box="product-id-10"
+																		data-product-id="1"
+																		data-price-box="product-id-1"
 																	>
 																		<span className="price-container price-final_price tax weee">
 																			<span
-																				id="product-price-10"
-																				data-price-amount="650"
+																				id="product-price-1"
+																				data-price-amount="250"
 																				data-price-type="finalPrice"
 																				className="price-wrapper "
 																			>
-																				<span className="price">$650.00</span>
+																				<span className="price">
+																					$ {products ? products[0]?.price : ""}
+																				</span>
 																			</span>
 																		</span>
 																	</div>
 																	<div className="product-item-inner">
 																		<div className="product actions product-item-actions">
 																			<div className="actions-primary"></div>
-																			<button className="Add-to-Cart-new">
-																				Add to Cart
-																			</button>
-
 																			<div
 																				data-role="add-to-links"
 																				className="actions-secondary"
 																			></div>
+																			<button className="Add-to-Cart-new">
+																				Add to Cart
+																			</button>
 																			<div
 																				className="actions-secondary"
 																				data-role="add-to-links"
 																			>
 																				<a
 																					href="#"
-																					data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/wishlist\/index\/add\/","data":{"product":10,"uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
 																					className="action towishlist"
 																					data-action="add-to-wishlist"
 																					title="Add to Wish List"
@@ -487,7 +501,7 @@ const Catog = ({item}) => {
 																				<a
 																					href="#"
 																					className="action tocompare"
-																					data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/catalog\/product_compare\/add\/","data":{"product":"10","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
+																					data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/catalog\/product_compare\/add\/","data":{"product":"1","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
 																					title="Add to Compare"
 																				>
 																					<IoGitCompareOutline />
@@ -513,21 +527,6 @@ const Catog = ({item}) => {
 											<div className="owl-dots disabled"></div>
 										</ol>
 									</div>
-								</div>
-							</div>
-							<div className="ltabs-items  ltabs-items-16">
-								<div className="ltabs-items-inner">
-									<div className="ltabs-loading"></div>
-								</div>
-							</div>
-							<div className="ltabs-items  ltabs-items-17">
-								<div className="ltabs-items-inner">
-									<div className="ltabs-loading"></div>
-								</div>
-							</div>
-							<div className="ltabs-items  ltabs-items-18">
-								<div className="ltabs-items-inner">
-									<div className="ltabs-loading"></div>
 								</div>
 							</div>
 						</div>
