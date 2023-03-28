@@ -278,7 +278,7 @@ print {
   }
 
   .text-branner .text-offer {
-    flex:6;
+    flex: 6;
     display: table-cell;
     flex-wrap: wrap;
     width: 100%;
@@ -289,7 +289,7 @@ print {
     align-items: center;
     justify-content: space-between;
   }
-  
+
 
   a {
     color: #222222;
@@ -330,14 +330,16 @@ print {
   }
 }
 
-@media only screen and (min-device-width: 200px) and (max-device-width: 1024px) and (orientation : portrait){
+@media only screen and (min-device-width: 200px) and (max-device-width: 1024px) and (orientation : portrait) {
   .text-branner {
     flex-direction: column;
     gap: 20px;
   }
+
   .text-branner .text-offer {
     gap: 20px;
   }
+
   .text-branner .hot-item:after {
     display: none;
   }

@@ -424,9 +424,11 @@ print {
     border-style: none;
     width: auto;
   }
+
   .new-lazy {
     border-radius: 10px;
   }
+
   .snipcss-X3nN9 h2 {
     margin-bottom: 12px;
     margin-left: 8px;
@@ -1431,17 +1433,18 @@ print {
     font-weight: 400 !important;
   }
 }
+
 .block.tab-cms-block {
-  padding:25px;
+  padding: 25px;
 }
 
 
 /* These were inline style tags. Uses id+class to override almost everything */
 #style-pO7ki.style-pO7ki {
   width: 100%;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 #style-SmoEo.style-SmoEo {
@@ -1533,42 +1536,47 @@ print {
 #style-1Elkl.style-1Elkl {
   width: 87%;
 }
+
 @media only screen and (max-width: 819px) {
-  
+
   .container-hidd {
     display: none;
   }
+
   #style-pO7ki.style-pO7ki {
     flex-direction: column;
     align-items: center;
     gap: 50px;
   }
+
   .listingtabs-cms .ltabs-items-container {
     float: none;
     width: 100%;
   }
+
   .ltabs-wrap {
     display: flex;
     justify-content: center;
   }
+
   .snipcss-X3nN9 h2 {
     text-align: center;
   }
 }
+
 @media only screen and (max-width: 917px) {
   .container-hidd {
     display: none;
   }
+
   .snipcss-X3nN9 h2 {
     display: flex;
     justify-content: center;
   }
 }
-@media only screen and (min-device-width: 819px) and (max-device-width: 919px) and (orientation : portrait){
+
+@media only screen and (min-device-width: 819px) and (max-device-width: 919px) and (orientation : portrait) {
   .listingtabs-cms .ltabs-items-container {
     width: 100%;
   }
 }
-
-
-

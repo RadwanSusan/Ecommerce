@@ -274,10 +274,7 @@ const FooterNew = () => {
 															id="menu-item-2348"
 															class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2348 snipcss0-9-10-13"
 														>
-															<a
-																href="#"
-																class="snipcss0-10-13-14"
-															>
+															<a href="#" class="snipcss0-10-13-14">
 																New collections
 															</a>
 														</li>
@@ -285,10 +282,7 @@ const FooterNew = () => {
 															id="menu-item-2349"
 															class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2349 snipcss0-9-10-15"
 														>
-															<a
-																href="#"
-																class="snipcss0-10-15-16"
-															>
+															<a href="#" class="snipcss0-10-15-16">
 																Woman dress
 															</a>
 														</li>
@@ -296,10 +290,7 @@ const FooterNew = () => {
 															id="menu-item-2350"
 															class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2350 snipcss0-9-10-17"
 														>
-															<a
-																href="#"
-																class="snipcss0-10-17-18"
-															>
+															<a href="#" class="snipcss0-10-17-18">
 																Contact us
 															</a>
 														</li>
@@ -307,10 +298,7 @@ const FooterNew = () => {
 															id="menu-item-2351"
 															class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2351 snipcss0-9-10-19"
 														>
-															<a
-																href="#"
-																class="snipcss0-10-19-20"
-															>
+															<a href="#" class="snipcss0-10-19-20">
 																Latest news
 															</a>
 														</li>
@@ -318,10 +306,7 @@ const FooterNew = () => {
 															id="menu-item-2352"
 															class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2352 snipcss0-9-10-21"
 														>
-															<a
-																href="#"
-																class="snipcss0-10-21-22"
-															>
+															<a href="#" class="snipcss0-10-21-22">
 																Our sitemap
 															</a>
 														</li>

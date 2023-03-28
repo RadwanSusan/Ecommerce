@@ -7,11 +7,10 @@ const Catog = () => {
 	return (
 		<div
 			id="listingtabs_0"
-			className="block sm-listing-tabs tab-cms-block slider snipcss-X3nN9">
-			
-			
+			className="block sm-listing-tabs tab-cms-block slider snipcss-X3nN9"
+		>
 			<h2>Smartphone &amp; Tablet</h2>
-			
+
 			<div className="block-content">
 				<div className="ltabs-wrap">
 					<div className="ltabs-tabs-container">
@@ -25,7 +24,7 @@ const Catog = () => {
 						<div className="cms-container">
 							<div className="banner-image container-hidd">
 								<a href="#" title="Banner Image">
-									<img 
+									<img
 										className="mark-lazy new-lazy"
 										src="http://magento2.magentech.com/themes/sm_venuse/pub/media/wysiwyg/banner/item-6.jpg"
 										data-src="http://magento2.magentech.com/themes/sm_venuse/pub/media/wysiwyg/banner/item-6.jpg"

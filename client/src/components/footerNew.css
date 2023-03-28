@@ -1024,86 +1024,104 @@
     background: #f0cba4 !important;
   }
 }
-@media only screen and (max-width: 819px) {
-.snipcss0-5-5-23 {
-  display: none;
-}
 
-.footercopyright {
-  font-size: 14px;
-  margin-top: 30px;
-}
-.snipcss0-4-39-40 {
-  display: none;
-}
-.snipcss0-5-5-6 {
-  width: 100%;
-}
-.snipcss0-6-6-7 {
-  display: flex;
+@media only screen and (max-width: 819px) {
+  .snipcss0-5-5-23 {
+    display: none;
+  }
+
+  .footercopyright {
+    font-size: 14px;
+    margin-top: 30px;
+  }
+
+  .snipcss0-4-39-40 {
+    display: none;
+  }
+
+  .snipcss0-5-5-6 {
+    width: 100%;
+  }
+
+  .snipcss0-6-6-7 {
+    display: flex;
     flex-direction: column;
     align-items: center;
-}
-.snipcss0-3-3-4 {
-  padding-left: 0;
-  padding-right: 0;
-}
-.snipcss0-4-4-5 {
-  margin-left: 0;
-  margin-right: 0;
-}
-.snipcss0-2-73-74{
-  display: flex;
+  }
+
+  .snipcss0-3-3-4 {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .snipcss0-4-4-5 {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .snipcss0-2-73-74 {
+    display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 30px;
-}
-.snipcss0-2-73-90 {
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
+  }
 
-}
-.bottom-footer {
-  padding: 0;
-  margin: 0;
-}
-.col-xs-12 {
-  padding: 0;
-}
-.pull-right {
-  display: flex;
-  justify-content: center;
-  float: none !important;
-  margin-top: 30px;
+  .snipcss0-2-73-90 {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+
+  }
+
+  .bottom-footer {
+    padding: 0;
+    margin: 0;
+  }
+
+  .col-xs-12 {
+    padding: 0;
+  }
+
+  .pull-right {
+    display: flex;
+    justify-content: center;
+    float: none !important;
+    margin-top: 30px;
     margin-bottom: 30px;
+  }
+
+  .snipcss0-9-9-10 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .snipcss0-2-21-22 {
+    padding-right: 0 !important;
+    text-align: center;
+  }
+
+  .vc_column-inner {
+    padding: 0 !important;
+  }
+
+  .line-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .col-xl-15 {
+    width: 100%;
+  }
+
+  .snipcss0-5-5-6 {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
-.snipcss0-9-9-10 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-}
-.snipcss0-2-21-22 {
-  padding-right: 0 !important;
-  text-align: center;
-}
-.vc_column-inner {
-  padding: 0 !important;
-}
-.line-row {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.col-xl-15 {
-  width: 100% ;
-}
-.snipcss0-5-5-6 {
-  padding-left: 0;
-  padding-right: 0;
-}
-}
+
 .vc_column_container>.vc_column-inner {
   padding-left: 0;
   padding-right: 0;
@@ -1122,11 +1140,13 @@
   }
 
 }
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation : portrait){
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation : portrait) {
   .ipad {
     padding-right: 0;
   }
 }
+
 /* These were inline style tags. Uses id+class to override almost everything */
 #style-U78xg.style-U78xg {
   display: none !important;

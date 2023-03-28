@@ -1534,7 +1534,7 @@ print {
   width: 87%;
 }
 @media only screen and (max-width: 819px) {
-  
+
   .container-hidd {
     display: none;
   }

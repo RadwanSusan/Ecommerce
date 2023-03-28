@@ -7,8 +7,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
-	const quantity = useSelector(state=>state.cart.quantity)
-	
+	const quantity = useSelector((state) => state.cart.quantity);
+
 	return (
 		<div className="header-middle snipcss-LbbnX">
 			<div className="container">
@@ -82,7 +82,7 @@ const Navbar = () => {
 							</div>
 							<div className="minicart-header" data-move="minicart-mobile">
 								<div data-block="minicart" className="minicart-wrapper">
-									<Link  to="/cart" className="action showcart" href="#">
+									<Link to="/cart" className="action showcart" href="#">
 										<FaShoppingCart />
 										<span className="text">My Cart</span>
 										<span className="counter qty empty">

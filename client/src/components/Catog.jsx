@@ -61,7 +61,7 @@ const Catog = ({ item }) => {
 										<ol className="products list items product-items owl-carousel owl-theme owl-loaded owl-drag">
 											<div className="owl-stage-outer">
 												<div className="owl-stage style-pO7ki" id="style-pO7ki">
-													{ products.slice(0, 4).map((data) => (
+													{products.slice(0, 4).map((data) => (
 														<div
 															className="owl-item active style-SmoEo"
 															id="style-SmoEo"

@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import FooterNew from "../components/FooterNew";
 
-
 const Container = styled.div``;
 
 const Wrapper = styled.div`
@@ -176,37 +175,36 @@ const Cart = () => {
 				</Top>
 				<Bottom>
 					<Info>
-					{cart.products.map((product) => (
-              <Product>
-                <ProductDetail>
-                  <Image src={product.img} />
-                  <Details>
-                    <ProductName>
-                      <b>Product:</b> {product.title}
-                    </ProductName>
-                    <ProductId>
-                      <b>ID:</b> {product._id}
-                    </ProductId>
-                    <ProductColor color={product.color} />
-                    <ProductSize>
-                      <b>Size:</b> {product.size}
-                    </ProductSize>
-                  </Details>
-                </ProductDetail>
-                <PriceDetail>
-                  <ProductAmountContainer>
-                    <Add />
-                    <ProductAmount>{product.quantity}</ProductAmount>
-                    <Remove />
-                  </ProductAmountContainer>
-                  <ProductPrice>
-                    $ {product.price * product.quantity}
-                  </ProductPrice>
-                </PriceDetail>
-              </Product>
-            ))}
-            <hr />
-        
+						{cart.products.map((product) => (
+							<Product>
+								<ProductDetail>
+									<Image src={product.img} />
+									<Details>
+										<ProductName>
+											<b>Product:</b> {product.title}
+										</ProductName>
+										<ProductId>
+											<b>ID:</b> {product._id}
+										</ProductId>
+										<ProductColor color={product.color} />
+										<ProductSize>
+											<b>Size:</b> {product.size}
+										</ProductSize>
+									</Details>
+								</ProductDetail>
+								<PriceDetail>
+									<ProductAmountContainer>
+										<Add />
+										<ProductAmount>{product.quantity}</ProductAmount>
+										<Remove />
+									</ProductAmountContainer>
+									<ProductPrice>
+										$ {product.price * product.quantity}
+									</ProductPrice>
+								</PriceDetail>
+							</Product>
+						))}
+						<hr />
 					</Info>
 					<Summary>
 						<SummaryTitle>ORDER SUMMARY</SummaryTitle>
