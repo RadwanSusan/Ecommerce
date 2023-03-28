@@ -6,6 +6,8 @@ import { BsHeart } from "react-icons/bs";
 import { IoGitCompareOutline } from "react-icons/io5";
 import { AiOutlineEye } from "react-icons/ai";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
+import { mobile } from "../responsive";
+
 
 const Wrapper1 = styled.div`
 	height: 100%;
