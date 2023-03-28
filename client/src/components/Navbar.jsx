@@ -3,8 +3,12 @@ import { FaShoppingCart } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import "./navbar.css";
 import LogoImg from "../Media/Img/SvgLogo.svg";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
+	const quantity = useSelector(state=>state.cart.quantity)
+	
 	return (
 		<div className="header-middle snipcss-LbbnX">
 			<div className="container">
@@ -78,11 +82,11 @@ const Navbar = () => {
 							</div>
 							<div className="minicart-header" data-move="minicart-mobile">
 								<div data-block="minicart" className="minicart-wrapper">
-									<a className="action showcart" href="#">
+									<Link  to="/cart" className="action showcart" href="#">
 										<FaShoppingCart />
 										<span className="text">My Cart</span>
 										<span className="counter qty empty">
-											<span className="counter-number">0</span>
+											<span className="counter-number">{quantity}</span>
 											<span className="counter-label"></span>
 										</span>
 										<span className="price-minicart">
@@ -94,7 +98,7 @@ const Navbar = () => {
 												</div>
 											</div>
 										</span>
-									</a>
+									</Link>
 									<div
 										tabindex="-1"
 										className="ui-dialog ui-corner-all ui-widget ui-widget-content ui-front mage-dropdown-dialog style-PDTJ9"

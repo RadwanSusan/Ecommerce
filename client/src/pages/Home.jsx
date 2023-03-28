@@ -7,7 +7,7 @@ import NavbarBottom from "../components/NavbarBottom";
 import HeaderMobile from "../components/HeaderMobile";
 import MobileSearch from "../components/MobileSearch";
 // import MobileMenu from "../components/MobileMenu";
-// import Offer from "../components/Offer.jsx";
+import Offer from "../components/Offer.jsx";
 import Image from "../components/Image";
 // import Newsletter from "../components/Newsletter";
 import Products from "../components/Products";
@@ -29,7 +29,7 @@ const Home = () => {
 			<MobileSearch />
 			{/* <MobileMenu /> */}
 			<Slider />
-			{/* <Offer /> */}
+			<Offer />
 			<Welcom />
 			<Categories />
 			{/* <Catog  /> */}
@@ -38,7 +38,7 @@ const Home = () => {
 			<Image />
 			<Bloges />
 			<FooterNew />
-			<Products />
+			{/* <Products /> */}
 			{/* <Newsletter/> */}
 			{/* <Footer /> */}
 		</div>
