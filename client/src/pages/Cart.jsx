@@ -169,23 +169,21 @@ const Cart = () => {
 	const onToken = (token) => {
 	  setStripeToken(token);
 	};
-	console.log(stripeToken);
-	useEffect(() => {
-		const makeRequest = async () => {
-		  try {
-			const res = await userRequest.post("/checkout/payment", {
-			  tokenId: stripeToken.id,
-			  amount: 500,
-			});
-
-			history.push("/success", {
-			  stripeData: res.data,
-			  products: cart, });
-		  } catch {}
-		};
-		stripeToken && makeRequest();
-	  }, [stripeToken, cart.total, history]);
   
+	useEffect(() => {
+	  const makeRequest = async () => {
+		try {
+		  const res = await userRequest.post("/checkout/payment", {
+			tokenId: stripeToken.id,
+			amount: 500,
+		  });
+		  history.push("/success", {
+			stripeData: res.data,
+			products: cart, });
+		} catch {}
+	  };
+	  stripeToken && makeRequest();
+	}, [stripeToken, cart.total, history]);
 	return (
 		<Container>
 			<Announcement />
@@ -232,7 +230,7 @@ const Cart = () => {
 								</PriceDetail>
 							</Product>
 						))}
-						<hr />
+						<Hr />
 					</Info>
 					<Summary>
 						<SummaryTitle>ORDER SUMMARY</SummaryTitle>
