@@ -3,6 +3,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import { sliderItems } from "../data";
 import { mobile } from "../responsive";
+import "./slider.css";
+
 
 const Container = styled.div`
 	width: 100%;
@@ -10,7 +12,7 @@ const Container = styled.div`
 	display: flex;
 	position: relative;
 	overflow: hidden;
-	${mobile({ display: "none" })}
+	
 `;
 
 const Arrow = styled.div`
@@ -50,6 +52,8 @@ const Slide = styled.div`
 const ImgContainer = styled.div`
 	height: 100%;
 	flex: 1;
+	${mobile({ display: "none" })}
+
 `;
 
 const Image = styled.img`
@@ -90,6 +94,7 @@ const Slider = () => {
 			setSlideIndex(slideIndex < 2 ? slideIndex + 1 : 0);
 		}
 	};
+	
 
 	return (
 		<Container>

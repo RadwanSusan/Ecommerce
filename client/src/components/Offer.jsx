@@ -194,9 +194,8 @@ const Offer = () => {
 															</div>
 															<div class="product-item-actions">
 																<div class="actions-primary">
-																	<button
+																	<button 
 																		class="action tocart primary"
-																		data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/checkout\/cart\/add\/uenc\/aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo\/product\/13\/","data":{"product":"13","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
 																		type="button"
 																		title="Add to Cart"
 																	>

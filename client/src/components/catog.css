@@ -1597,13 +1597,20 @@
 	}
 
 	#style-pO7ki.style-pO7ki {
-		flex-direction: column;
+		/* flex-direction: column; */
 		align-items: center;
 		gap: 50px;
 	}
+	#style-SmoEo.style-SmoEo {
+		width: 41%;
+	}
+	.Add-to-Cart-new {
+		margin-bottom: 5px;
+	}
+
 
 	.listingtabs-cms .ltabs-items-container {
-		float: none;
+		/* float: none; */
 		width: 100%;
 	}
 

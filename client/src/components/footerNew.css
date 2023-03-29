@@ -1079,6 +1079,10 @@
 
 	.col-xs-12 {
 		padding: 0;
+		text-align: center;
+	}
+	.pull-left {
+		float:none;
 	}
 
 	.pull-right {
@@ -1124,6 +1128,14 @@
 .vc_column_container > .vc_column-inner {
 	padding-left: 0;
 	padding-right: 0;
+}
+
+@media only screen and (max-width: 820px) {
+	.bottom-footer{
+			text-align: center;
+		}
+
+
 }
 
 @keyframes fadeIn {

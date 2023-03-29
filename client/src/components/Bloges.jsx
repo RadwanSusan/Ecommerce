@@ -55,7 +55,7 @@ const Bloges = () => {
 									<div class="item">
 										<div class="image-post">
 											<a
-												href="http://magento2.magentech.com/themes/sm_venuse/pub/french/blog/post_/choose-the-perfect-design/"
+												href=""
 												title="Choose the perfect design"
 											>
 												<img
