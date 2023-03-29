@@ -20,6 +20,7 @@ const Wrapper1 = styled.div`
 	display: flex;
 	transition: all 0.75s ease;
 	transform: translateX(${(props) => props.slideIndex * -15}vw);
+
 `;
 
 const Offer = () => {

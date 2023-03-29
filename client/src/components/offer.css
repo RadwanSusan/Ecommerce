@@ -700,6 +700,8 @@
 	}
 }
 
+
+
 @media all {
 	.group-deal-1 .product-item-info .product-item-details .product-item-actions {
 		margin: 0;
@@ -802,7 +804,7 @@
 		.product-item-actions
 		.actions-secondary {
 		vertical-align: top;
-		margin-top: 10px;
+		/* margin-top: 10px; */
 	}
 
 	.product-image-wrapper {
@@ -1372,10 +1374,26 @@
 		flex-direction: column;
 		align-items: center;
 	}
+	/* #style-FUF77 {
+		transform: translateX(-50vh);
+	} */
+	
 	
 .group-deal-1 .deal-content {
 	width: 100%;
+	margin-top: 10px;
 }
+
+
+}
+@media only screen and (max-width: 1290px) {
+	.group-deal-1
+		.product-item-info
+		.product-item-details
+		.product-item-actions
+		.actions-secondary {
+			margin-top: 10px;
+		}
 
 
 }
