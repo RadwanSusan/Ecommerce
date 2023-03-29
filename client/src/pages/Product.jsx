@@ -133,7 +133,10 @@ const Product = () => {
 	useEffect(() => {
 		const getProduct = async () => {
 			try {
-				const res = await publicRequest.get("/products/find/" + id);
+				let res = await publicRequest.get("/products/find/" + id);
+				if (res.data == null) {
+					res = await publicRequest.get("/offer/find/" + id);
+				}
 				setProduct(res.data);
 			} catch {}
 		};
@@ -154,7 +157,6 @@ const Product = () => {
 			<Announcement />
 			<Navbar />
 			<NavbarBottom />
-
 			<Wrapper>
 				<ImgContainer>
 					<Image src="product.img" />
