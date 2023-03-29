@@ -1,14 +1,14 @@
 import React from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
-import "./navbar.css";
 import LogoImg from "../Media/Img/SvgLogo.svg";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import "./navbar.css";
 
 const Navbar = () => {
 	const quantity = useSelector((state) => state.cart.quantity);
-
+	const total = useSelector((state) => state.cart.total);
 	return (
 		<div className="header-middle snipcss-LbbnX">
 			<div className="container">
@@ -46,7 +46,6 @@ const Navbar = () => {
 													<option value="">- - Accessories for iPhone</option>
 													<option value="">- - Accessories for iPad</option>
 												</select>
-
 												<input
 													id="searchbox"
 													type="text"
@@ -93,7 +92,7 @@ const Navbar = () => {
 											<div className="subtotal">
 												<div className="amount price-container">
 													<span className="price-wrapper">
-														<span className="price">$0.00</span>
+														<span className="price">${total}</span>
 													</span>
 												</div>
 											</div>

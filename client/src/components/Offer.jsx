@@ -7,13 +7,10 @@ import { IoGitCompareOutline } from "react-icons/io5";
 import { AiOutlineEye } from "react-icons/ai";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import { mobile } from "../responsive";
-import { useEffect} from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import { categoriesOffer } from "../data";
 import { Link } from "react-router-dom";
-
-
-
 
 const Wrapper1 = styled.div`
 	height: 100%;
@@ -47,7 +44,6 @@ const Offer = () => {
 		};
 		getOffer(getOffer);
 	}, [categoriesOffer.cat]);
-	console.log(offer);
 
 	return (
 		<div
@@ -109,128 +105,132 @@ const Offer = () => {
 											slideIndex={slideIndex}
 										>
 											{offer.slice(0, 4).map((data) => (
-											<div class="owl-item active style-Ke3kW" id="style-Ke3kW">
-												<div class="item product product-item">
-													<div
-														class="product-item-info"
-														data-container="product-grid"
-													>
-														<div class="image-product">
-															<Link to={`/product/${data._id}`}
-																class="product photo product-item-photo"
-																tabindex="-1"
-															>
-																<span
-																	class="product-image-container product-image-container-13 style-j6oeg"
-																	id="style-j6oeg"
+												<div
+													class="owl-item active style-Ke3kW"
+													id="style-Ke3kW"
+												>
+													<div class="item product product-item">
+														<div
+															class="product-item-info"
+															data-container="product-grid"
+														>
+															<div class="image-product">
+																<Link
+																	to={`/product/${data._id}`}
+																	class="product photo product-item-photo"
+																	tabindex="-1"
 																>
 																	<span
-																		class="product-image-wrapper style-gKGpW"
-																		id="style-gKGpW"
+																		class="product-image-container product-image-container-13 style-j6oeg"
+																		id="style-j6oeg"
 																	>
-																		<img
-																			class="product-image-photo"
-																			src={data.img}
-																			data-src="http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/l/-/l-03_1.jpg /"
-																			loading="lazy"
-																			width="300"
-																			height="300"
-																			alt={data.img}
-																		/>
+																		<span
+																			class="product-image-wrapper style-gKGpW"
+																			id="style-gKGpW"
+																		>
+																			<img
+																				class="product-image-photo"
+																				src={data.img}
+																				data-src="http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/l/-/l-03_1.jpg /"
+																				loading="lazy"
+																				width="300"
+																				height="300"
+																				alt={data.img}
+																			/>
+																		</span>
 																	</span>
-																</span>
-															</Link>
-															<a
-																class="action quickview-handler sm_quickview_handler"
-																title="Quick View"
-																href=""
-															>
-																<AiOutlineEye />
-																<span>Quick View</span>
-															</a>
-														</div>
-														<div class="product details product-item-details">
-															<strong class="product name product-item-name">
-																<a class="product-item-link" href="">
-																	{data.title}
+																</Link>
+																<a
+																	class="action quickview-handler sm_quickview_handler"
+																	title="Quick View"
+																	href=""
+																>
+																	<AiOutlineEye />
+																	<span>Quick View</span>
 																</a>
-															</strong>
-															<div
-																class="price-box price-final_price"
-																data-role="priceBox"
-																data-product-id="13"
-																data-price-box="product-id-13"
-															>
-																<span class="price-container price-final_price tax weee">
-																	<span
-																		id="product-price-13"
-																		data-price-amount="250"
-																		data-price-type="finalPrice"
-																		class="price-wrapper "
-																	>
-																		<span class="price">$ {data.price}</span>
-																	</span>
-																</span>
 															</div>
-															<div class="time-countdown-slide">
-																<div class="time-wrapper">
-																	<div class="time-label clearfix">
-																		<div class="stock-qty">
-																			Availability:
-																			<span>150</span>
-																		</div>
-																		<div class="time-left">
-																			Time left:
-																			<span>{data.timeLeft}</span>
-																		</div>
-																	</div>
-																	<div class="time-ranger">
-																		<div
-																			class="time-pass style-Tx4nd"
-																			id="style-Tx4nd"
-																		></div>
-																	</div>
-																</div>
-															</div>
-															<div class="product-item-actions">
-																<div class="actions-primary">
-																	<button 
-																		class="action tocart primary"
-																		type="button"
-																		title="Add to Cart"
-																	>
-																		<span>Add to Cart</span>
-																	</button>
-																</div>
+															<div class="product details product-item-details">
+																<strong class="product name product-item-name">
+																	<a class="product-item-link" href="">
+																		{data.title}
+																	</a>
+																</strong>
 																<div
-																	class="actions-secondary"
-																	data-role="add-to-links"
+																	class="price-box price-final_price"
+																	data-role="priceBox"
+																	data-product-id="13"
+																	data-price-box="product-id-13"
 																>
-																	<a
-																		href="#"
-																		class="action towishlist"
-																		data-action="add-to-wishlist"
-																		title="Add to Wish List"
+																	<span class="price-container price-final_price tax weee">
+																		<span
+																			id="product-price-13"
+																			data-price-amount="250"
+																			data-price-type="finalPrice"
+																			class="price-wrapper "
+																		>
+																			<span class="price">$ {data.price}</span>
+																		</span>
+																	</span>
+																</div>
+																<div class="time-countdown-slide">
+																	<div class="time-wrapper">
+																		<div class="time-label clearfix">
+																			<div class="stock-qty">
+																				Availability:
+																				<span>150</span>
+																			</div>
+																			<div class="time-left">
+																				Time left:
+																				<span>{data.timeLeft}</span>
+																			</div>
+																		</div>
+																		<div class="time-ranger">
+																			<div
+																				class="time-pass style-Tx4nd"
+																				id="style-Tx4nd"
+																			></div>
+																		</div>
+																	</div>
+																</div>
+																<div class="product-item-actions">
+																	<div class="actions-primary">
+																		<button
+																			class="action tocart primary"
+																			data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/checkout\/cart\/add\/uenc\/aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo\/product\/13\/","data":{"product":"13","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
+																			type="button"
+																			title="Add to Cart"
+																		>
+																			<span>Add to Cart</span>
+																		</button>
+																	</div>
+																	<div
+																		class="actions-secondary"
+																		data-role="add-to-links"
 																	>
-																		<BsHeart />
-																		<span>Add to Wish List</span>
-																	</a>
-																	<a
-																		href="#"
-																		class="action tocompare"
-																		title="Add to Compare"
-																	>
-																		<IoGitCompareOutline />
-																		<span>Add to Compare</span>
-																	</a>
+																		<a
+																			href="#"
+																			class="action towishlist"
+																			data-action="add-to-wishlist"
+																			title="Add to Wish List"
+																		>
+																			<BsHeart />
+																			<span>Add to Wish List</span>
+																		</a>
+																		<a
+																			href="#"
+																			class="action tocompare"
+																			title="Add to Compare"
+																		>
+																			<IoGitCompareOutline />
+																			<span>Add to Compare</span>
+																		</a>
+																	</div>
 																</div>
 															</div>
 														</div>
 													</div>
 												</div>
-											</div>
 											))}
-											
 										</Wrapper1>
 									</div>
 									<div class="owl-nav">

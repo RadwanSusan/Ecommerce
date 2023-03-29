@@ -22,13 +22,11 @@ const Catog = ({ item }) => {
 		};
 		getProducts(getProducts);
 	}, [item.cat]);
-	console.log(products);
 	return (
 		<div
 			id="listingtabs_0"
 			className="block sm-listing-tabs tab-cms-block slider snipcss-X3nN9"
 		>
-			{console.log(products)}
 			<h2>{item.title}</h2>
 			<div className="block-content">
 				<div className="ltabs-wrap">

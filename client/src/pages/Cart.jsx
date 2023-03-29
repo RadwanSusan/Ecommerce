@@ -165,11 +165,11 @@ const Cart = () => {
 	const cart = useSelector((state) => state.cart);
 	const [stripeToken, setStripeToken] = useState(null);
 	const history = useHistory();
-  
+
 	const onToken = (token) => {
 	  setStripeToken(token);
 	};
-  
+
 	useEffect(() => {
 	  const makeRequest = async () => {
 		try {
