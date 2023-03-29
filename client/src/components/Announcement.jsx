@@ -67,7 +67,7 @@ const MenuItem1 = styled.div`
 `;
 const Announcement = () => {
 	let token = localStorage.getItem("persist:root");
-	if (token !== null) {
+	if (token !== null && token !== undefined) {
 		token = JSON.parse(token);
 		token = JSON.parse(token.user);
 		token = token.currentUser.username;
