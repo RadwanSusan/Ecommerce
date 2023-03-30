@@ -129,14 +129,15 @@ print {
 
    .sidebar-nav-mobile {
       background-color: #fff;
-      position: fixed;
+      position: absolute;
       left: 0;
-      width: 280px;
-      top: 0;
+      width: 93vw;
+      height: 238px;
+      top: 100px;
       bottom: 0;
       overflow-y: auto;
       padding: 30px 20px;
-      z-index: 898;
+      z-index: 1000;
       transition: .2s;
       -moz-transition: .2s;
       -webkit-transition: .2s;
@@ -148,7 +149,7 @@ print {
    }
 
    .tab-content-mobile {
-      padding: 20px 0;
+      /* padding: 20px 0; */
    }
 
    .header-mobile .mobile-bottom .block-search-mobile {

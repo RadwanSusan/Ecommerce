@@ -95,14 +95,15 @@ const Catog = ({ item }) => {
 																				</span>
 																			</span>
 																		</a>
-																		<a
+																		<Link
+																			to={`/product/${data._id}`}
 																			className="action quickview-handler sm_quickview_handler"
 																			title="Quick View"
 																			href=""
 																		>
 																			<AiOutlineEye />
 																			<span>Quick View</span>
-																		</a>
+																		</Link>
 																	</div>
 																	<div className="product details product-item-details">
 																		<strong className="product name product-item-name">
@@ -138,9 +139,11 @@ const Catog = ({ item }) => {
 																					data-role="add-to-links"
 																					className="actions-secondary"
 																				></div>
-																				<button className="Add-to-Cart-new">
-																					Add to Cart
-																				</button>
+																				<Link to={`/product/${data._id}`}>
+																					<button className="Add-to-Cart-new">
+																						Add to Cart
+																					</button>
+																				</Link>
 																				<div
 																					className="actions-secondary"
 																					data-role="add-to-links"

@@ -2,16 +2,17 @@ import React from "react";
 import { useState } from "react";
 import "./headerMobile.css";
 import { AiOutlineShoppingCart, AiOutlineMenu } from "react-icons/ai";
-
+import MobileMenuComp from "./MobileMenu";
+import ToggleComponent from "./ToggleComponent";
 const HeaderMobile = () => {
 	return (
 		<div class="mobile-top snipcss-OsEnD">
 			<div class="container">
 				<div class="mobile-header-content">
 					<div class="mobile-menu">
-						<a id="btn-nav-mobile" href="javascript:void(0);">
-							<AiOutlineMenu />
-						</a>
+						<ToggleComponent>
+							<MobileMenuComp />
+						</ToggleComponent>
 					</div>
 					<div class="mobile-logo">
 						<a href="http://magento2.magentech.com/themes/sm_venuse/pub/french/">
@@ -71,12 +72,7 @@ const HeaderMobile = () => {
 													<span class="text" data-bind="i18n: 'My Cart'">
 														My Cart
 													</span>
-													<span
-														class="qty empty"
-														data-bind="css: { empty: !!getCartParam('summary_count') == false },
-                                                         attr: { title: $t('Items in Cart') }, text: getCartParam('summary_count')"
-														title="Items in Cart"
-													></span>
+													<span class="qty empty" title="Items in Cart"></span>
 												</strong>
 											</div>
 											<div class="block-content">

@@ -10,6 +10,10 @@
 	}
 }
 
+#btn-nav-mobile:hover {
+	color: #000 !important;
+}
+
 @media all {
 	header {
 		display: block;
@@ -25,7 +29,8 @@
 	}
 }
 
-@media (min-width: 769px), print {
+@media (min-width: 769px),
+print {
 	.page-header {
 		border: 0;
 		margin-bottom: 0;
@@ -132,10 +137,12 @@
 		top: 0;
 		font-size: 32px;
 		margin: 3px;
+		cursor: pointer;
 	}
 
 	.mobile-logo {
 		text-align: center;
+		user-select: none;
 	}
 
 	.mobile-cart {
@@ -152,7 +159,7 @@
 		-webkit-text-decoration-skip: objects;
 	}
 
-	.header-mobile .mobile-menu > a {
+	.header-mobile .mobile-menu>a {
 		display: inline-block;
 		height: 36px;
 		line-height: 36px;
@@ -172,7 +179,7 @@
 		display: inline-block;
 	}
 
-	.header-mobile .mobile-menu > a span {
+	.header-mobile .mobile-menu>a span {
 		display: block;
 		width: 30px;
 		height: 3px;
@@ -184,7 +191,7 @@
 		background-color: #222222;
 	}
 
-	.header-mobile .mobile-menu > a span.s-top {
+	.header-mobile .mobile-menu>a span.s-top {
 		margin-top: 9px;
 	}
 
@@ -216,7 +223,8 @@
 	}
 }
 
-@media (min-width: 769px), print {
+@media (min-width: 769px),
+print {
 	.mobile-wrapper {
 		margin-left: 13px;
 	}
@@ -308,7 +316,8 @@
 	}
 }
 
-@media (min-width: 769px), print {
+@media (min-width: 769px),
+print {
 	.mobile-wrapper .block-minicart {
 		right: -15px;
 		width: 390px;
@@ -316,6 +325,7 @@
 }
 
 @media all {
+
 	.mobile-wrapper .block-minicart:before,
 	.mobile-wrapper .block-minicart:after {
 		border-bottom-style: solid;
@@ -360,11 +370,7 @@
 		width: 1px;
 	}
 
-	.minicart-mobile
-		.mobile-wrapper
-		.action.showcart
-		.counter.qty
-		.counter-label {
+	.minicart-mobile .mobile-wrapper .action.showcart .counter.qty .counter-label {
 		display: none;
 	}
 
