@@ -1083,6 +1083,7 @@
 	}
 	.pull-left {
 		float:none;
+		margin-left: 10px;
 	}
 
 	.pull-right {

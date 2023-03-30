@@ -35,7 +35,7 @@ const Offer = () => {
 			try {
 				const res = await axios.get(
 					categoriesOffer.cat
-						? `http://localhost:4000/api/offer?category=${categoriesOffer.cat}`
+						? `http://localhost:4000/api/offer?category=${categoriesOffer[0].cat}`
 						: "http://localhost:4000/api/offer",
 				);
 				setOffer(res.data);
@@ -43,6 +43,9 @@ const Offer = () => {
 		};
 		getOffer(getOffer);
 	}, [categoriesOffer.cat]);
+	console.log(offer);
+	console.log(categoriesOffer[0].cat);
+
 
 	return (
 		<div
@@ -76,6 +79,7 @@ const Offer = () => {
 					</div>
 					<div class="block-content">
 						<div id="filterproducts_1" class="product-deal-list">
+						<Link to={`/offer/${categoriesOffer[0].cat}`}>
 							<div class="deal-left">
 								<div class="deal-description">
 									<div>
@@ -95,6 +99,8 @@ const Offer = () => {
 									</div>
 								</div>
 							</div>
+							</Link>
+							
 							<div class="deal-content">
 								<div class="owl-carousel owl-theme list items product-items filterproducts owl-loaded owl-drag">
 									<div class="owl-stage-outer">

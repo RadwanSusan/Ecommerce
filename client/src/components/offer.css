@@ -640,9 +640,10 @@
 		-moz-osx-font-smoothing: grayscale;
 		text-align: center;
 		font-size: 23px;
-		margin-top: 14px;
+		margin-top: 12px;
 		margin-left: 1px;
 	}
+	
 
 	.group-deal-1 .product-item-info:hover .image-product .quickview-handler {
 		display: block;
@@ -1386,7 +1387,7 @@
 
 
 }
-@media only screen and (max-width: 1290px) {
+
 	.group-deal-1
 		.product-item-info
 		.product-item-details
@@ -1396,4 +1397,4 @@
 		}
 
 
-}
+

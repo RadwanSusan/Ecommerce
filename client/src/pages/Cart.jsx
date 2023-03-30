@@ -220,9 +220,9 @@ const Cart = () => {
 								</ProductDetail>
 								<PriceDetail>
 									<ProductAmountContainer>
-										<Add />
+										
 										<ProductAmount>{product.quantity}</ProductAmount>
-										<Remove />
+										<button >Delete</button>
 									</ProductAmountContainer>
 									<ProductPrice>
 										$ {product.price * product.quantity}

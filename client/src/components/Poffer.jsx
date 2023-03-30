@@ -11,46 +11,46 @@ const Container = styled.div`
 	justify-content: space-between;
 `;
 
-const Products = ({ cat, filters, sort }) => {
-	const [products, setProducts] = useState([]);
-	const [filteredProducts, setFilteredProducts] = useState([]);
+const Poffer = ({ cat, filters, sort }) => {
+	const [offer, setOffer] = useState([]);
+	const [filteredOffer, setFilteredOffer] = useState([]);
 
 	useEffect(() => {
-		const getProducts = async () => {
+		const getOffer = async () => {
 			try {
 				const res = await axios.get(
 					cat
-						? `http://localhost:4000/api/products?category=${cat}`
-						: "http://localhost:4000/api/products",
+						? `http://localhost:4000/api/offer?category=${cat}`
+						: "http://localhost:4000/api/offer",
 				);
-				setProducts(res.data);
+				setOffer(res.data);
 			} catch (err) {}
 		};
-		getProducts(getProducts);
+		getOffer(getOffer);
 	}, [cat]);
 
 	useEffect(() => {
 		cat &&
-			setFilteredProducts(
-				products.filter((item) =>
+			setFilteredOffer(
+				offer.filter((item) =>
 					Object.entries(filters).every(([key, value]) =>
 						item[key].includes(value),
 					),
 				),
 			);
-	}, [products, cat, filters]);
+	}, [offer, cat, filters]);
 
 	useEffect(() => {
 		if (sort === "newest") {
-			setFilteredProducts((prev) =>
+			setFilteredOffer((prev) =>
 				[...prev].sort((a, b) => a.createdAt - b.createdAt),
 			);
 		} else if (sort === "asc") {
-			setFilteredProducts((prev) =>
+			setFilteredOffer((prev) =>
 				[...prev].sort((a, b) => a.price - b.price),
 			);
 		} else {
-			setFilteredProducts((prev) =>
+			setFilteredOffer((prev) =>
 				[...prev].sort((a, b) => b.price - a.price),
 			);
 		}
@@ -59,10 +59,10 @@ const Products = ({ cat, filters, sort }) => {
 	return (
 		<Container>
 			{cat
-				? filteredProducts.map((item) => <Product item={item} key={item.id} />)
-				: products.map((item) => <Product item={item} key={item.id} />)}
+				? filteredOffer.map((item) => <Product item={item} key={item.id} />)
+				: offer.map((item) => <Product item={item} key={item.id} />)}
 		</Container>
 	);
 };
 
-export default Products;
+export default Poffer;

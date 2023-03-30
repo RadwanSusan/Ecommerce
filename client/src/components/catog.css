@@ -523,6 +523,7 @@
 		position: relative;
 		overflow: hidden;
 		-webkit-transform: translate3d(0px, 0px, 0px);
+		
 	}
 
 	/* .owl-theme .owl-nav {
@@ -1499,6 +1500,7 @@
 	display: flex;
 	justify-content: space-between;
 	flex-wrap: wrap;
+	
 }
 
 #style-SmoEo.style-SmoEo {
@@ -1640,3 +1642,7 @@
 		width: 100%;
 	}
 }
+.kVXCxY {
+	flex-direction: column;
+}
+
