@@ -21,3 +21,11 @@ export const productSlice = createSlice({
       state.isFetching = false;
       state.error = true;
     }}});
+
+    export const {
+        getProductStart,
+        getProductSuccess,
+        getProductFailure,
+      } = productSlice.actions;
+      
+      export default productSlice.reducer;
