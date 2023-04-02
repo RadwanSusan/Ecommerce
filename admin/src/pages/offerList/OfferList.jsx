@@ -1,19 +1,34 @@
-import "./offer.css";
+import "./offerList.css";
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
 import { offerRows } from "../../dummyData";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+
 import { useState } from "react";
+import { useDispatch , useSelector} from "react-redux";
+import {getOffer} from "../../redux/apiCalls"
+
+
 
 export default function Offer() {
   const [data, setData] = useState(offerRows);
+  const dispatch = useDispatch();
+	const offer = useSelector((state) => state.offer.offer);
+  console.log(offer);
+
+
+  useEffect(() => {
+		getOffer(dispatch);
+	}, [dispatch]);
+
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
+    { field: "_id", headerName: "ID", width: 90 },
     {
       field: "product",
       headerName: "Product",
@@ -61,9 +76,10 @@ export default function Offer() {
   return (
     <div className="productList">
       <DataGrid
-        rows={data}
+        rows={offer}
         disableSelectionOnClick
         columns={columns}
+        getRowId={(row) => row._id}
         pageSize={8}
         checkboxSelection
       />

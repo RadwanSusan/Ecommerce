@@ -9,7 +9,7 @@ import NewUser from "./pages/newUser/NewUser";
 import ProductList from "./pages/productList/ProductList";
 import Product from "./pages/product/Product";
 import NewProduct from "./pages/newProduct/NewProduct";
-import Offer from "./pages/offer/Offer";
+import Offer from "./pages/offerList/OfferList";
 import OfferUser from "./pages/OfferUser/OfferUser";
 import CreateOffer from "./pages/CreateOffer/CreateOffer";
 import Login from "./pages/login/Login";
