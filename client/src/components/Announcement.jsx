@@ -71,49 +71,52 @@ const MenuItem1 = styled.div`
 	${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
 const Announcement = () => {
-	let token = localStorage.getItem("persist:root");
-	if (token !== null && token !== undefined) {
-		token = JSON.parse(token);
-		token = JSON.parse(token.user);
-		token = token.currentUser.username;
-		return (
-			<Container>
-				<Wrapper>
-					<Left>
-						<MenuItem1>welcome {token}</MenuItem1>
-						<MenuItem>
-							<Link to="/Logout">Logout</Link>
-						</MenuItem>
-					</Left>
-					<Right>
-						<Language>English - </Language>
-						<SearchContainer>USD</SearchContainer>
-					</Right>
-				</Wrapper>
-			</Container>
-		);
-	} else {
-		return (
-			<Container>
-				<Wrapper>
-					<Left>
-						<MenuItem1>Welcome to Venuse store</MenuItem1>
-						<MenuItem>
-							<Link to="/Register">REGISTER</Link>
-						</MenuItem>
-						<MenuItem>
-							<Link to="/Login">SIGN IN</Link>
-						</MenuItem>
-					</Left>
-					<Right>
-						<Language>English - </Language>
-						<SearchContainer>USD</SearchContainer>
-						
-					</Right>
-				</Wrapper>
-			</Container>
-		);
-	}
+	// let token = localStorage.getItem("persist:root");
+	// if (token !== null) {
+	// 	token = JSON.parse(token);
+	// 	token = JSON.parse(token.user);
+	// if (token.currentUser.username !== null) {
+	// 	token = token.currentUser.username;
+	// } else {
+	// 	token = "Guest";
+	// }
+	return (
+		<Container>
+			<Wrapper>
+				<Left>
+					{/* <MenuItem1>welcome {token}</MenuItem1> */}
+					<MenuItem>
+						<Link to="/Logout">Logout</Link>
+					</MenuItem>
+				</Left>
+				<Right>
+					<Language>English - </Language>
+					<SearchContainer>USD</SearchContainer>
+				</Right>
+			</Wrapper>
+		</Container>
+	);
+	// } else {
+	// 	return (
+	// 		<Container>
+	// 			<Wrapper>
+	// 				<Left>
+	// 					<MenuItem1>Welcome to Venuse store</MenuItem1>
+	// 					<MenuItem>
+	// 						<Link to="/Register">REGISTER</Link>
+	// 					</MenuItem>
+	// 					<MenuItem>
+	// 						<Link to="/Login">SIGN IN</Link>
+	// 					</MenuItem>
+	// 				</Left>
+	// 				<Right>
+	// 					<Language>English - </Language>
+	// 					<SearchContainer>USD</SearchContainer>
+	// 				</Right>
+	// 			</Wrapper>
+	// 		</Container>
+	// 	);
+	// }
 };
 
 export default Announcement;
