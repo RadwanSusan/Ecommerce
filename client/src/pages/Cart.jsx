@@ -60,12 +60,17 @@ const Bottom = styled.div`
 
 const Info = styled.div`
 	flex: 3;
+	padding: 5px;
 `;
 
 const Product = styled.div`
 	display: flex;
 	justify-content: space-between;
-	${mobile({ flexDirection: "column" })}
+	${mobile({ flexDirection: "column" })};
+	border:1px solid #eee;
+	border-radius:5px;
+	padding:5px;
+	margin:5px;
 `;
 
 const ProductDetail = styled.div`
@@ -115,6 +120,7 @@ const ProductAmount = styled.div`
 	font-size: 24px;
 	margin: 5px;
 	${mobile({ margin: "5px 15px" })}
+	border-bottom:1px solid black;
 `;
 
 const ProductPrice = styled.div`
@@ -160,6 +166,17 @@ const Button = styled.button`
 	color: white;
 	font-weight: 600;
 `;
+const Button1 = styled.button`
+	width: 40%;
+	padding: 10px;
+	background-color: #eee;
+	color: black;
+	font-weight: 800;
+	cursor: pointer;
+	margin-top: 5px;
+	font-size: 12px;
+	border-radius:10%;
+`;
 
 const Cart = () => {
 	const cart = useSelector((state) => state.cart);
@@ -197,7 +214,7 @@ const Cart = () => {
 						<TopText>Shopping Bag(2)</TopText>
 						<TopText>Your Wishlist (0)</TopText>
 					</TopTexts>
-					<TopButton type="filled">CHECKOUT NOW</TopButton>
+					{/* <TopButton type="filled">CHECKOUT NOW</TopButton> */}
 				</Top>
 				<Bottom>
 					<Info>
@@ -216,13 +233,16 @@ const Cart = () => {
 										<ProductSize>
 											<b>Size:</b> {product.size}
 										</ProductSize>
+										<ProductSize>
+										<Button1>Delete</Button1>
+										</ProductSize>
 									</Details>
 								</ProductDetail>
 								<PriceDetail>
 									<ProductAmountContainer>
-										<Add />
+										
 										<ProductAmount>{product.quantity}</ProductAmount>
-										<Remove />
+										
 									</ProductAmountContainer>
 									<ProductPrice>
 										$ {product.price * product.quantity}

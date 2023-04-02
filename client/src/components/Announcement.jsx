@@ -60,6 +60,11 @@ const MenuItem = styled.div`
 	margin-left: 25px;
 	${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
+const DarkMode = styled.div`
+	cursor: pointer;
+	background-color: black;
+`;
+
 const MenuItem1 = styled.div`
 	font-size: 14px;
 	cursor: pointer;
@@ -103,6 +108,7 @@ const Announcement = () => {
 					<Right>
 						<Language>English - </Language>
 						<SearchContainer>USD</SearchContainer>
+						
 					</Right>
 				</Wrapper>
 			</Container>

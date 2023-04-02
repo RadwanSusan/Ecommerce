@@ -23,10 +23,10 @@ const Catog = ({ item }) => {
 		getProducts(getProducts);
 	}, [item.cat]);
 	return (
+		
 		<div
 			id="listingtabs_0"
-			className="block sm-listing-tabs tab-cms-block slider snipcss-X3nN9"
-		>
+			className="block sm-listing-tabs tab-cms-block slider snipcss-X3nN9">
 			<h2>{item.title}</h2>
 			<div className="block-content">
 				<div className="ltabs-wrap">
@@ -194,7 +194,9 @@ const Catog = ({ item }) => {
 				</div>
 			</div>
 		</div>
+		
 	);
+	
 };
 
 export default Catog;
