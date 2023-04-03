@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import "./product.css";
 import Chart from "../../components/chart/Chart";
+import { productData } from "../../dummyData";
 import { Publish } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 import { useEffect, useMemo, useState } from "react";
@@ -42,16 +43,18 @@ export default function Product() {
 	useEffect(() => {
 		const getStats = async () => {
 			try {
-				const res = await userRequest.get("orders/income?pid=" + productId);
+				const res = await userRequest.get("orders/income");
 				const list = res.data.sort((a, b) => {
 					return a._id - b._id;
 				});
 				list.map((item) =>
 					setPStats((prev) => [
+						
 						...prev,
 						{ name: MONTHS[item._id - 1], Sales: item.total },
 					]),
 				);
+				// console.log(list);
 			} catch (err) {
 				console.log(err);
 			}
@@ -75,7 +78,7 @@ export default function Product() {
 			</div>
 			<div className="productTop">
 				<div className="productTopLeft">
-					<Chart data={pStats} dataKey="Sales" title="Sales Performance" />
+				<Chart data={pStats} dataKey="Sales" title="Sales Performance" />
 				</div>
 				<div className="productTopRight">
 					<div className="productInfoTop">
@@ -89,7 +92,7 @@ export default function Product() {
 						</div>
 						<div className="productInfoItem">
 							<span className="productInfoKey">sales:</span>
-							<span className="productInfoValue">0</span>
+							<span className="productInfoValue">5123</span>
 						</div>
 						<div className="productInfoItem">
 							<span className="productInfoKey">in stock:</span>
@@ -111,11 +114,6 @@ export default function Product() {
 						<select name="inStock" id="idStock">
 							<option value="true">Yes</option>
 							<option value="false">No</option>
-						</select>
-						<label>Active</label>
-						<select name="active" id="active">
-							<option value="yes">Yes</option>
-							<option value="no">No</option>
 						</select>
 					</div>
 					<div className="productFormRight">

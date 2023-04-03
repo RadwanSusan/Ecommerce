@@ -22,6 +22,8 @@ export default function OfferUser() {
 	const [oStats, setOStats] = useState([]);
 	const [file, setFile] = useState(null);
 	const dispatch = useDispatch();
+	const [pStats, setPStats] = useState([]);
+	
 
 	const offer = useSelector((state) =>
 		state.offer.offer.find((offer) => offer._id === offerId),
@@ -43,6 +45,28 @@ export default function OfferUser() {
 		],
 		[],
 	);
+	useEffect(() => {
+		const getStats = async () => {
+			try {
+				const res = await userRequest.get("orders/income");
+				const list = res.data.sort((a, b) => {
+					return a._id - b._id;
+				});
+				list.map((item) =>
+					setPStats((prev) => [
+						
+						...prev,
+						{ name: MONTHS[item._id - 1], Sales: item.total },
+					]),
+				);
+				// console.log(list);
+			} catch (err) {
+				console.log(err);
+			}
+		};
+		getStats();
+	}, [offerId, MONTHS]);
+
 
 	const [offerUpdateData, setOfferUpdateData] = useState({
 		title: offer.title,
@@ -136,7 +160,7 @@ export default function OfferUser() {
 			</div>
 			<div className="productTop">
 				<div className="productTopLeft">
-					<Chart data={oStats} dataKey="Sales" title="Sales Performance" />
+					<Chart data={pStats} dataKey="Sales" title="Sales Performance" />
 				</div>
 				<div className="productTopRight">
 					<div className="productInfoTop">
