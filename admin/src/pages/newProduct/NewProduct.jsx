@@ -32,7 +32,6 @@ export default function NewProduct() {
 		const storage = getStorage(app);
 		const storageRef = ref(storage, fileName);
 		const uploadTask = uploadBytesResumable(storageRef, file);
-
 		// Register three observers:
 		// 1. 'state_changed' observer, called any time the state changes
 		// 2. Error observer, called on failure
@@ -62,8 +61,8 @@ export default function NewProduct() {
 				// Handle successful uploads on complete
 				// For instance, get the download URL: https://firebasestorage.googleapis.com/...
 				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          const product = { ...inputs, img: downloadURL, categories: cat };
-          addProduct(product, dispatch);
+					const product = { ...inputs, img: downloadURL, categories: cat };
+					addProduct(product, dispatch);
 				});
 			},
 		);

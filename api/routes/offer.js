@@ -8,10 +8,8 @@ const {
 const router = require("express").Router();
 
 //CREATE
-
 router.post("/", verifyTokenAndAdmin, async (req, res) => {
 	const newOffer = new Offer(req.body);
-
 	try {
 		const savedOffer = await newOffer.save();
 		res.status(200).json(savedOffer);
@@ -61,7 +59,6 @@ router.get("/", async (req, res) => {
 	const qCategory = req.query.category;
 	try {
 		let offer;
-
 		if (qNew) {
 			offer = await Offer.find().sort({ createdAt: -1 }).limit(1);
 		} else if (qCategory) {
@@ -73,15 +70,10 @@ router.get("/", async (req, res) => {
 		} else {
 			offer = await Offer.find();
 		}
-
 		res.status(200).json(offer);
 	} catch (err) {
 		res.status(500).json(err);
 	}
 });
-
-
-
-
 
 module.exports = router;

@@ -703,19 +703,7 @@ print {
       -o-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
    }
 
-   .products-grid .product-item-info .image-product .quickview-handler:before {
-      content: '\e937';
-      display: inline-block;
-      font-family: 'icomoon' !important;
-      font-style: normal;
-      font-weight: normal;
-      font-variant: normal;
-      text-transform: none;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-align: center;
-      font-size: 18px;
-   }
+
 
    .products-grid .product-item-info:hover .quickview-handler {
       display: block;
@@ -1075,23 +1063,6 @@ print {
       content: '\e601';
    }
 
-   .products-grid .product-item-info .product-item-details .product-item-actions .actions-secondary .action:before {
-      display: none;
-   }
-
-   .products-grid .product-item-info .product-item-details .product-item-actions .actions-secondary .action.towishlist:after {
-      content: '\e93f';
-      display: inline-block;
-      font-family: 'icomoon' !important;
-      font-style: normal;
-      font-weight: normal;
-      font-variant: normal;
-      text-transform: none;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-align: center;
-      font-size: 14px;
-   }
 
    .products-grid .product-item-info .product-item-details .product-item-actions .actions-secondary .action:hover {
       background-color: #FFD200;
@@ -1111,24 +1082,6 @@ print {
    .product-item-actions .actions-secondary>.action {
       display: inline-block;
       text-decoration: none;
-   }
-
-   .product-item .tocompare:before {
-      content: '\e61f';
-   }
-
-   .products-grid .product-item-info .product-item-details .product-item-actions .actions-secondary .action.tocompare:after {
-      content: '\e953';
-      display: inline-block;
-      font-family: 'icomoon' !important;
-      font-style: normal;
-      font-weight: normal;
-      font-variant: normal;
-      text-transform: none;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-align: center;
-      font-size: 14px;
    }
 
    .product-image-photo {

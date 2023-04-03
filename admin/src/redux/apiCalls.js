@@ -32,6 +32,15 @@ import {
 	getOfferStart,
 	getOfferSuccess,
 	getOfferFailure,
+	addOfferStart,
+	addOfferSuccess,
+	addOfferFailure,
+	deleteOfferStart,
+	deleteOfferSuccess,
+	deleteOfferFailure,
+	updateOfferStart,
+	updateOfferSuccess,
+	updateOfferFailure,
 } from "./offerRedux";
 import {
 	getUserStart,
@@ -131,13 +140,41 @@ export const getUser = async (dispatch) => {
 // };
 //////////////////////////////////////////////////////
 export const getOffer = async (dispatch) => {
-		dispatch(getOfferStart());
-		try {
-			const res = await userRequest.get(`/offer`);
-			dispatch(getOfferSuccess(res.data));
-		} catch (err) {
-			dispatch(getOfferFailure());
-			console.log(err);
-		}
-	};
-	
+	dispatch(getOfferStart());
+	try {
+		const res = await userRequest.get(`/offer`);
+		dispatch(getOfferSuccess(res.data));
+	} catch (err) {
+		dispatch(getOfferFailure());
+		console.log(err);
+	}
+};
+export const addOffer = async (offer, dispatch) => {
+	dispatch(addOfferStart());
+	try {
+		const res = await userRequest.post(`/offer`, offer);
+		dispatch(addOfferSuccess(res.data));
+	} catch (err) {
+		dispatch(addOfferFailure());
+	}
+};
+
+export const deleteOffer = async (id, dispatch) => {
+	const res = await userRequest.delete(`/offer/${id}`);
+	dispatch(deleteOfferStart());
+	try {
+		dispatch(deleteOfferSuccess(id));
+	} catch (err) {
+		dispatch(deleteOfferFailure());
+	}
+};
+
+export const updateOffer = async (id, offer, dispatch) => {
+	dispatch(updateOfferStart());
+	try {
+		const res = await userRequest.put(`/offer/${id}`, offer);
+		dispatch(updateOfferSuccess(res.data));
+	} catch (err) {
+		dispatch(updateOfferFailure());
+	}
+};
