@@ -45,6 +45,7 @@ export default function OfferUser() {
 			return { ...prev, [e.target.name]: e.target.value };
 		});
 	};
+	console.log(offerUpdateData);
 	const handleFile = (e) => {
 		// setFile(e.target.files[0]);
 	};
@@ -111,18 +112,21 @@ export default function OfferUser() {
 						<label>Product Name</label>
 						<input
 							type="text"
+							name="title"
 							placeholder={offer.title}
 							onChange={handleUpdate}
 						/>
 						<label>Product Description</label>
 						<input
 							type="text"
+							name="desc"
 							placeholder={offer.desc}
 							onChange={handleUpdate}
 						/>
 						<label>Price</label>
 						<input
 							type="text"
+							name="price"
 							placeholder={offer.price}
 							onChange={handleUpdate}
 						/>
