@@ -6,15 +6,22 @@ import { Publish } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 import { useEffect, useMemo, useState } from "react";
 import { userRequest } from "../../requestMethods";
+import { useDispatch} from "react-redux";
+import { updateProduct} from "../../redux/apiCalls";
+
+
 
 export default function Product() {
 	const location = useLocation();
 	const productId = location.pathname.split("/")[2];
 	const [pStats, setPStats] = useState([]);
+	const dispatch = useDispatch();
+
 
 	const product = useSelector((state) =>
 		state.product.products.find((product) => product._id === productId),
 	);
+	
 	const MONTHS = useMemo(
 		() => [
 			"Jan",
@@ -53,17 +60,11 @@ export default function Product() {
 		getStats();
 	}, [productId, MONTHS]);
 
-	// update product
-	const updateProduct = async () => {
-		try {
-			const res = await userRequest.put("products/" + productId, {
-				inStock: !product.inStock,
-			});
-			console.log(res);
-		} catch (err) {
-			console.log(err);
-		}
+	const updateProduct2 = (id) => {
+		updateProduct(id, dispatch,product);
 	};
+	
+
 
 	return (
 		<div className="product">
@@ -102,7 +103,7 @@ export default function Product() {
 				<form className="productForm">
 					<div className="productFormLeft">
 						<label>Product Name</label>
-						<input type="text" placeholder={product.title} />
+						<input type="text"  placeholder={product.title} />
 						<label>Product Description</label>
 						<input type="text" placeholder={product.desc} />
 						<label>Price</label>
@@ -121,7 +122,7 @@ export default function Product() {
 							</label>
 							<input type="file" id="file" style={{ display: "none" }} />
 						</div>
-						<button onClick={updateProduct} className="productButton">
+						<button onClick={() => updateProduct2(productId)} className="productButton">
 							Update
 						</button>
 					</div>

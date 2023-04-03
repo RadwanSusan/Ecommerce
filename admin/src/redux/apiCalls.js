@@ -2,9 +2,6 @@ import {
 	loginFailure,
 	loginStart,
 	loginSuccess,
-	getUserStart,
-	getUserSuccess,
-	getUserFailure,
 	// deleteUserStart,
 	// deleteUserSuccess,
 	// deleteUserFailure,
@@ -36,6 +33,11 @@ import {
 	getOfferSuccess,
 	getOfferFailure,
 } from "./offerRedux";
+import {
+	getUserStart,
+	getUserSuccess,
+	getUserFailure,
+} from "./userAllRedux";
 
 export const login = async (dispatch, user) => {
 	dispatch(loginStart());
@@ -68,8 +70,10 @@ export const deleteProduct = async (id, dispatch) => {
 };
 
 export const updateProduct = async (id, product, dispatch) => {
+	
 	dispatch(updateProductStart());
 	try {
+		const res = await userRequest.put(`/products/${id}`);
 		dispatch(updateProductSuccess({ id, product }));
 	} catch (err) {
 		dispatch(updateProductFailure());
@@ -88,7 +92,7 @@ export const addProduct = async (product, dispatch) => {
 export const getUser = async (dispatch) => {
 	dispatch(getUserStart());
 	try {
-		const res = await userRequest.get(`/users`);
+		const res = await userRequest.get("/users");
 		dispatch(getUserSuccess(res.data));
 	} catch (err) {
 		dispatch(getUserFailure());
