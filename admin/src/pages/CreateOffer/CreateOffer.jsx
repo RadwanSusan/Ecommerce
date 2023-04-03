@@ -9,7 +9,6 @@ import {
 import app from "../../firebase";
 import { addOffer } from "../../redux/apiCalls";
 import { useDispatch } from "react-redux";
-import { Category } from "@material-ui/icons";
 
 export default function CreateOffer() {
 	const [inputs, setInputs] = useState({});

@@ -5,11 +5,23 @@ import { Publish } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 import { useEffect, useMemo, useState } from "react";
 import { userRequest } from "../../requestMethods";
+import { updateOffer } from "../../redux/apiCalls";
+import { useDispatch } from "react-redux";
+import swal from "sweetalert";
+import {
+	getStorage,
+	ref,
+	uploadBytesResumable,
+	getDownloadURL,
+} from "firebase/storage";
+import app from "../../firebase";
 
 export default function OfferUser() {
 	const location = useLocation();
 	const offerId = location.pathname.split("/")[2];
 	const [oStats, setOStats] = useState([]);
+	const [file, setFile] = useState(null);
+	const dispatch = useDispatch();
 
 	const offer = useSelector((state) =>
 		state.offer.offer.find((offer) => offer._id === offerId),
@@ -32,7 +44,6 @@ export default function OfferUser() {
 		[],
 	);
 
-	// update offer
 	const [offerUpdateData, setOfferUpdateData] = useState({
 		title: offer.title,
 		desc: offer.desc,
@@ -45,13 +56,55 @@ export default function OfferUser() {
 			return { ...prev, [e.target.name]: e.target.value };
 		});
 	};
-	console.log(offerUpdateData);
-	const handleFile = (e) => {
-		// setFile(e.target.files[0]);
-	};
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		
+		if (file === null) {
+			swal("Please upload an image");
+			return;
+		}
+		const fileName = new Date().getTime() + file.name;
+		const storage = getStorage(app);
+		const storageRef = ref(storage, fileName);
+		const uploadTask = uploadBytesResumable(storageRef, file);
+		uploadTask.on(
+			"state_changed",
+			(snapshot) => {
+				const progress =
+					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+				console.log("Upload is " + progress + "% done");
+				switch (snapshot.state) {
+					case "paused":
+						console.log("Upload is paused");
+						break;
+					case "running":
+						console.log("Upload is running");
+						break;
+					default:
+				}
+			},
+			(error) => {},
+			() => {
+				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+					const formData = new FormData();
+					formData.append("title", offerUpdateData.title);
+					formData.append("desc", offerUpdateData.desc);
+					formData.append("price", offerUpdateData.price);
+					formData.append("inStock", offerUpdateData.inStock);
+					formData.append("img", downloadURL);
+					console.log(offerUpdateData);
+					for (var pair of formData.entries()) {
+						console.log(pair[0] + ", " + pair[1]);
+					}
+					try {
+						const offer = { ...offerUpdateData, img: downloadURL };
+						updateOffer(offerId, offer, dispatch);
+						swal("Offer Updated", "", "success");
+					} catch (err) {
+						console.log(err);
+					}
+				});
+			},
+		);
 	};
 
 	useEffect(() => {
@@ -125,7 +178,7 @@ export default function OfferUser() {
 						/>
 						<label>Price</label>
 						<input
-							type="text"
+							type="number"
 							name="price"
 							placeholder={offer.price}
 							onChange={handleUpdate}
@@ -150,7 +203,7 @@ export default function OfferUser() {
 								type="file"
 								id="file"
 								style={{ display: "none" }}
-								onChange={handleFile}
+								onChange={(e) => setFile(e.target.files[0])}
 							/>
 						</div>
 						<button className="productButton" onClick={handleSubmit}>

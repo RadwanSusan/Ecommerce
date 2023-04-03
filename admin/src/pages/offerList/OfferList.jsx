@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOffer, deleteOffer } from "../../redux/apiCalls";
+import swal from "sweetalert";
 
 export default function Offer() {
 	const [data, setData] = useState(offerRows);
@@ -18,11 +19,21 @@ export default function Offer() {
 	}, [dispatch]);
 
 	const handleDelete = (id) => {
-		deleteOffer(id, dispatch);
+		swal({
+			title: "Are you sure?",
+			text: "Once deleted, you will not be able to recover this offer!",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		}).then((willDelete) => {
+			if (willDelete) {
+				deleteOffer(id, dispatch);
+			}
+		});
 	};
 
 	const columns = [
-		{ field: "_id", headerName: "ID", width: 90 },
+		{ field: "_id", headerName: "ID", width: 200 },
 		{
 			field: "product",
 			headerName: "Product",
@@ -31,17 +42,12 @@ export default function Offer() {
 				return (
 					<div className="productListItem">
 						<img className="productListImg" src={params.row.img} alt="" />
-						{params.row.name}
+						{params.row.title}
 					</div>
 				);
 			},
 		},
-		{ field: "stock", headerName: "Stock", width: 200 },
-		{
-			field: "status",
-			headerName: "Status",
-			width: 120,
-		},
+		{ field: "inStock", headerName: "Stock", width: 150 },
 		{
 			field: "price",
 			headerName: "Price",
