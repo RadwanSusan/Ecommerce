@@ -24,7 +24,14 @@ export default function Chart({ title, data, dataKey, grid }) {
 					}}
 				>
 					<XAxis dataKey="name" stroke="#555" />
-					<YAxis stroke="#555" domain={["dataMin", "dataMax"]} />
+					{/* show only fixed numbers */}
+					<YAxis
+						stroke="#555"
+						domain={[
+							1,
+							Math.max(...data.map((item) => Math.round(item.total))),
+						]}
+					/>
 					<Line
 						type="monotone"
 						dataKey={dataKey}
