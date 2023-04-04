@@ -30,15 +30,15 @@ export default function Analytics() {
 
     const DAY = useMemo(
 		() => [
-			"1",
-			"2",
-			"3",
-			"4",
-			"5",
-			"6",
-			"7",
-			"8",
-			"9",
+			"01",
+			"02",
+			"03",
+			"04",
+			"05",
+			"06",
+			"07",
+			"08",
+			"09",
 			"10",
 			"11",
 			"12",
@@ -60,23 +60,24 @@ export default function Analytics() {
 			"28",
 			"29",
 			"30",
+            "31",
 		],
 		[],
 	);
-    // useEffect(() => {
-	// 	const getStats = async () => {
-	// 		try {
-	// 			const res = await userRequest.get("/users/stats");
-	// 			res.data.map((item) =>
-    //             setUserStatsDay((prev) => [
-	// 					...prev,
-	// 					{ name: DAY[item._id - 1], "Active User": item.total },
-	// 				]),
-	// 			);
-	// 		} catch {}
-	// 	};
-	// 	getStats();
-	// }, [DAY]);
+    useEffect(() => {
+		const getStats2 = async () => {
+			try {
+				const res = await userRequest.get("/users/stats88");
+				res.data.map((item) =>
+                setUserStatsDay((prev) => [
+						...prev,
+						{ name: DAY[item._id - 1], "Active User": item.total },
+					]),
+				);
+			} catch {}
+		};
+		getStats2();
+	}, [DAY]);
 
 
 
@@ -100,6 +101,12 @@ export default function Analytics() {
 			<Chart
 				data={userStats}
 				title="User Monthly Analytics"
+				grid
+				dataKey="Active User"
+			/>
+            <Chart
+				data={userStatsDay}
+				title="User Days Analytics"
 				grid
 				dataKey="Active User"
 			/>
