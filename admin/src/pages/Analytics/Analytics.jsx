@@ -104,7 +104,7 @@ export default function Analytics() {
 			/>
 			<Chart
 				data={userStatsDay}
-				title="User Days Analytics"
+				title="User Last Monthly Analytics"
 				grid
 				dataKey="Active User"
 			/>

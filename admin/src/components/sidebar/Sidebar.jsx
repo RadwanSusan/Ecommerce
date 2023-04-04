@@ -31,7 +31,7 @@ export default function Sidebar() {
             <Link to="/analytics" className="link">
             <li className="sidebarListItem">
               <Timeline className="sidebarIcon" />
-              Analytics
+              Analytics User
             </li>
             </Link>
             <li className="sidebarListItem">
