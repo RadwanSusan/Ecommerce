@@ -80,6 +80,9 @@ const ProductDetail = styled.div`
 
 const Image = styled.img`
 	width: 200px;
+	height: 250px;
+	object-fit:cover;
+	border-radius:5px;
 `;
 
 const Details = styled.div`

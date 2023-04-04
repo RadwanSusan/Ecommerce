@@ -13,6 +13,8 @@ import Offer from "./pages/offerList/OfferList";
 import OfferUser from "./pages/OfferUser/OfferUser";
 import CreateOffer from "./pages/CreateOffer/CreateOffer";
 import Login from "./pages/login/Login";
+import Transactions from "./pages/transactions/Transactions";
+import Analytics from "./pages/Analytics/Analytics";
 
 function App() {
 	// const admin = useSelector((state) => state.user.currentUser.isAdmin);
@@ -57,6 +59,12 @@ function App() {
 							</Route>
 							<Route path="/createOffer">
 								<CreateOffer />
+							</Route>
+							<Route path="/transactions">
+								<Transactions />
+							</Route>
+							<Route path="/analytics">
+								<Analytics />
 							</Route>
 						</div>
 					</>

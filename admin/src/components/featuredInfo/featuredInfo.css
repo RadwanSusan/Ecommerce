@@ -49,3 +49,20 @@
     font-size: 15px;
     color: gray;
 }
+@media only screen and (max-width: 600px) {
+    .featured {
+      width: 30%;
+    }
+    .featuredItem {
+        padding: 20px;
+    }
+    .chart {
+        width: 87%;
+    }
+    .homeWidgets {
+        flex-direction: column;
+    }
+    .widgetSm {
+        margin-right: 0px !important;
+    }
+  }

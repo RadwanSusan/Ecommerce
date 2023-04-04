@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { userRequest } from "../../requestMethods";
-import "./widgetLg.css";
+import "./transactions.css";
 import {format} from "timeago.js"
 
-export default function WidgetLg() {
+export default function Transactions() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
@@ -20,12 +20,17 @@ export default function WidgetLg() {
   };
   return (
     <div className="widgetLg">
-      <h3 className="widgetLgTitle">Latest transactions</h3>
+      <h3 className="widgetLgTitle">transactions</h3>
       <table className="widgetLgTable">
         <tr className="widgetLgTr">
           <th className="widgetLgTh">Customer</th>
+          <th className="widgetLgTh">quantity</th>
+
           <th className="widgetLgTh">Date</th>
           <th className="widgetLgTh">Amount</th>
+          <th className="widgetLgTh">Address</th>
+          
+          
           <th className="widgetLgTh">Status</th>
         </tr>
         {orders.map((order) => (
@@ -33,13 +38,16 @@ export default function WidgetLg() {
             <td className="widgetLgUser">
               <span className="widgetLgName">{order.userId}</span>
             </td>
+            <td className="widgetLgDate">{order.quantity}</td>
+
             <td className="widgetLgDate">{format(order.createdAt)}</td>
             <td className="widgetLgAmount">${order.amount}</td>
+            <td className="widgetLgAmount">{order.address}</td>
             <td className="widgetLgStatus">
               <Button type={order.status} />
             </td>
           </tr>
-        )).slice(-5)}
+        ))}
       </table>
     </div>
   );
