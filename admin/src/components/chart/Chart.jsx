@@ -27,7 +27,7 @@ export default function Chart({ title, data, dataKey, grid }) {
 					<YAxis
 						stroke="#000"
 						domain={[
-							1,
+							0,
 							Math.max(...data.map((item) => Math.round(item.total))),
 						]}
 					/>

@@ -102,7 +102,6 @@ router.get("/stats", verifyTokenAndAdmin, async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-//GET USER STATS MONTH
 
 router.get("/statsDay", verifyTokenAndAdmin, async (req, res) => {
 	const date = new Date();
@@ -113,12 +112,12 @@ router.get("/statsDay", verifyTokenAndAdmin, async (req, res) => {
 			{ $match: { createdAt: { $gte: lastYear } } },
 			{
 				$project: {
-					month: { $month: "$createdAt" },
+					day: { $dayOfMonth: "$createdAt" },
 				},
 			},
 			{
 				$group: {
-					_id: "$month",
+					_id: "$day",
 					total: { $sum: 1 },
 				},
 			},
