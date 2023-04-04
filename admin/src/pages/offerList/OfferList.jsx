@@ -1,7 +1,6 @@
 import "./offerList.css";
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
-import { offerRows } from "../../dummyData";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -10,7 +9,6 @@ import { getOffer, deleteOffer } from "../../redux/apiCalls";
 import swal from "sweetalert";
 
 export default function Offer() {
-	const [data, setData] = useState(offerRows);
 	const dispatch = useDispatch();
 	const offer = useSelector((state) => state.offer.offer);
 
@@ -80,7 +78,7 @@ export default function Offer() {
 				disableSelectionOnClick
 				columns={columns}
 				getRowId={(row) => row._id}
-				pageSize={8}
+				pageSize={13}
 				autoHeight
 				rowsPerPageOptions={[5, 10, 25]}
 			/>

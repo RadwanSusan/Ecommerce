@@ -76,7 +76,7 @@ export default function UserList() {
 				disableSelectionOnClick
 				columns={columns}
 				getRowId={(row) => row._id}
-				pageSize={8}
+				pageSize={13}
 				autoHeight
 				rowsPerPageOptions={[5, 10, 25]}
 			/>

@@ -58,7 +58,6 @@ export default function OfferUser() {
 						{ name: MONTHS[item._id - 1], Sales: item.total },
 					]),
 				);
-				// console.log(list);
 			} catch (err) {
 				console.log(err);
 			}
@@ -113,10 +112,6 @@ export default function OfferUser() {
 					formData.append("price", offerUpdateData.price);
 					formData.append("inStock", offerUpdateData.inStock);
 					formData.append("img", downloadURL);
-					console.log(offerUpdateData);
-					for (var pair of formData.entries()) {
-						console.log(pair[0] + ", " + pair[1]);
-					}
 					try {
 						const offer = { ...offerUpdateData, img: downloadURL };
 						updateOffer(offerId, offer, dispatch);
@@ -176,7 +171,9 @@ export default function OfferUser() {
 						</div>
 						<div className="productInfoItem">
 							<span className="productInfoKey">in stock:</span>
-							<span className="productInfoValue">{offer.inStock}</span>
+							<span className="productInfoValue">
+								{offer.inStock.toString()}
+							</span>
 						</div>
 					</div>
 				</div>
@@ -207,8 +204,8 @@ export default function OfferUser() {
 						/>
 						<label>In Stock</label>
 						<select name="inStock" id="idStock" onChange={handleUpdate}>
-							<option value="yes">Yes</option>
-							<option value="no">No</option>
+							<option value="true">Yes</option>
+							<option value="false">No</option>
 						</select>
 					</div>
 					<div className="productFormRight">

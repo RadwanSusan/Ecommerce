@@ -9,11 +9,14 @@ import {
 import app from "../../firebase";
 import { addProduct } from "../../redux/apiCalls";
 import { useDispatch } from "react-redux";
+import swal from "sweetalert";
 
 export default function NewProduct() {
 	const [inputs, setInputs] = useState({});
 	const [file, setFile] = useState(null);
 	const [cat, setCat] = useState([]);
+	const [size, setSize] = useState([]);
+	const [color, setColor] = useState([]);
 	const dispatch = useDispatch();
 
 	const handleChange = (e) => {
@@ -24,9 +27,32 @@ export default function NewProduct() {
 	const handleCat = (e) => {
 		setCat(e.target.value.split(","));
 	};
+	const addSize = (e) => {
+		setSize((prev) => {
+			return [...prev, e.target.value];
+		});
+	};
+	const handleColor = (e) => {
+		setColor((prev) => {
+			return [...prev, e.target.value];
+		});
+	};
+	console.log(color);
 
 	const handleClick = (e) => {
 		e.preventDefault();
+		if (file === null) {
+			swal("Error", "Please select an image", "info");
+			return;
+		}
+		if (cat.length === 0) {
+			swal("Error", "Please select at least one category", "info");
+			return;
+		}
+		if (size.length === 0) {
+			swal("Error", "Please select at least one size", "info");
+			return;
+		}
 		const fileName = new Date().getTime() + file.name;
 		const storage = getStorage(app);
 		const storageRef = ref(storage, fileName);
@@ -50,8 +76,16 @@ export default function NewProduct() {
 			(error) => {},
 			() => {
 				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-					const product = { ...inputs, img: downloadURL, categories: cat };
+					const product = {
+						...inputs,
+						img: downloadURL,
+						categories: cat,
+						size: size,
+						color: color,
+					};
+					console.log(product);
 					addProduct(product, dispatch);
+					swal("Success", "Product added successfully", "success");
 				});
 			},
 		);
@@ -88,6 +122,33 @@ export default function NewProduct() {
 					/>
 				</div>
 				<div className="addProductItem">
+					<fieldset>
+						<legend>Size</legend>
+						<input type="checkbox" name="size" onClick={addSize} value="S" />
+						<label> S</label>
+						<br />
+						<input type="checkbox" name="size" onClick={addSize} value="M" />
+						<label> M</label>
+						<br />
+						<input type="checkbox" name="size" onClick={addSize} value="L" />
+						<label> L</label>
+						<br />
+						<input type="checkbox" name="size" onClick={addSize} value="XL" />
+						<label> XL</label>
+						<br />
+						<input type="checkbox" name="size" onClick={addSize} value="XXL" />
+						<label> XXL</label>
+						<br />
+					</fieldset>
+				</div>
+				<div className="addProductItem color">
+					<label>Color</label>
+					<br />
+					<input name="color1" type="color" onChange={handleColor} />
+					<input name="color2" type="color" onChange={handleColor} />
+					<input name="color3" type="color" onChange={handleColor} />
+				</div>
+				<div className="addProductItem">
 					<label>Price</label>
 					<input
 						name="price"
@@ -98,14 +159,39 @@ export default function NewProduct() {
 				</div>
 				<div className="addProductItem">
 					<label>Categories</label>
-					<input type="text" placeholder="jeans,skirts" onChange={handleCat} />
+					<select name="categories" onChange={handleCat}>
+						<option value="">Select Categories</option>
+						<option value="women">Women</option>
+						<option value="jeans">Jeans</option>
+						<option value="coat">Coats</option>
+					</select>
 				</div>
 				<div className="addProductItem">
-					<label>Stock</label>
-					<select name="inStock" onChange={handleChange}>
-						<option value="true">Yes</option>
-						<option value="false">No</option>
-					</select>
+					<label>Quantity</label>
+					<input
+						name="quantity"
+						type="number"
+						placeholder="1"
+						onChange={handleChange}
+					/>
+				</div>
+				<div className="addProductItem">
+					<label>Product Width</label>
+					<input
+						name="width"
+						type="number"
+						placeholder="200"
+						onChange={handleChange}
+					/>
+				</div>
+				<div className="addProductItem">
+					<label>Product Height</label>
+					<input
+						name="height"
+						type="number"
+						placeholder="200"
+						onChange={handleChange}
+					/>
 				</div>
 				<button onClick={handleClick} className="addProductButton">
 					Create

@@ -1,27 +1,31 @@
 import { Link, useLocation } from "react-router-dom";
 import "./product.css";
 import Chart from "../../components/chart/Chart";
-import { productData } from "../../dummyData";
 import { Publish } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 import { useEffect, useMemo, useState } from "react";
 import { userRequest } from "../../requestMethods";
-import { useDispatch} from "react-redux";
-import { updateProduct} from "../../redux/apiCalls";
-
-
-
+import { useDispatch } from "react-redux";
+import { updateProduct } from "../../redux/apiCalls";
+import swal from "sweetalert";
+import {
+	getStorage,
+	ref,
+	uploadBytesResumable,
+	getDownloadURL,
+} from "firebase/storage";
+import app from "../../firebase";
 export default function Product() {
 	const location = useLocation();
 	const productId = location.pathname.split("/")[2];
 	const [pStats, setPStats] = useState([]);
 	const dispatch = useDispatch();
-
+	const [file, setFile] = useState(null);
 
 	const product = useSelector((state) =>
 		state.product.products.find((product) => product._id === productId),
 	);
-	
+
 	const MONTHS = useMemo(
 		() => [
 			"Jan",
@@ -49,12 +53,10 @@ export default function Product() {
 				});
 				list.map((item) =>
 					setPStats((prev) => [
-						
 						...prev,
 						{ name: MONTHS[item._id - 1], Sales: item.total },
 					]),
 				);
-				// console.log(list);
 			} catch (err) {
 				console.log(err);
 			}
@@ -62,11 +64,68 @@ export default function Product() {
 		getStats();
 	}, [productId, MONTHS]);
 
-	const updateProduct2 = (id) => {
-		updateProduct(id, dispatch,product);
+	const [productUpdateData, setProductUpdateData] = useState({
+		title: product.title,
+		desc: product.desc,
+		price: product.price,
+		inStock: product.inStock,
+		img: product.img,
+		categories: product.categories,
+		size: product.size,
+		color: product.color,
+		
+	});
+	const handleUpdate = (e) => {
+		setProductUpdateData((prev) => {
+			return { ...prev, [e.target.name]: e.target.value };
+		});
 	};
-	
-
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		if (file === null) {
+			swal("Please upload an image");
+			return;
+		}
+		const fileName = new Date().getTime() + file.name;
+		const storage = getStorage(app);
+		const storageRef = ref(storage, fileName);
+		const uploadTask = uploadBytesResumable(storageRef, file);
+		uploadTask.on(
+			"state_changed",
+			(snapshot) => {
+				const progress =
+					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+				console.log("Upload is " + progress + "% done");
+				switch (snapshot.state) {
+					case "paused":
+						console.log("Upload is paused");
+						break;
+					case "running":
+						console.log("Upload is running");
+						break;
+					default:
+				}
+			},
+			(error) => {},
+			() => {
+				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+					const formData = new FormData();
+					formData.append("title", productUpdateData.title);
+					formData.append("desc", productUpdateData.desc);
+					formData.append("price", productUpdateData.price);
+					formData.append("inStock", productUpdateData.inStock);
+					formData.append("img", downloadURL);
+					try {
+						const product = { ...productUpdateData, img: downloadURL };
+						updateProduct(productId, product, dispatch);
+						swal("Offer Updated", "", "success");
+					} catch (err) {
+						console.log(err);
+					}
+				});
+			},
+		);
+	};
 
 	return (
 		<div className="product">
@@ -78,7 +137,7 @@ export default function Product() {
 			</div>
 			<div className="productTop">
 				<div className="productTopLeft">
-				<Chart data={pStats} dataKey="Sales" title="Sales Performance" />
+					<Chart data={pStats} dataKey="Sales" title="Sales Performance" />
 				</div>
 				<div className="productTopRight">
 					<div className="productInfoTop">
@@ -96,7 +155,9 @@ export default function Product() {
 						</div>
 						<div className="productInfoItem">
 							<span className="productInfoKey">in stock:</span>
-							<span className="productInfoValue">{product.inStock}</span>
+							<span className="productInfoValue">
+								{product.inStock.toString()}
+							</span>
 						</div>
 					</div>
 				</div>
@@ -105,13 +166,33 @@ export default function Product() {
 				<form className="productForm">
 					<div className="productFormLeft">
 						<label>Product Name</label>
-						<input type="text"  placeholder={product.title} />
+						<input
+							type="text"
+							name="title"
+							placeholder={product.title}
+							onChange={handleUpdate}
+						/>
 						<label>Product Description</label>
-						<input type="text" placeholder={product.desc} />
+						<input
+							type="text"
+							name="desc"
+							placeholder={product.desc}
+							onChange={handleUpdate}
+						/>
 						<label>Price</label>
-						<input type="text" placeholder={product.price} />
+						<input
+							type="text"
+							name="price"
+							placeholder={product.price}
+							onChange={handleUpdate}
+						/>
 						<label>In Stock</label>
-						<select name="inStock" id="idStock">
+						<select
+							name="inStock"
+							name="inStock"
+							id="idStock"
+							onChange={handleUpdate}
+						>
 							<option value="true">Yes</option>
 							<option value="false">No</option>
 						</select>
@@ -122,9 +203,14 @@ export default function Product() {
 							<label for="file">
 								<Publish />
 							</label>
-							<input type="file" id="file" style={{ display: "none" }} />
+							<input
+								type="file"
+								id="file"
+								style={{ display: "none" }}
+								onChange={(e) => setFile(e.target.files[0])}
+							/>
 						</div>
-						<button onClick={() => updateProduct2(productId)} className="productButton">
+						<button className="productButton" onClick={handleSubmit}>
 							Update
 						</button>
 					</div>

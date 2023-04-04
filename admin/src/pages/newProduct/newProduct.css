@@ -1,3 +1,13 @@
+/*
+input type color margin
+*/
+
+input[type="color"] {
+  padding: 0px !important;
+}
+
+
+
 .newProduct {
   flex: 4;
 }
@@ -13,17 +23,26 @@
   margin-bottom: 10px;
 }
 
-.addProductItem > label {
+.color {
+  flex-direction: row !important;
+}
+
+.color input {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.addProductItem>label {
   color: gray;
   font-weight: 600;
   margin-bottom: 10px;
 }
 
-.addProductItem > input {
+.addProductItem>input {
   padding: 10px;
 }
 
-.addProductItem > select {
+.addProductItem>select {
   padding: 10px;
 }
 
