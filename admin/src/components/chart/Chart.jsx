@@ -1,7 +1,7 @@
 import "./chart.css";
 import {
-	LineChart,
-	Line,
+	AreaChart,
+	Area,
 	XAxis,
 	CartesianGrid,
 	Tooltip,
@@ -14,7 +14,7 @@ export default function Chart({ title, data, dataKey, grid }) {
 		<div className="chart">
 			<h3 className="chartTitle">{title}</h3>
 			<ResponsiveContainer width="100%" aspect={3 / 1}>
-				<LineChart
+				<AreaChart
 					data={data}
 					margin={{
 						top: 5,
@@ -23,24 +23,24 @@ export default function Chart({ title, data, dataKey, grid }) {
 						bottom: 5,
 					}}
 				>
-					<XAxis dataKey="name" stroke="#555" />
-					{/* show only fixed numbers */}
+					<XAxis dataKey="name" stroke="#000" />
 					<YAxis
-						stroke="#555"
+						stroke="#000"
 						domain={[
 							1,
 							Math.max(...data.map((item) => Math.round(item.total))),
 						]}
 					/>
-					<Line
+					<Area
 						type="monotone"
 						dataKey={dataKey}
 						stroke="#000"
-						dot={false}
+						dot={true}
+						fill="#BABABA"
 						activeDot={{
 							r: 9,
 							stroke: "#000",
-							strokeWidth: 1,
+							strokeWidth: 2,
 							fill: "#fff",
 						}}
 						active
@@ -56,13 +56,13 @@ export default function Chart({ title, data, dataKey, grid }) {
 							borderRadius: "3px",
 							padding: "10px",
 							textAlign: "center",
-							fontSize: "14px",
+							fontSize: "16px",
 							fontWeight: "500",
 							fontFamily: "sans-serif",
 						}}
 					/>
-					{grid && <CartesianGrid stroke="#e0dfdf" strokeDasharray="5 5" />}
-				</LineChart>
+					{grid && <CartesianGrid stroke="#e0dfdf" />}
+				</AreaChart>
 			</ResponsiveContainer>
 		</div>
 	);
