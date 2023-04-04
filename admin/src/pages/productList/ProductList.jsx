@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteProduct, getProducts } from "../../redux/apiCalls";
+import swal from "sweetalert";
 
 export default function ProductList() {
 	const dispatch = useDispatch();
@@ -15,7 +16,21 @@ export default function ProductList() {
 	}, [dispatch]);
 
 	const handleDelete = (id) => {
-		deleteProduct(id, dispatch);
+		swal({
+			title: "Are you sure?",
+			text: "Once deleted, you will not be able to recover this product!",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		})
+			.then((willDelete) => {
+				if (willDelete) {
+					deleteProduct(id, dispatch);
+				}
+			})
+			.catch((err) => {
+				swal("Error", err.message, "error");
+			});
 	};
 
 	const columns = [
@@ -67,7 +82,6 @@ export default function ProductList() {
 				columns={columns}
 				getRowId={(row) => row._id}
 				pageSize={8}
-				checkboxSelection
 				autoHeight
 				rowsPerPageOptions={[5, 10, 25]}
 			/>

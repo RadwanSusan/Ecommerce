@@ -23,11 +23,11 @@ export default function OfferUser() {
 	const [file, setFile] = useState(null);
 	const dispatch = useDispatch();
 	const [pStats, setPStats] = useState([]);
-	
 
 	const offer = useSelector((state) =>
 		state.offer.offer.find((offer) => offer._id === offerId),
 	);
+
 	const MONTHS = useMemo(
 		() => [
 			"Jan",
@@ -54,7 +54,6 @@ export default function OfferUser() {
 				});
 				list.map((item) =>
 					setPStats((prev) => [
-						
 						...prev,
 						{ name: MONTHS[item._id - 1], Sales: item.total },
 					]),
@@ -66,7 +65,6 @@ export default function OfferUser() {
 		};
 		getStats();
 	}, [offerId, MONTHS]);
-
 
 	const [offerUpdateData, setOfferUpdateData] = useState({
 		title: offer.title,

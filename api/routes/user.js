@@ -19,7 +19,6 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
 	}
 });
 
-
 //UPDATE
 router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
 	if (req.body.password) {

@@ -81,7 +81,6 @@ export default function Offer() {
 				columns={columns}
 				getRowId={(row) => row._id}
 				pageSize={8}
-				checkboxSelection
 				autoHeight
 				rowsPerPageOptions={[5, 10, 25]}
 			/>
