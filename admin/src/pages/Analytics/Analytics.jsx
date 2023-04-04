@@ -64,6 +64,7 @@ export default function Analytics() {
 		const getStats = async () => {
 			try {
 				const res = await userRequest.get("/users/stats");
+				res.data.sort((a, b) => a._id - b._id);
 				res.data.map((item) =>
 					setUserStats((prev) => [
 						...prev,
@@ -79,6 +80,7 @@ export default function Analytics() {
 		const getStats2 = async () => {
 			try {
 				const res = await userRequest.get("/users/statsDay");
+				res.data.sort((a, b) => a._id - b._id);
 				res.data.map((item) =>
 					setUserStatsDay((prev) => [
 						...prev,
