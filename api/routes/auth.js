@@ -31,19 +31,16 @@ router.post("/login", async (req, res) => {
 		if (!user) {
 			return res.status(401).json("Wrong user!");
 		}
-
 		const hashedPassword = CryptoJS.AES.decrypt(
 			user.password,
 			process.env.PASS_SEC,
 		);
 		const OriginalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
-
 		// OriginalPassword !== req.body.password &&
 		//   res.status(401).json("Wrong password!");
 		if (OriginalPassword !== req.body.password) {
 			return res.status(401).json("Wrong password!");
 		}
-
 		const accessToken = jwt.sign(
 			{
 				id: user._id,
@@ -52,9 +49,7 @@ router.post("/login", async (req, res) => {
 			process.env.JWT_SEC,
 			{ expiresIn: "3d" },
 		);
-
 		const { password, ...others } = user._doc;
-
 		return res.status(200).json({ ...others, accessToken });
 	} catch (err) {
 		return res.status(500).json(err);
