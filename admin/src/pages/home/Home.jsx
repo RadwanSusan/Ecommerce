@@ -31,6 +31,7 @@ export default function Home() {
 		const getStats = async () => {
 			try {
 				const res = await userRequest.get("/users/stats");
+				res.data.sort((a, b) => a._id - b._id);
 				res.data.map((item) =>
 					setUserStats((prev) => [
 						...prev,
