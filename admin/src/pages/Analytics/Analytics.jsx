@@ -2,13 +2,9 @@ import Chart from "../../components/chart/Chart";
 import { useEffect, useMemo, useState } from "react";
 import { userRequest } from "../../requestMethods";
 
-
-
-
 export default function Analytics() {
 	const [userStats, setUserStats] = useState([]);
 	const [userStatsDay, setUserStatsDay] = useState([]);
-
 
 	const MONTHS = useMemo(
 		() => [
@@ -28,7 +24,7 @@ export default function Analytics() {
 		[],
 	);
 
-    const DAY = useMemo(
+	const DAY = useMemo(
 		() => [
 			"01",
 			"02",
@@ -42,7 +38,7 @@ export default function Analytics() {
 			"10",
 			"11",
 			"12",
-            "13",
+			"13",
 			"14",
 			"15",
 			"16",
@@ -54,33 +50,16 @@ export default function Analytics() {
 			"22",
 			"23",
 			"24",
-            "25",
+			"25",
 			"26",
 			"27",
 			"28",
 			"29",
 			"30",
-            "31",
+			"31",
 		],
 		[],
 	);
-    useEffect(() => {
-		const getStats2 = async () => {
-			try {
-				const res = await userRequest.get("/users/stats88");
-				res.data.map((item) =>
-                setUserStatsDay((prev) => [
-						...prev,
-						{ name: DAY[item._id - 1], "Active User": item.total },
-					]),
-				);
-			} catch {}
-		};
-		getStats2();
-	}, [DAY]);
-
-
-
 	useEffect(() => {
 		const getStats = async () => {
 			try {
@@ -95,22 +74,38 @@ export default function Analytics() {
 		};
 		getStats();
 	}, [MONTHS]);
+
+	useEffect(() => {
+		const getStats2 = async () => {
+			try {
+				const res = await userRequest.get("/users/statsDay");
+				res.data.map((item) =>
+					setUserStatsDay((prev) => [
+						...prev,
+						{ name: DAY[item._id - 1], "Active User": item.total },
+					]),
+				);
+			} catch {
+				console.log("error");
+			}
+		};
+		getStats2();
+	}, [DAY]);
+
 	return (
 		<div className="home">
-			
 			<Chart
 				data={userStats}
 				title="User Monthly Analytics"
 				grid
 				dataKey="Active User"
 			/>
-            <Chart
+			<Chart
 				data={userStatsDay}
 				title="User Days Analytics"
 				grid
 				dataKey="Active User"
 			/>
-            
 		</div>
 	);
 }
