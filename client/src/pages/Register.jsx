@@ -1,6 +1,12 @@
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import Fade from "react-reveal/Fade";
+// import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { publicRequest } from "../requestMethods";
+import swal from "sweetalert";
+
+
 
 const Container = styled.div`
 	width: 100vw;
@@ -60,22 +66,53 @@ const Button = styled.button`
 `;
 
 const Register = () => {
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
+	const [email, setEmail] = useState("");
+	
+	const handleClick = async (e) => {
+		e.preventDefault();
+		if(password=== confirmPassword) {
+			
+			const res = await publicRequest.post("/auth/register", {
+				username,
+				password,
+				confirmPassword,
+				email,
+
+			});
+
+			
+			
+
+
+
+		}
+		else if(password!== confirmPassword) {
+			swal("Please check for password!");
+			return;
+		}
+		
+		
+	};
+	
+
+	
 	return (
 		<Container>
 			<Wrapper>
 				<Title>CREATE AN ACCOUNT</Title>
 				<Form>
-					<Input placeholder="name" />
-					<Input placeholder="last name" />
-					<Input placeholder="username" />
-					<Input placeholder="email" />
-					<Input placeholder="password" />
-					<Input placeholder="confirm password" />
+				<Input placeholder="Username" onChange={(e) => setUsername(e.target.value)} required />
+					<Input type="email" placeholder="Email"  onChange={(e) => setEmail(e.target.value)}  required />
+					<Input placeholder="Password" type="password" onChange={(e) => setPassword(e.target.value)} required />
+					<Input placeholder="Confirm password" type="password" onChange={(e) => setConfirmPassword(e.target.value)} required />
 					<Agreement>
 						By creating an account, I consent to the processing of my personal
 						data in accordance with the <b>PRIVACY POLICY</b>
 					</Agreement>
-					<Button>CREATE</Button>
+					<Button onClick={handleClick} >CREATE</Button>
 				</Form>
 			</Wrapper>
 		</Container>
