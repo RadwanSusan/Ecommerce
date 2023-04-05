@@ -11,6 +11,10 @@ import FooterNew from "../components/FooterNew";
 import StripeCheckout from "react-stripe-checkout";
 import { userRequest } from "../requestMethods";
 import { useHistory } from "react-router";
+import { removeProduct } from "../redux/cartRedux";
+import { useDispatch } from "react-redux";
+
+
 
 const KEY = process.env.REACT_APP_STRIPE;
 
@@ -183,11 +187,19 @@ const Button1 = styled.button`
 
 const Cart = () => {
 	const cart = useSelector((state) => state.cart);
+	const dispatch = useDispatch();
+    const cartId= cart.products;
+	console.log(cartId);
+	
 	const [stripeToken, setStripeToken] = useState(null);
 	const history = useHistory();
 
 	const onToken = (token) => {
 	  setStripeToken(token);
+	};
+	const handleClick2 = (id) => {
+		dispatch(removeProduct(id));
+		console.log(dispatch(removeProduct(id)));
 	};
 
 	useEffect(() => {
@@ -204,6 +216,9 @@ const Cart = () => {
 	  };
 	  stripeToken && makeRequest();
 	}, [stripeToken, cart.total, history]);
+
+
+	
 	return (
 		<Container>
 			<Announcement />
@@ -237,7 +252,7 @@ const Cart = () => {
 											<b>Size:</b> {product.size}
 										</ProductSize>
 										<ProductSize>
-										<Button1>Delete</Button1>
+										<Button1 onClick={ function(){handleClick2(product._id)}} >Remove</Button1>
 										</ProductSize>
 									</Details>
 								</ProductDetail>

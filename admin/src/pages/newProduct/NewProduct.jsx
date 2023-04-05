@@ -182,6 +182,7 @@ export default function NewProduct() {
 		<div className="newProduct">
 			<h1 className="addProductTitle">New Product</h1>
 			<form className="addProductForm">
+				<div className="divition1">
 				<div className="addProductItem">
 					<label>Image</label>
 					<input
@@ -238,9 +239,13 @@ export default function NewProduct() {
 					<input id="color-picker5" name="color1" type="color" />
 					<input id="color-picker6" name="color1" type="color" />
 				</div>
+				
+
 				<div className="addProductItem">
 					<button onClick={clearColor}>Clear All Colors</button>
 				</div>
+				</div>
+				<div className="divition2">
 				<div className="addProductItem">
 					<label>Price</label>
 					<input
@@ -286,9 +291,13 @@ export default function NewProduct() {
 						onChange={handleChange}
 					/>
 				</div>
+				
+
+				
 				<button onClick={handleClick} className="addProductButton">
 					Create
 				</button>
+				</div>
 			</form>
 		</div>
 	);
