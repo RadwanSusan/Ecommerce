@@ -16,7 +16,12 @@ export default function NewProduct() {
 	const [file, setFile] = useState(null);
 	const [cat, setCat] = useState([]);
 	const [size, setSize] = useState([]);
-	const [color, setColor] = useState([]);
+	const [color1, setColor1] = useState([]);
+	const [color2, setColor2] = useState([]);
+	const [color3, setColor3] = useState([]);
+	const [color4, setColor4] = useState([]);
+	const [color5, setColor5] = useState([]);
+	const [color6, setColor6] = useState([]);
 	const dispatch = useDispatch();
 
 	const handleChange = (e) => {
@@ -32,12 +37,93 @@ export default function NewProduct() {
 			return [...prev, e.target.value];
 		});
 	};
-	const handleColor = (e) => {
-		setColor((prev) => {
-			return [...prev, e.target.value];
+	let colorPicker1;
+	let colorPicker2;
+	let colorPicker3;
+	let colorPicker4;
+	let colorPicker5;
+	let colorPicker6;
+	const defaultColor = "#FFFFFF";
+
+	window.addEventListener("load", startup, true);
+	function startup() {
+		colorPicker1 = document.getElementById("color-picker1");
+		colorPicker1.addEventListener("input", update1);
+		colorPicker2 = document.getElementById("color-picker2");
+		colorPicker2.addEventListener("input", update2);
+		colorPicker3 = document.getElementById("color-picker3");
+		colorPicker3.addEventListener("input", update3);
+		colorPicker4 = document.getElementById("color-picker4");
+		colorPicker4.addEventListener("input", update4);
+		colorPicker5 = document.getElementById("color-picker5");
+		colorPicker5.addEventListener("input", update5);
+		colorPicker6 = document.getElementById("color-picker6");
+		colorPicker6.addEventListener("input", update6);
+		colorPicker1.value = defaultColor;
+		colorPicker2.value = defaultColor;
+		colorPicker3.value = defaultColor;
+		colorPicker4.value = defaultColor;
+		colorPicker5.value = defaultColor;
+		colorPicker6.value = defaultColor;
+	}
+	function update1() {
+		const color = colorPicker1.value;
+		setColor1(() => {
+			return [color];
 		});
+	}
+	function update2() {
+		const color = colorPicker2.value;
+		setColor2(() => {
+			return [color];
+		});
+	}
+	function update3() {
+		const color = colorPicker3.value;
+		setColor3(() => {
+			return [color];
+		});
+	}
+	function update4() {
+		const color = colorPicker4.value;
+		setColor4(() => {
+			return [color];
+		});
+	}
+	function update5() {
+		const color = colorPicker5.value;
+		setColor5(() => {
+			return [color];
+		});
+	}
+	function update6() {
+		const color = colorPicker6.value;
+		setColor6(() => {
+			return [color];
+		});
+	}
+
+	const clearColor = (e) => {
+		e.preventDefault();
+		setColor1([]);
+		setColor2([]);
+		setColor3([]);
+		setColor4([]);
+		setColor5([]);
+		setColor6([]);
+		colorPicker1 = document.getElementById("color-picker1");
+		colorPicker2 = document.getElementById("color-picker2");
+		colorPicker3 = document.getElementById("color-picker3");
+		colorPicker4 = document.getElementById("color-picker4");
+		colorPicker5 = document.getElementById("color-picker5");
+		colorPicker6 = document.getElementById("color-picker6");
+		colorPicker1.value = defaultColor;
+		colorPicker2.value = defaultColor;
+		colorPicker3.value = defaultColor;
+		colorPicker4.value = defaultColor;
+		colorPicker5.value = defaultColor;
+		colorPicker6.value = defaultColor;
 	};
-	console.log(color);
 
 	const handleClick = (e) => {
 		e.preventDefault();
@@ -76,6 +162,7 @@ export default function NewProduct() {
 			(error) => {},
 			() => {
 				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+					const color = [color1, color2, color3, color4, color5, color6];
 					const product = {
 						...inputs,
 						img: downloadURL,
@@ -144,9 +231,15 @@ export default function NewProduct() {
 				<div className="addProductItem color">
 					<label>Color</label>
 					<br />
-					<input name="color1" type="color" onChange={handleColor} />
-					<input name="color2" type="color" onChange={handleColor} />
-					<input name="color3" type="color" onChange={handleColor} />
+					<input id="color-picker1" name="color1" type="color" />
+					<input id="color-picker2" name="color1" type="color" />
+					<input id="color-picker3" name="color1" type="color" />
+					<input id="color-picker4" name="color1" type="color" />
+					<input id="color-picker5" name="color1" type="color" />
+					<input id="color-picker6" name="color1" type="color" />
+				</div>
+				<div className="addProductItem">
+					<button onClick={clearColor}>Clear All Colors</button>
 				</div>
 				<div className="addProductItem">
 					<label>Price</label>
