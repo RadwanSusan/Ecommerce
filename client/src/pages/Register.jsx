@@ -1,12 +1,8 @@
 import styled from "styled-components";
 import { mobile } from "../responsive";
-import Fade from "react-reveal/Fade";
-// import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { publicRequest } from "../requestMethods";
 import swal from "sweetalert";
-
-
 
 const Container = styled.div`
 	width: 100vw;
@@ -70,49 +66,89 @@ const Register = () => {
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [email, setEmail] = useState("");
-	
+
 	const handleClick = async (e) => {
 		e.preventDefault();
-		if(password=== confirmPassword) {
-			
+		if (password === confirmPassword) {
+			const usernameRegex = /^[a-zA-Z0-9]+$/;
+			if (username.length < 6) {
+				return swal("Username must be at least 6 characters!");
+			}
+			if (!usernameRegex.test(username)) {
+				return swal(
+					"Username must contain at least one letter, one number and one special character!",
+				);
+			}
+			const emailRes = await publicRequest.get(`/auth/checkEmail/${email}`);
+			if (emailRes.data === "Email already exists!") {
+				return swal("Email already exists please try again!");
+			}
+			const passwordRegex =
+				/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+			if (!passwordRegex.test(password)) {
+				return swal(
+					"Password must contain at least one lowercase letter, one uppercase letter, one number and one special character!",
+				);
+			}
 			const res = await publicRequest.post("/auth/register", {
 				username,
 				password,
 				confirmPassword,
 				email,
-
 			});
-
-			
-			
-
-
-
-		}
-		else if(password!== confirmPassword) {
+			if (res.statusText === "Created") {
+				swal("Account created successfully!");
+				setUsername("");
+				setPassword("");
+				setConfirmPassword("");
+				setEmail("");
+				const res = await publicRequest.post("/auth/login", {
+					username,
+					password,
+				});
+				setTimeout(() => {
+					window.location.href = "/";
+				}, 1000);
+			}
+		} else if (password !== confirmPassword) {
 			swal("Please check for password!");
 			return;
 		}
-		
-		
 	};
-	
 
-	
 	return (
 		<Container>
 			<Wrapper>
 				<Title>CREATE AN ACCOUNT</Title>
 				<Form>
-				<Input placeholder="Username" onChange={(e) => setUsername(e.target.value)} required />
-					<Input type="email" placeholder="Email"  onChange={(e) => setEmail(e.target.value)}  required />
-					<Input placeholder="Password" type="password" onChange={(e) => setPassword(e.target.value)} required />
-					<Input placeholder="Confirm password" type="password" onChange={(e) => setConfirmPassword(e.target.value)} required />
+					<Input
+						placeholder="Username"
+						onChange={(e) => setUsername(e.target.value)}
+						required
+					/>
+					<Input
+						type="email"
+						placeholder="Email"
+						onChange={(e) => setEmail(e.target.value)}
+						required
+					/>
+					<Input
+						placeholder="Password"
+						type="password"
+						onChange={(e) => setPassword(e.target.value)}
+						required
+					/>
+					<Input
+						placeholder="Confirm password"
+						type="password"
+						onChange={(e) => setConfirmPassword(e.target.value)}
+						required
+					/>
 					<Agreement>
 						By creating an account, I consent to the processing of my personal
 						data in accordance with the <b>PRIVACY POLICY</b>
 					</Agreement>
-					<Button onClick={handleClick} >CREATE</Button>
+					<Button onClick={handleClick}>CREATE</Button>
 				</Form>
 			</Wrapper>
 		</Container>

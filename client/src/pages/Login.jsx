@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { mobile } from "../responsive";
-import Fade from "react-reveal/Fade";
 import { login } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
+import swal from "sweetalert";
 
 const Container = styled.div`
 	width: 100vw;
@@ -14,7 +14,6 @@ const Container = styled.div`
 		),
 		url("https://images.pexels.com/photos/823059/pexels-photo-823059.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1&fbclid=IwAR0zsSOLR8Rr6qk1JfnpyLxq65qil9fOZtLG99RldVesF9m-4fS_vNBr2l0")
 			center;
-
 	background-size: cover;
 	display: flex;
 	align-items: center;
@@ -80,6 +79,9 @@ const Login = () => {
 	const { isFetching, error } = useSelector((state) => state.user);
 	const handleClick = (e) => {
 		e.preventDefault();
+		if (!username || !password) {
+			swal("Please fill in all fields");
+		}
 		login(dispatch, { username, password });
 	};
 	return (
