@@ -13,4 +13,5 @@ export const login = async (dispatch, user) => {
 
 export const logoutUser = () => {
 	localStorage.removeItem("persist:root");
+	window.location.href = "/";
 };
