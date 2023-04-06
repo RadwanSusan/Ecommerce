@@ -5,6 +5,8 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../redux/apiCalls";
 
 const Container = styled.div`
 	height: 60px;
@@ -71,52 +73,59 @@ const MenuItem1 = styled.div`
 	${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
 const Announcement = () => {
-	// let token = localStorage.getItem("persist:root");
-	// if (token !== null) {
-	// 	token = JSON.parse(token);
-	// 	token = JSON.parse(token.user);
-	// if (token.currentUser.username !== null) {
-	// 	token = token.currentUser.username;
-	// } else {
-	// 	token = "Guest";
-	// }
-	return (
-		<Container>
-			<Wrapper>
-				<Left>
-					{/* <MenuItem1>welcome {token}</MenuItem1> */}
-					<MenuItem>
-						<Link to="/Logout">Logout</Link>
-					</MenuItem>
-				</Left>
-				<Right>
-					<Language>English - </Language>
-					<SearchContainer>USD</SearchContainer>
-				</Right>
-			</Wrapper>
-		</Container>
-	);
-	// } else {
-	// 	return (
-	// 		<Container>
-	// 			<Wrapper>
-	// 				<Left>
-	// 					<MenuItem1>Welcome to Venuse store</MenuItem1>
-	// 					<MenuItem>
-	// 						<Link to="/Register">REGISTER</Link>
-	// 					</MenuItem>
-	// 					<MenuItem>
-	// 						<Link to="/Login">SIGN IN</Link>
-	// 					</MenuItem>
-	// 				</Left>
-	// 				<Right>
-	// 					<Language>English - </Language>
-	// 					<SearchContainer>USD</SearchContainer>
-	// 				</Right>
-	// 			</Wrapper>
-	// 		</Container>
-	// 	);
-	// }
+	const dispatch = useDispatch();
+	let token = localStorage.getItem("persist:root");
+	console.log(token);
+	token = JSON.parse(token);
+	token = JSON.parse(token.user);
+	console.log(token);
+	if (token.currentUser == null) {
+		token = "Guest";
+	} else {
+		token = token.currentUser.username;
+	}
+	const handleClick = () => {
+		logoutUser(dispatch);
+	};
+	console.log(token);
+	if (token !== "Guest") {
+		return (
+			<Container>
+				<Wrapper>
+					<Left>
+						<MenuItem1>welcome {token}</MenuItem1>
+						<MenuItem>
+							<button onClick={handleClick}>Logout</button>
+						</MenuItem>
+					</Left>
+					<Right>
+						<Language>English - </Language>
+						<SearchContainer>USD</SearchContainer>
+					</Right>
+				</Wrapper>
+			</Container>
+		);
+	} else {
+		return (
+			<Container>
+				<Wrapper>
+					<Left>
+						<MenuItem1>Welcome to Venuse store</MenuItem1>
+						<MenuItem>
+							<Link to="/Register">REGISTER</Link>
+						</MenuItem>
+						<MenuItem>
+							<Link to="/Login">SIGN IN</Link>
+						</MenuItem>
+					</Left>
+					<Right>
+						<Language>English - </Language>
+						<SearchContainer>USD</SearchContainer>
+					</Right>
+				</Wrapper>
+			</Container>
+		);
+	}
 };
 
 export default Announcement;

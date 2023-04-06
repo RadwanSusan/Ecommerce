@@ -41,9 +41,7 @@ import {
 	addUserStart,
 	addUserSuccess,
 	addUserFailure,
-	logout,
 } from "./userAllRedux";
-
 export const login = async (dispatch, user) => {
 	dispatch(loginStart());
 	try {
@@ -53,7 +51,6 @@ export const login = async (dispatch, user) => {
 		dispatch(loginFailure());
 	}
 };
-//////////////////////////Products////////////////////////////
 export const getProducts = async (dispatch) => {
 	dispatch(getProductStart());
 	try {
@@ -63,7 +60,6 @@ export const getProducts = async (dispatch) => {
 		dispatch(getProductFailure());
 	}
 };
-
 export const deleteProduct = async (id, dispatch) => {
 	const res = await userRequest.delete(`/products/${id}`);
 	dispatch(deleteProductStart());
@@ -73,7 +69,6 @@ export const deleteProduct = async (id, dispatch) => {
 		dispatch(deleteProductFailure());
 	}
 };
-
 export const updateProduct = async (id, product, dispatch) => {
 	dispatch(updateProductStart());
 	try {
@@ -92,7 +87,6 @@ export const addProduct = async (product, dispatch) => {
 		dispatch(addProductFailure());
 	}
 };
-////////////////////////////User//////////////////////////
 export const getUser = async (dispatch) => {
 	dispatch(getUserStart());
 	try {
@@ -103,7 +97,6 @@ export const getUser = async (dispatch) => {
 		console.log(err);
 	}
 };
-
 export const deleteUser = async (id, dispatch) => {
 	const res = await userRequest.delete(`/users/${id}`);
 	dispatch(deleteUserStart());
@@ -113,7 +106,6 @@ export const deleteUser = async (id, dispatch) => {
 		dispatch(deleteUserFailure());
 	}
 };
-
 export const updateUser = async (id, user, dispatch) => {
 	dispatch(updateUserStart());
 	try {
@@ -123,7 +115,6 @@ export const updateUser = async (id, user, dispatch) => {
 		dispatch(updateUserFailure());
 	}
 };
-
 export const addUser = async (user, dispatch) => {
 	dispatch(addUserStart());
 	try {
@@ -133,7 +124,6 @@ export const addUser = async (user, dispatch) => {
 		dispatch(addUserFailure());
 	}
 };
-//////////////////////////////////////////////////////
 export const getOffer = async (dispatch) => {
 	dispatch(getOfferStart());
 	try {
@@ -153,7 +143,6 @@ export const addOffer = async (offer, dispatch) => {
 		dispatch(addOfferFailure());
 	}
 };
-
 export const deleteOffer = async (id, dispatch) => {
 	const res = await userRequest.delete(`/offer/${id}`);
 	dispatch(deleteOfferStart());
@@ -163,7 +152,6 @@ export const deleteOffer = async (id, dispatch) => {
 		dispatch(deleteOfferFailure());
 	}
 };
-
 export const updateOffer = async (id, offer, dispatch) => {
 	dispatch(updateOfferStart());
 	try {

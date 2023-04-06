@@ -10,3 +10,8 @@ export const login = async (dispatch, user) => {
 		dispatch(loginFailure());
 	}
 };
+
+export const logoutUser = () => {
+	localStorage.removeItem("persist:root");
+	window.location.href = "/";
+};
