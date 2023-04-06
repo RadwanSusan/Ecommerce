@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 
 
 
+
 const KEY = process.env.REACT_APP_STRIPE;
 
 const Container = styled.div``;
@@ -188,6 +189,8 @@ const Button1 = styled.button`
 const Cart = () => {
 	const cart = useSelector((state) => state.cart);
 	const dispatch = useDispatch();
+	const [quantity, setQuantity] = useState(1);
+	
     const cartId= cart.products;
 	console.log(cartId);
 	
@@ -197,9 +200,18 @@ const Cart = () => {
 	const onToken = (token) => {
 	  setStripeToken(token);
 	};
+
+	// const handleQuantity2 = (type , q) => {
+	// 	if (type === "dec2") {
+	// 		q > 1 && setQuantity(quantity - 1);
+	// 	} else {
+	// 		setQuantity(q + 1);
+	// 	}
+	// };
+
 	const handleClick2 = (id) => {
 		dispatch(removeProduct(id));
-		console.log(dispatch(removeProduct(id)));
+		// console.log(dispatch(removeProduct(id)));
 	};
 
 	useEffect(() => {
@@ -236,7 +248,10 @@ const Cart = () => {
 				</Top>
 				<Bottom>
 					<Info>
+
 						{cart.products.map((product) => (
+							
+							
 							<Product>
 								<ProductDetail>
 									<Image src={product.img} />
@@ -258,9 +273,11 @@ const Cart = () => {
 								</ProductDetail>
 								<PriceDetail>
 									<ProductAmountContainer>
-										
+									<Remove  />	
+
 										<ProductAmount>{product.quantity}</ProductAmount>
-										
+
+										<Add  />
 									</ProductAmountContainer>
 									<ProductPrice>
 										$ {product.price * product.quantity}
