@@ -13,6 +13,8 @@ import { userRequest } from "../requestMethods";
 import { useHistory } from "react-router";
 import { removeProduct } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
+		
+
 
 
 
@@ -188,8 +190,15 @@ const Button1 = styled.button`
 
 const Cart = () => {
 	const cart = useSelector((state) => state.cart);
+	const total = useSelector((state) => state.total);
+
 	const dispatch = useDispatch();
 	const [quantity, setQuantity] = useState(1);
+	const [editQuantity, setEditQuantity] = useState({
+		id:'',
+		status:false,
+	});
+
 	
     const cartId= cart.products;
 	console.log(cartId);
@@ -201,18 +210,20 @@ const Cart = () => {
 	  setStripeToken(token);
 	};
 
-	// const handleQuantity2 = (type , q) => {
-	// 	if (type === "dec2") {
-	// 		q > 1 && setQuantity(quantity - 1);
-	// 	} else {
-	// 		setQuantity(q + 1);
-	// 	}
-	// };
+	
 
 	const handleClick2 = (id) => {
 		dispatch(removeProduct(id));
 		// console.log(dispatch(removeProduct(id)));
 	};
+	// const handleClickDec = (id) => {
+	// 	dispatch(decrease(id));
+
+	// };
+	// const handleClickInc = (id) => {
+	// 	dispatch(increase(id));
+
+	// };
 
 	useEffect(() => {
 	  const makeRequest = async () => {
@@ -229,6 +240,8 @@ const Cart = () => {
 	  stripeToken && makeRequest();
 	}, [stripeToken, cart.total, history]);
 
+
+	
 
 	
 	return (
@@ -273,11 +286,12 @@ const Cart = () => {
 								</ProductDetail>
 								<PriceDetail>
 									<ProductAmountContainer>
-									<Remove  />	
+									<Remove   />	
 
-										<ProductAmount>{product.quantity}</ProductAmount>
+										<ProductAmount >
+										{product.quantity}</ProductAmount>
 
-										<Add  />
+										<Add   />
 									</ProductAmountContainer>
 									<ProductPrice>
 										$ {product.price * product.quantity}

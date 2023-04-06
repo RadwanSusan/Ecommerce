@@ -26,8 +26,8 @@ const ImgContainer = styled.div`
 `;
 
 const Image = styled.img`
-	width: 100%;
-	height: 90vh;
+	width: 90%;
+	height: 70vh;
 	object-fit: cover;
 	${mobile({ height: "40vh" })}
 `;
@@ -74,7 +74,7 @@ const FilterColor = styled.div`
 	height: 20px;
 	border-radius: 50%;
 	background-color: ${(props) => props.color};
-	margin: 0px 5px;
+	
 	cursor: pointer;
 `;
 
@@ -138,6 +138,7 @@ const Product = () => {
 					res = await publicRequest.get("/offer/find/" + id);
 				}
 				setProduct(res.data);
+
 			} catch {}
 		};
 		getProduct();
@@ -153,6 +154,7 @@ const Product = () => {
 		
 		dispatch(addProduct({ ...product, quantity, color, size }));
 	};
+	
 	return (
 		<Container>
 			<Announcement />
@@ -160,7 +162,8 @@ const Product = () => {
 			<NavbarBottom />
 			<Wrapper>
 				<ImgContainer>
-					<Image src="product.img" />
+				
+					<Image src="https://firebasestorage.googleapis.com/v0/b/pmeeco.appspot.com/o/16807964703303.webp?alt=media&token=9cb8b342-3d34-4d9e-82eb-43cfc9fcaeb7" />
 				</ImgContainer>
 				<InfoContainer>
 					<Title>{product.title}</Title>
@@ -184,9 +187,9 @@ const Product = () => {
 					</FilterContainer>
 					<AddContainer>
 						<AmountContainer>
-							<Remove onClick={() => handleQuantity("dec")} />
+							<Remove   onClick={() => handleQuantity("dec")} />
 							<Amount>{quantity}</Amount>
-							<Add onClick={() => handleQuantity("inc")} />
+							<Add  onClick={() => handleQuantity("inc")} />
 						</AmountContainer>
 						<Button onClick={handleClick}>ADD TO CART</Button>
 					</AddContainer>

@@ -9,9 +9,13 @@ const OfferSchema = new mongoose.Schema(
 		size: { type: Array },
 		color: { type: Array },
 		price: { type: Number, required: true },
+		originPrice: { type: Number, required: true },
+
 		inStock: { type: Boolean, default: true },
 		quantity: { type: Number, required: true },
 		timeLeft: { type: String },
+		width: { type: Number, required: true },
+		height: { type: Number, required: true},
 	},
 	{ timestamps: true },
 );

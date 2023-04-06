@@ -181,7 +181,7 @@ export default function NewProduct() {
 	return (
 		<div className="newProduct">
 			<h1 className="addProductTitle">New Product</h1>
-			<form className="addProductForm">
+			<form className="addProductForm1">
 				<div className="divition1">
 				<div className="addProductItem">
 					<label>Image</label>
@@ -250,6 +250,15 @@ export default function NewProduct() {
 					<label>Price</label>
 					<input
 						name="price"
+						type="number"
+						placeholder="100"
+						onChange={handleChange}
+					/>
+				</div>
+				<div className="addProductItem">
+					<label>Origin Price</label>
+					<input
+						name="originPrice"
 						type="number"
 						placeholder="100"
 						onChange={handleChange}

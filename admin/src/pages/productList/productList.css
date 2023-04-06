@@ -29,3 +29,31 @@
     color: red;
     cursor: pointer;
 }
+.middle-product-create {
+    width: 100%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 40px;
+    margin-left: 10px;
+}
+.productAddButton {
+    width: 80px;
+    border: none;
+    padding: 5px;
+    background-color: teal;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+/* margin-left: 50%; */
+/* transform: translateX(-50%); */
+margin-bottom: 20px;
+  }
+  .productAddButton1 {
+    /* margin-left: 50%; */
+/* transform: translateX(-50%); */
+margin-bottom: 20px;
+color: teal ;
+
+  }

@@ -147,9 +147,7 @@ export default function OfferUser() {
 		<div className="product">
 			<div className="productTitleContainer">
 				<h1 className="productTitle">Offer</h1>
-				<Link to="/createOffer">
-					<button className="productAddButton">Create</button>
-				</Link>
+				
 			</div>
 			<div className="productTop">
 				<div className="productTopLeft">

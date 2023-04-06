@@ -71,6 +71,14 @@ export default function UserList() {
 
 	return (
 		<div className="userList">
+			
+				<div className="middle-product-create">
+			<h2 className="productAddButton1">Create User : </h2>
+			
+			<Link to="/newUser">
+		<button className="productAddButton">Create</button>
+				</Link>
+				</div>
 			<DataGrid
 				rows={user2}
 				disableSelectionOnClick

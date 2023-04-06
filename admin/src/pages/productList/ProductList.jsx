@@ -76,6 +76,13 @@ export default function ProductList() {
 
 	return (
 		<div className="productList">
+			<div className="middle-product-create">
+			<h2 className="productAddButton1">Create Product : </h2>
+			
+			<Link to="/newproduct">
+		<button className="productAddButton">Create</button>
+				</Link>
+				</div>
 			<DataGrid
 				rows={products}
 				disableSelectionOnClick
@@ -85,6 +92,7 @@ export default function ProductList() {
 				autoHeight
 				rowsPerPageOptions={[5, 10, 25]}
 			/>
+
 		</div>
 	);
 }

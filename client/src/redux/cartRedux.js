@@ -19,13 +19,38 @@ const cartSlice = createSlice({
 			state.quantity -= 1;
 			state.total = 20;
 		},
-		// increase:(state,{payload})=>{
-		// 	const cartItem = state.products.find((item)=>item.id===payload.id);
-		// 	products.quantity = products.quantity+1; 
-		// }
+		// updateAmount: (state, action)=>{
+		// 	if(action.payload.quantity <= 0) {
+		// 		action.payload.quantity =1;
+		// 	}
+		// 	const id =action.payload.id;
+		// 	const type = action.payload.type;
+		// 	const index = state.products.findIndex(p=> p._id === id);
+		// 	const currentProduct = state.products[index];
+		// 	if(type === 'up') {
+		// 		currentProduct.quantity += 1;
+		// 		state.total += currentProduct.price;
+		// 	}
+		// 	if(type === 'down'&& state.products[index].quantity>1 ) {
+		// 		currentProduct.quantity -= 1;
+		// 		state.total -= currentProduct.price;
+		// 	}
+
+		// 	if(type === 'updateQuantity') {
+		// 		if(currentProduct.quantity > action.payload.quantity){
+		// 			state.total += (currentProduct.quantity - action.payload.quantity) * currentProduct.price;
+		// 		}else {
+		// 			state.total -= (currentProduct.quantity - action.payload.quantity) * currentProduct.price;
+
+		// 		}
+
+		// } 
 		
-	},
+	// }  
+
+
+},
 });
 
-export const { addProduct , removeProduct , increase , decrease } = cartSlice.actions;
+export const { addProduct , removeProduct ,updateAmount } = cartSlice.actions;
 export default cartSlice.reducer;

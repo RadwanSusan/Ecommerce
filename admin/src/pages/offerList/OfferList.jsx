@@ -73,6 +73,13 @@ export default function Offer() {
 
 	return (
 		<div className="productList">
+				<div className="middle-product-create">
+			<h2 className="productAddButton1">Create Offer : </h2>
+			
+			<Link to="/createOffer">
+		<button className="productAddButton">Create</button>
+				</Link>
+				</div>
 			<DataGrid
 				rows={offer}
 				disableSelectionOnClick

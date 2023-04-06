@@ -10,7 +10,7 @@ input[type="color"] {
   flex: 4;
 }
 
-.addProductForm {
+.addProductForm1 {
   margin-top: 10px;
   display: flex;
   align-items: center;
@@ -56,3 +56,10 @@ input[type="color"] {
   font-weight: 600;
   cursor: pointer;
 }
+.addProductForm {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 120px;
+}
+
