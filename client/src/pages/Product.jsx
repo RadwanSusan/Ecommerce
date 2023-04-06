@@ -163,7 +163,7 @@ const Product = () => {
 			<Wrapper>
 				<ImgContainer>
 				
-					<Image src="https://firebasestorage.googleapis.com/v0/b/pmeeco.appspot.com/o/16807964703303.webp?alt=media&token=9cb8b342-3d34-4d9e-82eb-43cfc9fcaeb7" />
+					<Image src={product.img }/>
 				</ImgContainer>
 				<InfoContainer>
 					<Title>{product.title}</Title>
