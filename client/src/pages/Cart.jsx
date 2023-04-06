@@ -13,11 +13,6 @@ import { userRequest } from "../requestMethods";
 import { useHistory } from "react-router";
 import { removeProduct } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
-		
-
-
-
-
 
 const KEY = process.env.REACT_APP_STRIPE;
 
@@ -74,10 +69,10 @@ const Product = styled.div`
 	display: flex;
 	justify-content: space-between;
 	${mobile({ flexDirection: "column" })};
-	border:1px solid #eee;
-	border-radius:5px;
-	padding:5px;
-	margin:5px;
+	border: 1px solid #eee;
+	border-radius: 5px;
+	padding: 5px;
+	margin: 5px;
 `;
 
 const ProductDetail = styled.div`
@@ -88,8 +83,8 @@ const ProductDetail = styled.div`
 const Image = styled.img`
 	width: 200px;
 	height: 250px;
-	object-fit:cover;
-	border-radius:5px;
+	object-fit: cover;
+	border-radius: 5px;
 `;
 
 const Details = styled.div`
@@ -185,7 +180,7 @@ const Button1 = styled.button`
 	cursor: pointer;
 	margin-top: 5px;
 	font-size: 12px;
-	border-radius:10%;
+	border-radius: 10%;
 `;
 
 const Cart = () => {
@@ -194,23 +189,15 @@ const Cart = () => {
 
 	const dispatch = useDispatch();
 	const [quantity, setQuantity] = useState(1);
-	const [editQuantity, setEditQuantity] = useState({
-		id:'',
-		status:false,
-	});
 
-	
-    const cartId= cart.products;
-	console.log(cartId);
-	
+	const cartId = cart.products;
+
 	const [stripeToken, setStripeToken] = useState(null);
 	const history = useHistory();
 
 	const onToken = (token) => {
-	  setStripeToken(token);
+		setStripeToken(token);
 	};
-
-	
 
 	const handleClick2 = (id) => {
 		dispatch(removeProduct(id));
@@ -226,24 +213,31 @@ const Cart = () => {
 	// };
 
 	useEffect(() => {
-	  const makeRequest = async () => {
-		try {
-		  const res = await userRequest.post("/checkout/payment", {
-			tokenId: stripeToken.id,
-			amount: 500,
-		  });
-		  history.push("/success", {
-			stripeData: res.data,
-			products: cart, });
-		} catch {}
-	  };
-	  stripeToken && makeRequest();
+		const makeRequest = async () => {
+			try {
+				const res = await userRequest.post("/checkout/payment", {
+					tokenId: stripeToken.id,
+					amount: 500,
+				});
+				history.push("/success", {
+					stripeData: res.data,
+					products: cart,
+				});
+			} catch {}
+		};
+		stripeToken && makeRequest();
 	}, [stripeToken, cart.total, history]);
 
+	const mergedCart = cart.products.reduce((acc, curr) => {
+		const existingItem = acc.find((item) => item._id === curr._id);
+		if (existingItem) {
+			existingItem.quantity += curr.quantity;
+		} else {
+			acc.push({ ...curr });
+		}
+		return acc;
+	}, []);
 
-	
-
-	
 	return (
 		<Container>
 			<Announcement />
@@ -261,10 +255,7 @@ const Cart = () => {
 				</Top>
 				<Bottom>
 					<Info>
-
-						{cart.products.map((product) => (
-							
-							
+						{mergedCart.map((product) => (
 							<Product>
 								<ProductDetail>
 									<Image src={product.img} />
@@ -280,18 +271,21 @@ const Cart = () => {
 											<b>Size:</b> {product.size}
 										</ProductSize>
 										<ProductSize>
-										<Button1 onClick={ function(){handleClick2(product._id)}} >Remove</Button1>
+											<Button1
+												onClick={function () {
+													handleClick2(product._id);
+												}}
+											>
+												Remove
+											</Button1>
 										</ProductSize>
 									</Details>
 								</ProductDetail>
 								<PriceDetail>
 									<ProductAmountContainer>
-									<Remove   />	
-
-										<ProductAmount >
-										{product.quantity}</ProductAmount>
-
-										<Add   />
+										<Remove />
+										<ProductAmount>{product.quantity}</ProductAmount>
+										<Add />
 									</ProductAmountContainer>
 									<ProductPrice>
 										$ {product.price * product.quantity}
@@ -320,17 +314,17 @@ const Cart = () => {
 							<SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
 						</SummaryItem>
 						<StripeCheckout
-              name="PME Shop"
-              image="https://avatars.githubusercontent.com/u/1486366?v=4"
-              billingAddress
-              shippingAddress
-              description={`Your total is $${cart.total}`}
-              amount={cart.total * 100}
-              token={onToken}
-              stripeKey={KEY}
-            >
-              <Button>CHECKOUT NOW</Button>
-            </StripeCheckout>
+							name="PME Shop"
+							image="https://avatars.githubusercontent.com/u/1486366?v=4"
+							billingAddress
+							shippingAddress
+							description={`Your total is $${cart.total}`}
+							amount={cart.total * 100}
+							token={onToken}
+							stripeKey={KEY}
+						>
+							<Button>CHECKOUT NOW</Button>
+						</StripeCheckout>
 					</Summary>
 				</Bottom>
 			</Wrapper>

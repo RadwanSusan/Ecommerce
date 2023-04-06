@@ -83,7 +83,6 @@ const Announcement = () => {
 		logoutUser();
 	};
 
-	console.log(token);
 	if (token !== "Guest") {
 		return (
 			<Container>
