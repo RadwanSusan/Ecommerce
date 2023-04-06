@@ -1,11 +1,7 @@
-import { Badge } from "@material-ui/core";
-import { Search, ShoppingCartOutlined } from "@material-ui/icons";
-import axios from "axios";
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../redux/apiCalls";
 
 const Container = styled.div`
@@ -43,11 +39,6 @@ const SearchContainer = styled.div`
 	padding: 5px;
 `;
 
-const Logo = styled.h1`
-	font-weight: bold;
-	${mobile({ fontSize: "24px" })}
-`;
-
 const Right = styled.div`
 	flex: 1;
 	display: flex;
@@ -73,20 +64,25 @@ const MenuItem1 = styled.div`
 	${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
 const Announcement = () => {
-	const dispatch = useDispatch();
 	let token = localStorage.getItem("persist:root");
 	console.log(token);
-	token = JSON.parse(token);
-	token = JSON.parse(token.user);
-	console.log(token);
-	if (token.currentUser == null) {
+	if (token === null) {
 		token = "Guest";
 	} else {
-		token = token.currentUser.username;
+		token = JSON.parse(token);
+		token = JSON.parse(token.user);
+		console.log(token);
+		if (token.currentUser == null) {
+			token = "Guest";
+		} else {
+			token = token.currentUser.username;
+		}
 	}
+
 	const handleClick = () => {
-		logoutUser(dispatch);
+		logoutUser();
 	};
+
 	console.log(token);
 	if (token !== "Guest") {
 		return (
