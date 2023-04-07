@@ -59,7 +59,7 @@ export default function OfferUser() {
 					]),
 				);
 			} catch (err) {
-				console.log(err);
+				swal("Error", err.message, "error");
 			}
 		};
 		getStats();
@@ -79,49 +79,85 @@ export default function OfferUser() {
 	};
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		if (file === null) {
-			swal("Please upload an image");
-			return;
+		let fileName;
+		if (file !== null) {
+			fileName = file.name;
 		}
-		const fileName = new Date().getTime() + file.name;
-		const storage = getStorage(app);
-		const storageRef = ref(storage, fileName);
-		const uploadTask = uploadBytesResumable(storageRef, file);
-		uploadTask.on(
-			"state_changed",
-			(snapshot) => {
-				const progress =
-					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-				console.log("Upload is " + progress + "% done");
-				switch (snapshot.state) {
-					case "paused":
-						console.log("Upload is paused");
-						break;
-					case "running":
-						console.log("Upload is running");
-						break;
-					default:
-				}
-			},
-			(error) => {},
-			() => {
-				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-					const formData = new FormData();
-					formData.append("title", offerUpdateData.title);
-					formData.append("desc", offerUpdateData.desc);
-					formData.append("price", offerUpdateData.price);
-					formData.append("inStock", offerUpdateData.inStock);
-					formData.append("img", downloadURL);
-					try {
-						const offer = { ...offerUpdateData, img: downloadURL };
-						updateOffer(offerId, offer, dispatch);
-						swal("Offer Updated", "", "success");
-					} catch (err) {
-						console.log(err);
+		if (file === null) {
+			if (
+				document.querySelector(".PTitle").value == "" &&
+				document.querySelector(".PDesc").value == "" &&
+				document.querySelector(".PPrice").value == ""
+			) {
+				swal("Info", "Please update atleast one feild!", "info");
+				return;
+			}
+			if (
+				offerUpdateData.title === "" ||
+				offerUpdateData.desc === "" ||
+				offerUpdateData.price === "" ||
+				offerUpdateData.inStock === ""
+			) {
+				swal("Info", "Please make an update in one of the feilds!", "info");
+				return;
+			}
+			fileName = offer.img;
+			const formData = new FormData();
+			formData.append("title", offerUpdateData.title);
+			formData.append("desc", offerUpdateData.desc);
+			formData.append("price", offerUpdateData.price);
+			formData.append("inStock", offerUpdateData.inStock);
+			formData.append("img", fileName);
+			try {
+				const offer = { ...offerUpdateData };
+				updateOffer(offerId, offer, dispatch);
+				swal("Offer Updated", "", "success");
+			} catch (err) {
+				swal("Error", err.message, "error");
+			}
+		} else {
+			fileName = new Date().getTime() + file.name;
+			const storage = getStorage(app);
+			const storageRef = ref(storage, fileName);
+			const uploadTask = uploadBytesResumable(storageRef, file);
+			uploadTask.on(
+				"state_changed",
+				(snapshot) => {
+					const progress =
+						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+					console.log("Upload is " + progress + "% done");
+					switch (snapshot.state) {
+						case "paused":
+							console.log("Upload is paused");
+							break;
+						case "running":
+							console.log("Upload is running");
+							break;
+						default:
 					}
-				});
-			},
-		);
+				},
+				(error) => {
+					swal("Error", error.message, "error");
+				},
+				() => {
+					getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+						const formData = new FormData();
+						formData.append("title", offerUpdateData.title);
+						formData.append("desc", offerUpdateData.desc);
+						formData.append("price", offerUpdateData.price);
+						formData.append("inStock", offerUpdateData.inStock);
+						formData.append("img", downloadURL);
+						try {
+							const offer = { ...offerUpdateData, img: downloadURL };
+							updateOffer(offerId, offer, dispatch);
+							swal("Offer Updated", "", "success");
+						} catch (err) {
+							swal("Error", err.message, "error");
+						}
+					});
+				},
+			);
+		}
 	};
 
 	useEffect(() => {
@@ -138,7 +174,7 @@ export default function OfferUser() {
 					]),
 				);
 			} catch (err) {
-				console.log(err);
+				swal("Error", err.message, "error");
 			}
 		};
 		getStats();
@@ -147,7 +183,6 @@ export default function OfferUser() {
 		<div className="product">
 			<div className="productTitleContainer">
 				<h1 className="productTitle">Offer</h1>
-				
 			</div>
 			<div className="productTop">
 				<div className="productTopLeft">
@@ -181,6 +216,7 @@ export default function OfferUser() {
 					<div className="productFormLeft">
 						<label>Product Name</label>
 						<input
+							className="PTitle"
 							type="text"
 							name="title"
 							placeholder={offer.title}
@@ -188,6 +224,7 @@ export default function OfferUser() {
 						/>
 						<label>Product Description</label>
 						<input
+							className="PDesc"
 							type="text"
 							name="desc"
 							placeholder={offer.desc}
@@ -195,13 +232,19 @@ export default function OfferUser() {
 						/>
 						<label>Price</label>
 						<input
+							className="PPrice"
 							type="number"
 							name="price"
 							placeholder={offer.price}
 							onChange={handleUpdate}
 						/>
 						<label>In Stock</label>
-						<select name="inStock" id="idStock" onChange={handleUpdate}>
+						<select
+							className="PStock"
+							name="inStock"
+							id="idStock"
+							onChange={handleUpdate}
+						>
 							<option value="true">Yes</option>
 							<option value="false">No</option>
 						</select>
