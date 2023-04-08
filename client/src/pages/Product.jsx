@@ -1,7 +1,6 @@
 import { Add, Remove } from "@material-ui/icons";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
-// import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import NavbarBottom from "../components/NavbarBottom";
 import Newsletter from "../components/Newsletter";
@@ -75,7 +74,6 @@ const FilterColor = styled.div`
 	height: 20px;
 	border-radius: 50%;
 	background-color: ${(props) => props.color};
-	
 	cursor: pointer;
 `;
 
@@ -117,12 +115,10 @@ const Button = styled.button`
 	background-color: white;
 	cursor: pointer;
 	font-weight: 500;
-
 	&:hover {
 		background-color: #f8f4f4;
 	}
 `;
-
 const Product = () => {
 	const location = useLocation();
 	const id = location.pathname.split("/")[2];
@@ -135,54 +131,46 @@ const Product = () => {
 		const getProduct = async () => {
 			try {
 				let res = await publicRequest.get("/products/find/" + id);
-				
 				if (res.data == null) {
 					res = await publicRequest.get("/offer/find/" + id);
-
 				}
 				setProduct(res.data);
-				
-
 			} catch {}
 		};
 		getProduct();
 	}, [id]);
-
-	
 
 	console.log(product.quantity);
 	const handleQuantity = (type) => {
 		if (type === "dec") {
 			quantity > 1 && setQuantity(quantity - 1);
 		} else {
-
-			if( quantity >= product.quantity )
-	
-			{
-				swal("Info","You have exceeded the number of available products!","info");
-			
-			
-			  
-
-			}
-			else {
+			if (quantity >= product.quantity) {
+				swal(
+					"Info",
+					"You have exceeded the number of available products!",
+					"info",
+				);
+			} else {
 				setQuantity(quantity + 1);
-				
 			}
-
-				
-
-			
+		}
+	};
+	window.onload = () => {
+		if (product.quantity === 0) {
+			document.querySelector(".AddCart").disabled = true;
 		}
 	};
 	const handleClick = () => {
 		dispatch(addProduct({ ...product, quantity, color, size }));
-
-		// product.quantity = product.quantity - quantity; 
+		swal("Success", "Product added to cart!", "success");
+		product.quantity -= quantity;
+		if (product.quantity === 0) {
+			document.querySelector(".AddCart").disabled = true;
+		}
+		setQuantity(1);
 	};
 	console.log(product.quantity);
-
-	
 	return (
 		<Container>
 			<Announcement />
@@ -190,8 +178,7 @@ const Product = () => {
 			<NavbarBottom />
 			<Wrapper>
 				<ImgContainer>
-				
-					<Image src={product.img }/>
+					<Image src={product.img} />
 				</ImgContainer>
 				<InfoContainer>
 					<Title>{product.title}</Title>
@@ -215,18 +202,18 @@ const Product = () => {
 					</FilterContainer>
 					<AddContainer>
 						<AmountContainer>
-							<Remove   onClick={() => handleQuantity("dec")} />
+							<Remove onClick={() => handleQuantity("dec")} />
 							<Amount>{quantity}</Amount>
-							<Add  onClick={() => handleQuantity("inc")} />
+							<Add onClick={() => handleQuantity("inc")} />
 						</AmountContainer>
-						<Button onClick={handleClick}>ADD TO CART</Button>
+						<Button className="AddCart" onClick={handleClick}>
+							ADD TO CART
+						</Button>
 					</AddContainer>
 				</InfoContainer>
 			</Wrapper>
 			<Newsletter />
-			{/* <Footer /> */}
 			<FooterNew />
-
 			{/* <MobileMenu /> */}
 		</Container>
 	);
