@@ -8,7 +8,6 @@ import HeaderMobile from "../components/HeaderMobile";
 import MobileSearch from "../components/MobileSearch";
 // import MobileMenu from "../components/MobileMenu";
 import Offer from "../components/Offer.jsx";
-import Frame from "../components/Frame.jsx";
 
 import Image from "../components/Image";
 // import Newsletter from "../components/Newsletter";
@@ -31,7 +30,6 @@ const Home = () => {
 			<MobileSearch />
 			{/* <MobileMenu /> */}
 			<Slider />
-			<Frame />
 			<Offer />
 			<Welcom />
 			<Categories />
