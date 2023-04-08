@@ -19,6 +19,7 @@ const cartSlice = createSlice({
 			state.quantity -= 1;
 			state.total = 20;
 		},
+		
 		// updateAmount: (state, action)=>{
 		// 	if(action.payload.quantity <= 0) {
 		// 		action.payload.quantity =1;

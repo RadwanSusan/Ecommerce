@@ -148,25 +148,7 @@ const Product = () => {
 		getProduct();
 	}, [id]);
 
-	useEffect(() => {
-		const putProduct = async () => {
-			try {
-				let res = await publicRequest.put("/products/" + id,{
-					
-
-				});
-				
-				if (res.data == null) {
-					res = await publicRequest.put("/offer/" + id);
-
-				}
-				setProduct(res.data);
-				
-
-			} catch {}
-		};
-		putProduct();
-	}, [id]);
+	
 
 	console.log(product.quantity);
 	const handleQuantity = (type) => {

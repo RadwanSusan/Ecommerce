@@ -48,10 +48,20 @@ const Offer = () => {
 
 
 	return (
+		
+	
+
+
+
+
+
+
+
+
 		<div
-			class="group-deal-1 hidden-title-block nav-style-1 hover-to-show absolute-nav snipcss-s72N8 style-sCNUC"
+			className="group-deal-1 hidden-title-block nav-style-1 hover-to-show absolute-nav snipcss-s72N8 style-sCNUC"
 			id="style-sCNUC"
-		>
+		>	
 			<div
 				data-owl="owl-slider"
 				data-autoplay="false"
@@ -73,67 +83,77 @@ const Offer = () => {
 				data-mousedrag="true"
 				data-touchdrag="true"
 			>
-				<div class="block block-list-products">
-					<div class="block-title">
+				<div className="block block-list-products">
+					<div className="block-title">
 						<strong>Hot Deals</strong>
 					</div>
-					<div class="block-content">
-						<div id="filterproducts_1" class="product-deal-list">
+					<div className="block-content">
+						<div id="filterproducts_1" className="product-deal-list">
 						<Link to={`/offer/${categoriesOffer[0].cat}`}>
-							<div class="deal-left">
-								<div class="deal-description">
+							<div className="deal-left">
+								<div className="deal-description">
 									<div>
 										Special Offer!
 										<br />
 										up to
-										<span id="style-Leion" class="style-Leion">
+										<span id="style-Leion" className="style-Leion">
 											50%
 										</span>
 										Off
 									</div>
 								</div>
-								<div class="timer-content">
-									<div class="timer-title">Hurry Up! Offer End In:</div>
-									<div class="deals-countdown" data-timer="2021/06/24 00:00:00">
+								<div className="timer-content">
+									<div className="timer-title">Hurry Up! Offer End In:</div>
+									<div className="deals-countdown" data-timer="2021/06/24 00:00:00">
 										Now!
 									</div>
 								</div>
 							</div>
 							</Link>
 							
-							<div class="deal-content">
-								<div class="owl-carousel owl-theme list items product-items filterproducts owl-loaded owl-drag">
-									<div class="owl-stage-outer">
+							<div className="deal-content">
+								<div className="owl-carousel owl-theme list items product-items filterproducts owl-loaded owl-drag">
+									<div className="owl-stage-outer">
 										<Wrapper1
-											class="owl-stage style-FUF77"
+											className="owl-stage style-FUF77"
 											id="style-FUF77"
 											slideIndex={slideIndex}
 										>
 											{offer.slice(0, 4).map((data) => (
+												
 												<div
-													class="owl-item active style-Ke3kW"
+													className="owl-item active style-Ke3kW"
 													id="style-Ke3kW"
 												>
-													<div class="item product product-item">
+													
+													<div className="item product product-item">
 														<div
-															class="product-item-info"
+															className="product-item-info"
 															data-container="product-grid"
 														>
-															<div class="image-product">
+																			<Link
+																	to={`/product/${data._id}`}
+																	className="action quickview-handler
+																	sm_quickview_handler"
+																	title="Quick View"
+																	href=""
+																>
+															<div className="image-product">
 																<div
-																	class="product photo product-item-photo"
+																	className="product photo product-item-photo"
 																	tabindex="-1"
 																>
 																	<span
-																		class="product-image-container product-image-container-13 style-j6oeg"
+																		className="product-image-container product-image-container-13 style-j6oeg"
 																		id="style-j6oeg"
 																	>
 																		<span
-																			class="product-image-wrapper style-gKGpW"
+																			className="product-image-wrapper style-gKGpW"
 																			id="style-gKGpW"
 																		>
+																				
 																			<img
-																				class="product-image-photo"
+																				className="product-image-photo"
 																				src={data.img}
 																				data-src="http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/l/-/l-03_1.jpg /"
 																				loading="lazy"
@@ -141,12 +161,13 @@ const Offer = () => {
 																				height="300"
 																				alt={data.img}
 																			/>
+																			
 																		</span>
 																	</span>
 																</div>
 																<Link
 																	to={`/product/${data._id}`}
-																	class="action quickview-handler
+																	className="action quickview-handler
 																	sm_quickview_handler"
 																	title="Quick View"
 																	href=""
@@ -155,54 +176,55 @@ const Offer = () => {
 																	<span>Quick View</span>
 																</Link>
 															</div>
-															<div class="product details product-item-details">
-																<strong class="product name product-item-name">
-																	<a class="product-item-link" href="">
+															</Link>
+															<div className="product details product-item-details">
+																<strong className="product name product-item-name">
+																	<a className="product-item-link" href="">
 																		{data.title}
 																	</a>
 																</strong>
 																<div
-																	class="price-box price-final_price"
+																	className="price-box price-final_price"
 																	data-role="priceBox"
 																	data-product-id="13"
 																	data-price-box="product-id-13"
 																>
-																	<span class="price-container price-final_price tax weee">
+																	<span className="price-container price-final_price tax weee">
 																		<span
 																			id="product-price-13"
 																			data-price-amount="250"
 																			data-price-type="finalPrice"
-																			class="price-wrapper "
+																			className="price-wrapper "
 																		>
-																			<span class="price">$ {data.price}</span>
+																			<span className="price">$ {data.price}</span>
 																		</span>
 																	</span>
 																</div>
-																<div class="time-countdown-slide">
-																	<div class="time-wrapper">
-																		<div class="time-label clearfix">
-																			<div class="stock-qty">
+																<div className="time-countdown-slide">
+																	<div className="time-wrapper">
+																		<div className="time-label clearfix">
+																			<div className="stock-qty">
 																				Availability:
 																				<span>150</span>
 																			</div>
-																			<div class="time-left">
+																			<div className="time-left">
 																				Time left:
 																				<span>{data.timeLeft}</span>
 																			</div>
 																		</div>
-																		<div class="time-ranger">
+																		<div className="time-ranger">
 																			<div
-																				class="time-pass style-Tx4nd"
+																				className="time-pass style-Tx4nd"
 																				id="style-Tx4nd"
 																			></div>
 																		</div>
 																	</div>
 																</div>
-																<div class="product-item-actions">
-																	<div class="actions-primary">
+																<div className="product-item-actions">
+																	<div className="actions-primary">
 																		<Link to={`/product/${data._id}`}>
 																			<button
-																				class="action tocart primary"
+																				className="action tocart primary"
 																				data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/checkout\/cart\/add\/uenc\/aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo\/product\/13\/","data":{"product":"13","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
 																				type="button"
 																				title="Add to Cart"
@@ -212,12 +234,12 @@ const Offer = () => {
 																		</Link>
 																	</div>
 																	<div
-																		class="actions-secondary"
+																		className="actions-secondary"
 																		data-role="add-to-links"
 																	>
 																		<a
 																			href="#"
-																			class="action towishlist"
+																			className="action towishlist"
 																			data-action="add-to-wishlist"
 																			title="Add to Wish List"
 																		>
@@ -226,7 +248,7 @@ const Offer = () => {
 																		</a>
 																		<a
 																			href="#"
-																			class="action tocompare"
+																			className="action tocompare"
 																			title="Add to Compare"
 																		>
 																			<IoGitCompareOutline />
@@ -237,30 +259,33 @@ const Offer = () => {
 															</div>
 														</div>
 													</div>
+													
+													
 												</div>
+												
 											))}
 										</Wrapper1>
 									</div>
-									<div class="owl-nav">
+									<div className="owl-nav">
 										<div
 											role="presentation"
-											class="owl-prev disabled"
+											className="owl-prev disabled"
 											onClick={() => handleClick("left")}
 										>
 											<BiChevronLeft />
 										</div>
 										<div
 											role="presentation"
-											class="owl-next"
+											className="owl-next"
 											onClick={() => handleClick("right")}
 										>
 											<BiChevronRight />
 										</div>
 									</div>
-									<div class="owl-dots disabled"></div>
+									<div className="owl-dots disabled"></div>
 								</div>
-								<div class="loading-content">
-									<span class="hidden">Loading...</span>
+								<div className="loading-content">
+									<span className="hidden">Loading...</span>
 								</div>
 							</div>
 						</div>
@@ -268,7 +293,9 @@ const Offer = () => {
 				</div>
 			</div>
 		</div>
+		
 	);
+
 };
 
 export default Offer;

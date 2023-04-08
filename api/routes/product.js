@@ -20,6 +20,23 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
 	}
 });
 
+// router.post("/put", verifyTokenAndAuthorization, async (req, res) => {
+// 	const newProduct = new Product(req.body);
+// 	const { id } = req.body;
+
+// 	try {
+// 		const product = await newProduct.findOne({ _id: id });
+// 		const savedProduct = await newProduct.save();
+// 		res.status(200).json(savedProduct);
+// 		const updatedProduct = await newProduct.updateOne(
+// 			{ _id: id },
+// 			{ $inc: { quantity: -1 } }
+// 		  );
+// 	} catch (err) {
+// 		res.status(500).json(err);
+// 	}
+// });
+
 //UPDATE
 router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
 	try {
@@ -81,4 +98,6 @@ router.get("/", async (req, res) => {
 	}
 });
 
+
+ 
 module.exports = router;
