@@ -65,13 +65,11 @@ const MenuItem1 = styled.div`
 `;
 const Announcement = () => {
 	let token = localStorage.getItem("persist:root");
-	console.log(token);
 	if (token === null) {
 		token = "Guest";
 	} else {
 		token = JSON.parse(token);
 		token = JSON.parse(token.user);
-		console.log(token);
 		if (token.currentUser == null) {
 			token = "Guest";
 		} else {
