@@ -44,6 +44,104 @@ export default function Product() {
 		[],
 	);
 
+	const [productUpdateData, setProductUpdateData] = useState({
+		title: product.title,
+		desc: product.desc,
+		price: product.price,
+		inStock: product.inStock,
+		img: product.img,
+		categories: product.categories,
+		size: product.size,
+		color: product.color,
+	});
+	const handleUpdate = (e) => {
+		setProductUpdateData((prev) => {
+			return { ...prev, [e.target.name]: e.target.value };
+		});
+	};
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		let fileName;
+		if (file !== null) {
+			fileName = file.name;
+		}
+		if (file === null) {
+			if (
+				document.querySelector(".PTitle").value == "" &&
+				document.querySelector(".PDesc").value == "" &&
+				document.querySelector(".PPrice").value == ""
+			) {
+				swal("Info", "Please update atleast one feild!", "info");
+				return;
+			}
+			if (
+				productUpdateData.title === "" ||
+				productUpdateData.desc === "" ||
+				productUpdateData.price === "" ||
+				productUpdateData.inStock === ""
+			) {
+				swal("Info", "Please make an update in one of the feilds!", "info");
+				return;
+			}
+			fileName = product.img;
+			const formData = new FormData();
+			formData.append("title", productUpdateData.title);
+			formData.append("desc", productUpdateData.desc);
+			formData.append("price", productUpdateData.price);
+			formData.append("inStock", productUpdateData.inStock);
+			formData.append("img", fileName);
+			try {
+				const product = { ...productUpdateData };
+				updateProduct(productId, product, dispatch);
+				swal("Product Updated", "", "success");
+			} catch (err) {
+				swal("Error", err.message, "error");
+			}
+		} else {
+			fileName = new Date().getTime() + file.name;
+			const storage = getStorage(app);
+			const storageRef = ref(storage, fileName);
+			const uploadTask = uploadBytesResumable(storageRef, file);
+			uploadTask.on(
+				"state_changed",
+				(snapshot) => {
+					const progress =
+						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+					console.log("Upload is " + progress + "% done");
+					switch (snapshot.state) {
+						case "paused":
+							console.log("Upload is paused");
+							break;
+						case "running":
+							console.log("Upload is running");
+							break;
+						default:
+					}
+				},
+				(error) => {
+					swal("Error", error.message, "error");
+				},
+				() => {
+					getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+						const formData = new FormData();
+						formData.append("title", productUpdateData.title);
+						formData.append("desc", productUpdateData.desc);
+						formData.append("price", productUpdateData.price);
+						formData.append("inStock", productUpdateData.inStock);
+						formData.append("img", downloadURL);
+						try {
+							const product = { ...productUpdateData, img: downloadURL };
+							updateProduct(productId, product, dispatch);
+							swal("Product Updated", "", "success");
+						} catch (err) {
+							swal("Error", err.message, "error");
+						}
+					});
+				},
+			);
+		}
+	};
+
 	useEffect(() => {
 		const getStats = async () => {
 			try {
@@ -58,81 +156,16 @@ export default function Product() {
 					]),
 				);
 			} catch (err) {
-				console.log(err);
+				swal("Error", err.message, "error");
 			}
 		};
 		getStats();
 	}, [productId, MONTHS]);
 
-	const [productUpdateData, setProductUpdateData] = useState({
-		title: product.title,
-		desc: product.desc,
-		price: product.price,
-		inStock: product.inStock,
-		img: product.img,
-		categories: product.categories,
-		size: product.size,
-		color: product.color,
-		
-	});
-	const handleUpdate = (e) => {
-		setProductUpdateData((prev) => {
-			return { ...prev, [e.target.name]: e.target.value };
-		});
-	};
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		if (file === null) {
-			swal("Please upload an image");
-			
-			return;
-		}
-		const fileName = new Date().getTime() + file.name;
-		const storage = getStorage(app);
-		const storageRef = ref(storage, fileName);
-		const uploadTask = uploadBytesResumable(storageRef, file);
-		uploadTask.on(
-			"state_changed",
-			(snapshot) => {
-				const progress =
-					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-				console.log("Upload is " + progress + "% done");
-				switch (snapshot.state) {
-					case "paused":
-						console.log("Upload is paused");
-						break;
-					case "running":
-						console.log("Upload is running");
-						break;
-					default:
-				}
-			},
-			(error) => {},
-			() => {
-				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-					const formData = new FormData();
-					formData.append("title", productUpdateData.title);
-					formData.append("desc", productUpdateData.desc);
-					formData.append("price", productUpdateData.price);
-					formData.append("inStock", productUpdateData.inStock);
-					formData.append("img", downloadURL);
-					try {
-						const product = { ...productUpdateData, img: downloadURL };
-						updateProduct(productId, product, dispatch);
-						swal("Offer Updated", "", "success");
-					} catch (err) {
-						console.log(err);
-					}
-				});
-			},
-		);
-	};
-
 	return (
 		<div className="product">
 			<div className="productTitleContainer">
 				<h1 className="productTitle">Product</h1>
-				
 			</div>
 			<div className="productTop">
 				<div className="productTopLeft">
@@ -167,6 +200,7 @@ export default function Product() {
 						<label>Product Name</label>
 						<input
 							type="text"
+							className="PTitle"
 							name="title"
 							placeholder={product.title}
 							onChange={handleUpdate}
@@ -175,6 +209,7 @@ export default function Product() {
 						<input
 							type="text"
 							name="desc"
+							className="PDesc"
 							placeholder={product.desc}
 							onChange={handleUpdate}
 						/>
@@ -182,13 +217,14 @@ export default function Product() {
 						<input
 							type="text"
 							name="price"
+							className="PPrice"
 							placeholder={product.price}
 							onChange={handleUpdate}
 						/>
 						<label>In Stock</label>
 						<select
 							name="inStock"
-							name="inStock"
+							className="PStock"
 							id="idStock"
 							onChange={handleUpdate}
 						>
