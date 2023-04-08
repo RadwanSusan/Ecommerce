@@ -98,7 +98,7 @@ export default function Analytics() {
 		<div className="home">
 			<Chart
 				data={userStats}
-				title="User Monthly Analytics"
+				title="User Last Year Analytics"
 				grid
 				dataKey="Active User"
 			/>

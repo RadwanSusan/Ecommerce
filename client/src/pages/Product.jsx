@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethods";
 import { addProduct } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
+import swal from "sweetalert";
 
 const Container = styled.div``;
 
@@ -134,10 +135,13 @@ const Product = () => {
 		const getProduct = async () => {
 			try {
 				let res = await publicRequest.get("/products/find/" + id);
+				
 				if (res.data == null) {
 					res = await publicRequest.get("/offer/find/" + id);
+
 				}
 				setProduct(res.data);
+				
 
 			} catch {}
 		};
@@ -147,13 +151,22 @@ const Product = () => {
 		if (type === "dec") {
 			quantity > 1 && setQuantity(quantity - 1);
 		} else {
+			
+			
 			setQuantity(quantity + 1);
+
+			
+
+				
+
+			
 		}
 	};
 	const handleClick = () => {
-		
 		dispatch(addProduct({ ...product, quantity, color, size }));
 	};
+	console.log(product.quantity);
+
 	
 	return (
 		<Container>

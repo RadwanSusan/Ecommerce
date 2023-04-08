@@ -145,7 +145,7 @@ export default function Product() {
 	useEffect(() => {
 		const getStats = async () => {
 			try {
-				const res = await userRequest.get("orders/income");
+				const res = await userRequest.get("orders/income?pid="+productId);
 				const list = res.data.sort((a, b) => {
 					return a._id - b._id;
 				});
