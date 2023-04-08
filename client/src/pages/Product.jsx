@@ -147,15 +147,46 @@ const Product = () => {
 		};
 		getProduct();
 	}, [id]);
+
+	useEffect(() => {
+		const putProduct = async () => {
+			try {
+				let res = await publicRequest.put("/products/" + id,{
+					
+
+				});
+				
+				if (res.data == null) {
+					res = await publicRequest.put("/offer/" + id);
+
+				}
+				setProduct(res.data);
+				
+
+			} catch {}
+		};
+		putProduct();
+	}, [id]);
+
+	console.log(product.quantity);
 	const handleQuantity = (type) => {
 		if (type === "dec") {
 			quantity > 1 && setQuantity(quantity - 1);
 		} else {
-			
-			
-			setQuantity(quantity + 1);
 
+			if( quantity >= product.quantity )
+	
+			{
+				swal("Info","You have exceeded the number of available products!","info");
 			
+			
+			  
+
+			}
+			else {
+				setQuantity(quantity + 1);
+				
+			}
 
 				
 
@@ -164,6 +195,8 @@ const Product = () => {
 	};
 	const handleClick = () => {
 		dispatch(addProduct({ ...product, quantity, color, size }));
+
+		// product.quantity = product.quantity - quantity; 
 	};
 	console.log(product.quantity);
 
