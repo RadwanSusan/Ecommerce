@@ -13,7 +13,9 @@ import { addProduct } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
 import swal from "sweetalert";
 
-const Container = styled.div``;
+const Container = styled.div`
+	user-select: none;
+`;
 
 const Wrapper = styled.div`
 	padding: 50px;
@@ -75,6 +77,15 @@ const FilterColor = styled.div`
 	border-radius: 50%;
 	background-color: ${(props) => props.color};
 	cursor: pointer;
+	margin-left: 10px;
+	&:hover {
+		outline: 3px solid #292931;
+	}
+	> * {
+		&:first-child {
+			outline: 3px solid #292931;
+		}
+	}
 `;
 
 const FilterSize = styled.select`
@@ -139,8 +150,14 @@ const Product = () => {
 		};
 		getProduct();
 	}, [id]);
-
-	console.log(product.quantity);
+	document.querySelectorAll(".Color").forEach((item) =>
+		item.addEventListener("click", (e) => {
+			document.querySelectorAll(".Color").forEach((item2) => {
+				item2.style.outline = "none";
+			});
+			e.target.style.outline = "3px solid #292931";
+		}),
+	);
 	const handleQuantity = (type) => {
 		if (type === "dec") {
 			quantity > 1 && setQuantity(quantity - 1);
@@ -170,7 +187,6 @@ const Product = () => {
 		}
 		setQuantity(1);
 	};
-	console.log(product.quantity);
 	return (
 		<Container>
 			<Announcement />
@@ -188,7 +204,12 @@ const Product = () => {
 						<Filter>
 							<FilterTitle>Color : </FilterTitle>
 							{product.color?.map((c) => (
-								<FilterColor color={c} key={c} onClick={() => setColor(c)} />
+								<FilterColor
+									className="Color"
+									color={c}
+									key={c}
+									onClick={() => setColor(c)}
+								/>
 							))}
 						</Filter>
 						<Filter>
