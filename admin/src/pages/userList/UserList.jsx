@@ -6,14 +6,12 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, deleteUser } from "../../redux/apiCalls";
 import swal from "sweetalert";
-
 export default function UserList() {
 	const dispatch = useDispatch();
 	useEffect(() => {
 		getUser(dispatch);
 	}, [dispatch]);
 	const user2 = useSelector((state) => state.userAll.usersAll);
-
 	const handleDelete = (id) => {
 		swal({
 			title: "Are you sure?",
@@ -27,7 +25,6 @@ export default function UserList() {
 			}
 		});
 	};
-
 	const columns = [
 		{ field: "_id", headerName: "ID", width: 200 },
 		{
@@ -35,6 +32,9 @@ export default function UserList() {
 			headerName: "User",
 			width: 200,
 			renderCell: (params) => {
+				// if (params.row.img === null) {
+				// 	params.row.img = "https://i.ibb.co/n7nxz8y/user.png";
+				// }
 				return (
 					<div className="userListUser">
 						<img className="userListImg" src={params.row.img} alt="" />
@@ -57,7 +57,7 @@ export default function UserList() {
 				return (
 					<>
 						<Link to={"/user/" + params.row._id}>
-							<button className="userListEdit">Edit</button>
+							<button className="userListEdit">View & Edit</button>
 						</Link>
 						<DeleteOutline
 							className="userListDelete"
@@ -68,17 +68,14 @@ export default function UserList() {
 			},
 		},
 	];
-
 	return (
 		<div className="userList">
-			
-				<div className="middle-product-create">
-			<h2 className="productAddButton1">Create User : </h2>
-			
-			<Link to="/newUser">
-		<button className="productAddButton">Create</button>
+			<div className="middle-product-create">
+				<h2 className="productAddButton1">Create User : </h2>
+				<Link to="/newUser">
+					<button className="productAddButton">Create</button>
 				</Link>
-				</div>
+			</div>
 			<DataGrid
 				rows={user2}
 				disableSelectionOnClick

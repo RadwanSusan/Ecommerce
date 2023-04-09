@@ -6,15 +6,12 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteProduct, getProducts } from "../../redux/apiCalls";
 import swal from "sweetalert";
-
 export default function ProductList() {
 	const dispatch = useDispatch();
 	const products = useSelector((state) => state.product.products);
-
 	useEffect(() => {
 		getProducts(dispatch);
 	}, [dispatch]);
-
 	const handleDelete = (id) => {
 		swal({
 			title: "Are you sure?",
@@ -32,7 +29,6 @@ export default function ProductList() {
 				swal("Error", err.message, "error");
 			});
 	};
-
 	const columns = [
 		{ field: "_id", headerName: "ID", width: 220 },
 		{
@@ -62,7 +58,7 @@ export default function ProductList() {
 				return (
 					<>
 						<Link to={"/product/" + params.row._id}>
-							<button className="productListEdit">Edit</button>
+							<button className="productListEdit">View & Edit</button>
 						</Link>
 						<DeleteOutline
 							className="productListDelete"
@@ -73,16 +69,14 @@ export default function ProductList() {
 			},
 		},
 	];
-
 	return (
 		<div className="productList">
 			<div className="middle-product-create">
-			<h2 className="productAddButton1">Create Product : </h2>
-			
-			<Link to="/newproduct">
-		<button className="productAddButton">Create</button>
+				<h2 className="productAddButton1">Create Product : </h2>
+				<Link to="/newproduct">
+					<button className="productAddButton">Create</button>
 				</Link>
-				</div>
+			</div>
 			<DataGrid
 				rows={products}
 				disableSelectionOnClick
@@ -92,7 +86,6 @@ export default function ProductList() {
 				autoHeight
 				rowsPerPageOptions={[5, 10, 25]}
 			/>
-
 		</div>
 	);
 }

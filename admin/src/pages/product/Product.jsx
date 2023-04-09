@@ -21,11 +21,9 @@ export default function Product() {
 	const [pStats, setPStats] = useState([]);
 	const dispatch = useDispatch();
 	const [file, setFile] = useState(null);
-
 	const product = useSelector((state) =>
 		state.product.products.find((product) => product._id === productId),
 	);
-
 	const MONTHS = useMemo(
 		() => [
 			"Jan",
@@ -43,7 +41,6 @@ export default function Product() {
 		],
 		[],
 	);
-
 	const [productUpdateData, setProductUpdateData] = useState({
 		title: product.title,
 		desc: product.desc,
@@ -141,11 +138,10 @@ export default function Product() {
 			);
 		}
 	};
-
 	useEffect(() => {
 		const getStats = async () => {
 			try {
-				const res = await userRequest.get("orders/income?pid="+productId);
+				const res = await userRequest.get("orders/income?pid=" + productId);
 				const list = res.data.sort((a, b) => {
 					return a._id - b._id;
 				});
@@ -161,7 +157,6 @@ export default function Product() {
 		};
 		getStats();
 	}, [productId, MONTHS]);
-
 	return (
 		<div className="product">
 			<div className="productTitleContainer">
@@ -178,18 +173,62 @@ export default function Product() {
 					</div>
 					<div className="productInfoBottom">
 						<div className="productInfoItem">
-							<span className="productInfoKey">id:</span>
+							<span className="productInfoKey">Product name:</span>
 							<span className="productInfoValue">{product._id}</span>
 						</div>
 						<div className="productInfoItem">
+							<span className="productInfoKey">Product description:</span>
+							<span className="productInfoValue">{product.desc}</span>
+						</div>
+						<div className="productInfoItem">
 							<span className="productInfoKey">sales:</span>
-							<span className="productInfoValue">5123</span>
+							<span className="productInfoValue">0</span>
 						</div>
 						<div className="productInfoItem">
 							<span className="productInfoKey">in stock:</span>
 							<span className="productInfoValue">
 								{product.inStock.toString()}
 							</span>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">price:</span>
+							<span className="productInfoValue">{product.price}</span>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">color:</span>
+							<ul className="productInfoValue">
+								{product.color.map((item) => {
+									return <li key={item}>{item}</li>;
+								})}
+							</ul>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">size:</span>
+							<ul className="productInfoValue">
+								{product.size.map((item) => {
+									return <li key={item}>{item}</li>;
+								})}
+							</ul>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">Quantity:</span>
+							<div className="productInfoValue">{product.quantity}</div>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">Width:</span>
+							<div className="productInfoValue">{product.width}</div>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">Height:</span>
+							<div className="productInfoValue">{product.height}</div>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">Length:</span>
+							<div className="productInfoValue">{product.length}</div>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">Weight:</span>
+							<div className="productInfoValue">{product.weight}</div>
 						</div>
 					</div>
 				</div>

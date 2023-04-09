@@ -11,11 +11,9 @@ import swal from "sweetalert";
 export default function Offer() {
 	const dispatch = useDispatch();
 	const offer = useSelector((state) => state.offer.offer);
-
 	useEffect(() => {
 		getOffer(dispatch);
 	}, [dispatch]);
-
 	const handleDelete = (id) => {
 		swal({
 			title: "Are you sure?",
@@ -29,7 +27,6 @@ export default function Offer() {
 			}
 		});
 	};
-
 	const columns = [
 		{ field: "_id", headerName: "ID", width: 200 },
 		{
@@ -59,7 +56,7 @@ export default function Offer() {
 				return (
 					<>
 						<Link to={"/offer/" + params.row._id}>
-							<button className="productListEdit">Edit</button>
+							<button className="productListEdit">View & Edit</button>
 						</Link>
 						<DeleteOutline
 							className="productListDelete"
@@ -73,13 +70,12 @@ export default function Offer() {
 
 	return (
 		<div className="productList">
-				<div className="middle-product-create">
-			<h2 className="productAddButton1">Create Offer : </h2>
-			
-			<Link to="/createOffer">
-		<button className="productAddButton">Create</button>
+			<div className="middle-product-create">
+				<h2 className="productAddButton1">Create Offer : </h2>
+				<Link to="/createOffer">
+					<button className="productAddButton">Create</button>
 				</Link>
-				</div>
+			</div>
 			<DataGrid
 				rows={offer}
 				disableSelectionOnClick

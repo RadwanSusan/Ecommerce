@@ -27,83 +27,112 @@ export default function User() {
 	const userId = location.pathname.split("/")[2];
 	const [file, setFile] = useState(null);
 	const dispatch = useDispatch();
-
 	const user = useSelector((state) =>
 		state.userAll.usersAll.find((user) => user._id === userId),
 	);
-
 	const [userUpdate, setUserUpdate] = useState({
 		username: user.username,
 		email: user.email,
 		isAdmin: user.isAdmin,
 	});
-
 	const handleUpdate = (e) => {
 		setUserUpdate({ ...userUpdate, [e.target.name]: e.target.value });
 	};
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		let fileName;
+		if (file !== null) {
+			fileName = file.name;
+		}
 		if (file === null) {
-			swal("Please upload an image");
-			return;
-		}
-		let updatedValue = e.currentTarget.value;
-
-		if (updatedValue === "true" || updatedValue == "false") {
-			updatedValue = JSON.parse(updatedValue);
-		}
-		const fileName = new Date().getTime() + file.name;
-		const storage = getStorage(app);
-		const storageRef = ref(storage, fileName);
-		const uploadTask = uploadBytesResumable(storageRef, file);
-		uploadTask.on(
-			"state_changed",
-			(snapshot) => {
-				const progress =
-					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-				console.log("Upload is " + progress + "% done");
-				switch (snapshot.state) {
-					case "paused":
-						console.log("Upload is paused");
-						break;
-					case "running":
-						console.log("Upload is running");
-						break;
-					default:
+			if (
+				document.querySelector(".UserName").value == "" &&
+				document.querySelector(".Email").value == "" &&
+				document.querySelector(".IsAdmin").value == ""
+			) {
+				swal("Info", "Please update atleast one feild!", "info");
+				return;
+			}
+			let updatedValue = e.currentTarget.value;
+			if (updatedValue === "true" || updatedValue == "false") {
+				updatedValue = JSON.parse(updatedValue);
+			}
+			const fileName = user.img;
+			const formData = new FormData();
+			formData.append("username", userUpdate.username);
+			formData.append("email", userUpdate.email);
+			formData.append("isAdmin", userUpdate.isAdmin);
+			formData.append("img", fileName);
+			try {
+				const user = { ...userUpdate };
+				if (
+					!userUpdate.email.match(
+						/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+					)
+				) {
+					swal("Warning", "Invalid Email , Please try again!", "warning");
+					return;
 				}
-			},
-			(error) => {},
-			() => {
-				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-					const formData = new FormData();
-					formData.append("username", userUpdate.username);
-					formData.append("email", userUpdate.email);
-					formData.append("isAdmin", userUpdate.isAdmin);
-					for (var pair of formData.entries()) {
-						console.log(pair[0] + ", " + pair[1]);
+				updateUser(userId, user, dispatch);
+				swal("User Updated", "", "success");
+			} catch (err) {
+				swal("Error", err.message, "error");
+			}
+		} else {
+			fileName = new Date().getTime() + file.name;
+			const storage = getStorage(app);
+			const storageRef = ref(storage, fileName);
+			const uploadTask = uploadBytesResumable(storageRef, file);
+			uploadTask.on(
+				"state_changed",
+				(snapshot) => {
+					const progress =
+						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+					console.log("Upload is " + progress + "% done");
+					switch (snapshot.state) {
+						case "paused":
+							console.log("Upload is paused");
+							break;
+						case "running":
+							console.log("Upload is running");
+							break;
+						default:
 					}
-					try {
-						const user = { ...userUpdate, img: downloadURL };
-						updateUser(userId, user, dispatch);
-						console.log(
-							`🚀 ~ file: User.jsx:82 ~ getDownloadURL ~ user:`,
-							user,
-						);
-						swal("User Updated Successfully");
-					} catch (err) {
-						console.log(err);
-					}
-				});
-			},
-		);
+				},
+				(error) => {
+					swal("Error", error.message, "error");
+				},
+				() => {
+					getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+						const formData = new FormData();
+						formData.append("username", userUpdate.username);
+						formData.append("email", userUpdate.email);
+						formData.append("isAdmin", userUpdate.isAdmin);
+						formData.append("img", downloadURL);
+						try {
+							const user = { ...userUpdate, img: downloadURL };
+							if (
+								!userUpdate.email.match(
+									/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+								)
+							) {
+								swal("Error", "Invalid Email", "error");
+								return;
+							}
+							updateUser(userId, user, dispatch);
+							swal("User Updated", "", "success");
+						} catch (err) {
+							swal("Error", err.message, "error");
+						}
+					});
+				},
+			);
+		}
 	};
-
 	return (
 		<div className="user">
 			<div className="userTitleContainer">
 				<h1 className="userTitle">Edit User</h1>
-				
 			</div>
 			<div className="userContainer">
 				<div className="userShow">
@@ -154,7 +183,7 @@ export default function User() {
 								<input
 									type="text"
 									placeholder={user.username}
-									className="userUpdateInput"
+									className="userUpdateInput UserName"
 									onChange={handleUpdate}
 									name="username"
 								/>
@@ -173,7 +202,7 @@ export default function User() {
 									type="email"
 									placeholder={user.email}
 									name="email"
-									className="userUpdateInput"
+									className="userUpdateInput Email"
 									onChange={handleUpdate}
 								/>
 							</div>
@@ -184,6 +213,7 @@ export default function User() {
 									name="isAdmin"
 									id="isAdmin"
 									onChange={handleUpdate}
+									className="IsAdmin"
 								>
 									<option value="true">Yes</option>
 									<option value="false">No</option>

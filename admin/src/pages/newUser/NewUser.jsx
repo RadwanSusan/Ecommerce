@@ -13,7 +13,7 @@ import swal from "sweetalert";
 
 export default function NewUser() {
 	const [inputs, setInputs] = useState({});
-	const [file, setFile] = useState(null);
+	let [file, setFile] = useState(null);
 	const dispatch = useDispatch();
 	const handleChange = (e) => {
 		setInputs((prev) => {
@@ -49,17 +49,59 @@ export default function NewUser() {
 			(error) => {},
 			() => {
 				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-					console.log({ ...inputs });
 					const user = { ...inputs, img: downloadURL };
+					console.log(user);
+					const regex =
+						/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+					if (!regex.test(user.email)) {
+						swal(
+							"Warning",
+							"Email is not valid , please enter a valid email",
+							"warning",
+						);
+						return;
+					}
+					const passRegex =
+						/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+					if (!passRegex.test(user.password)) {
+						swal(
+							"Warning",
+							"Password is not valid , please enter at least 6 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character",
+							"warning",
+						);
+						return;
+					}
+					user.email = user.email.toLowerCase();
 					addUser(user, dispatch);
-					swal("User added successfully");
+					swal({
+						title: "Success",
+						text: "User added successfully",
+						icon: "success",
+						button: "Ok",
+						closeOnClickOutside: false,
+						closeOnEsc: false,
+					}).then(() => {
+						setInputs({
+							username: "",
+							email: "",
+							password: "",
+							img: "",
+							isAdmin: false,
+						});
+						setFile(null);
+						file = null;
+						document.querySelector("#file").value = "";
+						document.querySelector(".Email").value = "";
+						document.querySelector(".Password").value = "";
+						document.querySelector(".IsAdmin").value = "no";
+						document.querySelector(".Username").value = "";
+					});
 				});
 			},
 		);
 	};
 	return (
 		<div className="newUser">
-			
 			<h1 className="newUserTitle">New User</h1>
 			<form className="newUserForm">
 				<div className="newUserItem">
@@ -73,6 +115,8 @@ export default function NewUser() {
 				<div className="newUserItem">
 					<label>Username</label>
 					<input
+						id="username"
+						className="Username"
 						name="username"
 						type="text"
 						placeholder="john"
@@ -90,6 +134,8 @@ export default function NewUser() {
 						type="email"
 						placeholder="john@gmail.com"
 						onChange={handleChange}
+						className="Email"
+						id="email"
 					/>
 				</div>
 				<div className="newUserItem">
@@ -99,6 +145,8 @@ export default function NewUser() {
 						type="password"
 						placeholder="password"
 						onChange={handleChange}
+						className="Password"
+						id="password"
 					/>
 				</div>
 				{/* <div className="newUserItem">
@@ -124,7 +172,7 @@ export default function NewUser() {
 					<label>Admin?</label>
 					<select
 						defaultValue={"no"}
-						className="newUserSelect"
+						className="IsAdmin newUserSelect"
 						name="isAdmin"
 						id="isAdmin"
 						onChange={handleChange}

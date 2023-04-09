@@ -15,7 +15,6 @@ import {
 	getDownloadURL,
 } from "firebase/storage";
 import app from "../../firebase";
-
 export default function OfferUser() {
 	const location = useLocation();
 	const offerId = location.pathname.split("/")[2];
@@ -23,11 +22,9 @@ export default function OfferUser() {
 	const [file, setFile] = useState(null);
 	const dispatch = useDispatch();
 	const [pStats, setPStats] = useState([]);
-
 	const offer = useSelector((state) =>
 		state.offer.offer.find((offer) => offer._id === offerId),
 	);
-
 	const MONTHS = useMemo(
 		() => [
 			"Jan",
@@ -48,7 +45,7 @@ export default function OfferUser() {
 	useEffect(() => {
 		const getStats = async () => {
 			try {
-				const res = await userRequest.get("orders/income?pid="+offerId);
+				const res = await userRequest.get("orders/income?pid=" + offerId);
 				const list = res.data.sort((a, b) => {
 					return a._id - b._id;
 				});
@@ -64,7 +61,6 @@ export default function OfferUser() {
 		};
 		getStats();
 	}, [offerId, MONTHS]);
-
 	const [offerUpdateData, setOfferUpdateData] = useState({
 		title: offer.title,
 		desc: offer.desc,
@@ -159,7 +155,6 @@ export default function OfferUser() {
 			);
 		}
 	};
-
 	useEffect(() => {
 		const getStats = async () => {
 			try {
@@ -195,8 +190,16 @@ export default function OfferUser() {
 					</div>
 					<div className="productInfoBottom">
 						<div className="productInfoItem">
-							<span className="productInfoKey">id:</span>
+							<span className="productInfoKey">Offer ID:</span>
+							<span className="productInfoValue"> {offer._id}</span>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">Offer name:</span>
 							<span className="productInfoValue">{offer.title}</span>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">Offer description:</span>
+							<span className="productInfoValue">{offer.desc}</span>
 						</div>
 						<div className="productInfoItem">
 							<span className="productInfoKey">sales:</span>
@@ -207,6 +210,56 @@ export default function OfferUser() {
 							<span className="productInfoValue">
 								{offer.inStock.toString()}
 							</span>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">Size:</span>
+							<ul className="productInfoValue">
+								{offer.size.map((item, index) => (
+									<li key={index}>{item}</li>
+								))}
+							</ul>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">Color:</span>
+							<ul className="productInfoValue">
+								{offer.color.map((item, index) => (
+									<li key={index}>{item}</li>
+								))}
+							</ul>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">OriginalPrice:</span>
+							<span className="productInfoValue">{offer.originalPrice}</span>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">Price:</span>
+							<span className="productInfoValue">{offer.price}</span>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">Quantity Available:</span>
+							<span className="productInfoValue">{offer.quantity}</span>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">
+								Time left for the offer to expire:
+							</span>
+							<span className="productInfoValue">{offer.timeLeft}</span>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">Width:</span>
+							<span className="productInfoValue">{offer.width}</span>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">Height:</span>
+							<span className="productInfoValue">{offer.height}</span>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">Length:</span>
+							<span className="productInfoValue">{offer.length}</span>
+						</div>
+						<div className="productInfoItem">
+							<span className="productInfoKey">Weight:</span>
+							<span className="productInfoValue">{offer.weight}</span>
 						</div>
 					</div>
 				</div>

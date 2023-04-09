@@ -378,7 +378,7 @@ export default function CreateOffer() {
 						/>
 					</div>
 					<div className="addProductItem">
-						<label>Product Width</label>
+						<label>Offer Width</label>
 						<input
 							name="width"
 							type="number"
@@ -388,7 +388,7 @@ export default function CreateOffer() {
 						/>
 					</div>
 					<div className="addProductItem">
-						<label>Product Height</label>
+						<label>Offer Height</label>
 						<input
 							name="height"
 							type="number"
@@ -398,7 +398,7 @@ export default function CreateOffer() {
 						/>
 					</div>
 					<div className="addProductItem">
-						<label>Product Length</label>
+						<label>Offer Length</label>
 						<input
 							name="length"
 							type="number"
@@ -408,7 +408,7 @@ export default function CreateOffer() {
 						/>
 					</div>
 					<div className="addProductItem">
-						<label>Product Weight</label>
+						<label>Offer Weight</label>
 						<input
 							name="weight"
 							type="number"
