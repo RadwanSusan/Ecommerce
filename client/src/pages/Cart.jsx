@@ -100,7 +100,11 @@ const Details = styled.div`
 
 const ProductName = styled.span``;
 
-const ProductId = styled.span``;
+const ProductId = styled.span`
+
+${mobile({ display: "none" })};
+
+`;
 
 const ProductColor = styled.div`
 	width: 20px;
@@ -185,6 +189,9 @@ const Button1 = styled.button`
 	margin-top: 5px;
 	font-size: 12px;
 	border-radius: 10%;
+	${mobile({ width: "100%" })};
+
+	
 `;
 
 const Cart = () => {
@@ -304,6 +311,7 @@ const Cart = () => {
 	useEffect(() => {
 		dispatch(calc());
 	}, [cart.products]);
+
 	return (
 		<Container>
 			<Announcement />
@@ -323,7 +331,8 @@ const Cart = () => {
 				</Top>
 				<Bottom>
 					<Info>
-						{mergedCart.map((product) => (
+						
+						 {mergedCart.map((product) => (
 							<Product>
 								<ProductDetail>
 									<Image src={product.img} />
@@ -359,7 +368,7 @@ const Cart = () => {
 											}}
 										/>
 										<ProductAmount>{product.quantity}</ProductAmount>
-										<Add
+										  <Add
 											className={`AddQuantity${product._id}`}
 											onClick={() => {
 												dispatch(increase(product._id));

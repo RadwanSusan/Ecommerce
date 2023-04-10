@@ -39,6 +39,9 @@ export default function FeaturedInfo() {
 		getIncome();
 	}, []);
 	console.log("income", income);
+	
+
+	
 	// console.log("perc", perc);
 
 	
@@ -51,7 +54,7 @@ export default function FeaturedInfo() {
 					<span className="featuredMoney">${income[1]?.total - income[1]?.totalOrgin }</span>
 					<span className="featuredMoneyRate">
 						%{Math.floor(perc - percOrgin)}{" "}
-						{(revPerc) < 0 ? (
+						{(perc - percOrgin) < 0 ? (
 							<ArrowDownward className="featuredIcon negative" />
 						) : (
 							<ArrowUpward className="featuredIcon" />
