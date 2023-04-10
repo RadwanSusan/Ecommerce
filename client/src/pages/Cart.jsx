@@ -242,9 +242,9 @@ const Cart = () => {
 		return acc;
 	}, []);
 
-	// useEffect(() => {
-	// 	dispatch(calc());
-	// },[cart.products]);
+	useEffect(() => {
+		dispatch(calc());
+	},[cart.products]);
 
 	return (
 		<Container>

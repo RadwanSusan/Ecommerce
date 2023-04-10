@@ -21,11 +21,13 @@ const cartSlice = createSlice({
 			state.total = 20;
 		},
 		increase: (state,action) => {
+			// let prevTotal = state.total;
 			const cartItem = state.products.findIndex((item)=>item._id === action.payload);
 			// cartItem.amount =cartItem.amount + 1;
 			// state.quantity+=1;
 			state.products[cartItem].quantity += 1;
-			state.total  = (state.products[cartItem].quantity * state.products[cartItem].price); 
+			
+			// state.total  = (state.products[cartItem].quantity * state.products[cartItem].price) ; 
 
 		},
 		decrease: (state,action) => {
@@ -33,28 +35,32 @@ const cartSlice = createSlice({
 			// cartItem.amount =cartItem.amount + 1;
 			// state.quantity+=1;
 			// state.total = 40;
-			if(state.products[cartItem].quantity > 1)
+			if(state.products[cartItem].quantity > 0)
 			{
 			state.products[cartItem].quantity -= 1;
-			state.total  = (state.products[cartItem].quantity * state.products[cartItem].price); 
+			// state.total  = (state.products[cartItem].quantity * state.products[cartItem].price); 
 			}
 
 		},
-		// calc:(state , action) =>{
-		// 	let {total } = state.products.reduce((cartTotal,cartItem)=>{
-		// 		const {price,quantity} = cartItem;
-		// 		const itemTotal = price * quantity;
+		calc:(state , action) =>{
+			let {total , quantity } = state.products.reduce((cartTotal,cartItem)=>{
+				const {price,quantity} = cartItem;
+				const itemTotal = price * quantity;
 
-		// 		cartTotal.total += itemTotal;
-		// 		// cartTotal.quantity += quantity;
+				cartTotal.total += itemTotal;
+				cartTotal.quantity += quantity;
 
-		// 		return cartTotal;
-		// 	},{
-		// 		total: state.total,
-		// 	});
+				return cartTotal;
+			},{
+				total: 0,
+				quantity: 0,
 
-		// 	state.total = total;
-		// }
+			});
+			state.total = total;
+			// state.products
+
+		
+		},
 		
 
 
