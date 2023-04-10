@@ -8,6 +8,18 @@ import "./navbar.css";
 
 const Navbar = () => {
 	const quantity = useSelector((state) => state.cart.quantity);
+	const cart = useSelector((state) => state.cart);
+	let newQuantity = 0;
+	cart.products.reduce((acc, curr) => {
+		const existingItem = acc.find((item) => item._id === curr._id);
+		if (existingItem) {
+			existingItem.quantity += curr.quantity;
+		} else {
+			acc.push({ ...curr });
+			++newQuantity;
+		}
+		return acc;
+	}, []);
 	const total = useSelector((state) => state.cart.total);
 	return (
 		<div className="header-middle snipcss-LbbnX">
@@ -85,7 +97,7 @@ const Navbar = () => {
 										<FaShoppingCart />
 										<span className="text">My Cart</span>
 										<span className="counter qty empty">
-											<span className="counter-number">{quantity}</span>
+											<span className="counter-number">{newQuantity}</span>
 											<span className="counter-label"></span>
 										</span>
 										<span className="price-minicart">

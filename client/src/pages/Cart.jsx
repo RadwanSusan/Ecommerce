@@ -1,7 +1,6 @@
 import { Add, Remove } from "@material-ui/icons";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
-// import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import NavbarBottom from "../components/NavbarBottom";
 import { mobile } from "../responsive";
@@ -12,10 +11,9 @@ import StripeCheckout from "react-stripe-checkout";
 import { userRequest } from "../requestMethods";
 import { useHistory } from "react-router";
 import { removeProduct } from "../redux/cartRedux";
-import { increase , decrease , calc} from "../redux/cartRedux";
+import { increase, decrease, calc } from "../redux/cartRedux";
 import { Link } from "react-router-dom";
-
-
+import swal from "sweetalert";
 import { useDispatch } from "react-redux";
 
 const KEY = process.env.REACT_APP_STRIPE;
@@ -190,32 +188,28 @@ const Button1 = styled.button`
 const Cart = () => {
 	const cart = useSelector((state) => state.cart);
 	const total = useSelector((state) => state.total);
-
+	const [product, setProduct] = useState({});
 	const dispatch = useDispatch();
 	const [quantity, setQuantity] = useState(1);
+	const [productGet, setProductGet] = useState({});
+	const [offerGet, setOfferGet] = useState({});
 
 	const cartId = cart.products;
-
 	const [stripeToken, setStripeToken] = useState(null);
 	const history = useHistory();
-
 	const onToken = (token) => {
 		setStripeToken(token);
 	};
-
 	const handleClick2 = (id) => {
 		dispatch(removeProduct(id));
 		// console.log(dispatch(removeProduct(id)));
 	};
 	// const handleClickDec = (id) => {
 	// 	dispatch(decrease(id));
-
 	// };
 	// const handleClickInc = (id) => {
 	// 	dispatch(increase(id));
-
 	// };
-
 	useEffect(() => {
 		const makeRequest = async () => {
 			try {
@@ -223,15 +217,72 @@ const Cart = () => {
 					tokenId: stripeToken.id,
 					amount: 500,
 				});
+				setProduct(res.data);
 				history.push("/success", {
 					stripeData: res.data,
 					products: cart,
 				});
-			} catch {}
+			} catch {
+				swal.fire({
+					icon: "error",
+					title: "Oops...",
+					text: "Something went wrong!",
+					footer: "Please try again",
+				});
+			}
 		};
 		stripeToken && makeRequest();
 	}, [stripeToken, cart.total, history]);
-
+	useEffect(() => {
+		const getProducts = async () => {
+			try {
+				const res = await userRequest.get("/products");
+				setProductGet(res.data);
+			} catch (err) {
+				console.log(err);
+			}
+		};
+		getProducts();
+	}, []);
+	useEffect(() => {
+		const getOffers = async () => {
+			try {
+				const res = await userRequest.get("/offer");
+				setOfferGet(res.data);
+			} catch (err) {
+				console.log(err);
+			}
+		};
+		getOffers();
+	}, []);
+	const handleQuantity = (type, id) => {
+		const product = productGet.find((item) => item._id === id);
+		const offer = offerGet.find((item) => item._id === id);
+		const productOrOffer = product || offer;
+		if (type === "dec") {
+			quantity > 1 && setQuantity(quantity - 1);
+			document.querySelector(".AddQuantity").style.display = "block";
+		} else {
+			if (quantity >= productOrOffer.quantity - 1) {
+				document.querySelector(".AddQuantity").style.display = "none";
+				swal(
+					"Info",
+					"You have exceeded the number of available products!",
+					"info",
+				);
+			} else {
+				setQuantity(quantity + 1);
+				if (document.querySelector(".AddQuantity").style.display == "block") {
+					document.querySelector(".AddQuantity").style.display = "none";
+					swal(
+						"Info",
+						"You have exceeded the number of available products!",
+						"info",
+					);
+				}
+			}
+		}
+	};
 	const mergedCart = cart.products.reduce((acc, curr) => {
 		const existingItem = acc.find((item) => item._id === curr._id);
 		if (existingItem) {
@@ -241,11 +292,9 @@ const Cart = () => {
 		}
 		return acc;
 	}, []);
-
 	useEffect(() => {
 		dispatch(calc());
-	},[cart.products]);
-
+	}, [cart.products]);
 	return (
 		<Container>
 			<Announcement />
@@ -255,7 +304,7 @@ const Cart = () => {
 				<Title>YOUR BAG</Title>
 				<Top>
 					<Link to={"/"}>
-					<TopButton>CONTINUE SHOPPING</TopButton>
+						<TopButton>CONTINUE SHOPPING</TopButton>
 					</Link>
 					<TopTexts>
 						<TopText>Shopping Bag(2)</TopText>
@@ -293,13 +342,20 @@ const Cart = () => {
 								</ProductDetail>
 								<PriceDetail>
 									<ProductAmountContainer>
-										<Remove onClick={()=>{
-											dispatch(decrease(product._id))
-										}} />
+										<Remove
+											onClick={() => {
+												dispatch(decrease(product._id));
+												handleQuantity("dec", product._id);
+											}}
+										/>
 										<ProductAmount>{product.quantity}</ProductAmount>
-										<Add onClick={()=>{
-											dispatch(increase(product._id))
-										}}/>
+										<Add
+											className="AddQuantity"
+											onClick={() => {
+												dispatch(increase(product._id));
+												handleQuantity("inc", product._id);
+											}}
+										/>
 									</ProductAmountContainer>
 									<ProductPrice>
 										$ {product.price * product.quantity}
