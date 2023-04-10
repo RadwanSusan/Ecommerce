@@ -18,7 +18,9 @@ import { useDispatch } from "react-redux";
 
 const KEY = process.env.REACT_APP_STRIPE;
 
-const Container = styled.div``;
+const Container = styled.div`
+	user-select: none;
+`;
 
 const Wrapper = styled.div`
 	padding: 20px;
@@ -233,6 +235,15 @@ const Cart = () => {
 		};
 		stripeToken && makeRequest();
 	}, [stripeToken, cart.total, history]);
+	const mergedCart = cart.products.reduce((acc, curr) => {
+		const existingItem = acc.find((item) => item._id === curr._id);
+		if (existingItem) {
+			existingItem.quantity += curr.quantity;
+		} else {
+			acc.push({ ...curr });
+		}
+		return acc;
+	}, []);
 	useEffect(() => {
 		const getProducts = async () => {
 			try {
@@ -256,42 +267,40 @@ const Cart = () => {
 		getOffers();
 	}, []);
 	const handleQuantity = (type, id) => {
-		const product = productGet.find((item) => item._id === id);
-		const offer = offerGet.find((item) => item._id === id);
-		const productOrOffer = product || offer;
+		const productFind = productGet.find((item) => item._id === id);
+		const offerFind = offerGet.find((item) => item._id === id);
+		const productOrOffer = productFind || offerFind;
+		const productMerged = mergedCart.find((item) => item._id === id);
 		if (type === "dec") {
-			quantity > 1 && setQuantity(quantity - 1);
-			document.querySelector(".AddQuantity").style.display = "block";
+			if (productMerged.quantity <= 1) {
+				document.querySelector(`.DecQuantity${id}`).style.display = "none";
+				swal("Info", "The minimum quantity is 1", "info");
+			} else {
+				if (
+					document.querySelector(`.AddQuantity${id}`).style.display == "none"
+				) {
+					document.querySelector(`.AddQuantity${id}`).style.display = "block";
+				}
+				setQuantity(productMerged.quantity - 1);
+			}
 		} else {
-			if (quantity >= productOrOffer.quantity - 1) {
-				document.querySelector(".AddQuantity").style.display = "none";
+			if (productMerged.quantity >= productOrOffer.quantity - 1) {
+				document.querySelector(`.AddQuantity${id}`).style.display = "none";
 				swal(
 					"Info",
 					"You have exceeded the number of available products!",
 					"info",
 				);
 			} else {
-				setQuantity(quantity + 1);
-				if (document.querySelector(".AddQuantity").style.display == "block") {
-					document.querySelector(".AddQuantity").style.display = "none";
-					swal(
-						"Info",
-						"You have exceeded the number of available products!",
-						"info",
-					);
+				setQuantity(productMerged.quantity + 1);
+				if (
+					document.querySelector(`.DecQuantity${id}`).style.display == "none"
+				) {
+					document.querySelector(`.DecQuantity${id}`).style.display = "block";
 				}
 			}
 		}
 	};
-	const mergedCart = cart.products.reduce((acc, curr) => {
-		const existingItem = acc.find((item) => item._id === curr._id);
-		if (existingItem) {
-			existingItem.quantity += curr.quantity;
-		} else {
-			acc.push({ ...curr });
-		}
-		return acc;
-	}, []);
 	useEffect(() => {
 		dispatch(calc());
 	}, [cart.products]);
@@ -343,6 +352,7 @@ const Cart = () => {
 								<PriceDetail>
 									<ProductAmountContainer>
 										<Remove
+											className={`DecQuantity${product._id}`}
 											onClick={() => {
 												dispatch(decrease(product._id));
 												handleQuantity("dec", product._id);
@@ -350,7 +360,7 @@ const Cart = () => {
 										/>
 										<ProductAmount>{product.quantity}</ProductAmount>
 										<Add
-											className="AddQuantity"
+											className={`AddQuantity${product._id}`}
 											onClick={() => {
 												dispatch(increase(product._id));
 												handleQuantity("inc", product._id);

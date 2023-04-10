@@ -36,7 +36,7 @@ const cartSlice = createSlice({
 			// cartItem.amount =cartItem.amount + 1;
 			// state.quantity+=1;
 			// state.total = 40;
-			if (state.products[cartItem].quantity > 0) {
+			if (state.products[cartItem].quantity > 1) {
 				state.products[cartItem].quantity -= 1;
 				// state.total  = (state.products[cartItem].quantity * state.products[cartItem].price);
 			}
