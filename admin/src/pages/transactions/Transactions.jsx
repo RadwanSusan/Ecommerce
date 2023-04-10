@@ -32,6 +32,8 @@ export default function Transactions() {
           
           
           <th className="widgetLgTh">Status</th>
+          <th className="widgetLgTh">View</th>
+
         </tr>
         {orders.map((order) => (
           <tr className="widgetLgTr" key={order._id}>
@@ -46,6 +48,10 @@ export default function Transactions() {
             <td className="widgetLgStatus">
               <Button type={order.status} />
             </td>
+            <td className="widgetLgAmount">
+              <button>view</button>
+              </td>
+
           </tr>
         ))}
       </table>

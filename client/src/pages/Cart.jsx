@@ -12,6 +12,10 @@ import StripeCheckout from "react-stripe-checkout";
 import { userRequest } from "../requestMethods";
 import { useHistory } from "react-router";
 import { removeProduct } from "../redux/cartRedux";
+import { increase , decrease , calc} from "../redux/cartRedux";
+import { Link } from "react-router-dom";
+
+
 import { useDispatch } from "react-redux";
 
 const KEY = process.env.REACT_APP_STRIPE;
@@ -238,6 +242,10 @@ const Cart = () => {
 		return acc;
 	}, []);
 
+	// useEffect(() => {
+	// 	dispatch(calc());
+	// },[cart.products]);
+
 	return (
 		<Container>
 			<Announcement />
@@ -246,7 +254,9 @@ const Cart = () => {
 			<Wrapper>
 				<Title>YOUR BAG</Title>
 				<Top>
+					<Link to={"/"}>
 					<TopButton>CONTINUE SHOPPING</TopButton>
+					</Link>
 					<TopTexts>
 						<TopText>Shopping Bag(2)</TopText>
 						<TopText>Your Wishlist (0)</TopText>
@@ -283,9 +293,13 @@ const Cart = () => {
 								</ProductDetail>
 								<PriceDetail>
 									<ProductAmountContainer>
-										<Remove />
+										<Remove onClick={()=>{
+											dispatch(decrease(product._id))
+										}} />
 										<ProductAmount>{product.quantity}</ProductAmount>
-										<Add />
+										<Add onClick={()=>{
+											dispatch(increase(product._id))
+										}}/>
 									</ProductAmountContainer>
 									<ProductPrice>
 										$ {product.price * product.quantity}

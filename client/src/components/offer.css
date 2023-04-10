@@ -1480,13 +1480,14 @@
 			/* position: relative; */
 			position: absolute;
 			top: 14%;
-			left: 25%;
+			left: 17%;
 			z-index: 10;
 			margin: 190px auto 0;
 			max-width: 800px;
 			min-height: 600px;
 			box-shadow: 0 5px 21px rgba(0, 0, 0, 0.08);
 			background-color: #fff;
+			display: none;
 		  }
 		  
 		  /* LEFT SIDE */
@@ -1496,7 +1497,7 @@
 			min-height: 600px;
 		  }
 		  
-		  .productCard_brendBlock {
+		  /* .productCard_brendBlock {
 			width: 100%;
 			height: 75px;
 			position: absolute;
@@ -1518,7 +1519,7 @@
 			left: 50%;
 			transform: translate(-50%, -50%);
 		  }
-		  
+		   */
 		  .sliderBlock {
 			position: relative;
 			height: 100%;
@@ -2001,13 +2002,22 @@
 			text-decoration: none;
 		  }
 		  .row11 {
-			display: none;
-			/* display: flex;
+			/* display: none; */
+			display: flex;
 			justify-content: center;
-			align-items: center; */
+			align-items: center;
 		  }
-		  .columns {
+
+		  .columns11 {
 			flex: 1;
+		  }
+		  .AiFillCloseCircle {
+			display: flex;
+			justify-content: end;
+			margin-right: 10px;
+			cursor: pointer;
+			font-size: 22px;
+            margin-top: 10px;
 		  }
 
 

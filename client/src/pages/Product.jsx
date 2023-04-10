@@ -10,6 +10,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethods";
 import { addProduct } from "../redux/cartRedux";
+
 import { useDispatch } from "react-redux";
 import swal from "sweetalert";
 

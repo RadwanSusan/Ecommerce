@@ -11,6 +11,8 @@ import { useEffect } from "react";
 import axios from "axios";
 import { categoriesOffer } from "../data";
 import { Link } from "react-router-dom";
+import { AiFillCloseCircle } from "react-icons/ai";
+
 
 const Wrapper1 = styled.div`
 	height: 100%;
@@ -105,6 +107,20 @@ const Offer = () => {
         var up = document.getElementsByClassName('block_quantity__up')[0],
             down = document.getElementsByClassName('block_quantity__down')[0],
             input = document.getElementsByClassName('block_quantity__number')[0];
+            // let show_cart = document.querySelectorAll('show-cart');
+
+			document.querySelectorAll(".show-cart").forEach((item) =>
+		item.addEventListener("click", (e) => {
+		document.querySelector(".productCard_block").style.display = "block";	
+		}),
+	);
+
+
+	document.querySelectorAll(".AiFillCloseCircle").forEach((item) =>
+		item.addEventListener("click", (e) => {
+		document.querySelector(".productCard_block").style.display = "none";	
+		}),
+	);
     
         function getValue() {
             return parseInt(input.value);
@@ -124,6 +140,7 @@ const Offer = () => {
     
     
     };
+
 
 
 
@@ -164,13 +181,9 @@ const Offer = () => {
 		<div className="column small-centered">
 			<div className="productCard_block">
 				<div className="row11">
-					<div className="small-12 large-6 columns">
+					<div className="small-12 large-6 columns11">
 						<div className="productCard_leftSide clearfix">
-							<div className="productCard_brendBlock">
-								<a className="productCard_brendBlock__imageBlock" href="#">
-									<img src="https://github.com/BlackStar1991/CardProduct/blob/master/app/img/brtendsLogos/logo_sennheiser.png?raw=true" alt="sennheiser" />
-								</a>
-							</div>
+							
 
 							<div className="sliderBlock">
 								<ul className="sliderBlock_items">
@@ -215,7 +228,11 @@ const Offer = () => {
 							</div>
 						</div>
 					</div>
-					<div className="small-12 large-6 columns">
+					<div className="small-12 large-6 columns11">
+						<div className="AiFillCloseCircle">
+						<AiFillCloseCircle  />
+
+						</div>
 						<div className="productCard_rightSide">
 							<div className="block_specification">
 								<div className="block_specification__specificationShow">
@@ -507,7 +524,7 @@ const Offer = () => {
 																	title="Quick View"
 																	href=""
 																>
-																	<AiOutlineEye  />
+																	<AiOutlineEye className="show-cart" offer-id={data._id}  />
 																	<span>Quick View</span>
 																</Link>
 															</div>
@@ -557,7 +574,7 @@ const Offer = () => {
 																</div>
 																<div className="product-item-actions">
 																	<div className="actions-primary">
-																		<Link to={`/product/${data._id}`}>
+																		<Link to={``}>
 																			<button
 																				className="action tocart primary"
 																				data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/checkout\/cart\/add\/uenc\/aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo\/product\/13\/","data":{"product":"13","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'

@@ -72,7 +72,8 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
 router.get("/income", verifyTokenAndAdmin, async (req, res) => {
 	const productId = req.query.pid;
 	const date = new Date();
-	const lastMonth = new Date(date.setMonth(date.getMonth() - 3));
+	const lastMonth = new Date(date.setMonth(date.getMonth() -3));
+	
 	const previousMonth = new Date(new Date().setMonth(lastMonth.getMonth() -1));
   
 	try {
@@ -89,12 +90,16 @@ router.get("/income", verifyTokenAndAdmin, async (req, res) => {
 		  $project: {
 			month: { $month: "$createdAt" },
 			sales: "$amount",
+			salesOrgin: "$amountOrgin",
+
 		  },
 		},
 		{
 		  $group: {
 			_id: "$month",
 			total: { $sum: "$sales" },
+			totalOrgin: { $sum: "$salesOrgin" },
+
 		  },
 		},
 	  ]);
@@ -103,4 +108,6 @@ router.get("/income", verifyTokenAndAdmin, async (req, res) => {
 	  res.status(500).json(err);
 	}
   });
+
+  
 module.exports = router;

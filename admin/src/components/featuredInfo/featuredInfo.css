@@ -51,18 +51,16 @@
 }
 @media only screen and (max-width: 600px) {
     .featured {
-      width: 30%;
+      /* width: 30%; */
+      /* width: 37%; */
+    display: flex;
+    flex-direction: column;
     }
     .featuredItem {
         padding: 20px;
     }
     .chart {
-        width: 87%;
+        /* width: 87%; */
+        display: none;
     }
-    .homeWidgets {
-        flex-direction: column;
-    }
-    .widgetSm {
-        margin-right: 0px !important;
-    }
-  }
+}
