@@ -8,6 +8,8 @@ export default function FeaturedInfo() {
 	const [perc, setPerc] = useState(0);
 	const [percOrgin, setPercOrgin] = useState(0);
 	const [revPerc, setRevSetPerc] = useState(0);
+	let lastindex =0 ;
+	
 
 
 
@@ -17,16 +19,16 @@ export default function FeaturedInfo() {
 
 				const res = await userRequest.get("orders/income");
 				res.data.sort((a, b) => a._id - b._id);
-				let lastindex = res.data.length - 1;
-				console.log(lastindex );
-				setIncome(res.data);
-				console.log(res.data);
-				setPerc((res.data[lastindex].total * 100) / res.data[lastindex-1].total - 100);
-				setPercOrgin((res.data[lastindex].totalOrgin * 100) / res.data[lastindex - 1].totalOrgin - 100);
-				setRevSetPerc( res.data[lastindex].total - res.data[lastindex].totalOrgin);
-				console.log(perc);
-				console.log(percOrgin);
-				console.log(revPerc);
+				//  lastindex = res.data.length - 1;
+				
+				setIncome(res.data.slice(-2));
+				console.log(res.data[1].total * 100 );
+				console.log((res.data[1].total * 100) / res.data[0].total - 100);
+				
+				// console.log(res.data.slice(-2));
+				setPerc((res.data[1].total * 100) / res.data[0].total - 100);
+				setPercOrgin((res.data[1].totalOrgin * 100) / res.data[0].totalOrgin - 100);
+				setRevSetPerc( res.data[1].total - res.data[1].totalOrgin);
 
 				
 				
@@ -37,7 +39,9 @@ export default function FeaturedInfo() {
 		getIncome();
 	}, []);
 	console.log("income", income);
-	console.log("perc", perc);
+	// console.log("perc", perc);
+
+	
 
 	return (
 		<div className="featured">
@@ -46,7 +50,7 @@ export default function FeaturedInfo() {
 				<div className="featuredMoneyContainer">
 					<span className="featuredMoney">${income[1]?.total - income[1]?.totalOrgin }</span>
 					<span className="featuredMoneyRate">
-						{/* %{Math.floor(perc - percOrgin)}{" "} */}
+						%{Math.floor(perc - percOrgin)}{" "}
 						{(revPerc) < 0 ? (
 							<ArrowDownward className="featuredIcon negative" />
 						) : (
