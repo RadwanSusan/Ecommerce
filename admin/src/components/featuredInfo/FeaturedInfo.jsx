@@ -14,12 +14,23 @@ export default function FeaturedInfo() {
 	useEffect(() => {
 		const getIncome = async () => {
 			try {
+
 				const res = await userRequest.get("orders/income");
+				res.data.sort((a, b) => a._id - b._id);
+				let lastindex = res.data.length - 1;
+				console.log(lastindex );
 				setIncome(res.data);
 				console.log(res.data);
-				setPerc((res.data[1].total * 100) / res.data[0].total - 100);
-				setPercOrgin((res.data[1].totalOrgin * 100) / res.data[0].totalOrgin - 100);
-				setRevSetPerc( res.data[1].total - res.data[1].totalOrgin);
+				setPerc((res.data[lastindex].total * 100) / res.data[lastindex-1].total - 100);
+				setPercOrgin((res.data[lastindex].totalOrgin * 100) / res.data[lastindex - 1].totalOrgin - 100);
+				setRevSetPerc( res.data[lastindex].total - res.data[lastindex].totalOrgin);
+				console.log(perc);
+				console.log(percOrgin);
+				console.log(revPerc);
+
+				
+				
+
 
 			} catch {}
 		};
