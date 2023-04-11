@@ -1,4 +1,4 @@
-import { Add, Remove } from "@material-ui/icons";
+import { Add, Check, Remove } from "@material-ui/icons";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Navbar from "../components/Navbar";
@@ -11,7 +11,7 @@ import StripeCheckout from "react-stripe-checkout";
 import { userRequest } from "../requestMethods";
 import { useHistory } from "react-router";
 import { removeProduct } from "../redux/cartRedux";
-import { increase, decrease, calc } from "../redux/cartRedux";
+import { increase, decrease, calc, reset } from "../redux/cartRedux";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import { useDispatch } from "react-redux";
@@ -191,7 +191,7 @@ const Button1 = styled.button`
 	border-radius: 10%;
 	${mobile({ width: "100%" })};
 
-	
+
 `;
 
 const Cart = () => {
@@ -200,9 +200,8 @@ const Cart = () => {
 	const [product, setProduct] = useState({});
 	const dispatch = useDispatch();
 	const [quantity, setQuantity] = useState(1);
-	const [productGet, setProductGet] = useState({});
-	const [offerGet, setOfferGet] = useState({});
-
+	let [productGet, setProductGet] = useState({});
+	let [offerGet, setOfferGet] = useState({});
 	const cartId = cart.products;
 	const [stripeToken, setStripeToken] = useState(null);
 	const history = useHistory();
@@ -292,22 +291,52 @@ const Cart = () => {
 			}
 		} else {
 			if (productMerged.quantity >= productOrOffer.quantity - 1) {
-				document.querySelector(`.AddQuantity${id}`).style.display = "none";
+				dispatch(reset(id));
 				swal(
 					"Info",
-					"You have exceeded the number of available products!",
+					"You have exceeded the number of available products!, the quantity will be reset",
 					"info",
 				);
 			} else {
-				setQuantity(productMerged.quantity + 1);
-				if (
-					document.querySelector(`.DecQuantity${id}`).style.display == "none"
-				) {
-					document.querySelector(`.DecQuantity${id}`).style.display = "block";
+				if (productMerged.quantity + 1 > productOrOffer.quantity - 1) {
+					setQuantity(1);
+					document.querySelector(`.AddQuantity${id}`).style.display = "none";
+					swal(
+						"Info",
+						"You have exceeded the number of available products!",
+						"info",
+					);
+				} else {
+					setQuantity(productMerged.quantity + 1);
+					if (
+						document.querySelector(`.DecQuantity${id}`).style.display == "none"
+					) {
+						document.querySelector(`.DecQuantity${id}`).style.display = "block";
+					}
 				}
 			}
 		}
 	};
+	// const CheckStyle = (id) => {
+	// 	const productFind = productGet.find((item) => item._id === id);
+	// 	const offerFind = offerGet.find((item) => item._id === id);
+	// 	const productOrOffer = productFind || offerFind;
+	// 	const productMerged = mergedCart.find((item) => item._id === id);
+	// 	console.log(
+	// 		`🚀 ~ file: Cart.jsx:321 ~ CheckStyle ~ productMerged.quantity:`,
+	// 		productMerged.quantity,
+	// 	);
+	// 	console.log(
+	// 		`🚀 ~ file: Cart.jsx:321 ~ CheckStyle ~ productOrOffer.quantity:`,
+	// 		productOrOffer.quantity,
+	// 	);
+	// 	if (productMerged.quantity < productOrOffer.quantity) {
+	// 		return false;
+	// 	} else {
+	// 		return true;
+	// 	}
+	// };
+
 	useEffect(() => {
 		dispatch(calc());
 	}, [cart.products]);
@@ -331,7 +360,7 @@ const Cart = () => {
 				</Top>
 				<Bottom>
 					<Info>
-						
+
 						 {mergedCart.map((product) => (
 							<Product>
 								<ProductDetail>
@@ -368,13 +397,25 @@ const Cart = () => {
 											}}
 										/>
 										<ProductAmount>{product.quantity}</ProductAmount>
-										  <Add
+										<Add
 											className={`AddQuantity${product._id}`}
 											onClick={() => {
 												dispatch(increase(product._id));
 												handleQuantity("inc", product._id);
 											}}
+											style={{
+												display: "none",
+											}}
 										/>
+										{/* )) */}
+										{/* } */}
+										{/* <Add
+											className={`AddQuantity${product._id}`}
+											onClick={() => {
+												dispatch(increase(product._id));
+												handleQuantity("inc", product._id);
+											}}
+										/> */}
 									</ProductAmountContainer>
 									<ProductPrice>
 										$ {product.price * product.quantity}

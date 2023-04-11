@@ -8,50 +8,38 @@ export default function FeaturedInfo() {
 	const [perc, setPerc] = useState(0);
 	const [percOrgin, setPercOrgin] = useState(0);
 	const [revPerc, setRevSetPerc] = useState(0);
-	let lastindex =0 ;
-	
-
-
+	let lastindex = 0;
 
 	useEffect(() => {
 		const getIncome = async () => {
 			try {
-
 				const res = await userRequest.get("orders/income");
 				res.data.sort((a, b) => a._id - b._id);
 				//  lastindex = res.data.length - 1;
-				
 				setIncome(res.data.slice(-2));
-				console.log(res.data[1].total * 100 );
+				console.log(res.data[1].total * 100);
 				console.log((res.data[1].total * 100) / res.data[0].total - 100);
-				
 				// console.log(res.data.slice(-2));
 				setPerc((res.data[1].total * 100) / res.data[0].total - 100);
-				setPercOrgin((res.data[1].totalOrgin * 100) / res.data[0].totalOrgin - 100);
-				setRevSetPerc( res.data[1].total - res.data[1].totalOrgin);
-
-				
-				
-
-
+				setPercOrgin(
+					(res.data[1].totalOrgin * 100) / res.data[0].totalOrgin - 100,
+				);
+				setRevSetPerc(res.data[1].total - res.data[1].totalOrgin);
 			} catch {}
 		};
 		getIncome();
 	}, []);
 	console.log("income", income);
-	
-
-	
 	// console.log("perc", perc);
-
-	
 
 	return (
 		<div className="featured">
 			<div className="featuredItem">
 				<span className="featuredTitle">Revanue</span>
 				<div className="featuredMoneyContainer">
-					<span className="featuredMoney">${income[1]?.total - income[1]?.totalOrgin }</span>
+					<span className="featuredMoney">
+						${income[1]?.total - income[1]?.totalOrgin}
+					</span>
 					<span className="featuredMoneyRate">
 						%{Math.floor(perc - percOrgin)}{" "}
 						{(perc - percOrgin) < 0 ? (
@@ -68,7 +56,7 @@ export default function FeaturedInfo() {
 				<div className="featuredMoneyContainer">
 					<span className="featuredMoney">${income[1]?.total}</span>
 					<span className="featuredMoneyRate">
-					%{Math.floor(perc)}{" "}
+						%{Math.floor(perc)}{" "}
 						{perc < 0 ? (
 							<ArrowDownward className="featuredIcon negative" />
 						) : (
@@ -83,7 +71,7 @@ export default function FeaturedInfo() {
 				<div className="featuredMoneyContainer">
 					<span className="featuredMoney">${income[1]?.totalOrgin}</span>
 					<span className="featuredMoneyRate">
-					%{Math.floor(percOrgin)}{" "}
+						%{Math.floor(percOrgin)}{" "}
 						{percOrgin < 0 ? (
 							<ArrowDownward className="featuredIcon negative" />
 						) : (
