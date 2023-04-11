@@ -403,9 +403,7 @@ const Cart = () => {
 												dispatch(increase(product._id));
 												handleQuantity("inc", product._id);
 											}}
-											style={{
-												display: "none",
-											}}
+											
 										/>
 										{/* )) */}
 										{/* } */}

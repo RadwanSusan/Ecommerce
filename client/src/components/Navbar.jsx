@@ -2,6 +2,7 @@ import React from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import LogoImg from "../Media/Img/SvgLogo.svg";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./navbar.css";
@@ -20,7 +21,16 @@ const Navbar = () => {
 		}
 		return acc;
 	}, []);
+	const [value, setValue] = useState('')
 	const total = useSelector((state) => state.cart.total);
+	const onChange = (event) => {
+		setValue(event.target.value);
+	}
+
+	const onSearch = () => {
+		//our api call
+		console.log("searching...");
+	}
 	return (
 		<div className="header-middle snipcss-LbbnX">
 			<div className="container">
@@ -44,19 +54,18 @@ const Navbar = () => {
 								className="block block-search search-pro"
 							>
 								<div className="block block-content">
-									<form
+									<div
 										className="form minisearch active"
 										id="searchbox_mini_form"
-										action=""
-										method="get"
+										
 									>
 										<div className="field search">
 											<div className="control">
 												<select className="cat searchbox-cat" name="cat">
 													<option value="">All Categories</option>
-													<option value="">- - Smartphone &amp; Tablet</option>
-													<option value="">- - Accessories for iPhone</option>
-													<option value="">- - Accessories for iPad</option>
+													<option value="">- - Jeans</option>
+													<option value="">- - Coat</option>
+													<option value="">- - Women</option>
 												</select>
 												<input
 													id="searchbox"
@@ -70,6 +79,8 @@ const Navbar = () => {
 													aria-expanded="true"
 													aria-autocomplete="both"
 													autocomplete="off"
+													value={value}
+													onChange={onChange}
 												/>
 												<div
 													id="searchbox_autocomplete"
@@ -79,16 +90,17 @@ const Navbar = () => {
 										</div>
 										<div className="actions">
 											<button
-												type="submit"
+												// type="submit"
 												title="Search"
-												className="btn-searchbox"
-												disabled=""
+												// className="btn-searchbox"
+												// disabled=""
+												onClick={()=>onSearch(value)}
 											>
 												<FaSearch />
 												<span>Search</span>
 											</button>
 										</div>
-									</form>
+									</div>
 								</div>
 							</div>
 							<div className="minicart-header" data-move="minicart-mobile">
