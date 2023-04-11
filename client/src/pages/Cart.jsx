@@ -101,9 +101,7 @@ const Details = styled.div`
 const ProductName = styled.span``;
 
 const ProductId = styled.span`
-
-${mobile({ display: "none" })};
-
+	${mobile({ display: "none" })};
 `;
 
 const ProductColor = styled.div`
@@ -190,8 +188,6 @@ const Button1 = styled.button`
 	font-size: 12px;
 	border-radius: 10%;
 	${mobile({ width: "100%" })};
-
-
 `;
 
 const Cart = () => {
@@ -360,8 +356,7 @@ const Cart = () => {
 				</Top>
 				<Bottom>
 					<Info>
-
-						 {mergedCart.map((product) => (
+						{mergedCart.map((product) => (
 							<Product>
 								<ProductDetail>
 									<Image src={product.img} />
@@ -403,7 +398,6 @@ const Cart = () => {
 												dispatch(increase(product._id));
 												handleQuantity("inc", product._id);
 											}}
-											
 										/>
 										{/* )) */}
 										{/* } */}

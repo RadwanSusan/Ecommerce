@@ -130,14 +130,21 @@ const Button = styled.button`
 		background-color: #f8f4f4;
 	}
 `;
+
 const Product = () => {
-	const location = useLocation();
-	const id = location.pathname.split("/")[2];
 	const [product, setProduct] = useState({});
 	const [quantity, setQuantity] = useState(1);
 	const [color, setColor] = useState("");
 	const [size, setSize] = useState("");
+	const [cart, setCart] = useState([]);
 	const dispatch = useDispatch();
+	const location = useLocation();
+	const id = location.pathname.split("/")[2];
+	let userId = localStorage.getItem("persist:root");
+	userId = JSON.parse(userId);
+	userId = userId.user;
+	userId = JSON.parse(userId);
+	userId = userId.currentUser._id;
 	useEffect(() => {
 		const getProduct = async () => {
 			try {
@@ -150,6 +157,19 @@ const Product = () => {
 		};
 		getProduct();
 	}, [id]);
+	useEffect(() => {
+		const getCart = async () => {
+			try {
+				console.log(`🚀 ~ file: Product.jsx:164 ~ getCart ~ userId:`, userId);
+				let res = await publicRequest.get("/carts/find/" + userId);
+				console.log(`🚀 ~ file: Product.jsx:166 ~ getCart ~ res:`, res);
+				setCart(res.data);
+			} catch (err) {
+				console.log(err);
+			}
+		};
+		getCart();
+	}, [userId]);
 	document.querySelectorAll(".Color").forEach((item) =>
 		item.addEventListener("click", (e) => {
 			document.querySelectorAll(".Color").forEach((item2) => {
