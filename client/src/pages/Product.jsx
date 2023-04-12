@@ -143,7 +143,6 @@ const Product = () => {
 	let userId = localStorage.getItem("persist:root");
 	userId = JSON.parse(userId);
 	userId = userId.user;
-	console.log(`🚀 ~ file: Product.jsx:146 ~ Product ~ userId:`, userId);
 	userId = JSON.parse(userId);
 	userId = userId.currentUser._id;
 	useEffect(() => {
@@ -195,16 +194,41 @@ const Product = () => {
 			}
 		}
 	};
-	window.onload = () => {
-		if (product.quantity === 0) {
-			document.querySelector(".AddCart").disabled = true;
+	let cartProducts = JSON.parse(localStorage.getItem("persist:root"));
+	cartProducts = cartProducts.cart;
+	cartProducts = JSON.parse(cartProducts);
+	const mergedCart = cartProducts.products.reduce((acc, curr) => {
+		const existingItem = acc.find((item) => item._id === curr._id);
+		if (existingItem) {
+			existingItem.quantity += curr.quantity;
+		} else {
+			acc.push({ ...curr });
 		}
+		return acc;
+	}, []);
+	const chekAvail = () => {
+		let newQuantity = mergedCart.map((item) => {
+			if (item._id === product._id) {
+				return {
+					quantity: product.quantity - item.quantity,
+				};
+			}
+		});
+		newQuantity = newQuantity.filter((item) => item !== undefined);
+		if (newQuantity.length > 0) {
+			if (newQuantity[0].quantity < 1) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+		return true;
 	};
 	const handleClick = () => {
 		dispatch(addProduct({ ...product, quantity, color, size }));
 		swal("Success", "Product added to cart!", "success");
 		product.quantity -= quantity;
-		if (product.quantity === 0) {
+		if (product.quantity < 1) {
 			document.querySelector(".AddCart").disabled = true;
 		}
 		setQuantity(1);
@@ -249,9 +273,15 @@ const Product = () => {
 							<Amount>{quantity}</Amount>
 							<Add onClick={() => handleQuantity("inc")} />
 						</AmountContainer>
-						<Button className="AddCart" onClick={handleClick}>
-							ADD TO CART
-						</Button>
+						{chekAvail() ? (
+							<Button className="AddCart" onClick={handleClick}>
+								ADD TO CART
+							</Button>
+						) : (
+							<Button className="AddCart" disabled>
+								ADD TO CART
+							</Button>
+						)}
 					</AddContainer>
 				</InfoContainer>
 			</Wrapper>
