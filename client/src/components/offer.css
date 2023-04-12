@@ -497,13 +497,13 @@
 		font-size: 24px;
 	}
 
-	.owl-theme .owl-nav [class*="owl-"]:hover {
+	/* .owl-theme .owl-nav [class*="owl-"]:hover {
 		background: #869791;
 		color: #222222;
 		text-decoration: none;
 		background-color: #f0cba4;
 		border-color: #f0cba4;
-	}
+	} */
 
 	.owl-carousel .owl-nav .owl-next {
 		cursor: pointer;
@@ -910,6 +910,8 @@
 		overflow: visible;
 		text-transform: none;
 		outline: none !important;
+		background-color: white;
+		border: none;
 	}
 
 	button,
@@ -955,11 +957,11 @@
 		color: #222;
 	}
 
-	button:hover {
+	/* button:hover {
 		background: #e2e2e2;
 		border: 1px solid #cdcdcd;
 		color: #555;
-	}
+	} */
 
 	.action.primary:hover {
 		background: #333;
@@ -1414,7 +1416,7 @@
 
 
 
-		
+
 		
 
 		body {
@@ -1499,15 +1501,20 @@
 		  .productCard_block {
 			/* position: relative; */
 			position: absolute;
-			top: 14%;
-			left: 17%;
+			/* top: 14%; */
+			/* left: 17%; */
 			z-index: 1000;
-			margin: 190px auto 0;
+			/* margin: 190px auto 0; */
 			max-width: 800px;
 			min-height: 600px;
 			box-shadow: 0 5px 21px rgba(0, 0, 0, 0.08);
 			background-color: #fff;
 			display: none;
+			position: absolute;
+				left: 50%;
+				/* transition: auto; */
+				transform: translateX(-50%);
+				/* top: 50%; */
 		  }
 		  
 		  /* LEFT SIDE */
@@ -1972,6 +1979,7 @@
 		  .block_quantity__button:hover,
 		  .block_quantity__button:focus {
 			background-color: transparent;
+			border: none;
 		  }
 		  .block_quantity__button:hover:before,
 		  .block_quantity__button:focus:before {
