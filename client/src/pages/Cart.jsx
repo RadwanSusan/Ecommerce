@@ -291,7 +291,6 @@ const Cart = () => {
 		const productMerged = mergedCart.find((item) => item._id === id);
 		if (type === "dec") {
 			if (productMerged.quantity <= 1) {
-				document.querySelector(`.DecQuantity${id}`).style.display = "none";
 				swal("Info", "The minimum quantity is 1", "info");
 			} else {
 				if (
