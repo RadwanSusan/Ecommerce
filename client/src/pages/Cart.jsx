@@ -225,6 +225,7 @@ const Cart = () => {
 			try {
 				const res = await userRequest.get("/products");
 				setAllProducts(res.data);
+				setProductGet(res.data);
 			} catch (err) {
 				console.log("🚀 ~ file: Cart.jsx:209 ~ getAllProducts ~ err:", err);
 			}
@@ -234,6 +235,7 @@ const Cart = () => {
 			try {
 				const res = await userRequest.get("/offer");
 				setAllOffers(res.data);
+				setOfferGet(res.data);
 			} catch (err) {
 				console.log("🚀 ~ file: Cart.jsx:216 ~ getAllOffers ~ err:", err);
 			}
