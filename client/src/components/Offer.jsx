@@ -376,10 +376,10 @@ const Offer = () => {
 															value='1'
 														/>
 														<button className='block_quantity__button block_quantity__up'>
-															<AiOutlineArrowDown className='AiOutlineArrowUpanddown' />
+															<BsArrowDownCircle className='AiOutlineArrowUpanddown' />
 														</button>
 														<button className='block_quantity__button block_quantity__down'>
-															<AiOutlineArrowUp className='AiOutlineArrowUpanddown' />
+															<BsArrowUpCircle className='AiOutlineArrowUpanddown' />
 														</button>
 													</div>
 												</div>
