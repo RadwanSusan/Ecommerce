@@ -586,7 +586,7 @@
 
 	.group-deal-1 .product-item-info .image-product {
 		float: left;
-		width: 50.84%;
+		/* width: 50.84%; */
 		position: relative;
 	}
 
@@ -1281,8 +1281,8 @@
 }
 
 #style-FUF77.style-FUF77 {
-	transform: translate3d(0px, 0px, 0px);
-	transition: all 0s ease 0s;
+	/* transform: translate3d(0px, 0px, 0px);
+	transition: all 0s ease 0s; */
 	width: 2460px;
 }
 
@@ -1292,9 +1292,12 @@
 }
 
 #style-j6oeg.style-j6oeg {
-	width: 300px;
+	width: 250px;
+	height: 250px;
 }
-
+#style-gKGpW {
+	border-radius: 10px;
+}
 #style-gKGpW.style-gKGpW {
 	padding-bottom: 100%;
 }
@@ -1392,9 +1395,26 @@
 		.product-item-info
 		.product-item-details
 		.product-item-actions
-		.actions-secondary {
+		 {
 			margin-top: 10px;
 		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
 		
 
 		body {
@@ -1481,7 +1501,7 @@
 			position: absolute;
 			top: 14%;
 			left: 17%;
-			z-index: 10;
+			z-index: 1000;
 			margin: 190px auto 0;
 			max-width: 800px;
 			min-height: 600px;
@@ -1577,14 +1597,12 @@
 			width: 24px;
 			height: 24px;
 			cursor: pointer;
-			border: 1px solid #536dfe;
+			/* border: 1px solid #536dfe; */
 			transition: 300ms all;
-			background-color: #0d2660;
+			/* background-color: #0d2660; */
 			border-radius: 50%;
 		  }
-		  .sliderBlock_controls__arrow:hover {
-			background-color: #536dfe;
-		  }
+		  
 		  .sliderBlock_controls__arrow i {
 			position: absolute;
 			width: 100%;
@@ -1593,11 +1611,12 @@
 			left: 50%;
 			margin-left: -50%;
 			margin-top: -50%;
-			color: #fff;
+			/* color: #fff; */
 			transition: 300ms all;
 			font-weight: bold;
 			text-align: center;
 			font-size: 20px;
+			cursor: pointer;
 		  }
 		  .sliderBlock_controls__arrowBackward {
 			float: left;
@@ -1624,7 +1643,7 @@
 			margin-left: 31%;
 		  }
 		  .sliderBlock_positionControls__active {
-			background-color: #536dfe;
+			background-color: #323232;
 		  }
 		  
 		  /*   RIGHT SIDE */
@@ -1669,6 +1688,7 @@
 			font-size: 14px;
 			font-weight: 600;
 			text-transform: uppercase;
+			color: #f0cba4;
 		  }
 		  
 		  .block_model {
@@ -1957,7 +1977,7 @@
 		  .block_quantity__button:focus:before {
 			color: #536dfe;
 		  }
-		  .block_quantity__up:before {
+		  /* .block_quantity__up:before {
 			content: "\f106";
 			width: 11px;
 			height: 6px;
@@ -1973,7 +1993,11 @@
 			color: #37474f;
 			font-size: 18px;
 		  }
-		  
+		   */
+		   .AiOutlineArrowUpanddown {
+			width: 15px;
+			height: 15px;
+		   }
 		  .button.button_addToCard {
 			width: 147px;
 			height: 46px;
@@ -1981,13 +2005,15 @@
 			margin-bottom: 0;
 			padding: 0;
 			color: #fff;
-			background-color: #536dfe;
+			background-color: #f0cba4;
 			font-size: 17px;
 			transition: all 0.3s;
 			margin-left: 20px;
 		  }
 		  .button.button_addToCard:hover {
-			background-color: #0d2660;
+			/* background-color: #0d2660; */
+			/* padding: 3px; */
+			background-color: #222;
 		  }
 		  
 		  .aboutMe a {

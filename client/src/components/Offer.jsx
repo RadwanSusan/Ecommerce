@@ -11,128 +11,130 @@ import { useEffect } from "react";
 import axios from "axios";
 import { categoriesOffer } from "../data";
 import { Link } from "react-router-dom";
-import { AiFillCloseCircle } from "react-icons/ai";
+import { AiFillCloseCircle , AiOutlineArrowUp , AiOutlineArrowDown } from "react-icons/ai";
+import {  BsFillArrowRightCircleFill , BsFillArrowLeftCircleFill } from "react-icons/bs";
+
 
 const Wrapper1 = styled.div`
 	height: 100%;
 	display: flex;
 	transition: all 0.75s ease;
-	transform: translateX(${(props) => props.slideIndex * -15}vw);
+	transform: translateX(${(props) => props.slideIndex * -35}vw);
 `;
 
 const Offer = () => {
-	// window.onload = function () {
+	window.onload = function () {
 
-	//     //// SLIDER
-	//     var slider = document.getElementsByClassName("sliderBlock_items");
-	//     var slides = document.getElementsByClassName("sliderBlock_items__itemPhoto");
-	//     var next = document.getElementsByClassName("sliderBlock_controls__arrowForward")[0];
-	//     var previous = document.getElementsByClassName("sliderBlock_controls__arrowBackward")[0];
-	//     var items = document.getElementsByClassName("sliderBlock_positionControls")[0];
-	//     var currentSlideItem = document.getElementsByClassName("sliderBlock_positionControls__paginatorItem");
+	    //// SLIDER
+	    var slider = document.getElementsByClassName("sliderBlock_items");
+	    var slides = document.getElementsByClassName("sliderBlock_items__itemPhoto");
+	    var next = document.getElementsByClassName("sliderBlock_controls__arrowForward")[0];
+	    var previous = document.getElementsByClassName("sliderBlock_controls__arrowBackward")[0];
+	    var items = document.getElementsByClassName("sliderBlock_positionControls")[0];
+	    var currentSlideItem = document.getElementsByClassName("sliderBlock_positionControls__paginatorItem");
 
-	//     var currentSlide = 0;
-	//     var slideInterval = setInterval(nextSlide, 5000);  /// Delay time of slides
+	    var currentSlide = 0;
+	    var slideInterval = setInterval(nextSlide, 5000);  /// Delay time of slides
 
-	//     function nextSlide() {
-	//         goToSlide(currentSlide + 1);
-	//     }
+	    function nextSlide() {
+	        goToSlide(currentSlide + 1);
+	    }
 
-	//     function previousSlide() {
-	//         goToSlide(currentSlide - 1);
-	//     }
+	    function previousSlide() {
+	        goToSlide(currentSlide - 1);
+	    }
 
-	//     function goToSlide(n) {
-	//         slides[currentSlide].className = 'sliderBlock_items__itemPhoto';
-	//         items.children[currentSlide].className = 'sliderBlock_positionControls__paginatorItem';
-	//         currentSlide = (n + slides.length) % slides.length;
-	//         slides[currentSlide].className = 'sliderBlock_items__itemPhoto sliderBlock_items__showing';
-	//         items.children[currentSlide].className = 'sliderBlock_positionControls__paginatorItem sliderBlock_positionControls__active';
-	//     }
+	    function goToSlide(n) {
+	        slides[currentSlide].className = 'sliderBlock_items__itemPhoto';
+	        items.children[currentSlide].className = 'sliderBlock_positionControls__paginatorItem';
+	        currentSlide = (n + slides.length) % slides.length;
+	        slides[currentSlide].className = 'sliderBlock_items__itemPhoto sliderBlock_items__showing';
+	        items.children[currentSlide].className = 'sliderBlock_positionControls__paginatorItem sliderBlock_positionControls__active';
+	    }
 
-	//     next.onClick = function () {
-	//         nextSlide();
-	//     };
-	//     previous.onClick = function () {
-	//         previousSlide();
-	//     };
+	    next.onClick = function () {
+	        nextSlide();
+	    };
+	    previous.onClick = function () {
+	        previousSlide();
+	    };
 
-	//     function goToSlideAfterPushTheMiniBlock() {
-	//         for (var i = 0; i < currentSlideItem.length; i++) {
-	//             currentSlideItem[i].onClick = function (i) {
-	//                 var index = Array.prototype.indexOf.call(currentSlideItem, this);
-	//                 goToSlide(index);
-	//             }
-	//         }
-	//     }
+	    function goToSlideAfterPushTheMiniBlock() {
+	        for (var i = 0; i < currentSlideItem.length; i++) {
+	            currentSlideItem[i].onClick = function (i) {
+	                var index = Array.prototype.indexOf.call(currentSlideItem, this);
+	                goToSlide(index);
+	            }
+	        }
+	    }
 
-	//     goToSlideAfterPushTheMiniBlock();
+	    goToSlideAfterPushTheMiniBlock();
 
-	// /////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
 
-	// ///// Specification Field
+	///// Specification Field
 
-	//     var buttonFullSpecification = document.getElementsByClassName("block_specification")[0];
-	//     var buttonSpecification = document.getElementsByClassName("block_specification__specificationShow")[0];
-	//     var buttonInformation = document.getElementsByClassName("block_specification__informationShow")[0];
+	    var buttonFullSpecification = document.getElementsByClassName("block_specification")[0];
+	    var buttonSpecification = document.getElementsByClassName("block_specification__specificationShow")[0];
+	    var buttonInformation = document.getElementsByClassName("block_specification__informationShow")[0];
 
-	//     var blockCharacteristiic = document.querySelector(".block_descriptionCharacteristic");
-	//     var activeCharacteristic = document.querySelector(".block_descriptionCharacteristic__active");
+	    var blockCharacteristiic = document.querySelector(".block_descriptionCharacteristic");
+	    var activeCharacteristic = document.querySelector(".block_descriptionCharacteristic__active");
 
-	//     buttonFullSpecification.onClick = function () {
+	    buttonFullSpecification.onClick = function () {
 
-	//         console.log("OK");
+	        console.log("OK");
 
-	//         buttonSpecification.classList.toggle("hide");
-	//         buttonInformation.classList.toggle("hide");
+	        buttonSpecification.classList.toggle("hide");
+	        buttonInformation.classList.toggle("hide");
 
-	//         blockCharacteristiic.classList.toggle("block_descriptionCharacteristic__active");
+	        blockCharacteristiic.classList.toggle("block_descriptionCharacteristic__active");
 
-	//     };
+	    };
 
-	// /////  QUANTITY ITEMS
+	/////  QUANTITY ITEMS
 
-	//     var up = document.getElementsByClassName('block_quantity__up')[0],
-	//         down = document.getElementsByClassName('block_quantity__down')[0],
-	//         input = document.getElementsByClassName('block_quantity__number')[0];
-	//         // let show_cart = document.querySelectorAll('show-cart');
+	    var up = document.getElementsByClassName('block_quantity__up')[0],
+	        down = document.getElementsByClassName('block_quantity__down')[0],
+	        input = document.getElementsByClassName('block_quantity__number')[0];
+	        // let show_cart = document.querySelectorAll('show-cart');
 
-	// 		document.querySelectorAll(".show-cart").forEach((item) =>
-	// 	item.addEventListener("click", (e) => {
-	// 	document.querySelector(".productCard_block").style.display = "block";
-	// 	}),
-	// );
+			document.querySelectorAll(".show-cart").forEach((item) =>
+		item.addEventListener("click", (e) => {
+		document.querySelector(".productCard_block").style.display = "block";
+		}),
+	);
 
-	// document.querySelectorAll(".AiFillCloseCircle").forEach((item) =>
-	// 	item.addEventListener("click", (e) => {
-	// 	document.querySelector(".productCard_block").style.display = "none";
-	// 	}),
-	// );
+	document.querySelectorAll(".AiFillCloseCircle").forEach((item) =>
+		item.addEventListener("click", (e) => {
+		document.querySelector(".productCard_block").style.display = "none";
+		}),
+	);
 
-	//     function getValue() {
-	//         return parseInt(input.value);
-	//     }
+	    function getValue() {
+	        return parseInt(input.value);
+	    }
 
-	//     up.onClick = function (event) {
-	//         input.value = getValue() + 1;
-	//     };
-	//     down.onClick = function (event) {
-	//         if (input.value <= 1) {
-	//             return 1;
-	//         } else {
-	//             input.value = getValue() - 1;
-	//         }
+	    up.onClick = function (event) {
+	        input.value = getValue() + 1;
+	    };
+	    down.onClick = function (event) {
+	        if (input.value <= 1) {
+	            return 1;
+	        } else {
+	            input.value = getValue() - 1;
+	        }
 
-	//     }
+	    }
 
-	// };
+	};
 
 	const [slideIndex, setSlideIndex] = useState(0);
 	const handleClick = (direction) => {
 		if (direction === "left") {
 			setSlideIndex(slideIndex > 0 ? slideIndex - 1 : 2);
 		} else {
-			setSlideIndex(slideIndex < 2 ? slideIndex + 1 : 0);
+			setSlideIndex(slideIndex < 3 ? slideIndex + 1 : 0);
 		}
 	};
 
@@ -153,7 +155,7 @@ const Offer = () => {
 
 	return (
 		<>
-			{/*
+			
 		<div className="column small-centered">
 			<div className="productCard_block">
 				<div className="row11">
@@ -185,10 +187,14 @@ const Offer = () => {
 									<div className="sliderBlock_controls__navigatin">
 										<div className="sliderBlock_controls__wrapper">
 											<div className="sliderBlock_controls__arrow sliderBlock_controls__arrowBackward">
-												<i className="fa fa-angle-left" aria-hidden="true"></i>
+												<i className="fa fa-angle-left" aria-hidden="true">
+													<BsFillArrowLeftCircleFill />
+												</i>
 											</div>
 											<div className="sliderBlock_controls__arrow sliderBlock_controls__arrowForward">
-												<i className="fa fa-angle-right" aria-hidden="true"></i>
+												<i className="fa fa-angle-right" aria-hidden="true">
+													<BsFillArrowRightCircleFill />
+												</i>
 											</div>
 										</div>
 									</div>
@@ -292,42 +298,7 @@ const Offer = () => {
 										</span>
 									</div>
 
-									<div className="block_rating clearfix">
-										<fieldset className="block_rating__stars">
-											<input type="radio" id="star5" name="rating" value="5"/><label
-												className="full" for="star5" title="Awesome - 5 stars"></label>
-											<input type="radio" id="star4half" name="rating"
-												   value="4 and a half"/><label className="half" for="star4half"
-																				title="Pretty good - 4.5 stars"></label>
-											<input type="radio" id="star4" name="rating" value="4"/><label
-												className="full" for="star4" title="Good - 4 stars"></label>
-											<input type="radio" id="star3half" name="rating"
-												   value="3 and a half"/><label className="half" for="star3half"
-																				title="Above average - 3.5 stars"></label>
-											<input type="radio" id="star3" name="rating" value="3"/><label
-												className="full" for="star3" title="Average - 3 stars"></label>
-											<input type="radio" id="star2half" name="rating"
-												   value="2 and a half"/><label className="half" for="star2half"
-																				title="Kinda bad - 2.5 stars"></label>
-											<input type="radio" id="star2" name="rating" value="2"/><label
-												className="full" for="star2"
-												title="Kinda bad - 2 stars"></label>
-											<input type="radio" id="star1half" name="rating"
-												   value="1 and a half"/><label className="half" for="star1half"
-																				title="Meh - 1.5 stars"></label>
-											<input type="radio" id="star1" name="rating" value="1"/><label
-												className="full" for="star1"
-												title="Sucks big time - 1 star"></label>
-											<input type="radio" id="starhalf" name="rating"
-												   value="half"/><label
-												className="half" for="starhalf"
-												title="Sucks big time - 0.5 stars"></label>
-										</fieldset>
-
-										<span className="block_rating__avarage">4.25</span>
-										<span className="block_rating__reviews">(153 reviews)</span>
-
-									</div>
+									
 									<div className="row11 ">
 										<div className="large-6 small-12 column left-align">
 											<div className="block_price">
@@ -339,8 +310,15 @@ const Offer = () => {
 												<div className="block_quantity__chooseBlock">
 													<input className="block_quantity__number" name="quantityNumber"
 														   type="text" min="1" value="1" />
-													<button className="block_quantity__button block_quantity__up"></button>
-													<button className="block_quantity__button block_quantity__down"></button>
+													<button className="block_quantity__button block_quantity__up">
+													<AiOutlineArrowDown className="AiOutlineArrowUpanddown" />
+														
+													</button>
+													<button className="block_quantity__button block_quantity__down">
+													<AiOutlineArrowUp className="AiOutlineArrowUpanddown" />
+
+
+													</button>
 												</div>
 											</div>
 										</div>
@@ -379,7 +357,7 @@ const Offer = () => {
 
 
 
- */}
+
 
 			<div
 				className="group-deal-1 hidden-title-block nav-style-1 hover-to-show absolute-nav snipcss-s72N8 style-sCNUC"
@@ -480,15 +458,15 @@ const Offer = () => {
 																						src={data.img}
 																						data-src="http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/l/-/l-03_1.jpg /"
 																						loading="lazy"
-																						width="300"
-																						height="300"
+																						width="250"
+																						height="250"
 																						alt={data.img}
 																					/>
 																				</span>
 																			</span>
 																		</div>
 																		<Link
-																			to={"/"}
+																			to={""}
 																			className="action quickview-handler
 																	sm_quickview_handler"
 																			title="Quick View"
