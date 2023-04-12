@@ -15,3 +15,13 @@ export const logoutUser = () => {
 	localStorage.removeItem("persist:root");
 	window.location.href = "/";
 };
+
+export const updateProductOrOffer = async (product, productId) => {
+	try {
+		const res = await publicRequest.put(`/offer/${productId}`, product);
+		const res1 = await publicRequest.put(`/products/${productId}`, product);
+		return res.data || res1.data;
+	} catch (err) {
+		console.log(err);
+	}
+};

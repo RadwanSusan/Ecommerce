@@ -37,8 +37,23 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
 // 	}
 // });
 
+// //UPDATE
+// router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
+// 	try {
+// 		const updatedProduct = await Product.findByIdAndUpdate(
+// 			req.params.id,
+// 			{
+// 				$set: req.body,
+// 			},
+// 			{ new: true },
+// 		);
+// 		res.status(200).json(updatedProduct);
+// 	} catch (err) {
+// 		res.status(500).json(err);
+// 	}
+// });
 //UPDATE
-router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
+router.put("/:id", async (req, res) => {
 	try {
 		const updatedProduct = await Product.findByIdAndUpdate(
 			req.params.id,
@@ -52,7 +67,6 @@ router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-
 //DELETE
 router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 	try {
@@ -98,6 +112,4 @@ router.get("/", async (req, res) => {
 	}
 });
 
-
- 
 module.exports = router;

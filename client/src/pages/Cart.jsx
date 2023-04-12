@@ -15,6 +15,7 @@ import { increase, decrease, calc, reset } from "../redux/cartRedux";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import { useDispatch } from "react-redux";
+import { updateProductOrOffer } from "../redux/apiCalls";
 
 const KEY = process.env.REACT_APP_STRIPE;
 
@@ -194,49 +195,22 @@ const Cart = () => {
 	const cart = useSelector((state) => state.cart);
 	const total = useSelector((state) => state.total);
 	const [product, setProduct] = useState({});
+	const [offer, setOffer] = useState({});
 	const dispatch = useDispatch();
 	const [quantity, setQuantity] = useState(1);
 	let [productGet, setProductGet] = useState({});
 	let [offerGet, setOfferGet] = useState({});
 	const cartId = cart.products;
 	const [stripeToken, setStripeToken] = useState(null);
+	const [AllProducts, setAllProducts] = useState([]);
+	const [AllOffers, setAllOffers] = useState([]);
 	const history = useHistory();
 	const onToken = (token) => {
 		setStripeToken(token);
 	};
 	const handleClick2 = (id) => {
 		dispatch(removeProduct(id));
-		// console.log(dispatch(removeProduct(id)));
 	};
-	// const handleClickDec = (id) => {
-	// 	dispatch(decrease(id));
-	// };
-	// const handleClickInc = (id) => {
-	// 	dispatch(increase(id));
-	// };
-	useEffect(() => {
-		const makeRequest = async () => {
-			try {
-				const res = await userRequest.post("/checkout/payment", {
-					tokenId: stripeToken.id,
-					amount: 500,
-				});
-				setProduct(res.data);
-				history.push("/success", {
-					stripeData: res.data,
-					products: cart,
-				});
-			} catch {
-				swal.fire({
-					icon: "error",
-					title: "Oops...",
-					text: "Something went wrong!",
-					footer: "Please try again",
-				});
-			}
-		};
-		stripeToken && makeRequest();
-	}, [stripeToken, cart.total, history]);
 	const mergedCart = cart.products.reduce((acc, curr) => {
 		const existingItem = acc.find((item) => item._id === curr._id);
 		if (existingItem) {
@@ -247,27 +221,67 @@ const Cart = () => {
 		return acc;
 	}, []);
 	useEffect(() => {
-		const getProducts = async () => {
+		const getAllProducts = async () => {
 			try {
 				const res = await userRequest.get("/products");
-				setProductGet(res.data);
+				setAllProducts(res.data);
 			} catch (err) {
-				console.log(err);
+				console.log("🚀 ~ file: Cart.jsx:209 ~ getAllProducts ~ err:", err);
 			}
 		};
-		getProducts();
-	}, []);
-	useEffect(() => {
-		const getOffers = async () => {
+		getAllProducts();
+		const getAllOffers = async () => {
 			try {
 				const res = await userRequest.get("/offer");
-				setOfferGet(res.data);
+				setAllOffers(res.data);
 			} catch (err) {
-				console.log(err);
+				console.log("🚀 ~ file: Cart.jsx:216 ~ getAllOffers ~ err:", err);
 			}
 		};
-		getOffers();
+		getAllOffers();
 	}, []);
+	useEffect(() => {
+		const makeRequest = async () => {
+			try {
+				const res = await userRequest.post("/checkout/payment", {
+					tokenId: stripeToken.id,
+					amount: 500,
+				});
+				setProduct(res.data);
+				mergedCart.map((item) => {
+					AllProducts.map((product) => {
+						if (product._id === item._id) {
+							product.quantity -= item.quantity;
+							updateProductOrOffer(
+								{
+									quantity: product.quantity,
+								},
+								item._id,
+							);
+						}
+					});
+					AllOffers.map((offer) => {
+						if (offer._id === item._id) {
+							offer.quantity -= item.quantity;
+							updateProductOrOffer(
+								{
+									quantity: offer.quantity,
+								},
+								item._id,
+							);
+						}
+					});
+				});
+				history.push("/success", {
+					stripeData: res.data,
+					products: cart,
+				});
+			} catch (err) {
+				console.log("🚀 ~ file: Cart.jsx:245 ~ makeRequest ~ err:", err);
+			}
+		};
+		stripeToken && makeRequest();
+	}, [stripeToken, cart.total, history]);
 	const handleQuantity = (type, id) => {
 		const productFind = productGet.find((item) => item._id === id);
 		const offerFind = offerGet.find((item) => item._id === id);

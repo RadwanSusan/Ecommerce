@@ -8,8 +8,8 @@ import { mobile } from "../responsive";
 import FooterNew from "../components/FooterNew";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { publicRequest } from "../requestMethods";
-import { addProduct } from "../redux/cartRedux";
+import { publicRequest, userRequest } from "../requestMethods";
+import { addProduct, getAllProduct } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
 import swal from "sweetalert";
 
@@ -143,6 +143,7 @@ const Product = () => {
 	let userId = localStorage.getItem("persist:root");
 	userId = JSON.parse(userId);
 	userId = userId.user;
+	console.log(`🚀 ~ file: Product.jsx:146 ~ Product ~ userId:`, userId);
 	userId = JSON.parse(userId);
 	userId = userId.currentUser._id;
 	useEffect(() => {
@@ -157,19 +158,20 @@ const Product = () => {
 		};
 		getProduct();
 	}, [id]);
-	useEffect(() => {
-		const getCart = async () => {
-			try {
-				console.log(`🚀 ~ file: Product.jsx:164 ~ getCart ~ userId:`, userId);
-				let res = await publicRequest.get("/carts/find/" + userId);
-				console.log(`🚀 ~ file: Product.jsx:166 ~ getCart ~ res:`, res);
-				setCart(res.data);
-			} catch (err) {
-				console.log(err);
-			}
-		};
-		getCart();
-	}, [userId]);
+	// useEffect(() => {
+	// 	const getCart = async () => {
+	// 		try {
+	// 			console.log(`🚀 ~ file: Product.jsx:164 ~ getCart ~ userId:`, userId);
+	// 			useDispatch(getAllProduct(action));
+	// 			let res = await userRequest.get("/carts/find/" + userId);
+	// 			console.log(`🚀 ~ file: Product.jsx:166 ~ getCart ~ res:`, res);
+	// 			setCart(res.data);
+	// 		} catch (err) {
+	// 			console.log(err);
+	// 		}
+	// 	};
+	// 	getCart();
+	// }, [userId]);
 	document.querySelectorAll(".Color").forEach((item) =>
 		item.addEventListener("click", (e) => {
 			document.querySelectorAll(".Color").forEach((item2) => {

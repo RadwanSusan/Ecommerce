@@ -19,7 +19,21 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //UPDATE
-router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
+// router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
+// 	try {
+// 		const updatedOffer = await Offer.findByIdAndUpdate(
+// 			req.params.id,
+// 			{
+// 				$set: req.body,
+// 			},
+// 			{ new: true },
+// 		);
+// 		res.status(200).json(updatedOffer);
+// 	} catch (err) {
+// 		res.status(500).json(err);
+// 	}
+// });
+router.put("/:id", async (req, res) => {
 	try {
 		const updatedOffer = await Offer.findByIdAndUpdate(
 			req.params.id,

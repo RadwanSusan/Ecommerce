@@ -9,6 +9,11 @@ const cartSlice = createSlice({
 	},
 	reducers: {
 		addProduct: (state, action) => {
+			//FOR TESTING
+			// const item = action.payload;
+			// state.products.push(item);
+			// state.quantity += 1;
+			// state.total += item.price * item.quantity;
 			state.quantity += 1;
 			state.products.push(action.payload);
 			state.total += action.payload.price * action.payload.quantity;
@@ -51,6 +56,10 @@ const cartSlice = createSlice({
 			state.products[cartItem].quantity = 1;
 			// state.total  = (state.products[cartItem].quantity * state.products[cartItem].price) ;
 		},
+		getAllProduct: (state) => {
+			let cartProducts = state.products;
+			state.cartProducts = cartProducts;
+		},
 		calc: (state, action) => {
 			let { total, quantity } = state.products.reduce(
 				(cartTotal, cartItem) => {
@@ -71,6 +80,13 @@ const cartSlice = createSlice({
 	},
 });
 
-export const { addProduct, removeProduct, increase, decrease, calc, reset } =
-	cartSlice.actions;
+export const {
+	addProduct,
+	removeProduct,
+	increase,
+	decrease,
+	calc,
+	reset,
+	getAllProduct,
+} = cartSlice.actions;
 export default cartSlice.reducer;
