@@ -46,6 +46,10 @@ const cartSlice = createSlice({
         // state.total  = (state.products[cartItem].quantity * state.products[cartItem].price);
       }
     },
+    clear: (state) => {
+      state.products = [];
+      
+    },
     reset: (state, action) => {
       // let prevTotal = state.total;
       const cartItem = state.products.findIndex(
@@ -88,5 +92,6 @@ export const {
   calc,
   reset,
   getAllProduct,
+  clear,
 } = cartSlice.actions;
 export default cartSlice.reducer;
