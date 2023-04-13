@@ -187,7 +187,7 @@ const Offer = () => {
 	}, [categoriesOffer.cat]);
 
 	return (
-		<>
+		<React.Fragment>
 			<div className='backLayerForShowCart'></div>
 			<div className='column small-centered'>
 				<div className='productCard_block'>
@@ -359,7 +359,6 @@ const Offer = () => {
 												wireless technology and NoiseGard Hybrid active noise cancelation
 											</span>
 										</div>
-
 										<div className='row11 '>
 											<div className='large-6 small-12 column left-align'>
 												<div className='block_price'>
@@ -666,7 +665,7 @@ const Offer = () => {
 					</div>
 				</div>
 			</div>
-		</>
+		</React.Fragment>
 	);
 };
 
