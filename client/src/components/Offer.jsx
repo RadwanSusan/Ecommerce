@@ -133,7 +133,6 @@ const Offer = () => {
 				document.querySelector('.productCard_block').style.overflow = 'hidden';
 				document.querySelector('.backLayerForShowCart').style.display = 'block';
 				document.querySelector('.backLayerForShowCart').style.overflow = 'hidden';
-				
 			}),
 		);
 
@@ -537,9 +536,10 @@ const Offer = () => {
 																		<Link
 																			to={''}
 																			className='action quickview-handler
-																	sm_quickview_handler'
+																	sm_quickview_handler show-cart'
 																			title='Quick View'
 																			href=''
+																			offer-id={data._id}
 																		>
 																			<AiOutlineEye
 																				className='show-cart'
