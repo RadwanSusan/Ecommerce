@@ -127,27 +127,90 @@ const Offer = () => {
     //   down = document.getElementsByClassName("down5"),
     let input = document.getElementsByClassName("block_quantity__number")[0];
     // let show_cart = document.querySelectorAll('show-cart');
-
-    document.querySelectorAll(".show-cart").forEach((item) =>
-      item.addEventListener("click", (e) => {
+	  let idOffer;
+	  
+	  document.querySelectorAll(".show-cart").forEach((item) =>
+		  
+		  item.addEventListener("click", (e) => {
         document.querySelector(".productCard_block").style.display = "block";
         document.body.style.overflow = "hidden";
         document.querySelector(".productCard_block").style.overflow = "hidden";
         document.querySelector(".backLayerForShowCart").style.display = "block";
         document.querySelector(".backLayerForShowCart").style.overflow =
           "hidden";
-      })
-    );
+        idOffer = item.getAttribute("offer-id");
 
-    document.querySelectorAll(".AiFillCloseCircle").forEach((item) =>
-      item.addEventListener("click", (e) => {
-        document.querySelector(".productCard_block").style.display = "none";
-        document.body.style.overflow = "";
-        document.querySelector(".productCard_block").style.overflow = "";
-        document.querySelector(".backLayerForShowCart").style.display = "none";
+        console.log(idOffer);
+        const viewArr = offer.find((offer) => offer._id === idOffer);
+        console.log(viewArr);
+        document.querySelector(".block_product__advantagesProduct").innerHTML =
+          "";
+
+        document
+          .querySelector(".block_product__advantagesProduct")
+          .append(viewArr.desc);
+
+         
+        let aramex = document.querySelector(".block_goodColor__allColors");
+			 
+			   document.querySelector(".block_goodColor__allColors").innerHTML = "";
+			//   const document.querySelector(".radio_button");
+			  viewArr.color
+				  .map((e) => {
+            let input = document.createElement("input");
+            input.classList.add("radio_button");
+            input.setAttribute("id", "radioColor");
+            input.setAttribute("name", "colorOfItem");
+            input.setAttribute("checked", "checked");
+
+            let label = document.createElement("label");
+            label.setAttribute("for", "radioColor");
+
+            label.classList.add(
+              "block_goodColor__radio",
+              "block_goodColor__black"
+            );
+            aramex.append(input);
+            aramex.append(label);
+
+            console.log(e);
+            //   let input = document.createElement("");
+            //   input.classList.add("block_price__currency");
+            //   let input = document.createElement("");
+					  document.querySelector(".block_price__currency").innerHTML = "";
+					  document
+              .querySelector(".block_price__currency")
+              .append("$");
+            document
+              .querySelector(".block_price__currency")
+						  .append(viewArr.price);
+					  console.log(viewArr.price);
+          }
+				  );
+           
+			  
       })
-    );
-  };
+		  
+		  
+		
+	  );
+	  
+		  
+		  
+      document.querySelectorAll(".AiFillCloseCircle").forEach((item) =>
+        item.addEventListener("click", (e) => {
+          document.querySelector(".productCard_block").style.display = "none";
+          document.body.style.overflow = "";
+          document.querySelector(".productCard_block").style.overflow = "";
+          document.querySelector(".backLayerForShowCart").style.display =
+				"none";
+			
+
+
+        })
+      );
+	};
+	
 
   const [quantityUp, setQuantityUp] = useState(1);
 
@@ -174,6 +237,8 @@ const Offer = () => {
     };
     getOffer(getOffer);
   }, [categoriesOffer.cat]);
+	
+	
 
   return (
     <>
@@ -279,9 +344,7 @@ const Offer = () => {
                     Wireless Black
                   </h2>
 
-                  <p className="block_product__advantagesProduct">
-                    Wireless headphones with integrated microphone
-                  </p>
+                  <p className="block_product__advantagesProduct"></p>
 
                   <div className="block_informationAboutDevice">
                     <div className="block_descriptionCharacteristic block_descriptionCharacteristic__disActive">
@@ -348,7 +411,8 @@ const Offer = () => {
                     <div className="row11 ">
                       <div className="large-6 small-12 column left-align">
                         <div className="block_price">
-                          <p className="block_price__currency">$499.95</p>
+                          <p className="block_price__currency">$
+						  </p>
                           <p className="block_price__shipping">
                             Shipping and taxes extra
                           </p>
@@ -391,27 +455,7 @@ const Offer = () => {
                             Choose your colors:
                           </span>
                           <div className="block_goodColor__allColors">
-                            <input
-                              type="radio"
-                              name="colorOfItem"
-                              className="radio_button"
-                              id="radioColor"
-                              checked
-                            />
-                            <label
-                              for="radioColor"
-                              className="block_goodColor__radio block_goodColor__black"
-                            ></label>
-                            <input
-                              type="radio"
-                              name="colorOfItem"
-                              className="radio_button"
-                              id="radioColor2"
-                            />
-                            <label
-                              for="radioColor2"
-                              className="block_goodColor__radio block_goodColor__silver"
-                            ></label>
+                           
                           </div>
                         </div>
                         <button className="button button_addToCard">
