@@ -133,6 +133,7 @@ const Offer = () => {
 				document.querySelector('.productCard_block').style.overflow = 'hidden';
 				document.querySelector('.backLayerForShowCart').style.display = 'block';
 				document.querySelector('.backLayerForShowCart').style.overflow = 'hidden';
+				
 			}),
 		);
 

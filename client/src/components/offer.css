@@ -1429,8 +1429,9 @@ button:hover {
 		  } */
 
 .productCard_block {
+	/* position: fixed; */
+	
 	/* position: relative; */
-	position: absolute;
 	/* top: 14%; */
 	/* left: 17%; */
 	z-index: 1000;
@@ -1440,11 +1441,15 @@ button:hover {
 	box-shadow: 0 5px 21px rgba(0, 0, 0, 0.08);
 	background-color: #fff;
 	display: none;
-	position: absolute;
+	/* position: absolute; */
+	position: fixed;
 	left: 50%;
+	/* top: 1%; */
+	/* transform: translateY(-50%); */
 	/* transition: auto; */
 	transform: translateX(-50%);
 	/* top: 50%; */
+	top: 8%;
 }
 
 /* LEFT SIDE */
@@ -2033,4 +2038,44 @@ input[type="radio"]+label {
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.5);
 	z-index: 420;
+}
+@media only screen and (max-width: 700px) {
+	.productCard_block > .row11 {
+		flex-direction: column;
+		height: 687px;
+			overflow-y: scroll;
+			scroll-behavior: smooth;
+	}
+	.sliderBlock{
+		height: 250;
+		margin: 0;
+		padding: 0;
+		margin-top: 60px;
+	}
+    .sliderBlock_items {
+		height: 155px;
+	}
+	.productCard_leftSide {
+		min-height: 0;
+	}
+		.productCard_block {
+			top: 1%;
+				
+		}
+	.productCard_rightSide {
+		min-height: 90px;
+	} 
+	.sliderBlock_positionControls {
+		display: none;
+	}
+		.productCard_rightSide {
+			margin-top: 15px;
+		}
+				.AiFillCloseCircle {
+					position: absolute;
+					top: 1%;
+					left: 86%;
+				}
+
+
 }
