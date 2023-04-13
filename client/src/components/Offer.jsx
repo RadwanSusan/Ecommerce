@@ -157,11 +157,11 @@ const Offer = () => {
 			//   const document.querySelector(".radio_button");
 			  viewArr.color
 				  .map((e) => {
-            let input = document.createElement("input");
-            input.classList.add("radio_button");
-            input.setAttribute("id", "radioColor");
-            input.setAttribute("name", "colorOfItem");
-            input.setAttribute("checked", "checked");
+            let input1 = document.createElement("input");
+            input1.classList.add("radio_button");
+            input1.setAttribute("id", "radioColor");
+            input1.setAttribute("name", "colorOfItem");
+            input1.setAttribute("checked", "checked");
 
             let label = document.createElement("label");
             label.setAttribute("for", "radioColor");
@@ -169,24 +169,22 @@ const Offer = () => {
             label.classList.add(
               "block_goodColor__radio",
               "block_goodColor__black"
-            );
-            aramex.append(input);
+					  );
+					  label.style.backgroundColor = `${e}`;
+            aramex.append(input1);
             aramex.append(label);
 
             console.log(e);
             //   let input = document.createElement("");
             //   input.classList.add("block_price__currency");
             //   let input = document.createElement("");
-					  document.querySelector(".block_price__currency").innerHTML = "";
-					  document
-              .querySelector(".block_price__currency")
-              .append("$");
-            document
-              .querySelector(".block_price__currency")
-						  .append(viewArr.price);
-					  console.log(viewArr.price);
+					 
           }
-				  );
+			  );
+			   document.querySelector(".block_price__currency").innerHTML = "";
+         document.querySelector(".block_price__currency").append("$");
+         document.querySelector(".block_price__currency").append(viewArr.price);
+         console.log(viewArr.price);
            
 			  
       })
