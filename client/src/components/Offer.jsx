@@ -103,16 +103,20 @@ const Offer = () => {
 		var buttonInformation = document.getElementsByClassName(
 			'block_specification__informationShow',
 		)[0];
+
 		var blockCharacteristiic = document.querySelector(
 			'.block_descriptionCharacteristic',
 		);
 		var activeCharacteristic = document.querySelector(
 			'.block_descriptionCharacteristic__active',
 		);
+
 		buttonFullSpecification.onClick = function () {
 			console.log('OK');
+
 			buttonSpecification.classList.toggle('hide');
 			buttonInformation.classList.toggle('hide');
+
 			blockCharacteristiic.classList.toggle(
 				'block_descriptionCharacteristic__active',
 			);
@@ -125,6 +129,7 @@ const Offer = () => {
 		let input = document.getElementsByClassName('block_quantity__number')[0];
 		// let show_cart = document.querySelectorAll('show-cart');
 		let idOffer;
+
 		document.querySelectorAll('.show-cart').forEach((item) =>
 			item.addEventListener('click', (e) => {
 				document.querySelector('.productCard_block').style.display = 'block';
@@ -133,37 +138,44 @@ const Offer = () => {
 				document.querySelector('.backLayerForShowCart').style.display = 'block';
 				document.querySelector('.backLayerForShowCart').style.overflow = 'hidden';
 				idOffer = item.getAttribute('offer-id');
+
 				console.log(idOffer);
 				const viewArr = offer.find((offer) => offer._id === idOffer);
 				console.log(viewArr);
 				document.querySelector('.block_product__advantagesProduct').innerHTML = '';
+
 				document
 					.querySelector('.block_product__advantagesProduct')
 					.append(viewArr.desc);
+
 				let aramex = document.querySelector('.block_goodColor__allColors');
+
 				document.querySelector('.block_goodColor__allColors').innerHTML = '';
 				//   const document.querySelector(".radio_button");
 				viewArr.color.map((e) => {
-					let input = document.createElement('input');
-					input.classList.add('radio_button');
-					input.setAttribute('id', 'radioColor');
-					input.setAttribute('name', 'colorOfItem');
-					input.setAttribute('checked', 'checked');
+					let input1 = document.createElement('input');
+					input1.classList.add('radio_button');
+					input1.setAttribute('id', 'radioColor');
+					input1.setAttribute('name', 'colorOfItem');
+					input1.setAttribute('checked', 'checked');
+
 					let label = document.createElement('label');
 					label.setAttribute('for', 'radioColor');
 
 					label.classList.add('block_goodColor__radio', 'block_goodColor__black');
-					aramex.append(input);
+					label.style.backgroundColor = `${e}`;
+					aramex.append(input1);
 					aramex.append(label);
+
 					console.log(e);
 					//   let input = document.createElement("");
 					//   input.classList.add("block_price__currency");
 					//   let input = document.createElement("");
-					document.querySelector('.block_price__currency').innerHTML = '';
-					document.querySelector('.block_price__currency').append('$');
-					document.querySelector('.block_price__currency').append(viewArr.price);
-					console.log(viewArr.price);
 				});
+				document.querySelector('.block_price__currency').innerHTML = '';
+				document.querySelector('.block_price__currency').append('$');
+				document.querySelector('.block_price__currency').append(viewArr.price);
+				console.log(viewArr.price);
 			}),
 		);
 
@@ -178,6 +190,7 @@ const Offer = () => {
 	};
 
 	const [quantityUp, setQuantityUp] = useState(1);
+
 	const [slideIndex, setSlideIndex] = useState(0);
 	const handleClick = (direction) => {
 		if (direction === 'left') {
@@ -188,6 +201,7 @@ const Offer = () => {
 	};
 
 	const [offer, setOffer] = useState([]);
+
 	useEffect(() => {
 		const getOffer = async () => {
 			try {
@@ -201,6 +215,79 @@ const Offer = () => {
 		};
 		getOffer(getOffer);
 	}, [categoriesOffer.cat]);
+
+	// const [product, setProduct] = useState({});
+	const [quantity, setQuantity] = useState(1);
+	const [color, setColor] = useState('');
+	const [size, setSize] = useState('');
+	const [cart, setCart] = useState([]);
+	const dispatch = useDispatch();
+
+	// 	document.querySelectorAll(".Color").forEach((item) =>
+	//     item.addEventListener("click", (e) => {
+	//       document.querySelectorAll(".Color").forEach((item2) => {
+	//         item2.style.outline = "none";
+	//       });
+	//       e.target.style.outline = "3px solid #292931";
+	//     })
+	//   );
+
+	const handleQuantity = (type) => {
+		if (type === 'dec') {
+			quantity > 1 && setQuantity(quantity - 1);
+			console.log('za');
+			console.log(quantity);
+			console.log(offer);
+		} else {
+			if (quantity >= offer[0].quantity) {
+				swal('Info', 'You have exceeded the number of available products!', 'info');
+			} else {
+				setQuantity(quantity + 1);
+				// console.log("z");
+				// console.log(quantity);
+				// console.log(offer[0].quantity);
+			}
+		}
+	};
+	let cartProducts = JSON.parse(localStorage.getItem('persist:root'));
+	cartProducts = cartProducts.cart;
+	cartProducts = JSON.parse(cartProducts);
+	const mergedCart = cartProducts.products.reduce((acc, curr) => {
+		const existingItem = acc.find((item) => item._id === curr._id);
+		if (existingItem) {
+			existingItem.quantity += curr.quantity;
+		} else {
+			acc.push({ ...curr });
+		}
+		return acc;
+	}, []);
+	const chekAvail = () => {
+		let newQuantity = mergedCart.map((item) => {
+			if (item._id === offer._id) {
+				return {
+					quantity: offer.quantity - item.quantity,
+				};
+			}
+		});
+		newQuantity = newQuantity.filter((item) => item !== undefined);
+		if (newQuantity.length > 0) {
+			if (newQuantity[0].quantity < 1) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+		return true;
+	};
+	const handleClick11 = () => {
+		dispatch(addProduct({ ...offer, quantity, color, size }));
+		swal('Success', 'Product added to cart!', 'success');
+		offer.quantity -= quantity;
+		if (offer.quantity < 1) {
+			document.querySelector('.AddCart').disabled = true;
+		}
+		setQuantity(1);
+	};
 
 	return (
 		<>
@@ -243,6 +330,7 @@ const Offer = () => {
 											/>
 										</li>
 									</ul>
+
 									<div className='sliderBlock_controls'>
 										<div className='sliderBlock_controls__navigatin'>
 											<div className='sliderBlock_controls__wrapper'>
@@ -264,6 +352,7 @@ const Offer = () => {
 												</div>
 											</div>
 										</div>
+
 										<ul className='sliderBlock_positionControls'>
 											<li className='sliderBlock_positionControls__paginatorItem sliderBlock_positionControls__active'></li>
 											<li className='sliderBlock_positionControls__paginatorItem'></li>
@@ -296,16 +385,20 @@ const Offer = () => {
 										<span className='block_specification__text'>inform</span>
 									</div>
 								</div>
+
 								<p className='block_model'>
 									<span className='block_model__text'>Model: </span>
 									<span className='block_model__number'>505795</span>
 								</p>
+
 								<div className='block_product'>
 									<h2 className='block_name block_name__mainName'>
 										MOMENTUM<sup>&reg; </sup>
 									</h2>
 									<h2 className='block_name block_name__addName'>Wireless Black</h2>
+
 									<p className='block_product__advantagesProduct'></p>
+
 									<div className='block_informationAboutDevice'>
 										<div className='block_descriptionCharacteristic block_descriptionCharacteristic__disActive'>
 											<table className='block_specificationInformation_table'>
@@ -353,6 +446,7 @@ const Offer = () => {
 												</tr>
 											</table>
 										</div>
+
 										<div className='block_descriptionInformation'>
 											<span>
 												Peak performance with active noise cancelation. Sennheiser's new
@@ -366,7 +460,8 @@ const Offer = () => {
 												wireless technology and NoiseGard Hybrid active noise cancelation
 											</span>
 										</div>
-										<div className='row11'>
+
+										<div className='row11 '>
 											<div className='large-6 small-12 column left-align'>
 												<div className='block_price'>
 													<p className='block_price__currency'>$</p>
@@ -380,15 +475,12 @@ const Offer = () => {
 															name='quantityNumber'
 															type='text'
 															min='1'
-															value={quantityUp}
+															value={quantity}
 														/>
 														<button className='block_quantity__button block_quantity__up'>
 															<BsArrowDownCircle
 																onClick={() => {
-																	//   downFun();
-																	if (quantityUp > 1) {
-																		setQuantityUp(quantityUp - 1);
-																	}
+																	handleQuantity('dec');
 																}}
 																className='AiOutlineArrowUpanddown down5'
 															/>
@@ -396,7 +488,7 @@ const Offer = () => {
 														<button className='block_quantity__button block_quantity__down'>
 															<BsArrowUpCircle
 																onClick={() => {
-																	setQuantityUp(quantityUp + 1);
+																	handleQuantity('inc');
 																}}
 																className='AiOutlineArrowUpanddown up5'
 															/>
@@ -409,7 +501,22 @@ const Offer = () => {
 													<span className='text_specification'>Choose your colors:</span>
 													<div className='block_goodColor__allColors'></div>
 												</div>
-												<button className='button button_addToCard'>Add to Cart</button>
+
+												{chekAvail() ? (
+													<button
+														className='AddCart'
+														onClick={handleClick11}
+													>
+														ADD TO CART
+													</button>
+												) : (
+													<button
+														className='AddCart'
+														disabled
+													>
+														ADD TO CART
+													</button>
+												)}
 											</div>
 										</div>
 									</div>
@@ -419,6 +526,7 @@ const Offer = () => {
 					</div>
 				</div>
 			</div>
+
 			<div
 				className='group-deal-1 hidden-title-block nav-style-1 hover-to-show absolute-nav snipcss-s72N8 style-sCNUC'
 				id='style-sCNUC'
@@ -480,6 +588,7 @@ const Offer = () => {
 										</div>
 									</div>
 								</Link>
+
 								<div className='deal-content'>
 									<div className='owl-carousel owl-theme list items product-items filterproducts owl-loaded owl-drag'>
 										<div className='owl-stage-outer'>
