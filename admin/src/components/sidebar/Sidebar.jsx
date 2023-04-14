@@ -34,10 +34,7 @@ export default function Sidebar() {
               Analytics User
             </li>
             </Link>
-            <li className="sidebarListItem">
-              <TrendingUp className="sidebarIcon" />
-              Sales
-            </li>
+           
           </ul>
         </div>
         <div className="sidebarMenu">
