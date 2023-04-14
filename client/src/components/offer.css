@@ -585,6 +585,12 @@ print {
 		color: #ffcc00;
 		text-decoration: none;
 	}
+	.AddCart {
+		margin-top: 45px;
+			width: 128px;
+			border: solid;
+			margin-left: 30px;
+	}
 	
 
 	.group-deal-1 .product-item-info .image-product .quickview-handler {

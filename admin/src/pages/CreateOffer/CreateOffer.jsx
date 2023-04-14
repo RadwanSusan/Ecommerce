@@ -239,198 +239,200 @@ export default function CreateOffer() {
 		);
 	};
 	return (
-		<div className="newProduct">
-			<h1 className="addProductTitle">New Offer</h1>
-			<form className="addProductForm">
-				<div className="divition1">
-					<div className="addProductItem">
-						<label>Image</label>
-						<input
-							type="file"
-							id="file"
-							onChange={(e) => setFile(e.target.files[0])}
-						/>
-					</div>
-					<div className="addProductItem">
-						<label>Title</label>
-						<input
-							name="title"
-							className="Title"
-							type="text"
-							placeholder="Apple Airpods"
-							onChange={handleChange}
-						/>
-					</div>
-					<div className="addProductItem">
-						<label>Description</label>
-						<input
-							name="desc"
-							className="Description"
-							type="text"
-							placeholder="description..."
-							onChange={handleChange}
-						/>
-					</div>
-					<div className="addProductItem">
-						<fieldset>
-							<legend>Size</legend>
-							<input
-								type="checkbox"
-								className="Size"
-								name="size"
-								onClick={addSize}
-								value="S"
-							/>
-							<label> S</label>
-							<br />
-							<input
-								type="checkbox"
-								className="Size"
-								name="size"
-								onClick={addSize}
-								value="M"
-							/>
-							<label> M</label>
-							<br />
-							<input
-								type="checkbox"
-								className="Size"
-								name="size"
-								onClick={addSize}
-								value="L"
-							/>
-							<label> L</label>
-							<br />
-							<input
-								type="checkbox"
-								className="Size"
-								name="size"
-								onClick={addSize}
-								value="XL"
-							/>
-							<label> XL</label>
-							<br />
-							<input
-								type="checkbox"
-								name="size"
-								onClick={addSize}
-								value="XXL"
-								className="Size"
-							/>
-							<label> XXL</label>
-							<br />
-						</fieldset>
-					</div>
-					<div className="addProductItem color">
-						<label>Color</label>
-						<br />
-						<input id="color-picker1" name="color1" type="color" />
-						<input id="color-picker2" name="color1" type="color" />
-						<input id="color-picker3" name="color1" type="color" />
-						<input id="color-picker4" name="color1" type="color" />
-						<input id="color-picker5" name="color1" type="color" />
-						<input id="color-picker6" name="color1" type="color" />
-					</div>
-					<div className="addProductItem">
-						<button onClick={clearColor}>Clear All Colors</button>
-					</div>
-				</div>
-				<div className="divition2">
-					<div className="addProductItem">
-						<label>Price</label>
-						<input
-							name="price"
-							type="number"
-							placeholder="100"
-							onChange={handleChange}
-							className="Price"
-						/>
-					</div>
-					<div className="addProductItem">
-						<label>Original Price</label>
-						<input
-							name="originalPrice"
-							type="number"
-							placeholder="100"
-							onChange={handleChange}
-							className="OriginalPrice"
-						/>
-					</div>
-					<div className="addProductItem">
-						<label>Categories</label>
-						<select
-							name="categories"
-							onChange={handleCat}
-							className="Categories"
-						>
-							<option value="">Select Categories</option>
-							<option value="offer">offer</option>
-						</select>
-					</div>
-					<div className="addProductItem">
-						<label>Quantity</label>
-						<input
-							name="quantity"
-							type="number"
-							placeholder="1"
-							onChange={handleChange}
-							className="Quantity"
-						/>
-					</div>
-					<div className="addProductItem">
-						<label>Offer Width</label>
-						<input
-							name="width"
-							type="number"
-							placeholder="200"
-							onChange={handleChange}
-							className="Width"
-						/>
-					</div>
-					<div className="addProductItem">
-						<label>Offer Height</label>
-						<input
-							name="height"
-							type="number"
-							placeholder="200"
-							onChange={handleChange}
-							className="Height"
-						/>
-					</div>
-					<div className="addProductItem">
-						<label>Offer Length</label>
-						<input
-							name="length"
-							type="number"
-							placeholder="200"
-							onChange={handleChange}
-							className="Length"
-						/>
-					</div>
-					<div className="addProductItem">
-						<label>Offer Weight</label>
-						<input
-							name="weight"
-							type="number"
-							placeholder="200"
-							onChange={handleChange}
-							className="Weight"
-						/>
-					</div>
-					<div className="addProductItem">
-						<label>Offer Expiration Date</label>
-						<input
-							name="timeLeft"
-							type="date"
-							onChange={handleChange}
-							className="expirationDate"
-						/>
-					</div>
-					<button onClick={handleClick} className="addProductButton">
-						Create
-					</button>
-				</div>
-			</form>
-		</div>
-	);
+    <div className="newProduct">
+      <h1 className="addProductTitle">New Offer</h1>
+      <form className="addProductForm">
+        <div className="divition1">
+          <div className="addProductItem">
+            <label>Image</label>
+            <input
+              type="file"
+              id="file"
+              onChange={(e) => setFile(e.target.files[0])}
+            />
+          </div>
+          <div className="addProductItem">
+            <label>Title</label>
+            <input
+              name="title"
+              className="Title"
+              type="text"
+              placeholder="Apple Airpods"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="addProductItem">
+            <label>Description</label>
+            <input
+              name="desc"
+              className="Description"
+              type="text"
+              placeholder="description..."
+              onChange={handleChange}
+            />
+          </div>
+          <div className="addProductItem">
+            <fieldset>
+              <legend>Size</legend>
+              <input
+                type="checkbox"
+                className="Size"
+                name="size"
+                onClick={addSize}
+                value="S"
+              />
+              <label> S</label>
+              <br />
+              <input
+                type="checkbox"
+                className="Size"
+                name="size"
+                onClick={addSize}
+                value="M"
+              />
+              <label> M</label>
+              <br />
+              <input
+                type="checkbox"
+                className="Size"
+                name="size"
+                onClick={addSize}
+                value="L"
+              />
+              <label> L</label>
+              <br />
+              <input
+                type="checkbox"
+                className="Size"
+                name="size"
+                onClick={addSize}
+                value="XL"
+              />
+              <label> XL</label>
+              <br />
+              <input
+                type="checkbox"
+                name="size"
+                onClick={addSize}
+                value="XXL"
+                className="Size"
+              />
+              <label> XXL</label>
+              <br />
+            </fieldset>
+          </div>
+          <div className="addProductItem color">
+            <label>Color</label>
+            <br />
+            <input id="color-picker1" name="color1" type="color" />
+            <input id="color-picker2" name="color1" type="color" />
+            <input id="color-picker3" name="color1" type="color" />
+            <input id="color-picker4" name="color1" type="color" />
+            <input id="color-picker5" name="color1" type="color" />
+            <input id="color-picker6" name="color1" type="color" />
+          </div>
+          <div className="addProductItem">
+            <button onClick={clearColor}>Clear All Colors</button>
+          </div>
+        </div>
+        <div className="divition2">
+          <div className="addProductItem">
+            <label>Price</label>
+            <input
+              name="price"
+              type="number"
+              placeholder="100"
+              onChange={handleChange}
+              className="Price"
+            />
+          </div>
+          <div className="addProductItem">
+            <label>Original Price</label>
+            <input
+              name="originalPrice"
+              type="number"
+              placeholder="100"
+              onChange={handleChange}
+              className="OriginalPrice"
+            />
+          </div>
+          <div className="addProductItem">
+            <label>Categories</label>
+            <select
+              name="categories"
+              onChange={handleCat}
+              className="Categories"
+            >
+              <option value="">Select Categories</option>
+              <option value="offer">offer</option>
+            </select>
+          </div>
+          <div className="addProductItem">
+            <label>Quantity</label>
+            <input
+              name="quantity"
+              type="number"
+              placeholder="1"
+              onChange={handleChange}
+              className="Quantity"
+            />
+          </div>
+        </div>
+        <div className="divition3">
+          <div className="addProductItem">
+            <label>Offer Width</label>
+            <input
+              name="width"
+              type="number"
+              placeholder="200"
+              onChange={handleChange}
+              className="Width"
+            />
+          </div>
+          <div className="addProductItem">
+            <label>Offer Height</label>
+            <input
+              name="height"
+              type="number"
+              placeholder="200"
+              onChange={handleChange}
+              className="Height"
+            />
+          </div>
+          <div className="addProductItem">
+            <label>Offer Length</label>
+            <input
+              name="length"
+              type="number"
+              placeholder="200"
+              onChange={handleChange}
+              className="Length"
+            />
+          </div>
+          <div className="addProductItem">
+            <label>Offer Weight</label>
+            <input
+              name="weight"
+              type="number"
+              placeholder="200"
+              onChange={handleChange}
+              className="Weight"
+            />
+          </div>
+          <div className="addProductItem">
+            <label>Offer Expiration Date</label>
+            <input
+              name="timeLeft"
+              type="date"
+              onChange={handleChange}
+              className="expirationDate"
+            />
+          </div>
+          <button onClick={handleClick} className="addProductButton">
+            Create
+          </button>
+        </div>
+      </form>
+    </div>
+  );
 }

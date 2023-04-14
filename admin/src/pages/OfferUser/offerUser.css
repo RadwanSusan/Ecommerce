@@ -44,10 +44,10 @@
     margin-right: 20px;
   }
   
-  .productInfoTop {
+  /* .productInfoTop {
     display: flex;
     align-items: center;
-  }
+  } */
   
   .productName {
     font-weight: 600;
@@ -61,6 +61,7 @@
     width: 150px;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 5px;
   }
   
   .productInfoValue {
@@ -127,4 +128,8 @@
     color:white;
     font-weight: 600;
     cursor: pointer;
+  }
+  .allDiviti {
+    display: flex;
+    justify-content: space-between;
   }

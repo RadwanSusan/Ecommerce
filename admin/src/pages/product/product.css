@@ -46,6 +46,12 @@
 
 .productInfoBottom {
   margin-top: 10px;
+  /* display: flex;
+  justify-content: space-between; */
+}
+.productInfoBottom2 {
+  display: flex;
+    justify-content: space-between;
 }
 
 .productInfoItem {

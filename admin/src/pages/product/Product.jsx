@@ -158,138 +158,142 @@ export default function Product() {
 		getStats();
 	}, [productId, MONTHS]);
 	return (
-		<div className="product">
-			<div className="productTitleContainer">
-				<h1 className="productTitle">Product</h1>
-			</div>
-			<div className="productTop">
-				<div className="productTopLeft">
-					<Chart data={pStats} dataKey="Sales" title="Sales Performance" />
-				</div>
-				<div className="productTopRight">
-					<div className="productInfoTop">
-						<img src={product.img} alt="" className="productInfoImg" />
-						<span className="productName">{product.title}</span>
-					</div>
-					<div className="productInfoBottom">
-						<div className="productInfoItem">
-							<span className="productInfoKey">Product name:</span>
-							<span className="productInfoValue">{product._id}</span>
-						</div>
-						<div className="productInfoItem">
-							<span className="productInfoKey">Product description:</span>
-							<span className="productInfoValue">{product.desc}</span>
-						</div>
-						<div className="productInfoItem">
-							<span className="productInfoKey">sales:</span>
-							<span className="productInfoValue">0</span>
-						</div>
-						<div className="productInfoItem">
-							<span className="productInfoKey">in stock:</span>
-							<span className="productInfoValue">
-								{product.inStock.toString()}
-							</span>
-						</div>
-						<div className="productInfoItem">
-							<span className="productInfoKey">price:</span>
-							<span className="productInfoValue">{product.price}</span>
-						</div>
-						<div className="productInfoItem">
-							<span className="productInfoKey">color:</span>
-							<ul className="productInfoValue">
-								{product.color.map((item) => {
-									return <li key={item}>{item}</li>;
-								})}
-							</ul>
-						</div>
-						<div className="productInfoItem">
-							<span className="productInfoKey">size:</span>
-							<ul className="productInfoValue">
-								{product.size.map((item) => {
-									return <li key={item}>{item}</li>;
-								})}
-							</ul>
-						</div>
-						<div className="productInfoItem">
-							<span className="productInfoKey">Quantity:</span>
-							<div className="productInfoValue">{product.quantity}</div>
-						</div>
-						<div className="productInfoItem">
-							<span className="productInfoKey">Width:</span>
-							<div className="productInfoValue">{product.width}</div>
-						</div>
-						<div className="productInfoItem">
-							<span className="productInfoKey">Height:</span>
-							<div className="productInfoValue">{product.height}</div>
-						</div>
-						<div className="productInfoItem">
-							<span className="productInfoKey">Length:</span>
-							<div className="productInfoValue">{product.length}</div>
-						</div>
-						<div className="productInfoItem">
-							<span className="productInfoKey">Weight:</span>
-							<div className="productInfoValue">{product.weight}</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div className="productBottom">
-				<form className="productForm">
-					<div className="productFormLeft">
-						<label>Product Name</label>
-						<input
-							type="text"
-							className="PTitle"
-							name="title"
-							placeholder={product.title}
-							onChange={handleUpdate}
-						/>
-						<label>Product Description</label>
-						<input
-							type="text"
-							name="desc"
-							className="PDesc"
-							placeholder={product.desc}
-							onChange={handleUpdate}
-						/>
-						<label>Price</label>
-						<input
-							type="text"
-							name="price"
-							className="PPrice"
-							placeholder={product.price}
-							onChange={handleUpdate}
-						/>
-						<label>In Stock</label>
-						<select
-							name="inStock"
-							className="PStock"
-							id="idStock"
-							onChange={handleUpdate}
-						>
-							<option value="true">Yes</option>
-							<option value="false">No</option>
-						</select>
-					</div>
-					<div className="productFormRight">
-						<div className="productUpload">
-							<img src={product.img} alt="" className="productUploadImg" />
-							<label for="file">
-								<Publish />
-							</label>
-							<input
-								type="file"
-								id="file"
-								style={{ display: "none" }}
-								onChange={(e) => setFile(e.target.files[0])}
-							/>
-						</div>
-						<button className="productButton" onClick={handleSubmit}>
-							Update
-						</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	);
+    <div className="product">
+      <div className="productTitleContainer">
+        <h1 className="productTitle">Product</h1>
+      </div>
+      <div className="productTop">
+        <div className="productTopLeft">
+          <Chart data={pStats} dataKey="Sales" title="Sales Performance" />
+        </div>
+        <div className="productTopRight">
+          <div className="productInfoTop">
+            <img src={product.img} alt="" className="productInfoImg" />
+            <span className="productName">{product.title}</span>
+          </div>
+          <div className="productInfoBottom productInfoBottom2 ">
+            <div className="diviti">
+              <div className="productInfoItem">
+                <span className="productInfoKey">Product name:</span>
+                <span className="productInfoValue">{product._id}</span>
+              </div>
+              <div className="productInfoItem">
+                <span className="productInfoKey">Product description:</span>
+                <span className="productInfoValue">{product.desc}</span>
+              </div>
+              <div className="productInfoItem">
+                <span className="productInfoKey">sales:</span>
+                <span className="productInfoValue">0</span>
+              </div>
+              <div className="productInfoItem">
+                <span className="productInfoKey">in stock:</span>
+                <span className="productInfoValue">
+                  {product.inStock.toString()}
+                </span>
+              </div>
+              <div className="productInfoItem">
+                <span className="productInfoKey">price:</span>
+                <span className="productInfoValue">{product.price}</span>
+              </div>
+              <div className="productInfoItem">
+                <span className="productInfoKey">color:</span>
+                <ul className="productInfoValue">
+                  {product.color.map((item) => {
+                    return <li key={item}>{item}</li>;
+                  })}
+                </ul>
+              </div>
+            </div>
+            <div className="diviti2">
+              <div className="productInfoItem">
+                <span className="productInfoKey">size:</span>
+                <ul className="productInfoValue">
+                  {product.size.map((item) => {
+                    return <li key={item}>{item}</li>;
+                  })}
+                </ul>
+              </div>
+              <div className="productInfoItem">
+                <span className="productInfoKey">Quantity:</span>
+                <div className="productInfoValue">{product.quantity}</div>
+              </div>
+              <div className="productInfoItem">
+                <span className="productInfoKey">Width:</span>
+                <div className="productInfoValue">{product.width}</div>
+              </div>
+              <div className="productInfoItem">
+                <span className="productInfoKey">Height:</span>
+                <div className="productInfoValue">{product.height}</div>
+              </div>
+              <div className="productInfoItem">
+                <span className="productInfoKey">Length:</span>
+                <div className="productInfoValue">{product.length}</div>
+              </div>
+              <div className="productInfoItem">
+                <span className="productInfoKey">Weight:</span>
+                <div className="productInfoValue">{product.weight}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="productBottom">
+        <form className="productForm">
+          <div className="productFormLeft">
+            <label>Product Name</label>
+            <input
+              type="text"
+              className="PTitle"
+              name="title"
+              placeholder={product.title}
+              onChange={handleUpdate}
+            />
+            <label>Product Description</label>
+            <input
+              type="text"
+              name="desc"
+              className="PDesc"
+              placeholder={product.desc}
+              onChange={handleUpdate}
+            />
+            <label>Price</label>
+            <input
+              type="text"
+              name="price"
+              className="PPrice"
+              placeholder={product.price}
+              onChange={handleUpdate}
+            />
+            <label>In Stock</label>
+            <select
+              name="inStock"
+              className="PStock"
+              id="idStock"
+              onChange={handleUpdate}
+            >
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+          <div className="productFormRight">
+            <div className="productUpload">
+              <img src={product.img} alt="" className="productUploadImg" />
+              <label for="file">
+                <Publish />
+              </label>
+              <input
+                type="file"
+                id="file"
+                style={{ display: "none" }}
+                onChange={(e) => setFile(e.target.files[0])}
+              />
+            </div>
+            <button className="productButton" onClick={handleSubmit}>
+              Update
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }

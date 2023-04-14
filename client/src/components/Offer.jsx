@@ -17,6 +17,13 @@ import {
   AiOutlineArrowUp,
   AiOutlineArrowDown,
 } from "react-icons/ai";
+import swal from "sweetalert";
+import { addProduct, getAllProduct } from "../redux/cartRedux";
+import { useDispatch } from "react-redux";
+
+
+
+
 
 import {
   BsFillArrowRightCircleFill,
@@ -30,6 +37,7 @@ const Wrapper1 = styled.div`
   transform: translateX(${(props) => props.slideIndex * -35}vw);
 `;
 const Offer = () => {
+	
   window.onload = function () {
     //// SLIDER
     var slider = document.getElementsByClassName("sliderBlock_items");
@@ -221,7 +229,8 @@ const Offer = () => {
     }
   };
 
-  const [offer, setOffer] = useState([]);
+	const [offer, setOffer] = useState([]);
+	
   useEffect(() => {
     const getOffer = async () => {
       try {
@@ -235,6 +244,88 @@ const Offer = () => {
     };
     getOffer(getOffer);
   }, [categoriesOffer.cat]);
+	
+	// const [product, setProduct] = useState({});
+  const [quantity, setQuantity] = useState(1);
+  const [color, setColor] = useState("");
+  const [size, setSize] = useState("");
+	const [cart, setCart] = useState([]);
+	const dispatch = useDispatch();
+	
+// 	document.querySelectorAll(".Color").forEach((item) =>
+//     item.addEventListener("click", (e) => {
+//       document.querySelectorAll(".Color").forEach((item2) => {
+//         item2.style.outline = "none";
+//       });
+//       e.target.style.outline = "3px solid #292931";
+//     })
+//   );
+	
+  const handleQuantity = (type) => {
+    if (type === "dec") {
+		quantity > 1 && setQuantity(quantity - 1);
+		console.log("za");
+		console.log(quantity);
+		console.log(offer);
+		
+		
+    } else {
+		if (quantity >= offer[0].quantity) {
+        swal(
+          "Info",
+          "You have exceeded the number of available products!",
+          "info"
+        );
+      } else {
+			setQuantity(quantity + 1);
+			// console.log("z");
+			// console.log(quantity);
+		// console.log(offer[0].quantity);
+
+			
+      }
+    }
+  };
+  let cartProducts = JSON.parse(localStorage.getItem("persist:root"));
+  cartProducts = cartProducts.cart;
+  cartProducts = JSON.parse(cartProducts);
+  const mergedCart = cartProducts.products.reduce((acc, curr) => {
+    const existingItem = acc.find((item) => item._id === curr._id);
+    if (existingItem) {
+      existingItem.quantity += curr.quantity;
+    } else {
+      acc.push({ ...curr });
+    }
+    return acc;
+  }, []);
+  const chekAvail = () => {
+    let newQuantity = mergedCart.map((item) => {
+      if (item._id === offer._id) {
+        return {
+          quantity: offer.quantity - item.quantity,
+        };
+      }
+    });
+    newQuantity = newQuantity.filter((item) => item !== undefined);
+    if (newQuantity.length > 0) {
+      if (newQuantity[0].quantity < 1) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+    return true;
+  };
+  const handleClick11 = () => {
+    dispatch(addProduct({ ...offer, quantity, color, size }));
+    swal("Success", "Product added to cart!", "success");
+    offer.quantity -= quantity;
+    if (offer.quantity < 1) {
+      document.querySelector(".AddCart").disabled = true;
+    }
+    setQuantity(1);
+  };
+
 	
 	
 
@@ -409,8 +500,7 @@ const Offer = () => {
                     <div className="row11 ">
                       <div className="large-6 small-12 column left-align">
                         <div className="block_price">
-                          <p className="block_price__currency">$
-						  </p>
+                          <p className="block_price__currency">$</p>
                           <p className="block_price__shipping">
                             Shipping and taxes extra
                           </p>
@@ -423,24 +513,27 @@ const Offer = () => {
                               name="quantityNumber"
                               type="text"
                               min="1"
-                              value={quantityUp}
+                              value={quantity}
                             />
                             <button className="block_quantity__button block_quantity__up">
                               <BsArrowDownCircle
-                                onClick={() => {
-                                  //   downFun();
-                                  if (quantityUp > 1) {
-                                    setQuantityUp(quantityUp - 1);
-                                  }
+															  onClick={() => {
+																  handleQuantity("dec");
+																  
+																  
+                                
+																  
                                 }}
                                 className="AiOutlineArrowUpanddown down5"
                               />
                             </button>
                             <button className="block_quantity__button block_quantity__down">
                               <BsArrowUpCircle
-                                onClick={() => {
-                                  setQuantityUp(quantityUp + 1);
+															  onClick={() => {
+																  handleQuantity("inc");
+													
                                 }}
+								
                                 className="AiOutlineArrowUpanddown up5"
                               />
                             </button>
@@ -452,13 +545,18 @@ const Offer = () => {
                           <span className="text_specification">
                             Choose your colors:
                           </span>
-                          <div className="block_goodColor__allColors">
-                           
-                          </div>
-                        </div>
-                        <button className="button button_addToCard">
-                          Add to Cart
-                        </button>
+                          <div className="block_goodColor__allColors"></div>
+											  </div>
+											  
+                          {chekAvail() ? (
+                            <button className="AddCart" onClick={handleClick11}>
+                              ADD TO CART
+                            </button>
+                          ) : (
+                            <button className="AddCart" disabled>
+                              ADD TO CART
+                            </button>
+                          )}
                       </div>
                     </div>
                   </div>
