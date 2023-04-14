@@ -1,26 +1,17 @@
-const Order = require('../models/Order');
+const Order = require("../models/Order");
 const {
 	verifyToken,
 	verifyTokenAndAuthorization,
 	verifyTokenAndAdmin,
-} = require('./verifyToken');
+} = require("./verifyToken");
 
-const router = require('express').Router();
+const router = require("express").Router();
 
 //CREATE
 
-// router.post("/", verifyToken, async (req, res) => {
-// 	const newOrder = new Order(req.body);
-// 	try {
-// 		const savedOrder = await newOrder.save();
-// 		res.status(200).json(savedOrder);
-// 	} catch (err) {
-// 		res.status(500).json(err);
-// 	}
-// });
-
-router.post('/', async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
 	const newOrder = new Order(req.body);
+
 	try {
 		const savedOrder = await newOrder.save();
 		res.status(200).json(savedOrder);
@@ -28,8 +19,9 @@ router.post('/', async (req, res) => {
 		res.status(500).json(err);
 	}
 });
+
 //UPDATE
-router.put('/:id', verifyTokenAndAdmin, async (req, res) => {
+router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
 	try {
 		const updatedOrder = await Order.findByIdAndUpdate(
 			req.params.id,
@@ -45,17 +37,17 @@ router.put('/:id', verifyTokenAndAdmin, async (req, res) => {
 });
 
 //DELETE
-router.delete('/:id', verifyTokenAndAdmin, async (req, res) => {
+router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 	try {
 		await Order.findByIdAndDelete(req.params.id);
-		res.status(200).json('Order has been deleted...');
+		res.status(200).json("Order has been deleted...");
 	} catch (err) {
 		res.status(500).json(err);
 	}
 });
 
 //GET USER ORDERS
-router.get('/find/:userId', verifyTokenAndAuthorization, async (req, res) => {
+router.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
 	try {
 		const orders = await Order.find({ userId: req.params.userId });
 		res.status(200).json(orders);
@@ -64,9 +56,9 @@ router.get('/find/:userId', verifyTokenAndAuthorization, async (req, res) => {
 	}
 });
 
-//GET ALL
+ //GET ALL
 
-router.get('/', verifyTokenAndAdmin, async (req, res) => {
+router.get("/", verifyTokenAndAdmin, async (req, res) => {
 	try {
 		const orders = await Order.find();
 		res.status(200).json(orders);
@@ -77,42 +69,45 @@ router.get('/', verifyTokenAndAdmin, async (req, res) => {
 
 // GET MONTHLY INCOME
 
-router.get('/income', verifyTokenAndAdmin, async (req, res) => {
+router.get("/income", verifyTokenAndAdmin, async (req, res) => {
 	const productId = req.query.pid;
 	const date = new Date();
-	const lastMonth = new Date(date.getMonth(date.getMonth() - 1));
-
-	const previousMonth = new Date(new Date().getMonth(lastMonth.getMonth() - 1));
-
+	const lastMonth = new Date(date.getMonth(date.getMonth() -1));
+	
+	const previousMonth = new Date(new Date().getMonth(lastMonth.getMonth() -1));
+  
 	try {
-		const income = await Order.aggregate([
-			{
-				$match: {
-					createdAt: { $gte: previousMonth },
-					...(productId && {
-						products: { $elemMatch: { productId } },
-					}),
-				},
-			},
-			{
-				$project: {
-					month: { $month: '$createdAt' },
-					sales: '$amount',
-					salesOrgin: '$amountOrgin',
-				},
-			},
-			{
-				$group: {
-					_id: '$month',
-					total: { $sum: '$sales' },
-					totalOrgin: { $sum: '$salesOrgin' },
-				},
-			},
-		]);
-		res.status(200).json(income);
-	} catch (err) {
-		res.status(500).json(err);
-	}
-});
+	  const income = await Order.aggregate([
+		{
+		  $match: {
+			createdAt: { $gte: previousMonth },
+			...(productId && {
+			  products: { $elemMatch: { productId } },
+			}),
+		  },
+		},
+		{
+		  $project: {
+			month: { $month: "$createdAt" },
+			sales: "$amount",
+			salesOrgin: "$amountOrgin",
 
+		  },
+		},
+		{
+		  $group: {
+			_id: "$month",
+			total: { $sum: "$sales" },
+			totalOrgin: { $sum: "$salesOrgin" },
+
+		  },
+		},
+	  ]);
+	  res.status(200).json(income);
+	} catch (err) {
+	  res.status(500).json(err);
+	}
+  });
+
+  
 module.exports = router;
