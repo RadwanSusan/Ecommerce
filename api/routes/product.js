@@ -1,15 +1,15 @@
-const Product = require("../models/Product");
+const Product = require('../models/Product');
 const {
 	verifyToken,
 	verifyTokenAndAuthorization,
 	verifyTokenAndAdmin,
-} = require("./verifyToken");
+} = require('./verifyToken');
 
-const router = require("express").Router();
+const router = require('express').Router();
 
 //CREATE
 
-router.post("/", verifyTokenAndAdmin, async (req, res) => {
+router.post('/', verifyTokenAndAdmin, async (req, res) => {
 	const newProduct = new Product(req.body);
 
 	try {
@@ -53,7 +53,7 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
 // 	}
 // });
 //UPDATE
-router.put("/:id", async (req, res) => {
+router.put('/:id', async (req, res) => {
 	try {
 		const updatedProduct = await Product.findByIdAndUpdate(
 			req.params.id,
@@ -68,17 +68,17 @@ router.put("/:id", async (req, res) => {
 	}
 });
 //DELETE
-router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
+router.delete('/:id', verifyTokenAndAdmin, async (req, res) => {
 	try {
 		await Product.findByIdAndDelete(req.params.id);
-		res.status(200).json("Product has been deleted...");
+		res.status(200).json('Product has been deleted...');
 	} catch (err) {
 		res.status(500).json(err);
 	}
 });
 
 //GET PRODUCT
-router.get("/find/:id", async (req, res) => {
+router.get('/find/:id', async (req, res) => {
 	try {
 		const product = await Product.findById(req.params.id);
 		res.status(200).json(product);
@@ -88,7 +88,7 @@ router.get("/find/:id", async (req, res) => {
 });
 
 //GET ALL PRODUCTS
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
 	const qNew = req.query.new;
 	const qCategory = req.query.category;
 	try {
@@ -111,34 +111,40 @@ router.get("/", async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-//GET ALL PRODUCTS NAME
-router.get("/search/:key", async (req, res) => {
+
+// router.get('/search/:key/', async (req, res) => {
+// 	const qCategory = req.query.category;
+// 	try {
+// 		let products;
+// 		if (qCategory) {
+// 			products = await Product.find({
+// 				categories: qCategory,
+// 				title: { $regex: req.params.key },
+// 			});
+// 		} else {
+// 			products = await Product.find({
+// 				title: { $regex: req.params.key },
+// 			});
+// 		}
+// 		res.status(200).json(products);
+// 	} catch (err) {
+// 		console.error(err);
+// 		res.status(500).json({ message: 'Server Error' });
+// 	}
+// });
+
+router.get('/search/:key', async (req, res) => {
 	const qCategory = req.query.category;
-	let products;
-	if (qCategory) {
-		products = await Product.find({
-      categories: {
-        $in: [qCategory],
-        $or: [
-          { title: { $regex: req.params.key } },
-        ],
-			},
-			
+	try {
+		const products = await Product.find({
+			categories: qCategory || undefined,
+			title: { $regex: req.params.key },
 		});
 		res.status(200).json(products);
-		
-	
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ message: 'Server Error' });
 	}
-	else {
-		let data = await Product.find({
-			$or: [
-				{ title: { $regex: req.params.key } },
-				//   { categories: { $regex: req.params.key } },
-			],
-		});
-		res.status(200).json(data);
-	}
-	
 });
 
 module.exports = router;
