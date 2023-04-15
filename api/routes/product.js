@@ -111,5 +111,17 @@ router.get("/", async (req, res) => {
 		res.status(500).json(err);
 	}
 });
+//GET ALL PRODUCTS NAME
+router.get("/search/:key", async (req, res) => {
+	let data = await Product.find({
+    $or: [
+      { title: { $regex: req.params.key } },
+    //   { categories: { $regex: req.params.key } },
+    ],
+  });
+		res.status(200).json(data);
+
+	
+});
 
 module.exports = router;
