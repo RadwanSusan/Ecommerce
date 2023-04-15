@@ -6,7 +6,7 @@ const Table = ({ data }) => {
         {data.map((item) => (
           <tr key={item.id}>
             <td>{item.title}</td>
-            <td>{item.categories}</td>
+            {/* <td>{item.categories}</td> */}
           </tr>
         ))}
       </tbody>

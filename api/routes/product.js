@@ -113,14 +113,31 @@ router.get("/", async (req, res) => {
 });
 //GET ALL PRODUCTS NAME
 router.get("/search/:key", async (req, res) => {
-	let data = await Product.find({
-    $or: [
-      { title: { $regex: req.params.key } },
-    //   { categories: { $regex: req.params.key } },
-    ],
-  });
+	const qCategory = req.query.category;
+	let products;
+	if (qCategory) {
+		products = await Product.find({
+      categories: {
+        $in: [qCategory],
+        $or: [
+          { title: { $regex: req.params.key } },
+        ],
+			},
+			
+		});
+		res.status(200).json(products);
+		
+	
+	}
+	else {
+		let data = await Product.find({
+			$or: [
+				{ title: { $regex: req.params.key } },
+				//   { categories: { $regex: req.params.key } },
+			],
+		});
 		res.status(200).json(data);
-
+	}
 	
 });
 

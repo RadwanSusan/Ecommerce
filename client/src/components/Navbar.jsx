@@ -48,6 +48,7 @@ const Navbar = () => {
 		if (queryName.length === 0 || queryName.length >= 1) fetchData();
 	}, [queryName]);
 
+	
 	const onSearch = () => {
 		//our api call
 		console.log('searching...');
