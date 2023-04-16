@@ -30,11 +30,7 @@ const Navbar = () => {
 	// }
 	const [queryName, setQueryName] = useState('');
 	const [dataAll, setDataAll] = useState([]);
-	const [catogName, setCatogName] = useState('');
-
-	// 	const onChange = (event) => {
-	//     setQueryName(event.target.value);
-	//   };
+	let catogName = '';
 	document.addEventListener('DOMContentLoaded', () => {
 		const selectElement = document.querySelector('.cat');
 		selectElement.addEventListener('change', () => {
@@ -43,11 +39,7 @@ const Navbar = () => {
 		function updateSelectedCategory() {
 			const selectedOption = selectElement.options[selectElement.selectedIndex];
 			const selectedValue = selectedOption.value;
-			console.log(
-				`🚀 ~ file: Navbar.jsx:64 ~ updateSelectedCategory ~ selectedValue:`,
-				selectedValue,
-			);
-			setCatogName(selectedValue);
+			catogName = selectedValue;
 			console.log(catogName);
 		}
 		updateSelectedCategory();
