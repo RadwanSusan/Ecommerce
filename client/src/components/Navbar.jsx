@@ -30,7 +30,7 @@ const Navbar = () => {
 	// }
 	const [queryName, setQueryName] = useState('');
 	const [dataAll, setDataAll] = useState([]);
-	let catogName = '';
+	const [catogName, setCatogName] = useState('');
 	document.addEventListener('DOMContentLoaded', () => {
 		const selectElement = document.querySelector('.cat');
 		selectElement.addEventListener('change', () => {
@@ -39,8 +39,7 @@ const Navbar = () => {
 		function updateSelectedCategory() {
 			const selectedOption = selectElement.options[selectElement.selectedIndex];
 			const selectedValue = selectedOption.value;
-			catogName = selectedValue;
-			console.log(catogName);
+			setCatogName(selectedValue);
 		}
 		updateSelectedCategory();
 	});
@@ -50,16 +49,15 @@ const Navbar = () => {
 				setDataAll([]);
 				return;
 			}
+			console.log(catogName);
 			const res = await axios.get(
-				`http://localhost:4000/api/products/search/${queryName}`,
+				`http://localhost:4000/api/products/search/${queryName}?category=${catogName}`,
 			);
 			setDataAll(res.data);
-			// console.log(res.data);
 		};
 		if (queryName.length === 0 || queryName.length >= 1) fetchData();
 	}, [queryName]);
 	const onSearch = () => {
-		//our api call
 		console.log('searching...');
 	};
 	return (
@@ -101,9 +99,9 @@ const Navbar = () => {
 													name='cat'
 												>
 													<option value=''>All Categories</option>
-													<option value='Jeans'>- Jeans</option>
-													<option value='Coat'>- Coat</option>
-													<option value='Women'>- Women</option>
+													<option value='jeans'>- Jeans</option>
+													<option value='coat'>- Coat</option>
+													<option value='women'>- Women</option>
 												</select>
 												<input
 													id='searchbox'
