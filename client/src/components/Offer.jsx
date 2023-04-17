@@ -314,14 +314,6 @@ const Offer = () => {
 		if (offer.length > 0) {
 			const cartItem = mergedCart.find((item) => item._id === productId);
 			if (cartItem) {
-				console.log(
-					`🚀 ~ file: Offer.jsx:323 ~ addToCart ~ item.quantity:`,
-					item.quantity,
-				);
-				console.log(
-					`🚀 ~ file: Offer.jsx:320 ~ addToCart ~ cartItem.quantity:`,
-					cartItem.quantity,
-				);
 				if (cartItem.quantity === item.quantity) {
 					swal('Info', 'You already have the maximum amount!', 'info');
 					document.querySelector('.AddCart').disabled = true;
