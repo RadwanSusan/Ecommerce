@@ -48,3 +48,28 @@
     /* display: none; */
   }
 }
+.colorOption {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  border: 1px solid #7451f8;
+  cursor: pointer;
+  margin: 5px;
+}
+  .colorOption:nth-child(1) {
+    background-color: whitesmoke;
+  }
+
+    .colorOption:nth-child(2) {
+    background-color: #333;
+  }
+
+    .colorOption:nth-child(3) {
+    background-color: darkblue;
+  }
+     .bottom {
+       display: flex;
+       align-items: center;
+       margin: 10px;
+      }
+

@@ -1,10 +1,10 @@
-@media all {
+/* @media all {
 	.header-mobile {
 		display: none;
 	}
-}
+} */
 
-@media all {
+/* @media all {
 	header {
 		display: block;
 	}
@@ -17,7 +17,7 @@
 		padding: 0;
 		background: none;
 	}
-}
+} */
 
 @media (min-width: 769px), print {
 	.page-header {
@@ -151,10 +151,10 @@
 		outline: none !important;
 	}
 
-	button,
+	/* button,
 	[type="submit"] {
 		-webkit-appearance: button;
-	}
+	} */
 
 	button[disabled] {
 		opacity: 0.5;

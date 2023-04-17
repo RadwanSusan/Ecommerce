@@ -1,0 +1,69 @@
+.app.dark {
+    background-color: #222;
+    color: rgb(226, 222, 222);
+
+    .Area-chart {
+        stroke: rgba(228,228,228, 0.219);
+    }
+        .featuredItem {
+            box-shadow : 0px 0px 15px -7px rgb(255 250 250 / 75%);
+        }
+                .widgetLg {
+            box-shadow: 0px 0px 15px -7px rgb(255 250 250 / 75%);
+                }
+                                .widgetSm {
+            box-shadow: 0px 0px 10px-5px rgb(255 250 250 / 75%);
+
+                                }
+                                                                .MuiDataGrid-root.MuiDataGrid-autoHeight {
+                                                                    color: gainsboro;
+                                                                }
+    .topbarWrapper {
+    background-color: #222;
+    }
+        .logo {
+    color: rgb(156, 156, 156);
+        }
+                .addProductButton {
+    background-color: #423e3e;
+
+                }
+                .productButton {
+    background-color: #423e3e;
+
+                }
+                                .chart {
+            box-shadow: 0px 0px 15px-7px rgb(255 250 250 / 75%);
+
+                                }
+                                .productTopRight {
+            box-shadow: 0px 0px 15px-7px rgb(255 250 250 / 75%);
+
+                                }
+                                                                .productBottom {
+            box-shadow: 0px 0px 15px-7px rgb(255 250 250 / 75%);
+
+
+                                                                }
+                                                                .sidebar {
+                                                                    background-color: #222;
+                                                                        color: rgb(249, 248, 248);
+            box-shadow: 0px 0px 5px-3px rgb(255 250 250 / 75%);
+
+
+                                                                }
+                                                                input {
+                                                                    background-color: transparent;
+                                                                }
+                                                                .sidebarListItem {
+                                                                    color: white;
+                                                                }
+                                           .sidebarListItem:hover {
+                                                            background-color: rgb(53 53 56);
+
+                                                         }
+                                                                                                                 .sidebarListItem.active {
+                                                            background-color: rgb(53 53 56);
+
+                                                                                                                 }
+}

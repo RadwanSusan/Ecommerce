@@ -14,8 +14,13 @@ import {
   Report,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
+import { BiLogOutCircle } from "react-icons/bi"; 
+import { CgProfile } from "react-icons/cg";
+import { DarkModeContext } from "../../context/darkModeContext";
+import { useContext } from "react";
 
 export default function Sidebar() {
+   const { dispatch } = useContext(DarkModeContext);
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
@@ -23,18 +28,17 @@ export default function Sidebar() {
           <h3 className="sidebarTitle">Dashboard</h3>
           <ul className="sidebarList">
             <Link to="/" className="link">
-            <li className="sidebarListItem active">
-              <LineStyle className="sidebarIcon" />
-              Home
-            </li>
+              <li className="sidebarListItem active">
+                <LineStyle className="sidebarIcon" />
+                Home
+              </li>
             </Link>
             <Link to="/analytics" className="link">
-            <li className="sidebarListItem">
-              <Timeline className="sidebarIcon" />
-              Analytics User
-            </li>
+              <li className="sidebarListItem">
+                <Timeline className="sidebarIcon" />
+                Analytics User
+              </li>
             </Link>
-           
           </ul>
         </div>
         <div className="sidebarMenu">
@@ -59,12 +63,11 @@ export default function Sidebar() {
               </li>
             </Link>
             <Link to="/transactions" className="link">
-            <li className="sidebarListItem">
-              <AttachMoney className="sidebarIcon" />
-              Transactions
-            </li>
+              <li className="sidebarListItem">
+                <AttachMoney className="sidebarIcon" />
+                Transactions
+              </li>
             </Link>
-            
           </ul>
         </div>
         <div className="sidebarMenu">
@@ -78,10 +81,31 @@ export default function Sidebar() {
               <DynamicFeed className="sidebarIcon" />
               Feedback
             </li>
-            
           </ul>
         </div>
-        
+        <div className="sidebarMenu">
+          <h3 className="sidebarTitle">User</h3>
+          <ul className="sidebarList">
+            <li className="sidebarListItem">
+              <CgProfile className="sidebarIcon" />
+              Profile
+            </li>
+            <li className="sidebarListItem">
+              <BiLogOutCircle className="sidebarIcon" />
+              Logout
+            </li>
+          </ul>
+          <div className="bottom">
+            <div
+              className="colorOption"
+              onClick={() => dispatch({ type: "LIGHT" })}
+            ></div>
+            <div
+              className="colorOption"
+              onClick={() => dispatch({ type: "DARK" })}
+            ></div>
+          </div>
+        </div>
       </div>
     </div>
   );
