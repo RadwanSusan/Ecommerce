@@ -666,149 +666,154 @@ const Offer = () => {
 											>
 												{Object.keys(offer).map(function (data) {
 													return (
-														<div
-															className='owl-item active style-Ke3kW'
-															id='style-Ke3kW'
-														>
-															<div className='item product product-item'>
-																<div
-																	className='product-item-info'
-																	data-container='product-grid'
-																>
-																	<Link
-																		to={`/product/${offer[data]['_id']}`}
-																		className='action quickview-handler
-																	sm_quickview_handler'
-																		title='Quick View'
-																		href=''
-																	>
-																		<div className='image-product'>
-																			<div
-																				className='product photo product-item-photo'
-																				tabindex='-1'
-																			>
-																				<span
-																					className='product-image-container product-image-container-13 style-j6oeg'
-																					id='style-j6oeg'
-																				>
-																					<span
-																						className='product-image-wrapper style-gKGpW'
-																						id='style-gKGpW'
-																					>
-																						<img
-																							className='product-image-photo'
-																							src={offer[data]['img']}
-																							data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/l/-/l-03_1.jpg /'
-																							loading='lazy'
-																							width='250'
-																							height='250'
-																							alt={offer[data]['img']}
-																						/>
-																					</span>
-																				</span>
-																			</div>
-																			<Link
-																				to={''}
-																				className='action quickview-handler
-																	sm_quickview_handler show-cart'
-																				title='Quick View'
-																				offer-id={offer[data]['_id']}
-																			>
-																				<AiOutlineEye
-																					className='show-cart'
-																					offer-id={offer[data]['_id']}
-																				/>
-																				<span>Quick View</span>
-																			</Link>
-																		</div>
-																	</Link>
-																	<div className='product details product-item-details'>
-																		<strong className='product name product-item-name'>
-																			<a
-																				className='product-item-link'
-																				href=''
-																			>
-																				{offer[data]['title']}
-																			</a>
-																		</strong>
-																		<div
-																			className='price-box price-final_price'
-																			data-role='priceBox'
-																			data-product-id='13'
-																			data-price-box='product-id-13'
-																		>
-																			<span className='price-container price-final_price tax weee'>
-																				<span
-																					id='product-price-13'
-																					data-price-amount='250'
-																					data-price-type='finalPrice'
-																					className='price-wrapper '
-																				>
-																					<span className='price'>$ {offer[data]['price']}</span>
-																				</span>
-																			</span>
-																		</div>
-																		<div className='time-countdown-slide'>
-																			<div className='time-wrapper'>
-																				<div className='time-label clearfix'>
-																					<div className='stock-qty'>
-																						Availability:
-																						<span>150</span>
-																					</div>
-																					<div className='time-left'>
-																						Time left:
-																						<span>{offer[data]['timeLeft']}</span>
-																					</div>
-																				</div>
-																				<div className='time-ranger'>
-																					<div
-																						className='time-pass style-Tx4nd'
-																						id='style-Tx4nd'
-																					></div>
-																				</div>
-																			</div>
-																		</div>
-																		<div className='product-item-actions'>
-																			<div className='actions-primary'>
-																				<Link to={``}>
-																					<button
-																						className='action tocart primary'
-																						data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/checkout\/cart\/add\/uenc\/aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo\/product\/13\/","data":{"product":"13","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
-																						type='button'
-																						title='Add to Cart'
-																					>
-																						<span>Add to Cart</span>
-																					</button>
-																				</Link>
-																			</div>
-																			<div
-																				className='actions-secondary'
-																				data-role='add-to-links'
-																			>
-																				<a
-																					href='#'
-																					className='action towishlist'
-																					data-action='add-to-wishlist'
-																					title='Add to Wish List'
-																				>
-																					<BsHeart />
-																					<span>Add to Wish List</span>
-																				</a>
-																				<a
-																					href='#'
-																					className='action tocompare'
-																					title='Add to Compare'
-																				>
-																					<IoGitCompareOutline />
-																					<span>Add to Compare</span>
-																				</a>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-													);
+                            <div
+                              className="owl-item active style-Ke3kW"
+                              id="style-Ke3kW"
+                            >
+                              <div className="item product product-item">
+                                <div
+                                  className="product-item-info"
+                                  data-container="product-grid"
+                                >
+                                  <Link
+                                    to={`/product/${offer[data]["_id"]}`}
+                                    className="action quickview-handler
+																	sm_quickview_handler"
+                                    title="Quick View"
+                                    href=""
+                                  >
+                                    <div className="image-product">
+                                      <div
+                                        className="product photo product-item-photo"
+                                        tabindex="-1"
+                                      >
+                                        <span
+                                          className="product-image-container product-image-container-13 style-j6oeg"
+                                          id="style-j6oeg"
+                                        >
+                                          <span
+                                            className="product-image-wrapper style-gKGpW"
+                                            id="style-gKGpW"
+                                          >
+                                            <img
+                                              className="product-image-photo"
+                                              src={offer[data]["img"]}
+                                              data-src="http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/l/-/l-03_1.jpg /"
+                                              loading="lazy"
+                                              width="250"
+                                              height="250"
+                                              alt={offer[data]["img"]}
+                                            />
+                                          </span>
+                                        </span>
+                                      </div>
+                                      <Link
+                                        to={""}
+                                        className="action quickview-handler
+																	sm_quickview_handler show-cart"
+                                        title="Quick View"
+                                        offer-id={offer[data]["_id"]}
+                                      >
+                                        <AiOutlineEye
+                                          className="show-cart"
+                                          offer-id={offer[data]["_id"]}
+                                        />
+                                        <span>Quick View</span>
+                                      </Link>
+                                    </div>
+                                  </Link>
+                                  <div className="product details product-item-details">
+                                    <strong className="product name product-item-name">
+                                      <a className="product-item-link" href="">
+                                        {offer[data]["title"]}
+                                      </a>
+                                    </strong>
+                                    <div
+                                      className="price-box price-final_price"
+                                      data-role="priceBox"
+                                      data-product-id="13"
+                                      data-price-box="product-id-13"
+                                    >
+                                      <span className="price-container price-final_price tax weee">
+                                        <span
+                                          id="product-price-13"
+                                          data-price-amount="250"
+                                          data-price-type="finalPrice"
+                                          className="price-wrapper "
+                                        >
+                                          <span className="price">
+                                            $ {offer[data]["price"]}
+                                          </span>
+
+                                          <span className="priceOffer">
+                                            $ {offer[data]["offerPrice"]}
+                                          </span>
+                                        </span>
+                                      </span>
+                                    </div>
+                                    <div className="time-countdown-slide">
+                                      <div className="time-wrapper">
+                                        <div className="time-label clearfix">
+                                          <div className="stock-qty">
+                                            Availability:
+                                            <span>150</span>
+                                          </div>
+                                          <div className="time-left">
+                                            Time left:
+                                            <span>
+                                              {offer[data]["timeEnd"]}
+                                            </span>
+                                          </div>
+                                        </div>
+                                        <div className="time-ranger">
+                                          <div
+                                            className="time-pass style-Tx4nd"
+                                            id="style-Tx4nd"
+                                          ></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="product-item-actions">
+                                      <div className="actions-primary">
+                                        <Link to={``}>
+                                          <button
+                                            className="action tocart primary"
+                                            data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/checkout\/cart\/add\/uenc\/aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo\/product\/13\/","data":{"product":"13","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
+                                            type="button"
+                                            title="Add to Cart"
+                                          >
+                                            <span>Add to Cart</span>
+                                          </button>
+                                        </Link>
+                                      </div>
+                                      <div
+                                        className="actions-secondary"
+                                        data-role="add-to-links"
+                                      >
+                                        <a
+                                          href="#"
+                                          className="action towishlist"
+                                          data-action="add-to-wishlist"
+                                          title="Add to Wish List"
+                                        >
+                                          <BsHeart />
+                                          <span>Add to Wish List</span>
+                                        </a>
+                                        <a
+                                          href="#"
+                                          className="action tocompare"
+                                          title="Add to Compare"
+                                        >
+                                          <IoGitCompareOutline />
+                                          <span>Add to Compare</span>
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          );
 												})}
 											</Wrapper1>
 										</div>

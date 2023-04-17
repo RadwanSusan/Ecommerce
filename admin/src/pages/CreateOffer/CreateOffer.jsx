@@ -184,6 +184,7 @@ export default function CreateOffer() {
 							desc: "",
 							price: "",
 							originalPrice: "",
+							offerPrice:"",
 							img: "",
 							categories: [],
 							size: [],
@@ -228,7 +229,11 @@ export default function CreateOffer() {
 						document.querySelector(".Height").value = "";
 						document.querySelector(".Length").value = "";
 						document.querySelector(".Weight").value = "";
-						document.querySelector(".expirationDate").value = "";
+						document.querySelector(".expirationDate1").value = "";
+						document.querySelector(".expirationDate2").value = "";
+						document.querySelector(".offerPrice").value = "";
+
+
 						for (const checkbox of document.querySelectorAll(".Size")) {
 							checkbox.checked = true;
 							checkbox.checked = false;
@@ -347,6 +352,16 @@ export default function CreateOffer() {
             />
           </div>
           <div className="addProductItem">
+            <label>Offer Price</label>
+            <input
+              name="offerPrice"
+              type="number"
+              placeholder="100"
+              onChange={handleChange}
+              className="offerPrice"
+            />
+          </div>
+          <div className="addProductItem">
             <label>Original Price</label>
             <input
               name="originalPrice"
@@ -420,12 +435,21 @@ export default function CreateOffer() {
             />
           </div>
           <div className="addProductItem">
-            <label>Offer Expiration Date</label>
+            <label>Start Date Offer</label>
             <input
-              name="timeLeft"
+              name="timeStart"
               type="date"
               onChange={handleChange}
-              className="expirationDate"
+              className="expirationDate1"
+            />
+          </div>
+          <div className="addProductItem">
+            <label>End Date Offer</label>
+            <input
+              name="timeEnd"
+              type="date"
+              onChange={handleChange}
+              className="expirationDate2"
             />
           </div>
           <button onClick={handleClick} className="addProductButton">
