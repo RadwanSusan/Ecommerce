@@ -163,12 +163,17 @@ const Offer = () => {
 					aramex.append(input1);
 					aramex.append(label);
 					input1.addEventListener('click', (e) => {
-						setColor(e.target.value);
-						let siblings = getSiblings(e.target);
-						siblings.forEach((sibling) => {
-							sibling.style.border = 'none';
-						});
-						e.target.nextElementSibling.style.border = '3px solid black';
+						if (e.target.nextElementSibling.style.border === '3px solid black') {
+							e.target.nextElementSibling.style.border = 'none';
+							setColor('');
+						} else {
+							setColor(e.target.value);
+							let siblings = getSiblings(e.target);
+							siblings.forEach((sibling) => {
+								sibling.style.border = 'none';
+							});
+							e.target.nextElementSibling.style.border = '3px solid black';
+						}
 					});
 				});
 				document.querySelector('.FilterSize').innerHTML = '';
