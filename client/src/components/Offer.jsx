@@ -741,7 +741,7 @@ const Offer = () => {
                                           data-price-type="finalPrice"
                                           className="price-wrapper "
                                         >
-                                          <span className="price">
+                                          <span className="price55">
                                             $ {offer[data]["price"]}
                                           </span>
 
