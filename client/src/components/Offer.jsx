@@ -35,6 +35,12 @@ const Wrapper1 = styled.div`
 	transition: all 0.75s ease;
 	transform: translateX(${(props) => props.slideIndex * -35}vw);
 `;
+const FilterSize = styled.select`
+	margin-left: 10px;
+	padding: 5px;
+`;
+
+const FilterSizeOption = styled.option``;
 
 const Offer = () => {
 	const [zaidVar, setZaidVar] = useState(0);
@@ -110,10 +116,7 @@ const Offer = () => {
 			);
 		};
 
-		// let up = document.getElementsByClassName("up5"),
-		//   down = document.getElementsByClassName("down5"),
 		let input = document.getElementsByClassName('block_quantity__number')[0];
-		// let show_cart = document.querySelectorAll('show-cart');
 		let idOffer;
 		document.querySelectorAll('.show-cart').forEach((item) =>
 			item.addEventListener('click', (e) => {
@@ -132,22 +135,48 @@ const Offer = () => {
 				document.querySelector('.block_goodColor__allColors').innerHTML = '';
 				setZaidVar(viewArr._id);
 				setProduct_id(viewArr._id);
-				//   const document.querySelector(".radio_button");
+				const getSiblings = (e) => {
+					let siblings = [];
+					if (!e.parentNode) {
+						return siblings;
+					}
+					let sibling = e.parentNode.firstChild;
+					while (sibling) {
+						if (sibling.nodeType === 1 && sibling !== e) {
+							siblings.push(sibling);
+						}
+						sibling = sibling.nextSibling;
+					}
+					return siblings;
+				};
 				viewArr.color.map((e) => {
 					let input1 = document.createElement('input');
 					input1.classList.add('radio_button');
 					input1.setAttribute('id', 'radioColor');
 					input1.setAttribute('name', 'colorOfItem');
 					input1.setAttribute('checked', 'checked');
+					input1.setAttribute('value', e);
 					let label = document.createElement('label');
 					label.setAttribute('for', 'radioColor');
 					label.classList.add('block_goodColor__radio', 'block_goodColor__black');
 					label.style.backgroundColor = `${e}`;
 					aramex.append(input1);
 					aramex.append(label);
-					//   let input = document.createElement("");
-					//   input.classList.add("block_price__currency");
-					//   let input = document.createElement("");
+					input1.addEventListener('click', (e) => {
+						setColor(e.target.value);
+						let siblings = getSiblings(e.target);
+						siblings.forEach((sibling) => {
+							sibling.style.border = 'none';
+						});
+						e.target.nextElementSibling.style.border = '3px solid black';
+					});
+				});
+				document.querySelector('.FilterSize').innerHTML = '';
+				viewArr.size.map((e) => {
+					const option = document.createElement('option');
+					option.innerHTML = e;
+					option.setAttribute('key', e);
+					document.querySelector('.FilterSize').append(option);
 				});
 				document.querySelector('.block_price__currency').innerHTML = '';
 				document.querySelector('.block_price__currency').append('$');
@@ -206,14 +235,14 @@ const Offer = () => {
 	const [cart, setCart] = useState([]);
 	const dispatch = useDispatch();
 
-	// document.querySelectorAll('.Color').forEach((item) =>
-	// 	item.addEventListener('click', (e) => {
-	// 		document.querySelectorAll('.Color').forEach((item2) => {
-	// 			item2.style.outline = 'none';
-	// 		});
-	// 		e.target.style.outline = '3px solid #292931';
-	// 	}),
-	// );
+	document.querySelectorAll('.Color').forEach((item) =>
+		item.addEventListener('click', (e) => {
+			document.querySelectorAll('.Color').forEach((item2) => {
+				item2.style.outline = 'none';
+			});
+			e.target.style.outline = '3px solid #292931';
+		}),
+	);
 	const [AllProducts, setAllProducts] = useState([]);
 	const [AllOffers, setAllOffers] = useState([]);
 	let [productGet, setProductGet] = useState({});
@@ -569,6 +598,10 @@ const Offer = () => {
 														style={{ display: 'hidden' }}
 													></div>
 													<div className='block_goodColor__allColors'></div>
+													<FilterSize
+														className='FilterSize'
+														onChange={(e) => setSize(e.target.value)}
+													></FilterSize>
 												</div>
 												{chekAvail() ? (
 													<button
