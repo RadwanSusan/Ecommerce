@@ -16,12 +16,9 @@ export default function Transactions() {
 		getOrders();
 	}, []);
 
-
-
 	const showMore = (id) => {
-		
 		let order = orders.find((order) => order._id === id);
-		
+
 		console.log(order.products);
 		const array11 = [];
 		const array12 = [];
@@ -34,22 +31,22 @@ export default function Transactions() {
 			// console.log(array11);
 		});
 		swal({
-      icon: "info",
-      title: "Order Details",
-      text: `User Id: ${order.userId}
-      Product Id: ${array11.join(" - ")}
+			icon: 'info',
+			title: 'Order Details',
+			text: `User Id: ${order.userId}
+      Product Id: ${array11.join(' - ')}
 
       Status: ${order.status}
       Price: ${order.amount}
       Original Price: ${order.amountOrgin}
-      Quantity: ${array12.join(" -")}
+      Quantity: ${array12.join(' -')}
 
-      
+
 
       Status: ${order.status}
       Date: ${format(order.createdAt)}
       `,
-    });
+		});
 	};
 	const Button = ({ type }) => {
 		return <button className={'widgetLgButton ' + type}>{type}</button>;

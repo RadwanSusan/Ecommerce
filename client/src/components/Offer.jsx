@@ -7,13 +7,12 @@ import { IoGitCompareOutline } from 'react-icons/io5';
 import { AiOutlineEye } from 'react-icons/ai';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { BsArrowUpCircle, BsArrowDownCircle } from 'react-icons/bs';
-import { mobile } from '../responsive';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { categoriesOffer } from '../data';
 import { Link } from 'react-router-dom';
 import { userRequest } from '../requestMethods';
-import * as timeago from "timeago.js";
+import * as timeago from 'timeago.js';
 import {
 	AiFillCloseCircle,
 	AiOutlineArrowUp,
@@ -22,12 +21,10 @@ import {
 import swal from 'sweetalert';
 import { addProduct, getAllProduct } from '../redux/cartRedux';
 import { useDispatch } from 'react-redux';
-
 import {
 	BsFillArrowRightCircleFill,
 	BsFillArrowLeftCircleFill,
 } from 'react-icons/bs';
-import { keys } from '@material-ui/core/styles/createBreakpoints';
 
 const Wrapper1 = styled.div`
 	height: 100%;
@@ -46,7 +43,6 @@ const Offer = () => {
 	const [zaidVar, setZaidVar] = useState(0);
 	const [product_id, setProduct_id] = useState(0);
 	window.onload = function () {
-
 		let input = document.getElementsByClassName('block_quantity__number')[0];
 		let idOffer;
 		document.querySelectorAll('.show-cart').forEach((item) =>
@@ -151,7 +147,6 @@ const Offer = () => {
 		};
 		getOffer(getOffer);
 	}, [categoriesOffer.cat]);
-
 	let cartProducts = JSON.parse(localStorage.getItem('persist:root'));
 	cartProducts = cartProducts.cart;
 	cartProducts = JSON.parse(cartProducts);
@@ -164,21 +159,11 @@ const Offer = () => {
 		}
 		return acc;
 	}, []);
-
 	const [quantity, setQuantity] = useState(1);
 	const [color, setColor] = useState('');
 	const [size, setSize] = useState('');
 	const [cart, setCart] = useState([]);
 	const dispatch = useDispatch();
-
-	document.querySelectorAll('.Color').forEach((item) =>
-		item.addEventListener('click', (e) => {
-			document.querySelectorAll('.Color').forEach((item2) => {
-				item2.style.outline = 'none';
-			});
-			e.target.style.outline = '3px solid #292931';
-		}),
-	);
 	const [AllProducts, setAllProducts] = useState([]);
 	const [AllOffers, setAllOffers] = useState([]);
 	let [productGet, setProductGet] = useState({});
@@ -200,7 +185,7 @@ const Offer = () => {
 		};
 		fetchData();
 	}, []);
-	const handleQuantity = (type, id) => {
+	const handleQuantityOffer = (type, id) => {
 		const item = [...productGet, ...offerGet].find((item) => item._id === id);
 		const productMerged = mergedCart.find((item) => item._id === id);
 		const maxQuantity = item.quantity - 1;
@@ -326,7 +311,7 @@ const Offer = () => {
 			}
 		}
 	};
-	const dateStill = (timeago.format("2023-06-25"));
+	const dateStill = timeago.format('2023-06-25');
 	console.log(dateStill);
 	return (
 		<>
@@ -492,7 +477,6 @@ const Offer = () => {
 												wireless technology and NoiseGard Hybrid active noise cancelation
 											</span>
 										</div>
-										=
 										<div className='row11 '>
 											<div className='large-6 small-12 column left-align'>
 												<div className='block_price'>
@@ -512,7 +496,7 @@ const Offer = () => {
 														<button className='block_quantity__button block_quantity__up'>
 															<BsArrowDownCircle
 																onClick={() => {
-																	handleQuantity('dec', zaidVar);
+																	handleQuantityOffer('dec', zaidVar);
 																}}
 																className='AiOutlineArrowUpanddown down5'
 															/>
@@ -520,7 +504,7 @@ const Offer = () => {
 														<button className='block_quantity__button block_quantity__down'>
 															<BsArrowUpCircle
 																onClick={() => {
-																	handleQuantity('inc', zaidVar);
+																	handleQuantityOffer('inc', zaidVar);
 																}}
 																className='AiOutlineArrowUpanddown up5'
 															/>
@@ -565,7 +549,6 @@ const Offer = () => {
 					</div>
 				</div>
 			</div>
-			=
 			<div
 				className='group-deal-1 hidden-title-block nav-style-1 hover-to-show absolute-nav snipcss-s72N8 style-sCNUC'
 				id='style-sCNUC'
@@ -637,160 +620,153 @@ const Offer = () => {
 											>
 												{Object.keys(offer).map(function (data) {
 													return (
-                            <div
-                              className="owl-item active style-Ke3kW"
-                              id="style-Ke3kW"
-                            >
-                              <div className="item product product-item">
-                                <div
-                                  className="product-item-info"
-                                  data-container="product-grid"
-                                >
-                                  <Link
-                                    to={`/product/${offer[data]["_id"]}`}
-                                    className="action quickview-handler
-																	sm_quickview_handler"
-                                    title="Quick View"
-                                    href=""
-                                  >
-                                    <div className="image-product">
-                                      <div
-                                        className="product photo product-item-photo"
-                                        tabindex="-1"
-                                      >
-                                        <span
-                                          className="product-image-container product-image-container-13 style-j6oeg"
-                                          id="style-j6oeg"
-                                        >
-                                          <span
-                                            className="product-image-wrapper style-gKGpW"
-                                            id="style-gKGpW"
-                                          >
-                                            <img
-                                              className="product-image-photo"
-                                              src={offer[data]["img"]}
-                                              data-src="http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/l/-/l-03_1.jpg /"
-                                              loading="lazy"
-                                              width="250"
-                                              height="250"
-                                              alt={offer[data]["img"]}
-                                            />
-                                          </span>
-                                        </span>
-                                      </div>
-                                      <Link
-                                        to={""}
-                                        className="action quickview-handler
-																	sm_quickview_handler show-cart"
-                                        title="Quick View"
-                                        offer-id={offer[data]["_id"]}
-                                      >
-                                        <AiOutlineEye
-                                          className="show-cart"
-                                          offer-id={offer[data]["_id"]}
-                                        />
-                                        <span>Quick View</span>
-                                      </Link>
-                                    </div>
-                                  </Link>
-                                  <div className="product details product-item-details">
-                                    <strong className="product name product-item-name">
-                                      <a className="product-item-link" href="">
-                                        {offer[data]["title"]}
-                                      </a>
-                                    </strong>
-                                    <div
-                                      className="price-box price-final_price"
-                                      data-role="priceBox"
-                                      data-product-id="13"
-                                      data-price-box="product-id-13"
-                                    >
-                                      <span className="price-container price-final_price tax weee">
-                                        <span
-                                          id="product-price-13"
-                                          data-price-amount="250"
-                                          data-price-type="finalPrice"
-                                          className="price-wrapper "
-                                        >
-                                          <span className="price55">
-                                            $ {offer[data]["price"]}
-                                          </span>
+														<div
+															className='owl-item active style-Ke3kW'
+															id='style-Ke3kW'
+														>
+															<div className='item product product-item'>
+																<div
+																	className='product-item-info'
+																	data-container='product-grid'
+																>
+																	<Link
+																		to={`/product/${offer[data]['_id']}`}
+																		className='action quickview-handler
+																	sm_quickview_handler'
+																		title='Quick View'
+																		href=''
+																	>
+																		<div className='image-product'>
+																			<div
+																				className='product photo product-item-photo'
+																				tabindex='-1'
+																			>
+																				<span
+																					className='product-image-container product-image-container-13 style-j6oeg'
+																					id='style-j6oeg'
+																				>
+																					<span
+																						className='product-image-wrapper style-gKGpW'
+																						id='style-gKGpW'
+																					>
+																						<img
+																							className='product-image-photo'
+																							src={offer[data]['img']}
+																							data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/l/-/l-03_1.jpg /'
+																							loading='lazy'
+																							width='250'
+																							height='250'
+																							alt={offer[data]['img']}
+																						/>
+																					</span>
+																				</span>
+																			</div>
+																			<Link
+																				to={''}
+																				className='action quickview-handler
+																	sm_quickview_handler show-cart'
+																				title='Quick View'
+																				offer-id={offer[data]['_id']}
+																			>
+																				<AiOutlineEye
+																					className='show-cart'
+																					offer-id={offer[data]['_id']}
+																				/>
+																				<span>Quick View</span>
+																			</Link>
+																		</div>
+																	</Link>
+																	<div className='product details product-item-details'>
+																		<strong className='product name product-item-name'>
+																			<a
+																				className='product-item-link'
+																				href=''
+																			>
+																				{offer[data]['title']}
+																			</a>
+																		</strong>
+																		<div
+																			className='price-box price-final_price'
+																			data-role='priceBox'
+																			data-product-id='13'
+																			data-price-box='product-id-13'
+																		>
+																			<span className='price-container price-final_price tax weee'>
+																				<span
+																					id='product-price-13'
+																					data-price-amount='250'
+																					data-price-type='finalPrice'
+																					className='price-wrapper '
+																				>
+																					<span className='price55'>$ {offer[data]['price']}</span>
 
-                                          <span className="priceOffer">
-                                            $ {offer[data]["offerPrice"]}
-                                          </span>
-                                        </span>
-                                      </span>
-                                    </div>
-                                    <div className="time-countdown-slide">
-                                      <div className="time-wrapper">
-                                        <div className="time-label clearfix">
-                                          <div className="stock-qty">
-                                            Availability:
-                                            <span>150</span>
-                                          </div>
-                                          <div className="time-left">
-                                            Time left:
-																						<span> 
-																							{
-																								(timeago.format(
-																								 offer[data]["timeEnd"] ))
-																							}
-																							
-																							
-																							
-                                            </span>
-                                          </div>
-                                        </div>
-                                        <div className="time-ranger">
-                                          <div
-                                            className="time-pass style-Tx4nd"
-                                            id="style-Tx4nd"
-                                          ></div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div className="product-item-actions">
-                                      <div className="actions-primary">
-                                        <Link to={``}>
-                                          <button
-                                            className="action tocart primary"
-                                            data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/checkout\/cart\/add\/uenc\/aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo\/product\/13\/","data":{"product":"13","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
-                                            type="button"
-                                            title="Add to Cart"
-                                          >
-                                            <span>Add to Cart</span>
-                                          </button>
-                                        </Link>
-                                      </div>
-                                      <div
-                                        className="actions-secondary"
-                                        data-role="add-to-links"
-                                      >
-                                        <a
-                                          href="#"
-                                          className="action towishlist"
-                                          data-action="add-to-wishlist"
-                                          title="Add to Wish List"
-                                        >
-                                          <BsHeart />
-                                          <span>Add to Wish List</span>
-                                        </a>
-                                        <a
-                                          href="#"
-                                          className="action tocompare"
-                                          title="Add to Compare"
-                                        >
-                                          <IoGitCompareOutline />
-                                          <span>Add to Compare</span>
-                                        </a>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          );
+																					<span className='priceOffer'>
+																						$ {offer[data]['offerPrice']}
+																					</span>
+																				</span>
+																			</span>
+																		</div>
+																		<div className='time-countdown-slide'>
+																			<div className='time-wrapper'>
+																				<div className='time-label clearfix'>
+																					<div className='stock-qty'>
+																						Availability:
+																						<span>150</span>
+																					</div>
+																					<div className='time-left'>
+																						Time left:
+																						<span>{timeago.format(offer[data]['timeEnd'])}</span>
+																					</div>
+																				</div>
+																				<div className='time-ranger'>
+																					<div
+																						className='time-pass style-Tx4nd'
+																						id='style-Tx4nd'
+																					></div>
+																				</div>
+																			</div>
+																		</div>
+																		<div className='product-item-actions'>
+																			<div className='actions-primary'>
+																				<Link to={``}>
+																					<button
+																						className='action tocart primary'
+																						data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/checkout\/cart\/add\/uenc\/aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo\/product\/13\/","data":{"product":"13","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
+																						type='button'
+																						title='Add to Cart'
+																					>
+																						<span>Add to Cart</span>
+																					</button>
+																				</Link>
+																			</div>
+																			<div
+																				className='actions-secondary'
+																				data-role='add-to-links'
+																			>
+																				<a
+																					href='#'
+																					className='action towishlist'
+																					data-action='add-to-wishlist'
+																					title='Add to Wish List'
+																				>
+																					<BsHeart />
+																					<span>Add to Wish List</span>
+																				</a>
+																				<a
+																					href='#'
+																					className='action tocompare'
+																					title='Add to Compare'
+																				>
+																					<IoGitCompareOutline />
+																					<span>Add to Compare</span>
+																				</a>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													);
 												})}
 											</Wrapper1>
 										</div>
