@@ -16,23 +16,40 @@ export default function Transactions() {
 		getOrders();
 	}, []);
 
+
+
 	const showMore = (id) => {
+		
 		let order = orders.find((order) => order._id === id);
+		
+		console.log(order.products);
+		const array11 = [];
+		const array12 = [];
+
+		const productsAll4 = order.products.map((p) => {
+			// console.log(p);
+			array11.push(p._id);
+			array12.push(p.quantity);
+
+			// console.log(array11);
+		});
 		swal({
-			icon: 'info',
-			title: 'Order Details',
-			text: `User Id: ${order.userId}
-      Product Id: ${order.products[0].productId}
+      icon: "info",
+      title: "Order Details",
+      text: `User Id: ${order.userId}
+      Product Id: ${array11.join(" - ")}
+
       Status: ${order.status}
       Price: ${order.amount}
       Original Price: ${order.amountOrgin}
-      Quantity: ${order.products[0].quantity}
+      Quantity: ${array12.join(" -")}
+
       
 
       Status: ${order.status}
       Date: ${format(order.createdAt)}
       `,
-		});
+    });
 	};
 	const Button = ({ type }) => {
 		return <button className={'widgetLgButton ' + type}>{type}</button>;
