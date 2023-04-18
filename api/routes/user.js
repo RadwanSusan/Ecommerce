@@ -127,5 +127,47 @@ router.get("/statsDay", verifyTokenAndAdmin, async (req, res) => {
 		res.status(500).json(err);
 	}
 });
+router.get("/wishlist/:userId", async (req, res) => {
+   const { userId } = req.params;
+	const { productId } = req.body;
+	
+  try {
+	  const user = await User.findById(userId);
+
+		const { wish } = user._doc;
+	  
+    const alreadyAdded =  wish.find((id) => id.toString() === productId);
+    if (alreadyAdded) {
+        let user = await User.findByIdAndUpdate(
+          userId,
+          {
+            $pull: { wish: productId },
+          },
+          {
+            new: true,
+          }
+        );
+        res.json(user);
+    //   res.send("ssss");
+    } else {
+      let user = await User.findByIdAndUpdate(
+        userId,
+        {
+          $push: { wish: productId },
+        },
+        {
+          new: true,
+        }
+      );
+      res.json(user);
+      //   res.send("aaaaa");
+    }
+  } 
+  catch (err) {
+    // res.status(500).json(err);
+	  res.send("rrrr");
+  }
+});
+
 
 module.exports = router;

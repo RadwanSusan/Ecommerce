@@ -2358,5 +2358,8 @@ input[type="radio"]+label {
 
 
 }
+.add-to-wish2 {
+	visibility: hidden;
+}
 
 

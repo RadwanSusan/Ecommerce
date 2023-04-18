@@ -1,4 +1,6 @@
 const Product = require('../models/Product');
+const User = require("../models/User");
+
 const {
 	verifyToken,
 	verifyTokenAndAuthorization,
@@ -146,5 +148,7 @@ router.get('/search/:key/', async (req, res) => {
 // 		res.status(500).json({ message: 'Server Error' });
 // 	}
 // });
+
+
 
 module.exports = router;
