@@ -311,8 +311,6 @@ const Offer = () => {
 			}
 		}
 	};
-	const dateStill = timeago.format('2023-06-25');
-	console.log(dateStill);
 	return (
 		<>
 			<div className='backLayerForShowCart'></div>
