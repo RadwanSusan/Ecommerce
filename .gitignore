@@ -1,3 +1,13 @@
 client/node_modules
 api/node_modules
+/client/node_modules
+/api/node_modules
+/node_modules
 /.buildt
+/.vscode
+/node_modules
+client/node_modules/
+api/node_modules/
+/client/node_modules/
+/api/node_modules/
+/node_modules/

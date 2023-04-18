@@ -14,7 +14,7 @@ import { userRequest } from '../requestMethods';
 import { Link } from 'react-router-dom';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import swal from 'sweetalert';
-import { addProduct, getAllProduct } from '../redux/cartRedux';
+import { addProduct } from '../redux/cartRedux';
 import { useDispatch } from 'react-redux';
 import {
 	BsFillArrowRightCircleFill,
@@ -31,7 +31,6 @@ const FilterSizeOption = styled.option``;
 const Catog = ({ item }) => {
 	const [zaidVar, setZaidVar] = useState(0);
 	const [product_id, setProduct_id] = useState(0);
-	const [testProduct_id, setTestArrProduct_id] = useState(0);
 	useEffect(() => {
 		const getProducts = async () => {
 			try {
@@ -64,7 +63,6 @@ const Catog = ({ item }) => {
 		};
 		fetchData();
 	}, []);
-	let inputCatog = document.getElementsByClassName('block_quantity__number2')[0];
 	let idProduct;
 	const [products, setProducts] = useState([]);
 	document.querySelectorAll('.show-cart2').forEach((item) =>
@@ -110,7 +108,7 @@ const Catog = ({ item }) => {
 				input1.setAttribute('name', 'colorOfItem');
 				input1.setAttribute('checked', 'checked');
 				input1.setAttribute('value', e);
-				let label = document.createElement('label');
+				let label = document.createElement(`label`);
 				label.setAttribute('for', 'radioColor');
 				label.classList.add('block_goodColor__radio', 'block_goodColor__black');
 				label.style.backgroundColor = `${e}`;
@@ -130,6 +128,7 @@ const Catog = ({ item }) => {
 						e.target.nextElementSibling.style.border = '3px solid black';
 					}
 				});
+				return input1;
 			});
 			document.querySelector('.FilterSizeCatog').innerHTML = '';
 			viewArrCatog.size.map((e) => {
@@ -137,6 +136,7 @@ const Catog = ({ item }) => {
 				option.innerHTML = e;
 				option.setAttribute('key', e);
 				document.querySelector('.FilterSizeCatog').append(option);
+				return option;
 			});
 			document.querySelector('.currency').innerHTML = '';
 			document.querySelector('.currency').append('$');
@@ -166,7 +166,6 @@ const Catog = ({ item }) => {
 	const [quantity, setQuantity] = useState(1);
 	const [color, setColor] = useState('');
 	const [size, setSize] = useState('');
-	const [cart, setCart] = useState([]);
 	const dispatch = useDispatch();
 	const [AllProducts, setAllProducts] = useState([]);
 	const [AllOffers, setAllOffers] = useState([]);
