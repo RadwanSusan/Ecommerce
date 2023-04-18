@@ -294,18 +294,28 @@ const Catog = ({ item }) => {
 			}
 		}
 	};
-	document.querySelectorAll('.towishlist').forEach((ele) => {
-		ele.addEventListener('click', (e) => {
-			// console.log(ele.parentNode.firstChild.children[0]);
-			// console.log(ele.parentNode.firstChild.children[1]);
-			if (ele.parentNode.firstChild.children[0].style.visibility === 'hidden') {
-				ele.parentNode.firstChild.children[0].style.visibility = 'visible';
-				ele.parentNode.firstChild.children[1].style.visibility = 'hidden';
-			}else{
-				
-			}
-		});
-	});
+	// document.querySelectorAll('.towishlist').forEach((ele) => {
+	// 	ele.addEventListener('click', (e) => {
+	// 		// console.log(ele.parentNode.firstChild.children[0]);
+	// 		// console.log(ele.parentNode.firstChild.children[1]);
+	// 		if (ele.parentNode.firstChild.children[0].style.visibility === 'hidden') {
+	// 			ele.parentNode.firstChild.children[0].style.visibility = 'visible';
+	// 			ele.parentNode.firstChild.children[1].style.visibility = 'hidden';
+	// 		} else {
+	// 		}
+	// 	});
+	// });
+	const handleWichlist = (id, visibiltyState, ele) => {
+		console.log(ele.target.parentElement);
+		if (ele.target.classList[0] === 'add-to-wish') {
+			ele.target.style.display = 'none';
+			ele.target.previousSibling.style.display = 'block';
+		}
+		if (ele.target.classList[0] === 'add-to-wish2') {
+			ele.target.style.display = 'none';
+			ele.target.nextSibling.style.display = 'block';
+		}
+	};
 	return (
 		<>
 			<div className='backLayerForShowCart'></div>
@@ -680,8 +690,20 @@ const Catog = ({ item }) => {
 																							data-action='add-to-wishlist'
 																							title='Add to Wish List'
 																						>
-																							<AiFillHeart className='add-to-wish2' />
-																							<BsHeart />
+																							<BsHeart
+																								className='add-to-wish2'
+																								style={{ display: 'none' }}
+																								onClick={(ele) => {
+																									handleWichlist(data._id, 'Hide', ele);
+																								}}
+																							/>
+																							<BsHeart
+																								className='add-to-wish'
+																								onClick={(ele) => {
+																									handleWichlist(data._id, 'Show', ele);
+																								}}
+																								style={{ fill: 'red' }}
+																							/>
 																							<span>Add to Wish List</span>
 																						</div>
 																						<div
