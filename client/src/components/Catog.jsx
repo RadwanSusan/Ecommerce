@@ -302,14 +302,15 @@ const Catog = ({ item }) => {
 
 	const handleWichlist = (id, visibiltyState, ele) => {
 		console.log(wishlist(id));
-		console.log(ele.target.parentElement);
+		console.log(ele.target.classList);
 		if (ele.target.classList[0] === 'add-to-wish') {
 			ele.target.style.display = 'none';
-			ele.target.previousSibling.style.display = 'block';
+			ele.target.nextSibling.style.display = 'block';
 		}
 		if (ele.target.classList[0] === 'add-to-wish2') {
 			ele.target.style.display = 'none';
-			ele.target.nextSibling.style.display = 'block';
+			console.log(ele.target);
+			ele.target.parentNode.previousSibling.style.display = 'block';
 		}
 	};
 	let userId = localStorage.getItem('persist:root');
@@ -707,8 +708,8 @@ const Catog = ({ item }) => {
 																								}}
 																								style={{
 																									display: CheckWishlist(data._id, userId)
-																										? 'none'
-																										: 'block',
+																										? 'block'
+																										: 'none',
 																								}}
 																							/>
 																							<svg
@@ -720,14 +721,15 @@ const Catog = ({ item }) => {
 																								viewBox='0 0 16 16'
 																								style={{
 																									display: CheckWishlist(data._id, userId)
-																										? 'block'
-																										: 'none',
+																										? 'none'
+																										: 'block',
 																								}}
 																								onClick={(ele) => {
 																									handleWichlist(data._id, 'Hide', ele);
 																								}}
 																							>
 																								<path
+																									className='add-to-wish2'
 																									fill-rule='evenodd'
 																									d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
 																								/>

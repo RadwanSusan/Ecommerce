@@ -44,30 +44,31 @@ export const addOrder = async (order) => {
 	}
 };
 export const wishlist = async (id) => {
-	let userId = localStorage.getItem("persist:root");
-  userId = JSON.parse(userId);
-  userId = userId.user;
-  userId = JSON.parse(userId);
-  userId = userId.currentUser._id;
-  try {
-      const res = await publicRequest.get(`users/wishlist/${userId}?pid=${id}`);
-    return res.data;
-  } catch (err) {
-    console.log(err);
-  }
+	let userId = localStorage.getItem('persist:root');
+	userId = JSON.parse(userId);
+	userId = userId.user;
+	userId = JSON.parse(userId);
+	userId = userId.currentUser._id;
+	try {
+		const res = await publicRequest.get(`users/wishlist/${userId}?pid=${id}`);
+		return res.data;
+	} catch (err) {
+		console.log(err);
+	}
 };
-export const wishlistCheek = async (id,userId) => {
-//   let userId = localStorage.getItem("persist:root");
-//   userId = JSON.parse(userId);
-//   userId = userId.user;
-//   userId = JSON.parse(userId);
-//   userId = userId.currentUser._id;
-  try {
-    const res = await publicRequest.get(
-      `users/is-available/${userId}?value=${id}`
-    );
-    return res.data;
-  } catch (err) {
-    console.log(err);
-  }
+export const wishlistCheek = async (id, userId) => {
+	//   let userId = localStorage.getItem("persist:root");
+	//   userId = JSON.parse(userId);
+	//   userId = userId.user;
+	//   userId = JSON.parse(userId);
+	//   userId = userId.currentUser._id;
+	try {
+		const res = await publicRequest.get(
+			`users/is-available/${userId}?value=${id}`,
+		);
+		console.log(`🚀 ~ file: apiCalls.js:69 ~ wishlistCheek ~ res:`, res);
+		return res.data;
+	} catch (err) {
+		console.log(err);
+	}
 };
