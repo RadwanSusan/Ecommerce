@@ -66,7 +66,6 @@ export const wishlistCheek = async (id, userId) => {
 		const res = await publicRequest.get(
 			`users/is-available/${userId}?value=${id}`,
 		);
-		console.log(`🚀 ~ file: apiCalls.js:69 ~ wishlistCheek ~ res:`, res);
 		return res.data;
 	} catch (err) {
 		console.log(err);

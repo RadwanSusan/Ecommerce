@@ -301,15 +301,12 @@ const Catog = ({ item }) => {
 	};
 
 	const handleWichlist = (id, visibiltyState, ele) => {
-		console.log(wishlist(id));
-		console.log(ele.target.classList);
 		if (ele.target.classList[0] === 'add-to-wish') {
 			ele.target.style.display = 'none';
 			ele.target.nextSibling.style.display = 'block';
 		}
 		if (ele.target.classList[0] === 'add-to-wish2') {
-			ele.target.style.display = 'none';
-			console.log(ele.target);
+			ele.target.parentNode.style.display = 'none';
 			ele.target.parentNode.previousSibling.style.display = 'block';
 		}
 	};
