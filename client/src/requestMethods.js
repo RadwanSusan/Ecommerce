@@ -4,7 +4,7 @@ const BASE_URL = 'http://localhost:4000/api/';
 // const TOKEN = JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user)
 // 	.currentUser.accessToken;
 const TOKEN =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MzJmNmYzN2Q1Y2ZjYWQ4ZTRmNmQyNCIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY4MTQ3MjU4NiwiZXhwIjoxNjgxNzMxNzg2fQ.s5pT_1beYMyuY4Xs-w7qzpxzTZLwvne2EQVPxjb1DfI';
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0M2U5MjkyNGM3ZjhiOTViZWJkODE0MSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY4MTkyNTczMywiZXhwIjoxNjgyMTg0OTMzfQ.45bhRY0ayC8v5K2cmtKFoT00CFo0pS9G42qb5CxFWVY";
 
 export const publicRequest = axios.create({
 	baseURL: BASE_URL,

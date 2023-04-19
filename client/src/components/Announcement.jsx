@@ -3,6 +3,13 @@ import styled from "styled-components";
 import { mobile } from "../responsive";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../redux/apiCalls";
+import { MdOutlineLightMode } from "react-icons/md";
+import { CiDark } from "react-icons/ci";
+import { SiDarkreader } from "react-icons/si";
+
+import { DarkModeContext } from "../context/darkModeContext";
+import { useContext } from "react";
+
 
 const Container = styled.div`
 	height: 60px;
@@ -64,6 +71,7 @@ const MenuItem1 = styled.div`
 	${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
 const Announcement = () => {
+	const { toggle, darkMode } = useContext(DarkModeContext);
 	let token = localStorage.getItem("persist:root");
 	if (token === null) {
 		token = "Guest";
@@ -83,41 +91,52 @@ const Announcement = () => {
 
 	if (token !== "Guest") {
 		return (
-			<Container>
-				<Wrapper>
-					<Left>
-						<MenuItem1>welcome {token}</MenuItem1>
-						<MenuItem>
-							<button onClick={handleClick}>Logout</button>
-						</MenuItem>
-					</Left>
-					<Right>
-						<Language>English - </Language>
-						<SearchContainer>USD</SearchContainer>
-					</Right>
-				</Wrapper>
-			</Container>
-		);
+      <Container>
+        <Wrapper>
+          <Left>
+            <MenuItem1>welcome {token}</MenuItem1>
+            <MenuItem>
+              <button onClick={handleClick}>Logout</button>
+            </MenuItem>
+          </Left>
+          <Right>
+            {darkMode ? (
+              <SiDarkreader className="CiDark" onClick={toggle} />
+            ) : (
+              <MdOutlineLightMode className="CiDark" onClick={toggle} />
+            )}
+            <Language>English - </Language>
+            
+            <SearchContainer>USD</SearchContainer>
+          </Right>
+        </Wrapper>
+      </Container>
+    );
 	} else {
 		return (
-			<Container>
-				<Wrapper>
-					<Left>
-						<MenuItem1>Welcome to Venuse store</MenuItem1>
-						<MenuItem>
-							<Link to="/Register">REGISTER</Link>
-						</MenuItem>
-						<MenuItem>
-							<Link to="/Login">SIGN IN</Link>
-						</MenuItem>
-					</Left>
-					<Right>
-						<Language>English - </Language>
-						<SearchContainer>USD</SearchContainer>
-					</Right>
-				</Wrapper>
-			</Container>
-		);
+      <Container>
+        <Wrapper>
+          <Left>
+            <MenuItem1>Welcome to Venuse store</MenuItem1>
+            <MenuItem>
+              <Link to="/Register">REGISTER</Link>
+            </MenuItem>
+            <MenuItem>
+              <Link to="/Login">SIGN IN</Link>
+            </MenuItem>
+          </Left>
+          <Right>
+            {darkMode ? (
+              <SiDarkreader className="CiDark" onClick={toggle} />
+            ) : (
+              <MdOutlineLightMode className="CiDark" onClick={toggle} />
+            )}
+            <Language>English - </Language>
+            <SearchContainer>USD</SearchContainer>
+          </Right>
+        </Wrapper>
+      </Container>
+    );
 	}
 };
 

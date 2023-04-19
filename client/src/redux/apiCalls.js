@@ -43,3 +43,16 @@ export const addOrder = async (order) => {
 		console.log(err);
 	}
 };
+export const wishlist = async (id) => {
+	let userId = localStorage.getItem("persist:root");
+  userId = JSON.parse(userId);
+  userId = userId.user;
+  userId = JSON.parse(userId);
+  userId = userId.currentUser._id;
+  try {
+      const res = await publicRequest.get(`users/wishlist/${userId}?pid=${id}`);
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
+};

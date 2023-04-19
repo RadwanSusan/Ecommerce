@@ -674,14 +674,14 @@ print {
    }
 }
 
-@media (max-width: 1024px) {
+/* @media (max-width: 1024px) {
    .quickview-handler {
       display: none !important;
       opacity: 0 !important;
       visibility: hidden !important;
       z-index: -10 !important;
    }
-}
+} */
 
 @media all {
    .products-grid .product-item-info .image-product .quickview-handler {

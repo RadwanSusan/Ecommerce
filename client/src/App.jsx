@@ -14,37 +14,48 @@ import {
 } from "react-router-dom";
 import Success from "./pages/Success";
 import { useSelector } from "react-redux";
+import "./components/style/dark.scss";
+import { useState } from "react";
+import { useContext } from "react";
+import { DarkModeContext } from "./context/darkModeContext";
+
 
 const App = () => {
+
 	const user = useSelector((state) => state.user.currentUser);
+   const { darkMode } = useContext(DarkModeContext);
+
+
 	return (
-		<Router>
-			<Switch>
-				<Route exact path="/">
-					<Home />
-				</Route>
-				<Route path="/products/:category">
-					<ProductList />
-				</Route>
-				<Route path="/product/:id">
-					<Product />
-				</Route>
-				<Route path="/offer/:category">
-					<OfferProducts />
-				</Route>
-				<Route path="/cart">
-					<Cart />
-				</Route>
-				<Route path="/success">
-					<Success />
-				</Route>
-				<Route path="/login">{user ? <Redirect to="/" /> : <Login />}</Route>
-				<Route path="/register">
-					{user ? <Redirect to="/" /> : <Register />}
-				</Route>
-			</Switch>
-		</Router>
-	);
+    <div className={darkMode ? "app dark" : "app"}>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/products/:category">
+            <ProductList />
+          </Route>
+          <Route path="/product/:id">
+            <Product />
+          </Route>
+          <Route path="/offer/:category">
+            <OfferProducts />
+          </Route>
+          <Route path="/cart">
+            <Cart />
+          </Route>
+          <Route path="/success">
+            <Success />
+          </Route>
+          <Route path="/login">{user ? <Redirect to="/" /> : <Login />}</Route>
+          <Route path="/register">
+            {user ? <Redirect to="/" /> : <Register />}
+          </Route>
+        </Switch>
+      </Router>
+    </div>
+  );
 };
 
 export default App;

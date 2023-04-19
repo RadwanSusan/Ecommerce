@@ -25,13 +25,17 @@ import {
 	BsFillArrowRightCircleFill,
 	BsFillArrowLeftCircleFill,
 } from 'react-icons/bs';
+import { mobile } from "../responsive";
+
 
 const Wrapper1 = styled.div`
-	height: 100%;
-	display: flex;
-	transition: all 0.75s ease;
-	transform: translateX(${(props) => props.slideIndex * -35}vw);
+  height: 100%;
+  display: flex;
+  transition: all 0.75s ease;
+  transform: translateX(${(props) => props.slideIndex * -40}vw);
 `;
+//   ${mobile({ transform: `translateX(${(props) => props.slideIndex * -35}vw)` })}
+
 const FilterSize = styled.select`
 	margin-left: 10px;
 	padding: 5px;

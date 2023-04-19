@@ -19,8 +19,11 @@ import { CgProfile } from "react-icons/cg";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
 
+
 export default function Sidebar() {
-   const { dispatch } = useContext(DarkModeContext);
+  //  const { dispatch } = useContext(DarkModeContext);
+  const { toggle, darkMode } = useContext(DarkModeContext);
+
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
@@ -98,11 +101,15 @@ export default function Sidebar() {
           <div className="bottom">
             <div
               className="colorOption"
-              onClick={() => dispatch({ type: "LIGHT" })}
+              onClick={() => {
+                toggle()
+              }}
             ></div>
             <div
               className="colorOption"
-              onClick={() => dispatch({ type: "DARK" })}
+              onClick={() => {
+                toggle()
+              }}
             ></div>
           </div>
         </div>

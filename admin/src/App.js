@@ -21,11 +21,9 @@ import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 
 function App() {
-	// const admin = useSelector((state) => state.user.currentUser.isAdmin);
-	const { darkMode } = useContext(DarkModeContext);
+   const { darkMode } = useContext(DarkModeContext);
 
 	const admin = true;
-	// const [dark, setDark] = useState(false);
 	return (
     <Router>
       <Switch>

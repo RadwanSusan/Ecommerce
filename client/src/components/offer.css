@@ -2091,3 +2091,28 @@ input[type="radio"]+label {
 	margin-right: 12px;
 	text-decoration: line-through;
 }
+@media only screen and (max-width: 700px) {
+	#style-FUF77.style-FUF77 {
+		width: 777px;
+	}
+		#style-j6oeg.style-j6oeg {
+			width: 170px;
+			height: 170px;
+		}
+				.group-deal-1 .product-item-info .product-item-details {
+					float: none;
+					width: 145px;
+				}
+								.group-deal-1 .product-item-info .product-item-details .product-item-actions {
+									padding-top: 0px;
+								}
+								.group-deal-1 .product-item-info .product-item-details .product-item-actions .actions-primary {
+margin-bottom: 7px;
+								}
+																.owl-theme .owl-nav [class*="owl-"].owl-next {
+																	top: 95px;
+																}
+																																.owl-theme .owl-nav [class*="owl-"].owl-prev {
+																																	top: 95px;
+																																}
+}

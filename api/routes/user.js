@@ -129,7 +129,8 @@ router.get("/statsDay", verifyTokenAndAdmin, async (req, res) => {
 });
 router.get("/wishlist/:userId", async (req, res) => {
    const { userId } = req.params;
-	const { productId } = req.body;
+	// const { productId } = req.body;
+	const productId = req.query.pid;
 	
   try {
 	  const user = await User.findById(userId);

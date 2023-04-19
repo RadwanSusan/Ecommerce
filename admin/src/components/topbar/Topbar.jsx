@@ -1,8 +1,10 @@
 import React from "react";
 import "./topbar.css";
 import { NotificationsNone, Language, Settings} from "@material-ui/icons";
-// import { MdDarkMode } from "react-icons/md";
+import { MdOutlineLightMode } from "react-icons/md";
 import { CiDark } from "react-icons/ci";
+import {SiDarkreader } from "react-icons/si";
+
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
 
@@ -10,7 +12,8 @@ import { useContext } from "react";
 
 
 export default function Topbar() {
-  const { dispatch } = useContext(DarkModeContext);
+  // const { dispatch } = useContext(DarkModeContext);
+  const { toggle, darkMode } = useContext(DarkModeContext);
   
   return (
     <div className="topbar">
@@ -20,10 +23,15 @@ export default function Topbar() {
         </div>
         <div className="topRight">
           <div className="topbarIconContainer">
-            <CiDark
+            {darkMode ? (
+              <SiDarkreader className="CiDark" onClick={toggle} />
+            ) : (
+              <MdOutlineLightMode className="CiDark" onClick={toggle} />
+            )}
+            {/* <CiDark
               className="icon"
               onClick={() => dispatch({ type: "TOGGLE" })}
-            />
+            /> */}
             {/* <MdDarkMode
               className="icon"
               onClick={() => dispatch({ type: "TOGGLE" })}
