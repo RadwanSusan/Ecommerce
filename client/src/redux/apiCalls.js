@@ -56,3 +56,18 @@ export const wishlist = async (id) => {
     console.log(err);
   }
 };
+export const wishlistCheek = async (id) => {
+  let userId = localStorage.getItem("persist:root");
+  userId = JSON.parse(userId);
+  userId = userId.user;
+  userId = JSON.parse(userId);
+  userId = userId.currentUser._id;
+  try {
+    const res = await publicRequest.get(
+      `/is-available/${userId}?value=${id}`
+    );
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
+};

@@ -688,8 +688,17 @@ const Catog = ({ item }) => {
                                               data-action="add-to-wishlist"
                                               title="Add to Wish List"
                                             >
-                                              <BsHeart
-                                                className="add-to-wish2 list-wish"
+                                              
+                                              <svg
+                                                className="add-to-wish2 list-wish bi bi-heart-fill"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="16"
+                                                height="16"
+                                                fill="currentColor"
+                                                viewBox="0 0 16 16"
+                                                
+
+
                                                 style={{ display: "none" }}
                                                 onClick={(ele) => {
                                                   handleWichlist(
@@ -697,11 +706,16 @@ const Catog = ({ item }) => {
                                                     "Hide",
                                                     ele
                                                   );
+                                                  wishlist(data._id);
+
                                                 }}
-                                                // style={{
-                                                //   backgroundColor: "red",
-                                                // }}
-                                              />
+                                              >
+                                                <path
+                                                  fill-rule="evenodd"
+                                                  d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+                                                />
+                                              </svg>
+
                                               <BsHeart
                                                 className="add-to-wish list-wish"
                                                 onClick={(ele) => {

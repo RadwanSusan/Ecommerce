@@ -2330,6 +2330,6 @@ input[type="radio"]+label {
 		font-size: 16px;
 }
 .add-to-wish2 {
-	background-color: red;
+	/* background-color: red; */
 	/* border: solid 5px red ; */
 }

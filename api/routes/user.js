@@ -165,9 +165,16 @@ router.get("/wishlist/:userId", async (req, res) => {
     }
   } 
   catch (err) {
-    // res.status(500).json(err);
-	  res.send("rrrr");
+    res.status(500).json(err);
+	//   res.send("rrrr");
   }
+});
+router.get("/is-available/:userId", (req, res) => {
+	const value = req.query.value;
+	const { userId } = req.params;
+  if (value) {
+    res.json(true);
+  } else res.json(false);
 });
 
 
