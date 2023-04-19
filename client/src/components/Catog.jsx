@@ -316,14 +316,18 @@ const Catog = ({ item }) => {
       ele.target.nextSibling.style.display = "block";
     }
   };
+  let userId = localStorage.getItem("persist:root");
+  userId = JSON.parse(userId);
+  userId = userId.user;
+  userId = JSON.parse(userId);
+  userId = userId.currentUser._id;
+  const CheckWishlist = (productId, userId) => {
+    // console.log(wishlistCheek(productId, userId));
 
-  const CheckWishlist = (productId) => {
-    let userId = localStorage.getItem("persist:root");
-    userId = JSON.parse(userId);
-    userId = userId.user;
-    userId = JSON.parse(userId);
-    userId = userId.currentUser._id;
-    return wishlistCheek(productId);
+    return wishlistCheek(productId, userId).then((result) => {
+      console.log(result);
+      return result;
+    })
   };
 
   return (
@@ -700,7 +704,11 @@ const Catog = ({ item }) => {
                                               data-action="add-to-wishlist"
                                               title="Add to Wish List"
                                             >
-                                              {CheckWishlist(data._id) ? (
+                                              {CheckWishlist(
+                                                data._id,
+                                                userId
+                                              ) ?
+                                                (
                                                 <svg
                                                   className="add-to-wish2 list-wish bi bi-heart-fill"
                                                   xmlns="http://www.w3.org/2000/svg"
