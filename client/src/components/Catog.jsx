@@ -1,320 +1,332 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import './catog.css';
-import styled from 'styled-components';
-import { AiOutlineEye } from 'react-icons/ai';
+import React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import "./catog.css";
+import styled from "styled-components";
+import { AiOutlineEye } from "react-icons/ai";
 // import { AiFillHeart } from "react-icons/ai";
 
-import { BsHeart } from 'react-icons/bs';
-import { IoGitCompareOutline } from 'react-icons/io5';
+import { BsHeart } from "react-icons/bs";
+import { IoGitCompareOutline } from "react-icons/io5";
 import {
-	BsArrowUpCircle as ArrowUp,
-	BsArrowDownCircle as ArrowDown,
-} from 'react-icons/bs';
-import { userRequest } from '../requestMethods';
+  BsArrowUpCircle as ArrowUp,
+  BsArrowDownCircle as ArrowDown,
+} from "react-icons/bs";
+import { userRequest } from "../requestMethods";
 import { BsFillHeartFill } from "react-icons/bs";
-import { wishlist } from "../redux/apiCalls";
+import { wishlist, wishlistCheek } from "../redux/apiCalls";
 
-
-import { Link } from 'react-router-dom';
-import { AiFillCloseCircle } from 'react-icons/ai';
-import swal from 'sweetalert';
-import { addProduct, getAllProduct } from '../redux/cartRedux';
-import { useDispatch } from 'react-redux';
+import { Link } from "react-router-dom";
+import { AiFillCloseCircle } from "react-icons/ai";
+import swal from "sweetalert";
+import { addProduct, getAllProduct } from "../redux/cartRedux";
+import { useDispatch } from "react-redux";
 import {
-	BsFillArrowRightCircleFill,
-	BsFillArrowLeftCircleFill,
-} from 'react-icons/bs';
+  BsFillArrowRightCircleFill,
+  BsFillArrowLeftCircleFill,
+} from "react-icons/bs";
+
 const FilterSizeCatog = styled.select`
-	margin-left: 10px;
-	padding: 5px;
+  margin-left: 10px;
+  padding: 5px;
 `;
 const Catog = ({ item }) => {
-	const [zaidVar, setZaidVar] = useState(0);
-	const [product_id, setProduct_id] = useState(0);
-	useEffect(() => {
-		const getProducts = async () => {
-			try {
-				const res = await axios.get(
-					item.cat
-						? `http://localhost:4000/api/products?category=${item.cat}`
-						: 'http://localhost:4000/api/products',
-				);
-				setProducts(res.data);
-			} catch (err) {
-				console.log(err);
-			}
-		};
-		getProducts();
-	}, [item.cat]);
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const [productsRes, offersRes] = await Promise.all([
-					userRequest.get('/products'),
-					userRequest.get('/offer'),
-				]);
-				setAllProducts(productsRes.data);
-				setProductGet(productsRes.data);
-				// setAllOffers(offersRes.data);
-				setOfferGet(offersRes.data);
-			} catch (err) {
-				console.log(err);
-			}
-		};
-		fetchData();
-	}, []);
-	let idProduct;
-	const [products, setProducts] = useState([]);
-	document.querySelectorAll('.show-cart2').forEach((item) =>
-		item.addEventListener('click', (e) => {
-			document.querySelector('.CatogCard').style.display = 'block';
-			document.body.style.overflow = 'hidden';
-			document.querySelector('.CatogCard').style.overflow = 'hidden';
-			document.querySelector('.backLayerForShowCart').style.display = 'block';
-			document.querySelector('.backLayerForShowCart').style.overflow = 'hidden';
-			idProduct = item.getAttribute('offer-id');
-			const viewArrCatog = AllProducts.find(
-				(products) => products._id === idProduct,
-			);
-			if (!viewArrCatog) {
-				return;
-			}
-			document.querySelector('.CatogCardDesc').innerHTML = '';
-			document.querySelector('.CatogCardDesc').append(viewArrCatog.desc);
-			let aramex = document.querySelector('.CatogallColors');
-			document.querySelector('.CatogallColors').innerHTML = '';
-			setZaidVar(viewArrCatog._id);
-			setProduct_id(viewArrCatog._id);
-			const getSiblings = (e) => {
-				let siblings = [];
-				if (!e.parentNode) {
-					return siblings;
-				}
-				let sibling = e.parentNode.firstChild;
-				while (sibling) {
-					if (sibling.nodeType === 1 && sibling !== e) {
-						siblings.push(sibling);
-					}
-					sibling = sibling.nextSibling;
-				}
-				return siblings;
-			};
-			viewArrCatog.color.map((e) => {
-				if (e.length !== 0) {
-					let input1 = document.createElement('input');
-					input1.classList.add('radio_button');
-					input1.setAttribute('id', 'radioColor');
-					input1.setAttribute('name', 'colorOfItem');
-					input1.setAttribute('checked', 'checked');
-					input1.setAttribute('value', e);
-					let label = document.createElement(`label`);
-					label.setAttribute('for', 'radioColor');
-					label.classList.add('block_goodColor__radio', 'block_goodColor__black');
-					label.style.backgroundColor = `${e}`;
-					aramex.append(input1);
-					aramex.append(label);
-					// setColor('');
-					input1.addEventListener('click', (e) => {
-						if (e.target.nextElementSibling.style.border === '3px solid black') {
-							e.target.nextElementSibling.style.border = 'none';
-							// setColor('');
-						} else {
-							setColor(e.target.value);
-							let siblings = getSiblings(e.target);
-							siblings.forEach((sibling) => {
-								sibling.style.border = 'none';
-							});
-							e.target.nextElementSibling.style.border = '3px solid black';
-						}
-					});
-				}
-				return null;
-			});
-			document.querySelector('.FilterSizeCatog').innerHTML = '';
-			viewArrCatog.size.map((e) => {
-				const option = document.createElement('option');
-				option.innerHTML = e;
-				option.setAttribute('key', e);
-				document.querySelector('.FilterSizeCatog').append(option);
-				return option;
-			});
-			document.querySelector('.currency').innerHTML = '';
-			document.querySelector('.currency').append('$');
-			document.querySelector('.currency').append(viewArrCatog.price);
-		}),
-	);
-	document.querySelectorAll('.CloseCatogCard').forEach((item) =>
-		item.addEventListener('click', (e) => {
-			document.querySelector('.CatogCard').style.display = 'none';
-			document.body.style.overflow = '';
-			document.querySelector('.CatogCard').style.overflow = '';
-			document.querySelector('.backLayerForShowCart').style.display = 'none';
-		}),
-	);
-	let cartProducts = JSON.parse(localStorage.getItem('persist:root'));
-	cartProducts = cartProducts.cart;
-	cartProducts = JSON.parse(cartProducts);
-	const mergedCart = cartProducts.products.reduce((acc, curr) => {
-		const existingItem = acc.find((item) => item._id === curr._id);
-		if (existingItem) {
-			existingItem.quantity += curr.quantity;
-		} else {
-			acc.push({ ...curr });
-		}
-		return acc;
-	}, []);
-	const [quantity, setQuantity] = useState(1);
-	const [color, setColor] = useState('');
-	const [size, setSize] = useState('');
-	const dispatch = useDispatch();
-	const [AllProducts, setAllProducts] = useState([]);
-	// const [AllOffers, setAllOffers] = useState([]);
-	let [productGet, setProductGet] = useState({});
-	let [offerGet, setOfferGet] = useState({});
-	const handleQuantity2 = (type, id) => {
-		const item = [...productGet, ...offerGet].find((item) => item._id === id);
-		const productMerged = mergedCart.find((item) => item._id === id);
-		const maxQuantity = item.quantity - 1;
-		if (productMerged !== undefined) {
-			if (type === 'dec') {
-				if (quantity <= 1) {
-					swal('Info', 'The minimum quantity is 1', 'info');
-				} else {
-					setQuantity(quantity - 1);
-				}
-			} else {
-				if (productMerged.quantity > maxQuantity) {
-					swal(
-						'Info',
-						'You have exceeded the number of available products!, the quantity will be reset',
-						'info',
-					);
-				} else {
-					const newQuantity = productMerged.quantity + 1;
-					if (newQuantity > maxQuantity) {
-						swal(
-							'Info',
-							'You have exceeded the number of available products!',
-							'info',
-						);
-					} else {
-						setQuantity(newQuantity);
-					}
-				}
-			}
-		} else {
-			if (type === 'dec') {
-				if (quantity <= 1) {
-					swal('Info', 'The minimum quantity is 1', 'info');
-				} else {
-					setQuantity(quantity - 1);
-				}
-			} else {
-				if (quantity > maxQuantity) {
-					swal(
-						'Info',
-						'You have exceeded the number of available products!, the quantity will be reset',
-						'info',
-					);
-				} else {
-					setQuantity(quantity + 1);
-				}
-			}
-		}
-	};
-	const chekAvail2 = () => {
-		let newQuantity = mergedCart.map((item) => {
-			if (item._id === products._id) {
-				return {
-					quantity: products.quantity - item.quantity,
-				};
-			}
-		});
-		newQuantity = newQuantity.filter((item) => item !== undefined);
-		if (newQuantity.length > 0) {
-			if (newQuantity[0].quantity < 1) {
-				return false;
-			} else {
-				return true;
-			}
-		}
-		return true;
-	};
-	const addToCart = (productId) => {
-		const item = [...productGet, ...offerGet].find(
-			(item) => item._id === productId,
-		);
-		const product = [...productGet, ...offerGet].find(
-			(item) => item._id === productId,
-		);
-		if (products.length > 0) {
-			const cartItem = mergedCart.find((item) => item._id === productId);
-			if (cartItem) {
-				if (cartItem.quantity === item.quantity) {
-					swal('Info', 'You already have the maximum amount!', 'info');
-					document.querySelector('.AddCart').disabled = true;
-					return;
-				}
-				if (cartItem.quantity + quantity <= item.quantity) {
-					dispatch(
-						addProduct({
-							...cartItem,
-							quantity,
-							color,
-							size,
-						}),
-					);
-					if (cartItem.quantity < 1) {
-						document.querySelector('.AddCart').disabled = true;
-						return;
-					}
-					cartItem.quantity -= quantity;
-					setQuantity(1);
-					swal('Success', 'Product added to cart!', 'success');
-					if (cartItem.quantity <= 1) {
-						document.querySelector('.AddCart').disabled = true;
-					}
-				} else {
-					swal('Info', 'Try with a different amount!', 'info');
-					return;
-				}
-			} else {
-				dispatch(
-					addProduct({
-						...product,
-						quantity,
-						color,
-						size,
-					}),
-				);
-				item.quantity -= quantity;
-				setQuantity(1);
-				swal('Success', 'Product added to cart!', 'success');
-				if (quantity === item.quantity) {
-					document.querySelector('.AddCart').disabled = true;
-					return;
-				}
-			}
-		}
-	};
-	
-	const handleWichlist = (id, visibiltyState, ele) => {
-		console.log(ele.target.parentElement);
-		if (ele.target.classList[0] === 'add-to-wish') {
-			ele.target.style.display = 'none';
-			ele.target.previousSibling.style.display = 'block';
-		}
-		if (ele.target.classList[0] === 'add-to-wish2') {
-			ele.target.style.display = 'none';
-			ele.target.nextSibling.style.display = 'block';
-		}
-	};
+  const [zaidVar, setZaidVar] = useState(0);
+  const [product_id, setProduct_id] = useState(0);
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const res = await axios.get(
+          item.cat
+            ? `http://localhost:4000/api/products?category=${item.cat}`
+            : "http://localhost:4000/api/products"
+        );
+        setProducts(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getProducts();
+  }, [item.cat]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [productsRes, offersRes] = await Promise.all([
+          userRequest.get("/products"),
+          userRequest.get("/offer"),
+        ]);
+        setAllProducts(productsRes.data);
+        setProductGet(productsRes.data);
+        // setAllOffers(offersRes.data);
+        setOfferGet(offersRes.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
+  let idProduct;
+  const [products, setProducts] = useState([]);
+  document.querySelectorAll(".show-cart2").forEach((item) =>
+    item.addEventListener("click", (e) => {
+      document.querySelector(".CatogCard").style.display = "block";
+      document.body.style.overflow = "hidden";
+      document.querySelector(".CatogCard").style.overflow = "hidden";
+      document.querySelector(".backLayerForShowCart").style.display = "block";
+      document.querySelector(".backLayerForShowCart").style.overflow = "hidden";
+      idProduct = item.getAttribute("offer-id");
+      const viewArrCatog = AllProducts.find(
+        (products) => products._id === idProduct
+      );
+      if (!viewArrCatog) {
+        return;
+      }
+      document.querySelector(".CatogCardDesc").innerHTML = "";
+      document.querySelector(".CatogCardDesc").append(viewArrCatog.desc);
+      let aramex = document.querySelector(".CatogallColors");
+      document.querySelector(".CatogallColors").innerHTML = "";
+      setZaidVar(viewArrCatog._id);
+      setProduct_id(viewArrCatog._id);
+      const getSiblings = (e) => {
+        let siblings = [];
+        if (!e.parentNode) {
+          return siblings;
+        }
+        let sibling = e.parentNode.firstChild;
+        while (sibling) {
+          if (sibling.nodeType === 1 && sibling !== e) {
+            siblings.push(sibling);
+          }
+          sibling = sibling.nextSibling;
+        }
+        return siblings;
+      };
+      viewArrCatog.color.map((e) => {
+        if (e.length !== 0) {
+          let input1 = document.createElement("input");
+          input1.classList.add("radio_button");
+          input1.setAttribute("id", "radioColor");
+          input1.setAttribute("name", "colorOfItem");
+          input1.setAttribute("checked", "checked");
+          input1.setAttribute("value", e);
+          let label = document.createElement(`label`);
+          label.setAttribute("for", "radioColor");
+          label.classList.add(
+            "block_goodColor__radio",
+            "block_goodColor__black"
+          );
+          label.style.backgroundColor = `${e}`;
+          aramex.append(input1);
+          aramex.append(label);
+          // setColor('');
+          input1.addEventListener("click", (e) => {
+            if (
+              e.target.nextElementSibling.style.border === "3px solid black"
+            ) {
+              e.target.nextElementSibling.style.border = "none";
+              // setColor('');
+            } else {
+              setColor(e.target.value);
+              let siblings = getSiblings(e.target);
+              siblings.forEach((sibling) => {
+                sibling.style.border = "none";
+              });
+              e.target.nextElementSibling.style.border = "3px solid black";
+            }
+          });
+        }
+        return null;
+      });
+      document.querySelector(".FilterSizeCatog").innerHTML = "";
+      viewArrCatog.size.map((e) => {
+        const option = document.createElement("option");
+        option.innerHTML = e;
+        option.setAttribute("key", e);
+        document.querySelector(".FilterSizeCatog").append(option);
+        return option;
+      });
+      document.querySelector(".currency").innerHTML = "";
+      document.querySelector(".currency").append("$");
+      document.querySelector(".currency").append(viewArrCatog.price);
+    })
+  );
+  document.querySelectorAll(".CloseCatogCard").forEach((item) =>
+    item.addEventListener("click", (e) => {
+      document.querySelector(".CatogCard").style.display = "none";
+      document.body.style.overflow = "";
+      document.querySelector(".CatogCard").style.overflow = "";
+      document.querySelector(".backLayerForShowCart").style.display = "none";
+    })
+  );
+  let cartProducts = JSON.parse(localStorage.getItem("persist:root"));
+  cartProducts = cartProducts.cart;
+  cartProducts = JSON.parse(cartProducts);
+  const mergedCart = cartProducts.products.reduce((acc, curr) => {
+    const existingItem = acc.find((item) => item._id === curr._id);
+    if (existingItem) {
+      existingItem.quantity += curr.quantity;
+    } else {
+      acc.push({ ...curr });
+    }
+    return acc;
+  }, []);
+  const [quantity, setQuantity] = useState(1);
+  const [color, setColor] = useState("");
+  const [size, setSize] = useState("");
+  const dispatch = useDispatch();
+  const [AllProducts, setAllProducts] = useState([]);
+  // const [AllOffers, setAllOffers] = useState([]);
+  let [productGet, setProductGet] = useState({});
+  let [offerGet, setOfferGet] = useState({});
+  const handleQuantity2 = (type, id) => {
+    const item = [...productGet, ...offerGet].find((item) => item._id === id);
+    const productMerged = mergedCart.find((item) => item._id === id);
+    const maxQuantity = item.quantity - 1;
+    if (productMerged !== undefined) {
+      if (type === "dec") {
+        if (quantity <= 1) {
+          swal("Info", "The minimum quantity is 1", "info");
+        } else {
+          setQuantity(quantity - 1);
+        }
+      } else {
+        if (productMerged.quantity > maxQuantity) {
+          swal(
+            "Info",
+            "You have exceeded the number of available products!, the quantity will be reset",
+            "info"
+          );
+        } else {
+          const newQuantity = productMerged.quantity + 1;
+          if (newQuantity > maxQuantity) {
+            swal(
+              "Info",
+              "You have exceeded the number of available products!",
+              "info"
+            );
+          } else {
+            setQuantity(newQuantity);
+          }
+        }
+      }
+    } else {
+      if (type === "dec") {
+        if (quantity <= 1) {
+          swal("Info", "The minimum quantity is 1", "info");
+        } else {
+          setQuantity(quantity - 1);
+        }
+      } else {
+        if (quantity > maxQuantity) {
+          swal(
+            "Info",
+            "You have exceeded the number of available products!, the quantity will be reset",
+            "info"
+          );
+        } else {
+          setQuantity(quantity + 1);
+        }
+      }
+    }
+  };
+  const chekAvail2 = () => {
+    let newQuantity = mergedCart.map((item) => {
+      if (item._id === products._id) {
+        return {
+          quantity: products.quantity - item.quantity,
+        };
+      }
+    });
+    newQuantity = newQuantity.filter((item) => item !== undefined);
+    if (newQuantity.length > 0) {
+      if (newQuantity[0].quantity < 1) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+    return true;
+  };
+  const addToCart = (productId) => {
+    const item = [...productGet, ...offerGet].find(
+      (item) => item._id === productId
+    );
+    const product = [...productGet, ...offerGet].find(
+      (item) => item._id === productId
+    );
+    if (products.length > 0) {
+      const cartItem = mergedCart.find((item) => item._id === productId);
+      if (cartItem) {
+        if (cartItem.quantity === item.quantity) {
+          swal("Info", "You already have the maximum amount!", "info");
+          document.querySelector(".AddCart").disabled = true;
+          return;
+        }
+        if (cartItem.quantity + quantity <= item.quantity) {
+          dispatch(
+            addProduct({
+              ...cartItem,
+              quantity,
+              color,
+              size,
+            })
+          );
+          if (cartItem.quantity < 1) {
+            document.querySelector(".AddCart").disabled = true;
+            return;
+          }
+          cartItem.quantity -= quantity;
+          setQuantity(1);
+          swal("Success", "Product added to cart!", "success");
+          if (cartItem.quantity <= 1) {
+            document.querySelector(".AddCart").disabled = true;
+          }
+        } else {
+          swal("Info", "Try with a different amount!", "info");
+          return;
+        }
+      } else {
+        dispatch(
+          addProduct({
+            ...product,
+            quantity,
+            color,
+            size,
+          })
+        );
+        item.quantity -= quantity;
+        setQuantity(1);
+        swal("Success", "Product added to cart!", "success");
+        if (quantity === item.quantity) {
+          document.querySelector(".AddCart").disabled = true;
+          return;
+        }
+      }
+    }
+  };
 
+  const handleWichlist = (id, visibiltyState, ele) => {
+    console.log(ele.target.parentElement);
+    if (ele.target.classList[0] === "add-to-wish") {
+      ele.target.style.display = "none";
+      ele.target.previousSibling.style.display = "block";
+    }
+    if (ele.target.classList[0] === "add-to-wish2") {
+      ele.target.style.display = "none";
+      ele.target.nextSibling.style.display = "block";
+    }
+  };
 
+  const CheckWishlist = (productId) => {
+    let userId = localStorage.getItem("persist:root");
+    userId = JSON.parse(userId);
+    userId = userId.user;
+    userId = JSON.parse(userId);
+    userId = userId.currentUser._id;
+    return wishlistCheek(productId);
+  };
 
-	return (
+  return (
     <>
       <div className="backLayerForShowCart"></div>
       <div className="column small-centered">
@@ -688,45 +700,42 @@ const Catog = ({ item }) => {
                                               data-action="add-to-wishlist"
                                               title="Add to Wish List"
                                             >
-                                              
-                                              <svg
-                                                className="add-to-wish2 list-wish bi bi-heart-fill"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="16"
-                                                height="16"
-                                                fill="currentColor"
-                                                viewBox="0 0 16 16"
-                                                
-
-
-                                                style={{ display: "none" }}
-                                                onClick={(ele) => {
-                                                  handleWichlist(
-                                                    data._id,
-                                                    "Hide",
-                                                    ele
-                                                  );
-                                                  wishlist(data._id);
-
-                                                }}
-                                              >
-                                                <path
-                                                  fill-rule="evenodd"
-                                                  d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+                                              {CheckWishlist(data._id) ? (
+                                                <svg
+                                                  className="add-to-wish2 list-wish bi bi-heart-fill"
+                                                  xmlns="http://www.w3.org/2000/svg"
+                                                  width="16"
+                                                  height="16"
+                                                  fill="currentColor"
+                                                  viewBox="0 0 16 16"
+                                                  style={{ display: "none" }}
+                                                  onClick={(ele) => {
+                                                    handleWichlist(
+                                                      data._id,
+                                                      "Hide",
+                                                      ele
+                                                    );
+                                                    wishlist(data._id);
+                                                  }}
+                                                >
+                                                  <path
+                                                    fill-rule="evenodd"
+                                                    d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+                                                  />
+                                                </svg>
+                                              ) : (
+                                                <BsHeart
+                                                  className="add-to-wish list-wish"
+                                                  onClick={(ele) => {
+                                                    handleWichlist(
+                                                      data._id,
+                                                      "Show",
+                                                      ele
+                                                    );
+                                                    wishlist(data._id);
+                                                  }}
                                                 />
-                                              </svg>
-
-                                              <BsHeart
-                                                className="add-to-wish list-wish"
-                                                onClick={(ele) => {
-                                                  handleWichlist(
-                                                    data._id,
-                                                    "Show",
-                                                    ele
-                                                  );
-                                                  wishlist(data._id);
-                                                }}
-                                              />
+                                              )}
                                               <span>Add to Wish List</span>
                                             </div>
                                             <div
