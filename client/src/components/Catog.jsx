@@ -4,8 +4,6 @@ import axios from 'axios';
 import './catog.css';
 import styled from 'styled-components';
 import { AiOutlineEye } from 'react-icons/ai';
-// import { AiFillHeart } from "react-icons/ai";
-
 import { BsHeart } from 'react-icons/bs';
 import { IoGitCompareOutline } from 'react-icons/io5';
 import {
@@ -15,7 +13,6 @@ import {
 import { userRequest } from '../requestMethods';
 import { BsFillHeartFill } from 'react-icons/bs';
 import { wishlist, wishlistCheek } from '../redux/apiCalls';
-
 import { Link } from 'react-router-dom';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import swal from 'sweetalert';
@@ -316,14 +313,8 @@ const Catog = ({ item }) => {
 	userId = JSON.parse(userId);
 	userId = userId.currentUser._id;
 	const CheckWishlist = (productId, userId) => {
-		// console.log(wishlistCheek(productId, userId));
-
-		return wishlistCheek(productId, userId).then((result) => {
-			// console.log(result);
-			return result;
-		});
+		return wishlistCheek(productId, userId);
 	};
-
 	return (
 		<>
 			<div className='backLayerForShowCart'></div>
@@ -704,7 +695,9 @@ const Catog = ({ item }) => {
 																									handleWichlist(data._id, 'Show', ele);
 																								}}
 																								style={{
-																									display: CheckWishlist(data._id, userId)
+																									display: CheckWishlist(data._id, userId).then((res) =>
+																										console.log(res),
+																									)
 																										? 'block'
 																										: 'none',
 																								}}
@@ -717,7 +710,9 @@ const Catog = ({ item }) => {
 																								fill='currentColor'
 																								viewBox='0 0 16 16'
 																								style={{
-																									display: CheckWishlist(data._id, userId)
+																									display: CheckWishlist(data._id, userId).then((res) =>
+																										console.log(res),
+																									)
 																										? 'none'
 																										: 'block',
 																								}}
