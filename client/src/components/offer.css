@@ -2050,10 +2050,22 @@ input[type="radio"]+label {
 @media only screen and (max-width: 700px) {
 	.productCard_block > .row11 {
 		flex-direction: column;
-		height: 687px;
+		height: 685px;
 			overflow-y: scroll;
 			scroll-behavior: smooth;
 	}
+		.AddCart {
+			margin-top: 30px;
+		}
+				.block_goodColor {
+					margin-top: -15px;
+				}
+								.block_quantity {
+									position: relative;
+									height: 46px;
+									margin-top: 10px;
+									padding-bottom: 10px;
+								}
 	.sliderBlock{
 		height: 250;
 		margin: 0;
