@@ -695,8 +695,8 @@ const Catog = ({ item }) => {
 																									handleWichlist(data._id, 'Show', ele);
 																								}}
 																								style={{
-																									display: CheckWishlist(data._id, userId).then((res) =>
-																										console.log(res),
+																									display: CheckWishlist(data._id, userId).then(
+																										(res) => res,
 																									)
 																										? 'block'
 																										: 'none',
@@ -710,8 +710,8 @@ const Catog = ({ item }) => {
 																								fill='currentColor'
 																								viewBox='0 0 16 16'
 																								style={{
-																									display: CheckWishlist(data._id, userId).then((res) =>
-																										console.log(res),
+																									display: CheckWishlist(data._id, userId).then(
+																										(res) => res,
 																									)
 																										? 'none'
 																										: 'block',
