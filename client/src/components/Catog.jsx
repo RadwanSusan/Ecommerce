@@ -1,4 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
+/* eslint-disable jsx-a11y/anchor-has-content */
+/* eslint-disable no-labels */
+/* eslint-disable no-unused-labels */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, { useEffect, useState, useRef, Suspense } from 'react';
 import axios from 'axios';
 import './catog.css';
 import styled from 'styled-components';
@@ -12,7 +16,11 @@ import {
 } from 'react-icons/bs';
 import { IoGitCompareOutline } from 'react-icons/io5';
 import { userRequest } from '../requestMethods';
-import { wishlist, wishlistCheek } from '../redux/apiCalls';
+import {
+	wishlist,
+	wishlistCheek,
+	userWishListArrayGet,
+} from '../redux/apiCalls';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import { addProduct, getAllProduct } from '../redux/cartRedux';
@@ -297,7 +305,7 @@ const Catog = ({ item }) => {
 		}
 	};
 
-	const handleWichlist = (id, visibiltyState, ele) => {
+	const handleWichlist = (id, ele) => {
 		if (ele.target.classList[0] === 'add-to-wish') {
 			ele.target.style.display = 'none';
 			ele.target.nextSibling.style.display = 'block';
@@ -312,30 +320,29 @@ const Catog = ({ item }) => {
 	userId = userId.user;
 	userId = JSON.parse(userId);
 	userId = userId.currentUser._id;
-	const CheckWishlist = (productId, userId) => {
-		return wishlistCheek(productId, userId);
+	const CheckWishlist = (productId) => {
+		return wishlist(productId, userId);
 	};
 
 	const isMountedRef = useRef(true);
+	const [wishlistData, setWishlistData] = useState([]);
 	useEffect(() => {
-		const fetchData = async (a, b) => {
+		const fetchData = async (userID) => {
 			try {
-				const res = await wishlistCheek(a, b);
+				const res = await userWishListArrayGet(userID);
 				if (isMountedRef.current) {
-					document.querySelectorAll('.add-to-wish').forEach((ele) => {
-						ele.setAttribute('test', res);
-					});
+					setWishlistData(res);
 				}
 			} catch (error) {
 				console.error(error);
 			}
 		};
-		fetchData('642f5ab9f400fab9f1b51fd2', '643e92924c7f8b95bebd8141');
+		fetchData(userId);
 		return () => {
 			isMountedRef.current = false;
 		};
-	}, []);
-	
+	}, [userId]);
+
 	return (
 		<>
 			<div className='backLayerForShowCart'></div>
@@ -725,53 +732,83 @@ const Catog = ({ item }) => {
 																							data-action='add-to-wishlist'
 																							title='Add to Wish List'
 																						>
-																							<BsHeart
-																								className='add-to-wish list-wish'
-																								onClick={(ele) => {
-																									handleWichlist(
-																										data._id,
-																										'Show',
-																										ele,
-																									);
-																								}}
-																								style={{
-																									display: CheckWishlist(
-																										data._id,
-																										userId,
-																									).then((res) => res)
-																										? 'block'
-																										: 'none',
-																								}}
-																							/>
-																							<svg
-																								className='add-to-wish2 list-wish bi bi-heart-fill'
-																								xmlns='http://www.w3.org/2000/svg'
-																								width='16'
-																								height='16'
-																								fill='currentColor'
-																								viewBox='0 0 16 16'
-																								style={{
-																									display: CheckWishlist(
-																										data._id,
-																										userId,
-																									).then((res) => res)
-																										? 'none'
-																										: 'block',
-																								}}
-																								onClick={(ele) => {
-																									handleWichlist(
-																										data._id,
-																										'Hide',
-																										ele,
-																									);
-																								}}
-																							>
-																								<path
-																									className='add-to-wish2'
-																									fill-rule='evenodd'
-																									d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
-																								/>
-																							</svg>
+																							{wishlistData.includes(
+																								data._id,
+																							) ? (
+																								<>
+																									<BsHeart
+																										className='add-to-wish list-wish'
+																										onClick={(ele) => {
+																											handleWichlist(
+																												data._id,
+																												ele,
+																											);
+																											CheckWishlist(data._id);
+																										}}
+																										style={{
+																											display: 'none',
+																										}}
+																									/>
+																									<svg
+																										className='add-to-wish2 list-wish bi bi-heart-fill'
+																										xmlns='http://www.w3.org/2000/svg'
+																										width='16'
+																										height='16'
+																										fill='currentColor'
+																										viewBox='0 0 16 16'
+																										onClick={(ele) => {
+																											handleWichlist(
+																												data._id,
+																												ele,
+																											);
+																											CheckWishlist(data._id);
+																										}}
+																									>
+																										<path
+																											className='add-to-wish2'
+																											fill-rule='evenodd'
+																											d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
+																										/>
+																									</svg>
+																								</>
+																							) : (
+																								<>
+																									<BsHeart
+																										className='add-to-wish list-wish'
+																										onClick={(ele) => {
+																											handleWichlist(
+																												data._id,
+																												ele,
+																											);
+																											CheckWishlist(data._id);
+																										}}
+																									/>
+																									<svg
+																										className='add-to-wish2 list-wish bi bi-heart-fill'
+																										xmlns='http://www.w3.org/2000/svg'
+																										width='16'
+																										height='16'
+																										fill='currentColor'
+																										viewBox='0 0 16 16'
+																										onClick={(ele) => {
+																											handleWichlist(
+																												data._id,
+																												ele,
+																											);
+																											CheckWishlist(data._id);
+																										}}
+																										style={{
+																											display: 'none',
+																										}}
+																									>
+																										<path
+																											className='add-to-wish2'
+																											fill-rule='evenodd'
+																											d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
+																										/>
+																									</svg>
+																								</>
+																							)}
 																							<span>Add to Wish List</span>
 																						</div>
 																						<div

@@ -71,3 +71,12 @@ export const wishlistCheek = async (id, userId) => {
 		console.log(err);
 	}
 };
+
+export const userWishListArrayGet = async (id) => {
+	try {
+		const res = await publicRequest.get(`users/userWishListArray/${id}`);
+		return res.data;
+	} catch (err) {
+		console.log(err);
+	}
+};
