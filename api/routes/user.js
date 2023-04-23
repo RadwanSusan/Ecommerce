@@ -161,27 +161,14 @@ router.get('/wishlist/:userId', async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-
-router.get('/is-available/:userId', async (req, res) => {
-	const value = req.query.value;
-	const { userId } = req.params;
-	try {
-		const user = await User.findById(userId);
-		const { wish } = user._doc;
-		const alreadyAdded = wish.find((userId) => userId.toString() === value);
-		if (alreadyAdded) {
-			res.json(true);
-		} else res.json(false);
-	} catch (err) {
-		res.status(500).json(err);
-	}
-});
-
+// Use .lean() when querying the User collection to retrieve plain
+// JavaScript objects instead of Mongoose documents.
+// This can improve the performance of your queries.
 router.get('/userWishListArray/:userId', async (req, res) => {
 	const { userId } = req.params;
 	try {
-		const user = await User.findById(userId);
-		const { wish } = user._doc;
+		const user = await User.findById(userId).lean();
+		const { wish } = user;
 		if (wish) {
 			res.json(wish);
 		} else res.json([]);

@@ -2,7 +2,7 @@
 /* eslint-disable no-labels */
 /* eslint-disable no-unused-labels */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState, useRef, Suspense } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import axios from 'axios';
 import './catog.css';
 import styled from 'styled-components';
@@ -16,11 +16,7 @@ import {
 } from 'react-icons/bs';
 import { IoGitCompareOutline } from 'react-icons/io5';
 import { userRequest } from '../requestMethods';
-import {
-	wishlist,
-	wishlistCheek,
-	userWishListArrayGet,
-} from '../redux/apiCalls';
+import { wishlist, userWishListArrayGet } from '../redux/apiCalls';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import { addProduct, getAllProduct } from '../redux/cartRedux';
@@ -324,24 +320,34 @@ const Catog = ({ item }) => {
 		return wishlist(productId, userId);
 	};
 
+	/*
+	 * This code fetches a list of user's wish list items using the userWishListArrayGet API
+	 * and updates the state of the wishlistData variable with the fetched data.
+	 * It uses the useCallback and useEffect hooks to optimize the code and avoid
+	 * unnecessary re-renders. The isMountedRef variable is used to prevent
+	 * updates to the component state after it has been unmounted.
+	 */
 	const isMountedRef = useRef(true);
 	const [wishlistData, setWishlistData] = useState([]);
-	useEffect(() => {
-		const fetchData = async (userID) => {
-			try {
-				const res = await userWishListArrayGet(userID);
-				if (isMountedRef.current) {
-					setWishlistData(res);
-				}
-			} catch (error) {
-				console.error(error);
+	const fetchData = useCallback(async (userID) => {
+		try {
+			const res = await userWishListArrayGet(userID);
+			if (isMountedRef.current) {
+				setWishlistData([...res]);
 			}
-		};
+		} catch (error) {
+			console.error(error);
+		}
+	}, []);
+	useEffect(() => {
 		fetchData(userId);
 		return () => {
 			isMountedRef.current = false;
 		};
-	}, [userId]);
+	}, [fetchData, userId]);
+	if (!isMountedRef.current) {
+		return null;
+	}
 
 	return (
 		<>
