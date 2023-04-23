@@ -30,8 +30,10 @@ const Catog = ({ item }) => {
 	const [size, setSize] = useState('');
 	const dispatch = useDispatch();
 	const [AllProducts, setAllProducts] = useState([]);
-	let [productGet, setProductGet] = useState({});
-	let [offerGet, setOfferGet] = useState({});
+	const [productGet, setProductGet] = useState({});
+	const [offerGet, setOfferGet] = useState({});
+	const [products, setProducts] = useState([]);
+
 	useEffect(() => {
 		const getProducts = async () => {
 			try {
@@ -63,7 +65,6 @@ const Catog = ({ item }) => {
 		};
 		fetchData();
 	}, []);
-	const [products, setProducts] = useState([]);
 	const showCartItems = Array.from(document.querySelectorAll('.show-cart2'));
 	const aramex = document.querySelector('.CatogallColors');
 	const filterSizeCatog = document.querySelector('.FilterSizeCatog');
