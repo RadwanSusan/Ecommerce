@@ -1,7 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-has-content */
-/* eslint-disable no-labels */
-/* eslint-disable no-unused-labels */
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import axios from 'axios';
 import './catog.css';
@@ -19,7 +15,7 @@ import { userRequest } from '../requestMethods';
 import { wishlist, userWishListArrayGet } from '../redux/apiCalls';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
-import { addProduct, getAllProduct } from '../redux/cartRedux';
+import { addProduct } from '../redux/cartRedux';
 import { useDispatch } from 'react-redux';
 
 const FilterSizeCatog = styled.select`
@@ -29,6 +25,13 @@ const FilterSizeCatog = styled.select`
 const Catog = ({ item }) => {
 	const [zaidVar, setZaidVar] = useState(0);
 	const [product_id, setProduct_id] = useState(0);
+	const [quantity, setQuantity] = useState(1);
+	const [color, setColor] = useState('');
+	const [size, setSize] = useState('');
+	const dispatch = useDispatch();
+	const [AllProducts, setAllProducts] = useState([]);
+	let [productGet, setProductGet] = useState({});
+	let [offerGet, setOfferGet] = useState({});
 	useEffect(() => {
 		const getProducts = async () => {
 			try {
@@ -53,7 +56,6 @@ const Catog = ({ item }) => {
 				]);
 				setAllProducts(productsRes.data);
 				setProductGet(productsRes.data);
-				// setAllOffers(offersRes.data);
 				setOfferGet(offersRes.data);
 			} catch (err) {
 				console.log(err);
@@ -61,91 +63,93 @@ const Catog = ({ item }) => {
 		};
 		fetchData();
 	}, []);
-	let idProduct;
 	const [products, setProducts] = useState([]);
-	document.querySelectorAll('.show-cart2').forEach((item) =>
-		item.addEventListener('click', (e) => {
-			document.querySelector('.CatogCard').style.display = 'block';
-			document.body.style.overflow = 'hidden';
-			document.querySelector('.CatogCard').style.overflow = 'hidden';
-			document.querySelector('.backLayerForShowCart').style.display = 'block';
-			document.querySelector('.backLayerForShowCart').style.overflow = 'hidden';
-			idProduct = item.getAttribute('offer-id');
-			const viewArrCatog = AllProducts.find(
-				(products) => products._id === idProduct,
-			);
-			if (!viewArrCatog) {
-				return;
+	const showCartItems = Array.from(document.querySelectorAll('.show-cart2'));
+	const aramex = document.querySelector('.CatogallColors');
+	const filterSizeCatog = document.querySelector('.FilterSizeCatog');
+	const currency = document.querySelector('.currency');
+	const getSiblings = (e) => {
+		let siblings = [];
+		if (!e.parentNode) {
+			return siblings;
+		}
+		let sibling = e.parentNode.firstChild;
+		while (sibling) {
+			if (sibling.nodeType === 1 && sibling !== e) {
+				siblings.push(sibling);
 			}
-			document.querySelector('.CatogCardDesc').innerHTML = '';
-			document.querySelector('.CatogCardDesc').append(viewArrCatog.desc);
-			let aramex = document.querySelector('.CatogallColors');
-			document.querySelector('.CatogallColors').innerHTML = '';
-			setZaidVar(viewArrCatog._id);
-			setProduct_id(viewArrCatog._id);
-			const getSiblings = (e) => {
-				let siblings = [];
-				if (!e.parentNode) {
-					return siblings;
-				}
-				let sibling = e.parentNode.firstChild;
-				while (sibling) {
-					if (sibling.nodeType === 1 && sibling !== e) {
-						siblings.push(sibling);
+			sibling = sibling.nextSibling;
+		}
+		return siblings;
+	};
+	const createRadioElement = (color) => {
+		const input = document.createElement('input');
+		input.classList.add('radio_button');
+		input.setAttribute('id', 'radioColor');
+		input.setAttribute('name', 'colorOfItem');
+		input.setAttribute('checked', 'checked');
+		input.setAttribute('value', color);
+		const label = document.createElement('label');
+		label.setAttribute('for', 'radioColor');
+		label.classList.add('block_goodColor__radio', 'block_goodColor__black');
+		label.style.backgroundColor = color;
+		return { input, label };
+	};
+	const handleShowCartClick = (item) => {
+		document.querySelector('.CatogCard').style.display = 'block';
+		document.body.style.overflow = 'hidden';
+		document.querySelector('.CatogCard').style.overflow = 'hidden';
+		document.querySelector('.backLayerForShowCart').style.display = 'block';
+		document.querySelector('.backLayerForShowCart').style.overflow = 'hidden';
+		const idProduct = item.getAttribute('offer-id');
+		const viewArrCatog = AllProducts.find(
+			(product) => product._id === idProduct,
+		);
+		if (!viewArrCatog) {
+			return;
+		}
+		document.querySelector('.CatogCardDesc').textContent = viewArrCatog.desc;
+		aramex.innerHTML = '';
+		setZaidVar(viewArrCatog._id);
+		setProduct_id(viewArrCatog._id);
+		viewArrCatog.color.forEach((color) => {
+			if (color.length !== 0) {
+				const { input, label } = createRadioElement(color);
+				aramex.appendChild(input);
+				aramex.appendChild(label);
+				input.addEventListener('click', (event) => {
+					if (
+						event.target.nextElementSibling.style.border === '3px solid black'
+					) {
+						event.target.nextElementSibling.style.border = 'none';
+					} else {
+						setColor(event.target.value);
+						const siblings = getSiblings(event.target);
+						siblings.forEach((sibling) => {
+							sibling.style.border = 'none';
+						});
+						event.target.nextElementSibling.style.border = '3px solid black';
 					}
-					sibling = sibling.nextSibling;
-				}
-				return siblings;
-			};
-			viewArrCatog.color.map((e) => {
-				if (e.length !== 0) {
-					let input1 = document.createElement('input');
-					input1.classList.add('radio_button');
-					input1.setAttribute('id', 'radioColor');
-					input1.setAttribute('name', 'colorOfItem');
-					input1.setAttribute('checked', 'checked');
-					input1.setAttribute('value', e);
-					let label = document.createElement(`label`);
-					label.setAttribute('for', 'radioColor');
-					label.classList.add(
-						'block_goodColor__radio',
-						'block_goodColor__black',
-					);
-					label.style.backgroundColor = `${e}`;
-					aramex.append(input1);
-					aramex.append(label);
-					// setColor('');
-					input1.addEventListener('click', (e) => {
-						if (
-							e.target.nextElementSibling.style.border === '3px solid black'
-						) {
-							e.target.nextElementSibling.style.border = 'none';
-							// setColor('');
-						} else {
-							setColor(e.target.value);
-							let siblings = getSiblings(e.target);
-							siblings.forEach((sibling) => {
-								sibling.style.border = 'none';
-							});
-							e.target.nextElementSibling.style.border = '3px solid black';
-						}
-					});
-				}
-				return null;
-			});
-			document.querySelector('.FilterSizeCatog').innerHTML = '';
-			viewArrCatog.size.map((e) => {
-				const option = document.createElement('option');
-				option.innerHTML = e;
-				option.setAttribute('key', e);
-				document.querySelector('.FilterSizeCatog').append(option);
-				return option;
-			});
-			document.querySelector('.currency').innerHTML = '';
-			document.querySelector('.currency').append('$');
-			document.querySelector('.currency').append(viewArrCatog.price);
-		}),
-	);
+				});
+			}
+		});
+		filterSizeCatog.innerHTML = '';
+		viewArrCatog.size.forEach((size) => {
+			const option = new Option(size, size);
+			filterSizeCatog.appendChild(option);
+			if (size === viewArrCatog.size[0]) {
+				option.selected = true;
+				setSize(size);
+			}
+		});
+		currency.textContent = `$${viewArrCatog.price}`;
+	};
+	showCartItems.forEach((item) => {
+		item.addEventListener('click', () => {
+			setQuantity(1);
+			handleShowCartClick(item);
+		});
+	});
 	document.querySelectorAll('.CloseCatogCard').forEach((item) =>
 		item.addEventListener('click', (e) => {
 			document.querySelector('.CatogCard').style.display = 'none';
@@ -166,63 +170,56 @@ const Catog = ({ item }) => {
 		}
 		return acc;
 	}, []);
-	const [quantity, setQuantity] = useState(1);
-	const [color, setColor] = useState('');
-	const [size, setSize] = useState('');
-	const dispatch = useDispatch();
-	const [AllProducts, setAllProducts] = useState([]);
-	// const [AllOffers, setAllOffers] = useState([]);
-	let [productGet, setProductGet] = useState({});
-	let [offerGet, setOfferGet] = useState({});
-	const handleQuantity2 = (type, id) => {
-		const item = [...productGet, ...offerGet].find((item) => item._id === id);
+	const displayAlert = (title, message, type) => {
+		swal(title, message, type);
+	};
+	const handleQuantityDecrement = () => {
+		if (quantity <= 1) {
+			displayAlert('Info', 'The minimum quantity is 1', 'info');
+		} else {
+			setQuantity(quantity - 1);
+		}
+	};
+	const handleQuantityIncrement = (id, maxQuantity) => {
 		const productMerged = mergedCart.find((item) => item._id === id);
-		const maxQuantity = item.quantity - 1;
 		if (productMerged !== undefined) {
-			if (type === 'dec') {
-				if (quantity <= 1) {
-					swal('Info', 'The minimum quantity is 1', 'info');
-				} else {
-					setQuantity(quantity - 1);
-				}
+			if (productMerged.quantity > maxQuantity) {
+				displayAlert(
+					'Info',
+					`You have exceeded the number of available products!`,
+					'info',
+				);
 			} else {
-				if (productMerged.quantity > maxQuantity) {
-					swal(
+				const newQuantity = productMerged.quantity + 1;
+				if (newQuantity > maxQuantity) {
+					displayAlert(
 						'Info',
-						'You have exceeded the number of available products!, the quantity will be reset',
+						'You have exceeded the number of available products!',
 						'info',
 					);
 				} else {
-					const newQuantity = productMerged.quantity + 1;
-					if (newQuantity > maxQuantity) {
-						swal(
-							'Info',
-							'You have exceeded the number of available products!',
-							'info',
-						);
-					} else {
-						setQuantity(newQuantity);
-					}
+					setQuantity(newQuantity);
 				}
 			}
 		} else {
-			if (type === 'dec') {
-				if (quantity <= 1) {
-					swal('Info', 'The minimum quantity is 1', 'info');
-				} else {
-					setQuantity(quantity - 1);
-				}
+			if (quantity > maxQuantity) {
+				displayAlert(
+					'Info',
+					'You have exceeded the number of available products!',
+					'info',
+				);
 			} else {
-				if (quantity > maxQuantity) {
-					swal(
-						'Info',
-						'You have exceeded the number of available products!, the quantity will be reset',
-						'info',
-					);
-				} else {
-					setQuantity(quantity + 1);
-				}
+				setQuantity(quantity + 1);
 			}
+		}
+	};
+	const handleQuantity2 = (type, id) => {
+		const item = [...productGet, ...offerGet].find((item) => item._id === id);
+		const maxQuantity = item.quantity - 1;
+		if (type === 'dec') {
+			handleQuantityDecrement();
+		} else {
+			handleQuantityIncrement(id, maxQuantity);
 		}
 	};
 	const chekAvail2 = () => {
@@ -232,75 +229,69 @@ const Catog = ({ item }) => {
 					quantity: products.quantity - item.quantity,
 				};
 			}
+			return item;
 		});
 		newQuantity = newQuantity.filter((item) => item !== undefined);
 		if (newQuantity.length > 0) {
-			if (newQuantity[0].quantity < 1) {
-				return false;
-			} else {
-				return true;
-			}
+			return newQuantity[0].quantity >= 1;
 		}
 		return true;
 	};
+	const findItemById = (id) => {
+		const items = [...productGet, ...offerGet];
+		return items.find((item) => item._id === id);
+	};
 	const addToCart = (productId) => {
-		const item = [...productGet, ...offerGet].find(
-			(item) => item._id === productId,
-		);
-		const product = [...productGet, ...offerGet].find(
-			(item) => item._id === productId,
-		);
-		if (products.length > 0) {
-			const cartItem = mergedCart.find((item) => item._id === productId);
-			if (cartItem) {
-				if (cartItem.quantity === item.quantity) {
-					swal('Info', 'You already have the maximum amount!', 'info');
-					document.querySelector('.AddCart').disabled = true;
-					return;
-				}
-				if (cartItem.quantity + quantity <= item.quantity) {
-					dispatch(
-						addProduct({
-							...cartItem,
-							quantity,
-							color,
-							size,
-						}),
-					);
-					if (cartItem.quantity < 1) {
-						document.querySelector('.AddCart').disabled = true;
-						return;
-					}
-					cartItem.quantity -= quantity;
-					setQuantity(1);
-					swal('Success', 'Product added to cart!', 'success');
-					if (cartItem.quantity <= 1) {
-						document.querySelector('.AddCart').disabled = true;
-					}
-				} else {
-					swal('Info', 'Try with a different amount!', 'info');
-					return;
-				}
-			} else {
-				dispatch(
-					addProduct({
-						...product,
-						quantity,
-						color,
-						size,
-					}),
-				);
-				item.quantity -= quantity;
-				setQuantity(1);
-				swal('Success', 'Product added to cart!', 'success');
-				if (quantity === item.quantity) {
-					document.querySelector('.AddCart').disabled = true;
-					return;
-				}
+		const item = findItemById(productId);
+		const cartItem = mergedCart.find((item) => item._id === productId);
+		const addCartBtn = document.querySelector('.AddCart');
+		if (!item) {
+			return;
+		}
+		if (cartItem && cartItem.quantity === item.quantity) {
+			disableAddCartBtn(addCartBtn);
+			showInfoMessage('You already have the maximum amount!');
+			return;
+		}
+		if (cartItem && cartItem.quantity + quantity <= item.quantity) {
+			dispatch(
+				addProduct({
+					...cartItem,
+					quantity,
+					color,
+					size,
+				}),
+			);
+			cartItem.quantity -= quantity;
+			setQuantity(1);
+			showSuccessMessage('Product added to cart!');
+			if (cartItem.quantity <= 1) {
+				disableAddCartBtn(addCartBtn);
 			}
+		} else if (cartItem) {
+			showInfoMessage('Try with a different amount!');
+		} else {
+			dispatch(
+				addProduct({
+					...item,
+					quantity,
+					color,
+					size,
+				}),
+			);
+			setQuantity(1);
+			showSuccessMessage('Product added to cart!');
 		}
 	};
-
+	const disableAddCartBtn = (btn) => {
+		btn.disabled = true;
+	};
+	const showInfoMessage = (message) => {
+		swal('Info', message, 'info');
+	};
+	const showSuccessMessage = (message) => {
+		swal('Success', message, 'success');
+	};
 	const handleWichlist = (id, ele) => {
 		if (ele.target.classList[0] === 'add-to-wish') {
 			ele.target.style.display = 'none';
@@ -316,17 +307,15 @@ const Catog = ({ item }) => {
 	userId = userId.user;
 	userId = JSON.parse(userId);
 	userId = userId.currentUser._id;
-	const CheckWishlist = (productId) => {
-		return wishlist(productId, userId);
+	const addToWishlist = (productId, identifier) => {
+		if (identifier === 'remove') {
+			swal('Success', 'Product removed from wishlist!', 'success');
+			wishlist(productId, userId);
+			return;
+		}
+		swal('Success', 'Product added to wishlist!', 'success');
+		wishlist(productId, userId);
 	};
-
-	/*
-	 * This code fetches a list of user's wish list items using the userWishListArrayGet API
-	 * and updates the state of the wishlistData variable with the fetched data.
-	 * It uses the useCallback and useEffect hooks to optimize the code and avoid
-	 * unnecessary re-renders. The isMountedRef variable is used to prevent
-	 * updates to the component state after it has been unmounted.
-	 */
 	const isMountedRef = useRef(true);
 	const [wishlistData, setWishlistData] = useState([]);
 	const fetchData = useCallback(async (userID) => {
@@ -348,7 +337,6 @@ const Catog = ({ item }) => {
 	if (!isMountedRef.current) {
 		return null;
 	}
-
 	return (
 		<>
 			<div className='backLayerForShowCart'></div>
@@ -749,7 +737,10 @@ const Catog = ({ item }) => {
 																												data._id,
 																												ele,
 																											);
-																											CheckWishlist(data._id);
+																											addToWishlist(
+																												data._id,
+																												'remove',
+																											);
 																										}}
 																										style={{
 																											display: 'none',
@@ -767,7 +758,10 @@ const Catog = ({ item }) => {
 																												data._id,
 																												ele,
 																											);
-																											CheckWishlist(data._id);
+																											addToWishlist(
+																												data._id,
+																												'add',
+																											);
 																										}}
 																									>
 																										<path
@@ -786,7 +780,10 @@ const Catog = ({ item }) => {
 																												data._id,
 																												ele,
 																											);
-																											CheckWishlist(data._id);
+																											addToWishlist(
+																												data._id,
+																												'add',
+																											);
 																										}}
 																									/>
 																									<svg
@@ -801,7 +798,10 @@ const Catog = ({ item }) => {
 																												data._id,
 																												ele,
 																											);
-																											CheckWishlist(data._id);
+																											addToWishlist(
+																												data._id,
+																												'remove',
+																											);
 																										}}
 																										style={{
 																											display: 'none',
