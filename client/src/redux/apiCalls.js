@@ -13,7 +13,7 @@ export const login = async (dispatch, user) => {
 
 export const logoutUser = () => {
 	localStorage.removeItem('persist:root');
-	window.location.href = '/';
+	window.location.href = '/login';
 };
 
 export const updateProductOrOffer = async (product, productId) => {

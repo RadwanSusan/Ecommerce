@@ -23,6 +23,9 @@
 		"timeago.js": "^4.0.2",
 		"web-vitals": "^1.0.1"
 	},
+	"resolutions": {
+		"react-error-overlay": "6.0.9"
+	},
 	"scripts": {
 		"start": "react-scripts --openssl-legacy-provider start",
 		"build": "react-scripts --openssl-legacy-provider build",
@@ -48,6 +51,7 @@
 		]
 	},
 	"devDependencies": {
-		"eslint": "^7.32.0"
+		"eslint": "^7.32.0",
+		"react-error-overlay": "6.0.9"
 	}
 }
