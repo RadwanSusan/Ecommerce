@@ -1,27 +1,22 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import './catog.css';
 import styled from 'styled-components';
-import { AiOutlineEye } from 'react-icons/ai';
-import { BsHeart } from 'react-icons/bs';
-import { IoGitCompareOutline } from 'react-icons/io5';
+import { AiOutlineEye, AiFillCloseCircle } from 'react-icons/ai';
 import {
+	BsHeart,
 	BsArrowUpCircle as ArrowUp,
 	BsArrowDownCircle as ArrowDown,
-} from 'react-icons/bs';
-import { userRequest } from '../requestMethods';
-import { BsFillHeartFill } from 'react-icons/bs';
-import { wishlist, wishlistCheek } from '../redux/apiCalls';
-import { Link } from 'react-router-dom';
-import { AiFillCloseCircle } from 'react-icons/ai';
-import swal from 'sweetalert';
-import { addProduct, getAllProduct } from '../redux/cartRedux';
-import { useDispatch } from 'react-redux';
-import {
 	BsFillArrowRightCircleFill,
 	BsFillArrowLeftCircleFill,
 } from 'react-icons/bs';
+import { IoGitCompareOutline } from 'react-icons/io5';
+import { userRequest } from '../requestMethods';
+import { wishlist, wishlistCheek } from '../redux/apiCalls';
+import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
+import { addProduct, getAllProduct } from '../redux/cartRedux';
+import { useDispatch } from 'react-redux';
 
 const FilterSizeCatog = styled.select`
 	margin-left: 10px;
@@ -108,13 +103,18 @@ const Catog = ({ item }) => {
 					input1.setAttribute('value', e);
 					let label = document.createElement(`label`);
 					label.setAttribute('for', 'radioColor');
-					label.classList.add('block_goodColor__radio', 'block_goodColor__black');
+					label.classList.add(
+						'block_goodColor__radio',
+						'block_goodColor__black',
+					);
 					label.style.backgroundColor = `${e}`;
 					aramex.append(input1);
 					aramex.append(label);
 					// setColor('');
 					input1.addEventListener('click', (e) => {
-						if (e.target.nextElementSibling.style.border === '3px solid black') {
+						if (
+							e.target.nextElementSibling.style.border === '3px solid black'
+						) {
 							e.target.nextElementSibling.style.border = 'none';
 							// setColor('');
 						} else {
@@ -315,6 +315,27 @@ const Catog = ({ item }) => {
 	const CheckWishlist = (productId, userId) => {
 		return wishlistCheek(productId, userId);
 	};
+
+	const isMountedRef = useRef(true);
+	useEffect(() => {
+		const fetchData = async (a, b) => {
+			try {
+				const res = await wishlistCheek(a, b);
+				if (isMountedRef.current) {
+					document.querySelectorAll('.add-to-wish').forEach((ele) => {
+						ele.setAttribute('test', res);
+					});
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		};
+		fetchData('642f5ab9f400fab9f1b51fd2', '643e92924c7f8b95bebd8141');
+		return () => {
+			isMountedRef.current = false;
+		};
+	}, []);
+	
 	return (
 		<>
 			<div className='backLayerForShowCart'></div>
@@ -417,7 +438,9 @@ const Catog = ({ item }) => {
 									<h2 className='block_name block_name__mainName'>
 										MOMENTUM<sup>&reg; </sup>
 									</h2>
-									<h2 className='block_name block_name__addName'>Wireless Black</h2>
+									<h2 className='block_name block_name__addName'>
+										Wireless Black
+									</h2>
 									<p className='block_product__advantagesProduct CatogCardDesc'></p>
 									<div className='block_informationAboutDevice'>
 										<div className='block_descriptionCharacteristic block_descriptionCharacteristic__disActive'>
@@ -453,7 +476,8 @@ const Catog = ({ item }) => {
 												<tr>
 													<td>Microphone Type</td>
 													<td>
-														Dual omni-directional microphone <br />2 mic beam forming array
+														Dual omni-directional microphone <br />2 mic beam
+														forming array
 													</td>
 												</tr>
 												<tr>
@@ -468,22 +492,26 @@ const Catog = ({ item }) => {
 										</div>
 										<div className='block_descriptionInformation'>
 											<span>
-												Peak performance with active noise cancelation. Sennheiser's new
-												MOMENTUM Wireless - Closed circumauralheadphone featuring{' '}
+												Peak performance with active noise cancelation.
+												Sennheiser's new MOMENTUM Wireless - Closed
+												circumauralheadphone featuring{' '}
 												<a
 													className='block_product__link'
 													href='#'
 												>
 													Bluetooth<sup>&reg;</sup>
 												</a>{' '}
-												wireless technology and NoiseGard Hybrid active noise cancelation
+												wireless technology and NoiseGard Hybrid active noise
+												cancelation
 											</span>
 										</div>
 										<div className='row11 '>
 											<div className='large-6 small-12 column left-align'>
 												<div className='block_price'>
 													<p className='block_price__currency currency'>$</p>
-													<p className='block_price__shipping'>Shipping and taxes extra</p>
+													<p className='block_price__shipping'>
+														Shipping and taxes extra
+													</p>
 												</div>
 												<div className='block_quantity clearfix'>
 													<span className='text_specification'>Quantity</span>
@@ -516,7 +544,9 @@ const Catog = ({ item }) => {
 											</div>
 											<div className='large-6 small-12 column end'>
 												<div className='block_goodColor'>
-													<span className='text_specification'>Choose your colors:</span>
+													<span className='text_specification'>
+														Choose your colors:
+													</span>
 													<div
 														className='zaid'
 														style={{ display: 'hidden' }}
@@ -563,7 +593,9 @@ const Catog = ({ item }) => {
 								className='ltabs-tabs-wrap'
 								tabindex='-1'
 							>
-								<span className='ltabs-current-select'>Accessories for iPhone</span>
+								<span className='ltabs-current-select'>
+									Accessories for iPhone
+								</span>
 							</div>
 						</div>
 						<div className='listingtabs-cms'>
@@ -666,7 +698,9 @@ const Catog = ({ item }) => {
 																						data-price-type='finalPrice'
 																						className='price-wrapper '
 																					>
-																						<span className='price'>$ {data.price}</span>
+																						<span className='price'>
+																							$ {data.price}
+																						</span>
 																					</span>
 																				</span>
 																			</div>
@@ -678,7 +712,9 @@ const Catog = ({ item }) => {
 																						className='actions-secondary'
 																					></div>
 																					<Link to={`/product/${data._id}`}>
-																						<button className='Add-to-Cart-new'>Add to Cart</button>
+																						<button className='Add-to-Cart-new'>
+																							Add to Cart
+																						</button>
 																					</Link>
 																					<div
 																						className='actions-secondary'
@@ -692,12 +728,17 @@ const Catog = ({ item }) => {
 																							<BsHeart
 																								className='add-to-wish list-wish'
 																								onClick={(ele) => {
-																									handleWichlist(data._id, 'Show', ele);
+																									handleWichlist(
+																										data._id,
+																										'Show',
+																										ele,
+																									);
 																								}}
 																								style={{
-																									display: CheckWishlist(data._id, userId).then(
-																										(res) => res,
-																									)
+																									display: CheckWishlist(
+																										data._id,
+																										userId,
+																									).then((res) => res)
 																										? 'block'
 																										: 'none',
 																								}}
@@ -710,14 +751,19 @@ const Catog = ({ item }) => {
 																								fill='currentColor'
 																								viewBox='0 0 16 16'
 																								style={{
-																									display: CheckWishlist(data._id, userId).then(
-																										(res) => res,
-																									)
+																									display: CheckWishlist(
+																										data._id,
+																										userId,
+																									).then((res) => res)
 																										? 'none'
 																										: 'block',
 																								}}
 																								onClick={(ele) => {
-																									handleWichlist(data._id, 'Hide', ele);
+																									handleWichlist(
+																										data._id,
+																										'Hide',
+																										ele,
+																									);
 																								}}
 																							>
 																								<path
