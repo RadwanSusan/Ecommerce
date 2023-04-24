@@ -1,14 +1,17 @@
-import React from 'react';
+import React, {
+	useEffect,
+	useContext,
+	useState,
+	useCallback,
+	useMemo,
+} from 'react';
 import styled from 'styled-components';
 import { mobile } from '../responsive';
 import { Link } from 'react-router-dom';
 import { logoutUser } from '../redux/apiCalls';
 import { MdOutlineLightMode } from 'react-icons/md';
-import { CiDark } from 'react-icons/ci';
 import { SiDarkreader } from 'react-icons/si';
-
 import { DarkModeContext } from '../context/darkModeContext';
-import { useContext } from 'react';
 
 const Container = styled.div`
 	height: 60px;
@@ -69,85 +72,229 @@ const MenuItem1 = styled.div`
 	cursor: pointer;
 	${mobile({ fontSize: '12px', marginLeft: '10px' })}
 `;
+/*
+ * -----------------------------------1st Version--------------------------------
+ */
+// const Announcement = () => {
+// 	const { toggle, darkMode } = useContext(DarkModeContext);
+// 	const [tokenState, setToken] = useState();
+// 	const [tokenLoaded, setTokenLoaded] = useState(false);
+// 	const getToken = async () => {
+// 		try {
+// 			const token = await localStorage.getItem('persist:root');
+// 			if (token) {
+// 				setToken(token);
+// 			}
+// 		} catch (error) {
+// 			console.error(error);
+// 		} finally {
+// 			setTokenLoaded(true);
+// 		}
+// 	};
+// 	useEffect(() => {
+// 		getToken();
+// 	}, []);
+// 	const handleLogout = () => {
+// 		logoutUser();
+// 	};
+// 	const Navbar = ({ isGuest }) => (
+// 		<Container>
+// 			<Wrapper>
+// 				<Left>
+// 					<MenuItem1>
+// 						{isGuest
+// 							? 'Welcome to Venuse store'
+// 							: 'Welcome ' + JSON.parse(JSON.parse(tokenState).user).username}
+// 					</MenuItem1>
+// 					{!isGuest && (
+// 						<MenuItem>
+// 							<button onClick={handleLogout}>Logout</button>
+// 						</MenuItem>
+// 					)}
+// 					{isGuest && (
+// 						<>
+// 							<MenuItem>
+// 								<Link to='/Register'>REGISTER</Link>
+// 							</MenuItem>
+// 							<MenuItem>
+// 								<Link to='/Login'>SIGN IN</Link>
+// 							</MenuItem>
+// 						</>
+// 					)}
+// 				</Left>
+// 				<Right>
+// 					{darkMode ? (
+// 						<SiDarkreader
+// 							className='CiDark'
+// 							onClick={toggle}
+// 						/>
+// 					) : (
+// 						<MdOutlineLightMode
+// 							className='CiDark'
+// 							onClick={toggle}
+// 						/>
+// 					)}
+// 					<Language>English - </Language>
+// 					<SearchContainer>USD</SearchContainer>
+// 				</Right>
+// 			</Wrapper>
+// 		</Container>
+// 	);
+// 	if (!tokenLoaded) {
+// 		return null;
+// 	}
+// 	return tokenState ? <Navbar isGuest={false} /> : <Navbar isGuest={true} />;
+// };
+/*
+ * -----------------------------------2nd Version--------------------------------
+ */
+// const Announcement = () => {
+// 	const { toggle, darkMode } = useContext(DarkModeContext);
+// 	const [tokenState, setTokenState] = useState(null);
+// 	const [isLoading, setIsLoading] = useState(true);
+// 	useEffect(() => {
+// 		const getToken = async () => {
+// 			try {
+// 				const token = await localStorage.getItem('persist:root');
+// 				setTokenState(token);
+// 			} catch (error) {
+// 				console.error(error);
+// 			} finally {
+// 				setIsLoading(false);
+// 			}
+// 		};
+// 		getToken();
+// 	}, []);
+// 	const handleLogout = () => {
+// 		logoutUser();
+// 	};
+// 	const Navbar = ({ isGuest }) => (
+// 		<Container>
+// 			<Wrapper>
+// 				<Left>
+// 					<MenuItem1>
+// 						{isGuest
+// 							? 'Welcome to Venuse store'
+// 							: `Welcome ${JSON.parse(JSON.parse(tokenState).user).username}`}
+// 					</MenuItem1>
+// 					{!isGuest && (
+// 						<MenuItem>
+// 							<button onClick={handleLogout}>Logout</button>
+// 						</MenuItem>
+// 					)}
+// 					{isGuest && (
+// 						<>
+// 							<MenuItem>
+// 								<Link to='/Register'>REGISTER</Link>
+// 							</MenuItem>
+// 							<MenuItem>
+// 								<Link to='/Login'>SIGN IN</Link>
+// 							</MenuItem>
+// 						</>
+// 					)}
+// 				</Left>
+// 				<Right>
+// 					{darkMode ? (
+// 						<SiDarkreader
+// 							className='CiDark'
+// 							onClick={toggle}
+// 						/>
+// 					) : (
+// 						<MdOutlineLightMode
+// 							className='CiDark'
+// 							onClick={toggle}
+// 						/>
+// 					)}
+// 					<Language>English - </Language>
+// 					<SearchContainer>USD</SearchContainer>
+// 				</Right>
+// 			</Wrapper>
+// 		</Container>
+// 	);
+// 	if (isLoading) {
+// 		return null;
+// 	}
+// 	return <Navbar isGuest={!tokenState} />;
+// };
+/*
+ * -----------------------------------3rd Version [BEST-PERFORMANCE]--------------------------------
+ */
+const Navbar = React.memo(
+	({ isGuest, darkMode, toggle, handleLogout, username }) => (
+		<Container>
+			<Wrapper>
+				<Left>
+					<MenuItem1>
+						{isGuest ? 'Welcome to Venuse store' : `Welcome ${username}`}
+					</MenuItem1>
+					{!isGuest && (
+						<MenuItem>
+							<button onClick={handleLogout}>Logout</button>
+						</MenuItem>
+					)}
+					{isGuest && (
+						<>
+							<MenuItem>
+								<Link to='/Register'>REGISTER</Link>
+							</MenuItem>
+							<MenuItem>
+								<Link to='/Login'>SIGN IN</Link>
+							</MenuItem>
+						</>
+					)}
+				</Left>
+				<Right>
+					{darkMode ? (
+						<SiDarkreader
+							className='CiDark'
+							onClick={toggle}
+						/>
+					) : (
+						<MdOutlineLightMode
+							className='CiDark'
+							onClick={toggle}
+						/>
+					)}
+					<SearchContainer>USD</SearchContainer>
+				</Right>
+			</Wrapper>
+		</Container>
+	),
+);
 const Announcement = () => {
 	const { toggle, darkMode } = useContext(DarkModeContext);
-	let token = localStorage.getItem('persist:root');
-	if (token === null) {
-		token = 'Guest';
-	} else {
-		token = JSON.parse(token);
-		token = JSON.parse(token.user);
-		if (token.currentUser == null) {
-			token = 'Guest';
-		} else {
-			token = token.currentUser.username;
-		}
-	}
-
-	const handleClick = () => {
+	const [tokenState, setTokenState] = useState(null);
+	const [isLoading, setIsLoading] = useState(true);
+	const [user, setUser] = useState(null);
+	const handleLogout = useCallback(() => {
 		logoutUser();
-	};
-
-	if (token !== 'Guest') {
-		return (
-			<Container>
-				<Wrapper>
-					<Left>
-						<MenuItem1>welcome {token}</MenuItem1>
-						<MenuItem>
-							<button onClick={handleClick}>Logout</button>
-						</MenuItem>
-					</Left>
-					<Right>
-						{darkMode ? (
-							<SiDarkreader
-								className='CiDark'
-								onClick={toggle}
-							/>
-						) : (
-							<MdOutlineLightMode
-								className='CiDark'
-								onClick={toggle}
-							/>
-						)}
-						<Language>English - </Language>
-						<SearchContainer>USD</SearchContainer>
-					</Right>
-				</Wrapper>
-			</Container>
-		);
-	} else {
-		return (
-			<Container>
-				<Wrapper>
-					<Left>
-						<MenuItem1>Welcome to Venuse store</MenuItem1>
-						<MenuItem>
-							<Link to='/Register'>REGISTER</Link>
-						</MenuItem>
-						<MenuItem>
-							<Link to='/Login'>SIGN IN</Link>
-						</MenuItem>
-					</Left>
-					<Right>
-						{darkMode ? (
-							<SiDarkreader
-								className='CiDark'
-								onClick={toggle}
-							/>
-						) : (
-							<MdOutlineLightMode
-								className='CiDark'
-								onClick={toggle}
-							/>
-						)}
-						<Language>English - </Language>
-						<SearchContainer>USD</SearchContainer>
-					</Right>
-				</Wrapper>
-			</Container>
-		);
+	}, []);
+	const token = useMemo(() => localStorage.getItem('persist:root'), []);
+	useEffect(() => {
+		if (token) {
+			setTokenState(token);
+		}
+	}, [token]);
+	useEffect(() => {
+		if (tokenState) {
+			setUser(JSON.parse(JSON.parse(tokenState)?.user));
+		}
+	}, [tokenState]);
+	useEffect(() => {
+		setIsLoading(false);
+	}, []);
+	if (isLoading) {
+		return null;
 	}
+	return (
+		<Navbar
+			isGuest={!tokenState}
+			darkMode={darkMode}
+			toggle={toggle}
+			handleLogout={handleLogout}
+			username={user?.username}
+		/>
+	);
 };
 
 export default Announcement;
