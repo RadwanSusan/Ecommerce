@@ -2,7 +2,12 @@ import Sidebar from "./components/sidebar/Sidebar";
 import Topbar from "./components/topbar/Topbar";
 import "./App.css";
 import Home from "./pages/home/Home";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import UserList from "./pages/userList/UserList";
 import User from "./pages/user/User";
 import NewUser from "./pages/newUser/NewUser";
@@ -17,10 +22,14 @@ import Transactions from "./pages/transactions/Transactions";
 import Analytics from "./pages/Analytics/Analytics";
 import "./components/style/dark.scss"
 import { useState } from "react";
+import { useSelector } from "react-redux";
+
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 
 function App() {
+	const user = useSelector((state) => state.user.currentUser);
+
    const { darkMode } = useContext(DarkModeContext);
 
 	const admin = true;
@@ -28,7 +37,8 @@ function App() {
     <Router>
       <Switch>
         <Route path="/login">
-          <Login />
+          {user ? <Redirect to="/" /> : <Login />}
+          
         </Route>
         {admin && (
           <div className={darkMode ? "app dark" : "app"}>

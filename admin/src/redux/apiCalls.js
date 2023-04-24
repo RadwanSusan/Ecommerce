@@ -51,6 +51,10 @@ export const login = async (dispatch, user) => {
 		dispatch(loginFailure());
 	}
 };
+export const logoutUser = () => {
+  localStorage.removeItem("persist:root");
+  window.location.href = "/login";
+};
 export const getProducts = async (dispatch) => {
 	dispatch(getProductStart());
 	try {

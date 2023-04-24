@@ -17,12 +17,18 @@ import { Link } from "react-router-dom";
 import { BiLogOutCircle } from "react-icons/bi"; 
 import { CgProfile } from "react-icons/cg";
 import { DarkModeContext } from "../../context/darkModeContext";
-import { useContext } from "react";
+import { useContext, useCallback } from "react";
+import { logoutUser } from "../../redux/apiCalls";
+
 
 
 export default function Sidebar() {
   //  const { dispatch } = useContext(DarkModeContext);
   const { toggle, darkMode } = useContext(DarkModeContext);
+  const handleLogout = useCallback(() => {
+      
+      logoutUser();
+    }, []);
 
   return (
     <div className="sidebar">
@@ -93,7 +99,7 @@ export default function Sidebar() {
               <CgProfile className="sidebarIcon" />
               Profile
             </li>
-            <li className="sidebarListItem">
+            <li onClick={handleLogout} className="sidebarListItem">
               <BiLogOutCircle className="sidebarIcon" />
               Logout
             </li>
@@ -102,13 +108,13 @@ export default function Sidebar() {
             <div
               className="colorOption"
               onClick={() => {
-                toggle()
+                toggle();
               }}
             ></div>
             <div
               className="colorOption"
               onClick={() => {
-                toggle()
+                toggle();
               }}
             ></div>
           </div>

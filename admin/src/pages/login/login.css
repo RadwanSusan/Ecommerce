@@ -60,8 +60,8 @@ body {
 
 .btn-saffron {
     color: #FFFFFF;
-    background-color: #e93f24;
-    border-color: #dd2e12;
+    background-color: #4e4443;
+        border-color: #ffffff;
     width: 200px;
     padding: 10px;
 }
@@ -69,14 +69,14 @@ body {
 .btn-saffron.focus,
 .btn-saffron:focus {
     color: #FFFFFF;
-    background-color: #dd2e12;
-    border-color: #b2240d
+        background-color: #424242;
+        border-color: #b2240d;
 }
 
 .btn-saffron:hover {
-    color: #FFFFFF;
-    background-color: #dd2e12;
-    border-color: #b2240d
+    color: #000000;
+        background-color: #fff9f8;
+        border-color: #ffffff;
 }
 
 .btn-saffron.active,
@@ -97,8 +97,8 @@ body {
 .open>.dropdown-toggle.btn-saffron:focus,
 .open>.dropdown-toggle.btn-saffron:hover {
     color: #FFFFFF;
-    background-color: #b2240d;
-    border-color: #b2240d
+        background-color: #424242;
+        border-color: #b2240d;
 }
 
 .btn-saffron.active,
@@ -125,13 +125,14 @@ fieldset[disabled] .btn-saffron.focus,
 fieldset[disabled] .btn-saffron:active,
 fieldset[disabled] .btn-saffron:focus,
 fieldset[disabled] .btn-saffron:hover {
-    background-color: #b2240d;
-    border-color: #b2240d
+color: #FFFFFF;
+    background-color: #424242;
+    border-color: #b2240d;
 }
 
 .btn-saffron .badge {
-    color: #fff;
-    background-color: #b2240d
+   color: #FFFFFF;
+        background-color: #424242;
 }
 
 .ui-radio input[type=radio] {}
@@ -216,6 +217,7 @@ fieldset[disabled] .btn-saffron:hover {
     padding: 40px 0px 20px 0px;
     background-color: #ffffff;
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16);
+    border-radius: 10px;
 }
 
 .login-title {
@@ -270,4 +272,11 @@ fieldset[disabled] .btn-saffron:hover {
 }
 #forgot {
     display: none;
+}
+.tab-pane {
+    width: 300px;
+}
+.forgot {
+    text-decoration: none;
+    color: #222222;
 }

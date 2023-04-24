@@ -220,46 +220,41 @@ const MenuItem1 = styled.div`
  * -----------------------------------3rd Version [BEST-PERFORMANCE]--------------------------------
  */
 const Navbar = React.memo(
-	({ isGuest, darkMode, toggle, handleLogout, username }) => (
-		<Container>
-			<Wrapper>
-				<Left>
-					<MenuItem1>
-						{isGuest ? 'Welcome to Venuse store' : `Welcome ${username}`}
-					</MenuItem1>
-					{!isGuest && (
-						<MenuItem>
-							<button onClick={handleLogout}>Logout</button>
-						</MenuItem>
-					)}
-					{isGuest && (
-						<>
-							<MenuItem>
-								<Link to='/Register'>REGISTER</Link>
-							</MenuItem>
-							<MenuItem>
-								<Link to='/Login'>SIGN IN</Link>
-							</MenuItem>
-						</>
-					)}
-				</Left>
-				<Right>
-					{darkMode ? (
-						<SiDarkreader
-							className='CiDark'
-							onClick={toggle}
-						/>
-					) : (
-						<MdOutlineLightMode
-							className='CiDark'
-							onClick={toggle}
-						/>
-					)}
-					<SearchContainer>USD</SearchContainer>
-				</Right>
-			</Wrapper>
-		</Container>
-	),
+  ({ isGuest, darkMode, toggle, handleLogout, username }) => (
+    <Container>
+      <Wrapper>
+        <Left>
+          <MenuItem1>
+            {isGuest ? "Welcome to Venuse store" : `Welcome ${username}`}
+          </MenuItem1>
+          {!isGuest && (
+            <MenuItem>
+              <button onClick={handleLogout}>Logout</button>
+            </MenuItem>
+          )}
+          {isGuest && (
+            <>
+              <MenuItem>
+                <Link to="/Register">REGISTER</Link>
+              </MenuItem>
+              <MenuItem>
+                <Link to="/Login">SIGN IN</Link>
+              </MenuItem>
+            </>
+          )}
+        </Left>
+        <Right>
+          {darkMode ? (
+            <SiDarkreader className="CiDark" onClick={toggle} />
+          ) : (
+            <MdOutlineLightMode className="CiDark" onClick={toggle} />
+          )}
+          <SearchContainer>USD</SearchContainer>
+          <SearchContainer>ENG</SearchContainer>
+        </Right>
+      </Wrapper>
+    </Container>
+  )
 );
 const Announcement = () => {
 	const { toggle, darkMode } = useContext(DarkModeContext);
