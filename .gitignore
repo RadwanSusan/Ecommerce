@@ -12,3 +12,4 @@ api/node_modules/
 /api/node_modules/
 /node_modules/
 thunder-tests
+.safurai/config.yml
