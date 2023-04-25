@@ -40,6 +40,7 @@
           } else {
             const status = '<%- JSON.stringify(status) %>';
             console.log(`🚀 ~ file: index2.ejs:42 ~ handleClick ~ status:`, status);
+            document.querySelector('.active').submit();
             if (JSON.parse(status) == "verified") {
               Swal.fire({
                 icon: 'success',
@@ -74,7 +75,6 @@
 }
 .form {
   background-color: #607D8B;
-
   width: 450px;
   margin: auto;
   padding: 40px;
@@ -127,12 +127,10 @@
     </style>
   </head>
   <body>
-    <!-- <h1><%= email%></h1> -->
     <div class="formwarp">
   <div class="login-register">
     <div class="login form">
-      <!--   login form   -->
-      <form id="login" class="active" action="">
+      <form id="login" class="active" method="POST">
         <div class="form-header">
           <img src="https://assets.codepen.io/1584356/codepen.png" alt="logo">
         </div>
@@ -148,7 +146,7 @@
         <label for="password">Confirm Password</label>
         <input type="password" name="confirmPassword" id="confirm-password" placeholder="Confirm Password" />
         </div>
-        <button type="button" onclick="handleClick(event)">Login</button>
+        <input type="submit" onclick="handleClick(event)"></input>
       </form>
     </div>
     </div>

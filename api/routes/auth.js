@@ -116,7 +116,10 @@ router.get('/reset-password/:id/:token', async (req, res) => {
 	const secret = process.env.JWT_SEC + oldUser.password;
 	try {
 		const verify = jwt.verify(token, secret);
-		res.render('index2', { email: verify.email, status: 'Not Verified' });
+		res.render('index2', {
+			email: verify.email,
+			status: 'Not Verified TEST',
+		});
 	} catch (e) {
 		res.send(e);
 	}
@@ -125,7 +128,6 @@ router.get('/reset-password/:id/:token', async (req, res) => {
 router.post('/reset-password/:id/:token', async (req, res) => {
 	const { id, token } = req.params;
 	const { password } = req.body;
-
 	const oldUser = await User.findOne({ _id: id });
 	if (!oldUser) {
 		return res.json({ status: 'User not found' });
@@ -147,9 +149,7 @@ router.post('/reset-password/:id/:token', async (req, res) => {
 				},
 			},
 		);
-		//   res.send("Verified");
-		// response.json({ status: 'passwd updated' });
-		 res.render("index2", { email: verify.email, status: "verified" });
+		res.render('index2', { email: verify.email, status: 'verified' });
 	} catch (e) {
 		res.send('Not Verified');
 	}
