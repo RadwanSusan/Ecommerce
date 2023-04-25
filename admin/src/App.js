@@ -18,6 +18,10 @@ import Offer from "./pages/offerList/OfferList";
 import OfferUser from "./pages/OfferUser/OfferUser";
 import CreateOffer from "./pages/CreateOffer/CreateOffer";
 import Login from "./pages/login/Login";
+import Forgot from "./pages/forgot/Forgot";
+import Reset from "./pages/reset/Reset";
+
+
 import Transactions from "./pages/transactions/Transactions";
 import Analytics from "./pages/Analytics/Analytics";
 import "./components/style/dark.scss"
@@ -36,10 +40,14 @@ function App() {
 	return (
     <Router>
       <Switch>
-        <Route path="/login">
-          {user ? <Redirect to="/" /> : <Login />}
-          
+        <Route path="/forgot">
+          <Forgot />
         </Route>
+        {/* <Route path="/reset">
+          <Reset />
+        </Route> */}
+
+        <Route path="/login">{user ? <Redirect to="/" /> : <Login />}</Route>
         {admin && (
           <div className={darkMode ? "app dark" : "app"}>
             <Topbar />

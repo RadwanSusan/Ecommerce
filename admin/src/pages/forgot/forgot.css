@@ -11,9 +11,9 @@ body {
     padding: 15px;
     margin: 0 auto;
     display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap:10px;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
 .form-signin .form-control {
@@ -61,7 +61,8 @@ body {
 .btn-saffron {
     color: #FFFFFF;
     background-color: #3a242494;
-        border-color: #ffffff;
+    ;
+    border-color: #ffffff;
     width: 200px;
     padding: 10px;
 }
@@ -69,14 +70,14 @@ body {
 .btn-saffron.focus,
 .btn-saffron:focus {
     color: #FFFFFF;
-        background-color: #424242;
-        border-color: #b2240d;
+    background-color: #424242;
+    border-color: #b2240d;
 }
 
 .btn-saffron:hover {
     color: #000000;
-        background-color: #fff9f8;
-        border-color: #ffffff;
+    background-color: #fff9f8;
+    border-color: #ffffff;
 }
 
 .btn-saffron.active,
@@ -97,8 +98,8 @@ body {
 .open>.dropdown-toggle.btn-saffron:focus,
 .open>.dropdown-toggle.btn-saffron:hover {
     color: #FFFFFF;
-        background-color: #424242;
-        border-color: #b2240d;
+    background-color: #424242;
+    border-color: #b2240d;
 }
 
 .btn-saffron.active,
@@ -125,14 +126,14 @@ fieldset[disabled] .btn-saffron.focus,
 fieldset[disabled] .btn-saffron:active,
 fieldset[disabled] .btn-saffron:focus,
 fieldset[disabled] .btn-saffron:hover {
-color: #FFFFFF;
+    color: #FFFFFF;
     background-color: #424242;
     border-color: #b2240d;
 }
 
 .btn-saffron .badge {
-   color: #FFFFFF;
-        background-color: #424242;
+    color: #FFFFFF;
+    background-color: #424242;
 }
 
 .ui-radio input[type=radio] {}
@@ -266,17 +267,35 @@ color: #FFFFFF;
 .no-padding {
     padding: 0px;
 }
+
 .container501 {
     display: flex;
     justify-content: center;
 }
+
 /* #forgot {
     display: none;
 } */
+
 .tab-pane {
     width: 300px;
 }
+
 .forgot {
     text-decoration: none;
     color: #222222;
+}
+.text-center {
+    text-align: center;
+}
+.text-center a {
+    text-decoration: none;
+    color: #3a242494 ;
+}
+.submit {
+    padding: 10px;
+    color: #FFFFFF;
+        background-color: #3a242494;
+        cursor: pointer;
+        box-shadow: 1px 1px #fffefe;
 }
