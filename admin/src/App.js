@@ -19,7 +19,7 @@ import OfferUser from "./pages/OfferUser/OfferUser";
 import CreateOffer from "./pages/CreateOffer/CreateOffer";
 import Login from "./pages/login/Login";
 import Forgot from "./pages/forgot/Forgot";
-import Reset from "../../api/reset/Reset";
+import Reset from "./pages/reset/Reset";
 
 import Transactions from "./pages/transactions/Transactions";
 import Analytics from "./pages/Analytics/Analytics";

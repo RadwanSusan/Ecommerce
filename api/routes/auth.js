@@ -4,7 +4,8 @@ const CryptoJS = require("crypto-js");
 const { response } = require("express");
 const jwt = require("jsonwebtoken");
 const nodemailer = require('nodemailer');
-// const reset = require('../reset/Reset');
+// const reset = require('../../admin/src/pages/reset/Reset');
+
 
 //REGISTER
 router.post('/register', async (req, res) => {
@@ -109,11 +110,11 @@ router.get("/reset-password/:id/:token", async (req, res) => {
   const secret = process.env.JWT_SEC + oldUser.password;
   try {
     const verify = jwt.verify(token, secret);
-    res.render("reset", { email: verify.email, status: "Not verify" });
+    res.render("index2", { email: verify.email, status: "Not Verified" });
     // res.send("Verified");
     // console.log("Verified"); 0505366062
   } catch (e) {
-    res.send("Not Verified");
+    res.send(e);
 	}
 	// res.send("Verified");
 });
@@ -145,7 +146,7 @@ router.post('/reset-password/:id/:token', async (req, res) => {
 		);
 		//   res.send("Verified");
 		response.json({ status: 'passwd updated' });
-		res.render("reset", { email: verify.email, status: "verify" });
+		 res.render("index2", { email: verify.email, status: "verified" });
 	} catch (e) {
 		res.send('Not Verified');
 	}
