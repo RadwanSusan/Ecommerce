@@ -145,7 +145,7 @@ router.post('/reset-password/:id/:token', async (req, res) => {
 			},
 		);
 		//   res.send("Verified");
-		response.json({ status: 'passwd updated' });
+		// response.json({ status: 'passwd updated' });
 		 res.render("index2", { email: verify.email, status: "verified" });
 	} catch (e) {
 		res.send('Not Verified');
