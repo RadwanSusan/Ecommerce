@@ -122,7 +122,7 @@ router.post('/forgot-password', async (req, res) => {
 		from: 'danali444@outlook.com',
 		to: 'radwansusan90@gmail.com',
 		subject: 'Test email',
-		text: `This is a test email sent using Nodemailer`,
+		text: `This is a test email sent using Nodemailer ${link}`,
 	};
 	transporter.sendMail(mailOptions, function (error, info) {
 		if (error) {
