@@ -19,12 +19,11 @@ import OfferUser from "./pages/OfferUser/OfferUser";
 import CreateOffer from "./pages/CreateOffer/CreateOffer";
 import Login from "./pages/login/Login";
 import Forgot from "./pages/forgot/Forgot";
-import Reset from "./pages/reset/Reset";
-
+import Reset from "../../api/reset/Reset";
 
 import Transactions from "./pages/transactions/Transactions";
 import Analytics from "./pages/Analytics/Analytics";
-import "./components/style/dark.scss"
+import "./components/style/dark.scss";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -32,12 +31,12 @@ import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 
 function App() {
-	const user = useSelector((state) => state.user.currentUser);
+  const user = useSelector((state) => state.user.currentUser);
 
-   const { darkMode } = useContext(DarkModeContext);
+  const { darkMode } = useContext(DarkModeContext);
 
-	const admin = true;
-	return (
+  const admin = true;
+  return (
     <Router>
       <Switch>
         <Route path="/forgot">

@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { publicRequest } from "../.././requestMethods";
-
+// import { useDispatch, useSelector } from "react-redux";
+// import { publicRequest } from "../../admin/src/requestMethods";
 
 // import { login } from "../../redux/apiCalls";
 import swal from "sweetalert";
@@ -13,7 +12,7 @@ const Reset = () => {
   // const [password, setPassword] = useState("");
   // let { isFetching, error } = useSelector((state) => state.user);
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   // const handleClick = (e) => {
   // 	e.preventDefault();

@@ -4,6 +4,7 @@ const CryptoJS = require("crypto-js");
 const { response } = require("express");
 const jwt = require("jsonwebtoken");
 const nodemailer = require('nodemailer');
+// const reset = require('../reset/Reset');
 
 //REGISTER
 router.post('/register', async (req, res) => {
@@ -70,42 +71,7 @@ router.post('/forgot-password', async (req, res) => {
 	const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
 		expiresIn: '3d',
 	});
-	const link = `http://localhost:4000/reset-password/${oldUser._id}/${token}`;
-	// 	let testAccount = await nodemailer.createTestAccount();
-	// 	let transporter = nodemailer.createTransport({
-	// 		service: 'outlook',
-	// 		auth: {
-	// 			// user: 'danali444@outlook.com',
-	// 			// pass: 'Outbox@007',
-	// 			user: testAccount.user, // generated ethereal user
-	// 			pass: testAccount.pass, // generated ethereal password
-	// 		},
-	// 	});
-
-	// 	const mailOptions = {
-	// 		from: 'danali444@outlook.com',
-	// 		to: 'radwansusan90@gmail.com',
-	// 		subject: 'password Reset',
-	// 		text: link,
-	// 		html: '<b>Hello world?</b>',
-	// 	};
-
-	// 	transporter.sendMail(mailOptions, function (error, info) {
-	// 		if (error) {
-	// 			console.log(error);
-	// 		} else {
-	// 			console.log('Email sent: ' + info.response);
-	// 		}
-	// 	});
-
-	// 	// console.log('Message sent: %s', info.messageId);
-
-	// 	// console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-	// 	console.log(link);
-	// } catch (err) {
-	// 	console.log(err);
-	// }
-
+	const link = `http://localhost:4000/api/auth/reset-password/${oldUser._id}/${token}`;
 	const transporter = nodemailer.createTransport({
 		host: 'smtp.office365.com',
 		port: 587,
@@ -142,9 +108,9 @@ router.get("/reset-password/:id/:token", async (req, res) => {
   }
   const secret = process.env.JWT_SEC + oldUser.password;
   try {
-    // const verify = jwt.verify(token, secret);
-    // res.render("/reset", { email: verify.email, status: "Not verify" });
-    res.send("Verified");
+    const verify = jwt.verify(token, secret);
+    res.render("reset", { email: verify.email, status: "Not verify" });
+    // res.send("Verified");
     // console.log("Verified"); 0505366062
   } catch (e) {
     res.send("Not Verified");
@@ -179,7 +145,7 @@ router.post('/reset-password/:id/:token', async (req, res) => {
 		);
 		//   res.send("Verified");
 		response.json({ status: 'passwd updated' });
-		res.render('/reset', { email: verify.email, status: 'verify' });
+		res.render("reset", { email: verify.email, status: "verify" });
 	} catch (e) {
 		res.send('Not Verified');
 	}
