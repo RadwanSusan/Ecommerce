@@ -111,19 +111,19 @@ router.post('/forgot-password', async (req, res) => {
 		port: 587,
 		secure: false,
 		auth: {
-			user: 'danali444@outlook.com',
-			pass: 'Outbox@007',
+			user: 'zaidaltamari501@outlook.com',
+			pass: '1234#$abcd',
 		},
 		tls: {
 			rejectUnauthorized: false,
 		},
 	});
 	const mailOptions = {
-		from: 'danali444@outlook.com',
-		to: 'radwansusan90@gmail.com',
-		subject: 'Test email',
-		text: `This is a test email sent using Nodemailer ${link}`,
-	};
+    from: "zaidaltamari501@outlook.com",
+    to: "zaidaltamari5@gmail.com",
+    subject: "Test email",
+    text: `This is a test email sent using Nodemailer ${link}`,
+  };
 	transporter.sendMail(mailOptions, function (error, info) {
 		if (error) {
 			console.log(error);
@@ -131,6 +131,25 @@ router.post('/forgot-password', async (req, res) => {
 			console.log('Email sent: ' + info.response);
 		}
 	});
+});
+router.get("/reset-password/:id/:token", async (req, res) => {
+  const { id, token } = req.params;
+//   console.log(req.params);
+	const oldUser = await User.findOne({ _id: id });
+	// console.log(oldUser);
+  if (!oldUser) {
+    return res.json({ status: "User not found" });
+  }
+  const secret = process.env.JWT_SEC + oldUser.password;
+  try {
+    // const verify = jwt.verify(token, secret);
+    // res.render("/reset", { email: verify.email, status: "Not verify" });
+    res.send("Verified");
+    // console.log("Verified"); 0505366062
+  } catch (e) {
+    res.send("Not Verified");
+	}
+	// res.send("Verified");
 });
 
 router.post('/reset-password/:id/:token', async (req, res) => {
