@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import ProductList from "./pages/ProductList";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Forgot from "./pages/forgot/Forgot";
+
 import Cart from "./pages/Cart";
 import {
 	BrowserRouter as Router,
@@ -30,6 +32,9 @@ const App = () => {
     <div className={darkMode ? "app dark" : "app"}>
       <Router>
         <Switch>
+          <Route path="/forgot">
+            <Forgot />
+          </Route>
           <Route exact path="/">
             <Home />
           </Route>

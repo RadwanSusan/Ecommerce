@@ -216,7 +216,7 @@ fieldset[disabled] .btn-saffron:hover {
 .account-wall {
     margin-top: 80px;
     padding: 40px 0px 20px 0px;
-    background-color: #ffffff;
+    background-color:#607D8B;
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16);
     border-radius: 10px;
 }

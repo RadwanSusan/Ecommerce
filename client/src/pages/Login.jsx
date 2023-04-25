@@ -114,7 +114,7 @@ const Login = () => {
 					>
 						LOGIN
 					</Button>
-					<Link href='/forgot-password'>DO NOT YOU REMEMBER THE PASSWORD?</Link>
+					<Link href='/forgot'>DO NOT YOU REMEMBER THE PASSWORD?</Link>
 					<Link href='/register'>CREATE A NEW ACCOUNT</Link>
 				</Form>
 			</Wrapper>
