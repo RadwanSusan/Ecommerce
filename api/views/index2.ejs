@@ -6,13 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script>
+        // document.querySelector("#password").style.padding = "10px";
+      // let pass2 =  document.querySelector("#confirm-password").value
+
+      // if (pass === pass2) {
+        // console.log(password.value);
       const status = '<%- JSON.stringify(status) %>';
       if (JSON.parse(status) == "verified") {
         if (confirm("Do u want to login?")) {
           window.location.href = "http://localhost:3000/login";
         }
       }
+    // }
+    // else {
+    //   alert("Please enter same");
+    // }
+    // console.log(password.value);
+      
     </script>
+    <style>
+      form {
+        padding: 10px;
+      }
+      input {
+        padding: 10px;
+        margin: 5px;
+      }
+    </style>
   </head>
   <body>
     <h1><%= email%></h1>
@@ -21,12 +41,15 @@
         type="password"
         name="password"
         id="password"
+        required="true"
+        
         placeholder="password"
       /><br />
       <input
         type="password"
         name="confirm-password"
         id="confirm-password"
+        required="true"
         placeholder="confirm-password"
       /><br />
       <input type="submit" value="submit" />

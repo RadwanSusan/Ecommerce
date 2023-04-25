@@ -12,6 +12,7 @@ const cartRoute = require("./routes/cart");
 const orderRoute = require("./routes/order");
 const stripeRoute = require("./routes/stripe");
 const cors = require("cors");
+// const path = require("path");
 
 mongoose
 	.connect(process.env.MONGO_URL)
@@ -24,6 +25,7 @@ app.use(cors());
 app.use(express.json());
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use("/api/auth", authRoute);

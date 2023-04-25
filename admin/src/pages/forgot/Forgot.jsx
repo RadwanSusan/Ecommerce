@@ -42,7 +42,21 @@ const Forgot = () => {
   //   }
   // };
   const handleClick = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
+    if (email.length<1) {
+      return swal("Please fill email");
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return swal(
+        "Please enter a valid email address!"
+      );
+    }
+    
+    
+      swal("We have sent you a link to your email address...");
+    
     const res = await publicRequest.post("/auth/forgot-password", {
       email,
     });
