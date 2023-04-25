@@ -63,60 +63,63 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/forgot-password', async (req, res) => {
-	const { email } = req.body;
-	const oldUser = await User.findOne({ email: email });
+	try {
+		const { email } = req.body;
+		const oldUser = await User.findOne({ email: email });
+		if (!oldUser) {
+			return res.json({ status: 'User Not Exists' });
+		}
+		const secret = process.env.JWT_SEC + oldUser.password;
+		const token = jwt.sign(
+			{ email: oldUser.email, id: oldUser._id },
+			secret,
+			{
+				expiresIn: '3d',
+			},
+		);
+		const link = `http://localhost:4000/api/auth/reset-password/${oldUser._id}/${token}`;
+		const transporter = nodemailer.createTransport({
+			host: 'smtp.office365.com',
+			port: 587,
+			secure: false,
+			auth: {
+				user: 'danali444@outlook.com',
+				pass: 'Outbox@007',
+			},
+			tls: {
+				rejectUnauthorized: false,
+			},
+		});
+		const mailOptions = {
+			from: 'danali444@outlook.com',
+			to: 'radwansusan90@gmail.com',
+			subject: 'Test email',
+			text: `This is a test email sent using Nodemailer ${link}`,
+		};
+		await transporter.sendMail(mailOptions);
+		console.log('Email sent');
+		return res.json({ status: 'Email Sent' });
+	} catch (error) {
+		console.log(error);
+		return res
+			.status(500)
+			.json({ status: 'There was a problem sending the email!' });
+	}
+});
+
+router.get('/reset-password/:id/:token', async (req, res) => {
+	const { id, token } = req.params;
+	const oldUser = await User.findOne({ _id: id });
 	if (!oldUser) {
-		return res.json({ status: 'User Not Exists' });
+		return res.json({ status: 'User not found' });
 	}
 	const secret = process.env.JWT_SEC + oldUser.password;
-	const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
-		expiresIn: '3d',
-	});
-	const link = `http://localhost:4000/api/auth/reset-password/${oldUser._id}/${token}`;
-	const transporter = nodemailer.createTransport({
-		host: 'smtp.office365.com',
-		port: 587,
-		secure: false,
-		auth: {
-			user: 'zaidaltamari501@outlook.com',
-			pass: '1234#$abcd',
-		},
-		tls: {
-			rejectUnauthorized: false,
-		},
-	});
-	const mailOptions = {
-    from: "zaidaltamari501@outlook.com",
-    to: "zaidaltamari5@gmail.com",
-    subject: "Test email",
-    text: `This is a test email sent using Nodemailer ${link}`,
-  };
-	transporter.sendMail(mailOptions, function (error, info) {
-		if (error) {
-			console.log(error);
-		} else {
-			console.log('Email sent: ' + info.response);
-		}
-	});
-});
-router.get("/reset-password/:id/:token", async (req, res) => {
-  const { id, token } = req.params;
-//   console.log(req.params);
-	const oldUser = await User.findOne({ _id: id });
-	// console.log(oldUser);
-  if (!oldUser) {
-    return res.json({ status: "User not found" });
-  }
-  const secret = process.env.JWT_SEC + oldUser.password;
-  try {
-    const verify = jwt.verify(token, secret);
-    res.render("index2", { email: verify.email, status: "Not Verified" });
-    // res.send("Verified");
-    // console.log("Verified"); 0505366062
-  } catch (e) {
-    res.send(e);
+	try {
+		const verify = jwt.verify(token, secret);
+		res.render('index2', { email: verify.email, status: 'Not Verified' });
+	} catch (e) {
+		res.send(e);
 	}
-	// res.send("Verified");
 });
 
 router.post('/reset-password/:id/:token', async (req, res) => {
