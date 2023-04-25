@@ -25,18 +25,79 @@
       
     </script>
     <style>
-      form {
-        padding: 10px;
-      }
-      input {
-        padding: 10px;
-        margin: 5px;
-      }
+     :root {
+  --white: #fff;
+  --black: #000;
+  --blue: rgb(39, 56, 133, 0.7);
+  --deepblue: #001057;
+}
+.formwarp {
+  height: 100vh;
+  overflow-x: auto;
+  /* background-image: url(https://rb.gy/prqm6i); */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.login-register {
+  height: 100%;
+  display: flex;
+}
+.form {
+  background-color: #607D8B;
+  
+  width: 450px;
+  margin: auto;
+  padding: 40px;
+  border-radius: 10px;
+  /* box-shadow: 0 0 15px 2px var(--deepblue); */
+}
+.form .form-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.form .form-header img {
+  width: 80px;
+}
+.form .form-group {
+  margin-bottom: 15px;
+}
+.form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  color: var(--white);
+}
+.form input {
+  width: 100%;
+  padding: 10px;
+  border: 0;
+  border-radius: 3px;
+  color: var(--black);
+}
+.form input:focus {
+  outline: none;
+  box-shadow: 0 0 10px var(--white);
+}
+.form-bottom {
+  margin-top: 20px;
+}
+.form-bottom p {
+  margin: 5px 0;
+  color: var(--black);
+}
+.form-bottom a {
+  color: var(--white);
+  font-weight: bold;
+  text-decoration: none;
+}
+
     </style>
   </head>
   <body>
-    <h1><%= email%></h1>
-    <form action="" method="post">
+    <!-- <h1><%= email%></h1> -->
+    <!-- <form action="" method="post">
       <input
         type="password"
         name="password"
@@ -53,6 +114,41 @@
         placeholder="confirm-password"
       /><br />
       <input type="submit" value="submit" />
-    </form>
+    </form> -->
+    <div class="formwarp">
+  <div class="login-register">
+    <div class="login form">
+      
+      <!--   login form   -->
+      <form id="login" class="active" action="">
+        <div class="form-header">
+          <img src="https://assets.codepen.io/1584356/codepen.png" alt="logo">
+        </div>
+        <div class="form-group">
+          <label for="username">Password</label>
+          <input type="password"
+        name="password"
+        id="password"
+        required="true"
+        placeholder="Password">
+        </div>
+        <div class="form-group">
+          <label for="password">confirm password</label>
+          <input type="password"
+        name="confirm-password"
+        id="confirm-password"
+        required="true"
+        placeholder="confirm-password">
+        </div>
+
+      </form>
+      
+      
+
+    </div>
+    
+    
+  </div>
+</div>
   </body>
 </html>
