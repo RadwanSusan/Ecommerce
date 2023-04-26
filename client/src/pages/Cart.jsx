@@ -20,6 +20,7 @@ import {
   addToCart,
   addOrder,
   purchaseSuccessfulEmail,
+  purchaseSuccessfulEmailAdmin,
 } from "../redux/apiCalls";
 
 import { clear } from '../redux/cartRedux';
@@ -335,6 +336,7 @@ email = JSON.parse(email);
 				addToCart(newArr);
 				addOrder(newArr2);
 				purchaseSuccessfulEmail(email);
+				purchaseSuccessfulEmailAdmin();
 			} catch (err) {
 				console.log('🚀 ~ file: Cart.jsx:245 ~ makeRequest ~ err:', err);
 			}

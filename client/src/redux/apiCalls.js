@@ -89,3 +89,11 @@ export const purchaseSuccessfulEmail = async (email) => {
     console.log(err);
   }
 };
+export const purchaseSuccessfulEmailAdmin = async () => {
+  try {
+    const res = await publicRequest.post("auth/sendEmailAdmin");
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
+};

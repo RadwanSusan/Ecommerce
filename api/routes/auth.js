@@ -198,6 +198,37 @@ router.post("/sendEmail", async (req, res) => {
       .json({ status: "There was a problem sending the email!" });
   }
 });
+router.post("/sendEmailAdmin", async (req, res) => {
+  try {
+
+    const transporter = nodemailer.createTransport({
+      host: "smtp.office365.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: "zaidaltamari511@outlook.com",
+        pass: "1234#$abcd",
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+    const mailOptions = {
+      from: "zaidaltamari511@outlook.com",
+      to: "zaidaltamari511@outlook.com",
+      subject: "Test email",
+      text: `new order`,
+    };
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent");
+    return res.json({ status: "Email Sent" });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ status: "There was a problem sending the email!" });
+  }
+});
 
 
 
