@@ -80,3 +80,12 @@ export const userWishListArrayGet = async (id) => {
 		console.log(err);
 	}
 };
+
+export const purchaseSuccessfulEmail = async (email) => {
+  try {
+    const res = await publicRequest.post("auth/sendEmail", email);
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
+};

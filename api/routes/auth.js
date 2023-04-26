@@ -164,4 +164,41 @@ router.get("/checkEmail/:email", async (req, res) => {
 	res.status(200).json("Email available!");
 });
 
+router.post("/sendEmail", async (req, res) => {
+  try {
+    const { email } = req.body;
+    
+    
+    
+    const transporter = nodemailer.createTransport({
+      host: "smtp.office365.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: "zaidaltamari511@outlook.com",
+        pass: "1234#$abcd",
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+    const mailOptions = {
+      from: "zaidaltamari511@outlook.com",
+      to: "zaidaltamari5@gmail.com",
+      subject: "Test email",
+      text: `buy product`,
+    };
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent");
+    return res.json({ status: "Email Sent" });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ status: "There was a problem sending the email!" });
+  }
+});
+
+
+
 module.exports = router;

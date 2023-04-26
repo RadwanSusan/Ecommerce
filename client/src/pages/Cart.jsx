@@ -15,7 +15,13 @@ import { increase, decrease, calc, reset } from '../redux/cartRedux';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import { useDispatch } from 'react-redux';
-import { updateProductOrOffer, addToCart, addOrder } from '../redux/apiCalls';
+import {
+  updateProductOrOffer,
+  addToCart,
+  addOrder,
+  purchaseSuccessfulEmail,
+} from "../redux/apiCalls";
+
 import { clear } from '../redux/cartRedux';
 
 const KEY = process.env.REACT_APP_STRIPE;
@@ -214,6 +220,20 @@ const Cart = () => {
 	userId = userId.user;
 	userId = JSON.parse(userId);
 	userId = userId.currentUser._id;
+
+
+
+let email = localStorage.getItem("persist:root");
+	email = JSON.parse(email);
+	
+	email = email.user;
+	
+	
+email = JSON.parse(email);
+	email = email.currentUser.email;
+	// console.log(email);
+
+
 	const handleClick2 = (id) => {
 		dispatch(removeProduct(id));
 		// dispatch(clear());
@@ -314,6 +334,7 @@ const Cart = () => {
 				};
 				addToCart(newArr);
 				addOrder(newArr2);
+				purchaseSuccessfulEmail(email);
 			} catch (err) {
 				console.log('🚀 ~ file: Cart.jsx:245 ~ makeRequest ~ err:', err);
 			}
