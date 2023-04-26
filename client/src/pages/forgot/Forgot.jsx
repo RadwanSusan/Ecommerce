@@ -66,7 +66,7 @@ const Forgot = () => {
   return (
     <section className="container501">
       <div className="row">
-        <div className="col-md-4 col-md-offset-4 col-sm-66 col-sm-offset-3">
+        <div className="col-md-44 col-md-offset-4 col-sm-66 col-sm-offset-3">
           <div className="account-wall">
             <div id="my-tab-content" className="tab-content">
               <div className="tab-pane" id="forgot">
