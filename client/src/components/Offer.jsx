@@ -620,16 +620,16 @@ const Offer = () => {
                         {Object.keys(offer).map(function (data) {
                           let timeStart =
                             offer[data]['timeStart']?.split('-');
+                              if (!timeStart) {
+									return;
+								}
                           timeStart = timeStart?.map(Number);
-
-                          const currentDate = new Date();
-
+							const currentDate = new Date();
                           const fullDate = [
-                            currentDate.getFullYear(),
-                            currentDate.getMonth() + 1,
-                            currentDate.getDate(),
-                          ];
-
+								currentDate.getFullYear(),
+								currentDate.getMonth() + 1,
+								currentDate.getDate(),
+							];
 							if (fullDate[0] < timeStart[0]) {
 								return;
 							} else if (fullDate[1] < timeStart[1]) {
@@ -638,7 +638,7 @@ const Offer = () => {
 								return;
 							}
 							else {
-							
+
 								return (
 									<div
 										className='owl-item active style-Ke3kW'
