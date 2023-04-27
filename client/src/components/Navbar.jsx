@@ -106,12 +106,14 @@ const Navbar = () => {
 								href=''
 								title='Venus - Powerful Responsive Magento 2 Theme'
 							>
-								<img
-									src={LogoImg}
-									alt='ZAID'
-									width='157'
-									height='35'
-								/>
+								<Link to='/'>
+									<img
+										src={LogoImg}
+										alt='ZAID'
+										width='157'
+										height='35'
+									/>
+								</Link>
 							</a>
 						</h1>
 					</div>
