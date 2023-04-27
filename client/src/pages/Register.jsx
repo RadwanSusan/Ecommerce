@@ -90,27 +90,22 @@ const Register = () => {
 					"Password must contain at least one lowercase letter, one uppercase letter, one number and one special character!",
 				);
 			}
-			const res = await publicRequest.post("/auth/register", {
+			const res = await publicRequest.post('/auth/register', {
 				username,
 				password,
 				confirmPassword,
 				email,
 			});
-			
         if (res.statusText === 'Created') {
-          swal('Account created successfully!');
-          setUsername('');
-          setPassword('');
-          setConfirmPassword('');
-          setEmail('');
-          const res = await publicRequest.post('/auth/login', {
-            username,
-            password,
-          });
-          setTimeout(() => {
-            window.location.href = '/login';
-          }, 1000);
-        }
+			swal('Account created successfully!');
+			setUsername('');
+			setPassword('');
+			setConfirmPassword('');
+			setEmail('');
+			setTimeout(() => {
+				window.location.href = '/login';
+			}, 1000);
+		}
 		} else if (password !== confirmPassword) {
 			swal("Please check for password!");
 			return;

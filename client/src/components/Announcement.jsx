@@ -82,7 +82,6 @@ const Announcement = () => {
 	const getToken = async () => {
 		try {
 			const token = await localStorage.getItem('persist:root');
-			console.log(JSON.parse(JSON.parse(token)?.user)?.username);
 			if (
 				(token !== null &&
 					token !== undefined &&
