@@ -1,6 +1,8 @@
 import React from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
 import { FaSearch } from 'react-icons/fa';
+import { BiLogIn } from 'react-icons/bi';
+
 import LogoImg from '../Media/Img/SvgLogo.svg';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -23,11 +25,7 @@ const Navbar = () => {
 		}
 		return acc;
 	}, []);
-	// const [value, setValue] = useState('')
 	const total = useSelector((state) => state.cart.total);
-	// const onChange = (event) => {
-	// 	setValue(event.target.value);
-	// }
 	const [queryName, setQueryName] = useState('');
 	const [dataAll, setDataAll] = useState([]);
 	const [catogName, setCatogName] = useState('');
@@ -64,13 +62,45 @@ const Navbar = () => {
 	const onSearch = (queryName) => {
 		console.log(queryName);
 	};
+	const [tokenState, setToken] = useState();
+	const [tokenLoaded, setTokenLoaded] = useState(false);
+	const getToken = async () => {
+		try {
+			const token = await localStorage.getItem('persist:root');
+			if (
+				(token !== null &&
+					token !== undefined &&
+					token !== '' &&
+					JSON.parse(JSON.parse(token)?.user)?.currentUser !==
+						undefined &&
+					JSON.parse(JSON.parse(token)?.user)?.currentUser !== null &&
+					JSON.parse(JSON.parse(token)?.user)?.username !==
+						undefined &&
+					JSON.parse(JSON.parse(token)?.user)?.username !== null &&
+					JSON.parse(JSON.parse(token)?.user)?.username !==
+						undefined) ||
+				JSON.parse(JSON.parse(token)?.user)?.username !== ''
+			) {
+				setToken(token);
+			}
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setTokenLoaded(true);
+		}
+	};
+	useEffect(() => {
+		getToken();
+	}, []);
 	return (
 		<div className='header-middle snipcss-LbbnX'>
 			<div className='container'>
 				<div className='middle-content'>
 					<div className='logo-container'>
 						<h1 className='logo-content'>
-							<strong>Venus - Powerful Responsive Magento 2 Theme</strong>
+							<strong>
+								Venus - Powerful Responsive Magento 2 Theme
+							</strong>
 							<a
 								className='logo'
 								href=''
@@ -102,10 +132,18 @@ const Navbar = () => {
 													className='cat searchbox-cat'
 													name='cat'
 												>
-													<option value=''>All Categories</option>
-													<option value='jeans'>- Jeans</option>
-													<option value='coat'>- Coat</option>
-													<option value='women'>- Women</option>
+													<option value=''>
+														All Categories
+													</option>
+													<option value='jeans'>
+														- Jeans
+													</option>
+													<option value='coat'>
+														- Coat
+													</option>
+													<option value='women'>
+														- Women
+													</option>
 												</select>
 												<input
 													id='searchbox'
@@ -121,7 +159,9 @@ const Navbar = () => {
 													autocomplete='off'
 													value={queryName}
 													onChange={(e) =>
-														setQueryName(e.target.value.toLowerCase())
+														setQueryName(
+															e.target.value.toLowerCase(),
+														)
 													}
 												/>
 												{<Table data={dataAll} />}
@@ -137,7 +177,9 @@ const Navbar = () => {
 												title='Search'
 												// className="btn-searchbox"
 												// disabled=""
-												onClick={() => onSearch(queryName)}
+												onClick={() =>
+													onSearch(queryName)
+												}
 											>
 												<FaSearch />
 												<span>Search</span>
@@ -154,27 +196,43 @@ const Navbar = () => {
 									data-block='minicart'
 									className='minicart-wrapper'
 								>
-									<Link
-										to='/cart'
-										className='action showcart'
-										href='#'
-									>
-										<FaShoppingCart />
-										<span className='text'>My Cart</span>
-										<span className='counter qty empty'>
-											<span className='counter-number'>{newQuantity}</span>
-											<span className='counter-label'></span>
-										</span>
-										<span className='price-minicart'>
-											<div className='subtotal'>
-												<div className='amount price-container'>
-													<span className='price-wrapper'>
-														<span className='price'>${total}</span>
-													</span>
+									{tokenState ? (
+										<Link
+											to='/cart'
+											className='action showcart'
+											href='#'
+										>
+											<FaShoppingCart />
+											<span className='text'>
+												My Cart
+											</span>
+											<span className='counter qty empty'>
+												<span className='counter-number'>
+													{newQuantity}
+												</span>
+												<span className='counter-label'></span>
+											</span>
+											<span className='price-minicart'>
+												<div className='subtotal'>
+													<div className='amount price-container'>
+														<span className='price-wrapper'>
+															<span className='price'>
+																${total}
+															</span>
+														</span>
+													</div>
 												</div>
-											</div>
-										</span>
-									</Link>
+											</span>
+										</Link>
+									) : (
+										<Link
+											to='/login'
+											className='action showcart'
+										>
+											<BiLogIn />
+											<span className='text'>Login</span>
+										</Link>
+									)}
 									<div
 										tabindex='-1'
 										className='ui-dialog ui-corner-all ui-widget ui-widget-content ui-front mage-dropdown-dialog style-PDTJ9'
@@ -184,7 +242,9 @@ const Navbar = () => {
 											<div id='minicart-content-wrapper'>
 												<div className='block-title'>
 													<strong>
-														<span className='text'>My Cart</span>
+														<span className='text'>
+															My Cart
+														</span>
 														<span
 															className='qty empty'
 															title='Items in Cart'
@@ -203,7 +263,8 @@ const Navbar = () => {
 													</button>
 													<strong className='subtitle empty'>
 														{' '}
-														You have no items in your shopping cart.{' '}
+														You have no items in
+														your shopping cart.{' '}
 													</strong>
 													<div
 														id='minicart-widgets'
