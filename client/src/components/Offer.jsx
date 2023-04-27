@@ -157,16 +157,26 @@ const Offer = () => {
     getOffer(getOffer);
   }, [categoriesOffer.cat]);
   let cartProducts = JSON.parse(localStorage.getItem('persist:root'));
-  cartProducts = cartProducts.cart;
-  cartProducts = JSON.parse(cartProducts);
-  const mergedCart = cartProducts.products.reduce((acc, curr) => {
-    const existingItem = acc.find((item) => item._id === curr._id);
-    if (existingItem) {
-      existingItem.quantity += curr.quantity;
-    } else {
-      acc.push({ ...curr });
-    }
-    return acc;
+  if (
+		cartProducts === null ||
+		cartProducts === undefined ||
+		cartProducts === '' ||
+		cartProducts === []
+  ) {
+		localStorage.setItem('persist:root', JSON.stringify({ cart: [] }));
+		cartProducts = JSON.parse(localStorage.getItem('persist:root'));
+		cartProducts = cartProducts.cart;
+  } else {
+		cartProducts = cartProducts.cart;
+  }
+  const mergedCart = cartProducts?.products?.reduce((acc, curr) => {
+		const existingItem = acc.find((item) => item._id === curr._id);
+		if (existingItem) {
+			existingItem.quantity += curr.quantity;
+		} else {
+			acc.push({ ...curr });
+		}
+		return acc;
   }, []);
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState('');
@@ -178,147 +188,153 @@ const Offer = () => {
   let [productGet, setProductGet] = useState({});
   let [offerGet, setOfferGet] = useState({});
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [productsRes, offersRes] = await Promise.all([
-          userRequest.get('/products'),
-          userRequest.get('/offer'),
-        ]);
-        setAllProducts(productsRes.data);
-        setProductGet(productsRes.data);
-        setAllOffers(offersRes.data);
-        setOfferGet(offersRes.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
+		const fetchData = async () => {
+			try {
+				const [productsRes, offersRes] = await Promise.all([
+					userRequest.get('/products'),
+					userRequest.get('/offer'),
+				]);
+				setAllProducts(productsRes.data);
+				setProductGet(productsRes.data);
+				setAllOffers(offersRes.data);
+				setOfferGet(offersRes.data);
+			} catch (err) {
+				console.log(err);
+			}
+		};
+		fetchData();
   }, []);
   const handleQuantityOffer = (type, id) => {
-    const item = [...productGet, ...offerGet].find((item) => item._id === id);
-    const productMerged = mergedCart.find((item) => item._id === id);
-    const maxQuantity = item.quantity - 1;
-    if (productMerged !== undefined) {
-      if (type === 'dec') {
-        if (quantity <= 1) {
-          swal('Info', 'The minimum quantity is 1', 'info');
-        } else {
-          setQuantity(quantity - 1);
-        }
-      } else {
-        if (productMerged.quantity > maxQuantity) {
-          swal(
-            'Info',
-            'You have exceeded the number of available products!, the quantity will be reset',
-            'info'
-          );
-        } else {
-          const newQuantity = productMerged.quantity + 1;
-          if (newQuantity > maxQuantity) {
-            swal(
-              'Info',
-              'You have exceeded the number of available products!',
-              'info'
-            );
-          } else {
-            setQuantity(newQuantity);
-          }
-        }
-      }
-    } else {
-      if (type === 'dec') {
-        if (quantity <= 1) {
-          swal('Info', 'The minimum quantity is 1', 'info');
-        } else {
-          setQuantity(quantity - 1);
-        }
-      } else {
-        if (quantity > maxQuantity) {
-          swal(
-            'Info',
-            'You have exceeded the number of available products!, the quantity will be reset',
-            'info'
-          );
-        } else {
-          setQuantity(quantity + 1);
-        }
-      }
-    }
+		const item = [...productGet, ...offerGet].find(
+			(item) => item._id === id,
+		);
+		const productMerged = mergedCart?.find((item) => item._id === id);
+		const maxQuantity = item.quantity - 1;
+		if (productMerged !== undefined) {
+			if (type === 'dec') {
+				if (quantity <= 1) {
+					swal('Info', 'The minimum quantity is 1', 'info');
+				} else {
+					setQuantity(quantity - 1);
+				}
+			} else {
+				if (productMerged.quantity > maxQuantity) {
+					swal(
+						'Info',
+						'You have exceeded the number of available products!, the quantity will be reset',
+						'info',
+					);
+				} else {
+					const newQuantity = productMerged.quantity + 1;
+					if (newQuantity > maxQuantity) {
+						swal(
+							'Info',
+							'You have exceeded the number of available products!',
+							'info',
+						);
+					} else {
+						setQuantity(newQuantity);
+					}
+				}
+			}
+		} else {
+			if (type === 'dec') {
+				if (quantity <= 1) {
+					swal('Info', 'The minimum quantity is 1', 'info');
+				} else {
+					setQuantity(quantity - 1);
+				}
+			} else {
+				if (quantity > maxQuantity) {
+					swal(
+						'Info',
+						'You have exceeded the number of available products!, the quantity will be reset',
+						'info',
+					);
+				} else {
+					setQuantity(quantity + 1);
+				}
+			}
+		}
   };
   const chekAvail = () => {
-    let newQuantity = mergedCart.map((item) => {
-      if (item._id === offer._id) {
-        return {
-          quantity: offer.quantity - item.quantity,
-        };
-      }
-    });
-    newQuantity = newQuantity.filter((item) => item !== undefined);
-    if (newQuantity.length > 0) {
-      if (newQuantity[0].quantity < 1) {
-        return false;
-      } else {
-        return true;
-      }
-    }
-    return true;
+		let newQuantity = mergedCart?.map((item) => {
+			if (item._id === offer._id) {
+				return {
+					quantity: offer.quantity - item.quantity,
+				};
+			}
+		});
+		newQuantity = newQuantity?.filter((item) => item !== undefined);
+		if (newQuantity?.length > 0) {
+			if (newQuantity[0]?.quantity < 1) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+		return true;
   };
   const addToCart = (productId) => {
-    const item = [...productGet, ...offerGet].find(
-      (item) => item._id === productId
-    );
-    const product = [...productGet, ...offerGet].find(
-      (item) => item._id === productId
-    );
-    if (offer.length > 0) {
-      const cartItem = mergedCart.find((item) => item._id === productId);
-      if (cartItem) {
-        if (cartItem.quantity === item.quantity) {
-          swal('Info', 'You already have the maximum amount!', 'info');
-          document.querySelector('.AddCart').disabled = true;
-          return;
-        }
-        if (cartItem.quantity + quantity <= item.quantity) {
-          dispatch(
-            addProduct({
-              ...cartItem,
-              quantity,
-              color,
-              size,
-            })
-          );
-          if (cartItem.quantity < 1) {
-            document.querySelector('.AddCart').disabled = true;
-            return;
-          }
-          cartItem.quantity -= quantity;
-          setQuantity(1);
-          swal('Success', 'Product added to cart!', 'success');
-          if (cartItem.quantity <= 1) {
-            document.querySelector('.AddCart').disabled = true;
-          }
-        } else {
-          swal('Info', 'Try with a different amount!', 'info');
-          return;
-        }
-      } else {
-        dispatch(
-          addProduct({
-            ...product,
-            quantity,
-            color,
-            size,
-          })
-        );
-        item.quantity -= quantity;
-        setQuantity(1);
-        swal('Success', 'Product added to cart!', 'success');
-        if (quantity === item.quantity) {
-          document.querySelector('.AddCart').disabled = true;
-          return;
-        }
-      }
-    }
+		const item = [...productGet, ...offerGet].find(
+			(item) => item._id === productId,
+		);
+		const product = [...productGet, ...offerGet].find(
+			(item) => item._id === productId,
+		);
+		if (offer.length > 0) {
+			const cartItem = mergedCart?.find((item) => item._id === productId);
+			if (cartItem) {
+				if (cartItem.quantity === item.quantity) {
+					swal(
+						'Info',
+						'You already have the maximum amount!',
+						'info',
+					);
+					document.querySelector('.AddCart').disabled = true;
+					return;
+				}
+				if (cartItem.quantity + quantity <= item.quantity) {
+					dispatch(
+						addProduct({
+							...cartItem,
+							quantity,
+							color,
+							size,
+						}),
+					);
+					if (cartItem.quantity < 1) {
+						document.querySelector('.AddCart').disabled = true;
+						return;
+					}
+					cartItem.quantity -= quantity;
+					setQuantity(1);
+					swal('Success', 'Product added to cart!', 'success');
+					if (cartItem.quantity <= 1) {
+						document.querySelector('.AddCart').disabled = true;
+					}
+				} else {
+					swal('Info', 'Try with a different amount!', 'info');
+					return;
+				}
+			} else {
+				dispatch(
+					addProduct({
+						...product,
+						quantity,
+						color,
+						size,
+					}),
+				);
+				item.quantity -= quantity;
+				setQuantity(1);
+				swal('Success', 'Product added to cart!', 'success');
+				if (quantity === item.quantity) {
+					document.querySelector('.AddCart').disabled = true;
+					return;
+				}
+			}
+		}
   };
   return (
 		<>
