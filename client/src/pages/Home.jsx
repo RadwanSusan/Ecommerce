@@ -30,7 +30,7 @@ const Home = () => {
 			<MobileSearch />
 			{/* <MobileMenu /> */}
 			<Slider />
-			<Offer />
+			{/* <Offer /> */}
 			<Welcom />
 			{/* <Categories /> */}
 			{/* <Catog  /> */}
