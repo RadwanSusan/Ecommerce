@@ -79,20 +79,20 @@ router.post('/forgot-password', async (req, res) => {
 		);
 		const link = `http://localhost:4000/api/auth/reset-password/${oldUser._id}/${token}`;
 		const transporter = nodemailer.createTransport({
-			host: 'smtp.office365.com',
-			port: 587,
-			secure: false,
-			auth: {
-				user: 'danali444@outlook.com',
-				pass: 'Outbox@007',
-			},
-			tls: {
-				rejectUnauthorized: false,
-			},
-		});
+      host: 'smtp.office365.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: 'zaidaltamari511@outlook.com',
+        pass: '1234#$abcd',
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
 		const mailOptions = {
-			from: 'danali444@outlook.com',
-			to: 'radwansusan90@gmail.com',
+			from: 'zaidaltamari511@outlook.com',
+			to: 'zaidaltamari5@gmail.com',
 			subject: 'Test email',
 			text: `This is a test email sent using Nodemailer ${link}`,
 		};
