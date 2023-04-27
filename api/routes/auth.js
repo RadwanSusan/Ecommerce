@@ -230,6 +230,15 @@ router.post("/sendEmailAdmin", async (req, res) => {
   }
 });
 
+// router.get('checkEmailDuplicate', async (req, res) => {
+//   const email = req.params.email;
+//   const user = await User.findOne({ email });
+//   if (user) {
+//     return res.status(200).json('Email already exists!');
+//   }
+//   res.status(200).json('Email available!');
+// });
+
 
 
 module.exports = router;

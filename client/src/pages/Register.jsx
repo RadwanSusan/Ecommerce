@@ -96,20 +96,21 @@ const Register = () => {
 				confirmPassword,
 				email,
 			});
-			if (res.statusText === "Created") {
-				swal("Account created successfully!");
-				setUsername("");
-				setPassword("");
-				setConfirmPassword("");
-				setEmail("");
-				const res = await publicRequest.post("/auth/login", {
-					username,
-					password,
-				});
-				setTimeout(() => {
-					window.location.href = "/";
-				}, 1000);
-			}
+			
+        if (res.statusText === 'Created') {
+          swal('Account created successfully!');
+          setUsername('');
+          setPassword('');
+          setConfirmPassword('');
+          setEmail('');
+          const res = await publicRequest.post('/auth/login', {
+            username,
+            password,
+          });
+          setTimeout(() => {
+            window.location.href = '/login';
+          }, 1000);
+        }
 		} else if (password !== confirmPassword) {
 			swal("Please check for password!");
 			return;
