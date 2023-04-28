@@ -62,12 +62,20 @@ export default function OfferUser() {
 		getStats();
 	}, [offerId, MONTHS]);
 	const [offerUpdateData, setOfferUpdateData] = useState({
-		title: offer.title,
-		desc: offer.desc,
-		price: offer.price,
-		inStock: offer.inStock,
-		img: offer.img,
-	});
+    title: offer.title,
+    desc: offer.desc,
+    price: offer.price,
+    inStock: offer.inStock,
+    img: offer.img,
+    categories: offer.categories,
+    size: offer.size,
+    color: offer.color,
+    height: offer.height,
+    width: offer.width,
+    quantity: offer.quantity,
+    weight: offer.weight,
+    length: offer.lengthN,
+  });
 	const handleUpdate = (e) => {
 		setOfferUpdateData((prev) => {
 			return { ...prev, [e.target.name]: e.target.value };
@@ -81,13 +89,19 @@ export default function OfferUser() {
 		}
 		if (file === null) {
 			if (
-				document.querySelector(".PTitle").value == "" &&
-				document.querySelector(".PDesc").value == "" &&
-				document.querySelector(".PPrice").value == ""
-			) {
-				swal("Info", "Please update atleast one feild!", "info");
-				return;
-			}
+        document.querySelector('.PTitle').value == '' &&
+        document.querySelector('.PWeight').value == '' &&
+        document.querySelector('.PHeight').value == '' &&
+        document.querySelector('.PWidth').value == '' &&
+        document.querySelector('.PQuantity').value == '' &&
+        document.querySelector('.PoriginalPrice').value == '' &&
+        document.querySelector('.PLength').value == '' &&
+        document.querySelector('.PDesc').value == '' &&
+        document.querySelector('.PPrice').value == ''
+      ) {
+        swal('Info', 'Please update atleast one feild!', 'info');
+        return;
+      }
 			if (
 				offerUpdateData.title === "" ||
 				offerUpdateData.desc === "" ||
@@ -98,12 +112,17 @@ export default function OfferUser() {
 				return;
 			}
 			fileName = offer.img;
-			const formData = new FormData();
-			formData.append("title", offerUpdateData.title);
-			formData.append("desc", offerUpdateData.desc);
-			formData.append("price", offerUpdateData.price);
-			formData.append("inStock", offerUpdateData.inStock);
-			formData.append("img", fileName);
+	// 		const formData = new FormData();
+	// 		formData.append("title", offerUpdateData.title);
+	// 		formData.append("desc", offerUpdateData.desc);
+	// 		formData.append("price", offerUpdateData.price);
+	// 		formData.append("inStock", offerUpdateData.inStock);
+	// 		formData.append('height', offerUpdateData.height);
+    //   formData.append('width', offerUpdateData.width);
+    //   formData.append('length', offerUpdateData.length);
+    //   formData.append('weight', offerUpdateData.weight);
+    //   formData.append('quantity', offerUpdateData.quantity);
+	// 		formData.append("img", fileName);
 			try {
 				const offer = { ...offerUpdateData };
 				updateOffer(offerId, offer, dispatch);
@@ -137,12 +156,7 @@ export default function OfferUser() {
 				},
 				() => {
 					getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-						const formData = new FormData();
-						formData.append("title", offerUpdateData.title);
-						formData.append("desc", offerUpdateData.desc);
-						formData.append("price", offerUpdateData.price);
-						formData.append("inStock", offerUpdateData.inStock);
-						formData.append("img", downloadURL);
+					
 						try {
 							const offer = { ...offerUpdateData, img: downloadURL };
 							updateOffer(offerId, offer, dispatch);
@@ -175,55 +189,55 @@ export default function OfferUser() {
 		getStats();
 	}, [offerId, MONTHS]);
 	return (
-    <div className="product">
-      <div className="divition1">
-        <div className="productTitleContainer">
-          <h1 className="productTitle">Offer</h1>
+    <div className='product'>
+      <div className='divition1'>
+        <div className='productTitleContainer'>
+          <h1 className='productTitle'>Offer</h1>
         </div>
-        <div className="productTop">
-          <div className="productTopLeft">
-            <Chart data={pStats} dataKey="Sales" title="Sales Performance" />
+        <div className='productTop'>
+          <div className='productTopLeft'>
+            <Chart data={pStats} dataKey='Sales' title='Sales Performance' />
           </div>
-          <div className="productTopRight">
-            <div className="productInfoTop">
-              <img src={offer.img} alt="" className="productInfoImg" />
-              <span className="productName">{offer.title}</span>
+          <div className='productTopRight'>
+            <div className='productInfoTop'>
+              <img src={offer.img} alt='' className='productInfoImg' />
+              <span className='productName'>{offer.title}</span>
             </div>
-            <div className="allDiviti">
-              <div className="productInfoBottom">
-                <div className="productInfoItem">
-                  <span className="productInfoKey">Offer ID:</span>
-                  <span className="productInfoValue"> {offer._id}</span>
+            <div className='allDiviti'>
+              <div className='productInfoBottom'>
+                <div className='productInfoItem'>
+                  <span className='productInfoKey'>Offer ID:</span>
+                  <span className='productInfoValue'> {offer._id}</span>
                 </div>
-                <div className="productInfoItem">
-                  <span className="productInfoKey">Offer name:</span>
-                  <span className="productInfoValue">{offer.title}</span>
+                <div className='productInfoItem'>
+                  <span className='productInfoKey'>Offer name:</span>
+                  <span className='productInfoValue'>{offer.title}</span>
                 </div>
-                <div className="productInfoItem">
-                  <span className="productInfoKey">Offer description:</span>
-                  <span className="productInfoValue">{offer.desc}</span>
+                <div className='productInfoItem'>
+                  <span className='productInfoKey'>Offer description:</span>
+                  <span className='productInfoValue'>{offer.desc}</span>
                 </div>
-                <div className="productInfoItem">
-                  <span className="productInfoKey">sales:</span>
-                  <span className="productInfoValue">0</span>
+                <div className='productInfoItem'>
+                  <span className='productInfoKey'>sales:</span>
+                  <span className='productInfoValue'>0</span>
                 </div>
-                <div className="productInfoItem">
-                  <span className="productInfoKey">in stock:</span>
-                  <span className="productInfoValue">
+                <div className='productInfoItem'>
+                  <span className='productInfoKey'>in stock:</span>
+                  <span className='productInfoValue'>
                     {offer.inStock.toString()}
                   </span>
                 </div>
-                <div className="productInfoItem">
-                  <span className="productInfoKey">Size:</span>
-                  <ul className="productInfoValue">
+                <div className='productInfoItem'>
+                  <span className='productInfoKey'>Size:</span>
+                  <ul className='productInfoValue'>
                     {offer.size.map((item, index) => (
                       <li key={index}>{item}</li>
                     ))}
                   </ul>
                 </div>
-                <div className="productInfoItem">
-                  <span className="productInfoKey">Color:</span>
-                  <ul className="productInfoValue">
+                <div className='productInfoItem'>
+                  <span className='productInfoKey'>Color:</span>
+                  <ul className='productInfoValue'>
                     {offer.color.map((item, index) => (
                       <li key={index}>{item}</li>
                     ))}
@@ -231,42 +245,44 @@ export default function OfferUser() {
                 </div>
               </div>
 
-              <div className="diviti">
-                <div className="productInfoItem">
-                  <span className="productInfoKey">OriginalPrice:</span>
-                  <span className="productInfoValue">
+              <div className='diviti'>
+                <div className='productInfoItem'>
+                  <span className='productInfoKey'>OriginalPrice:</span>
+                  <span className='productInfoValue'>
                     {offer.originalPrice}
                   </span>
                 </div>
-                <div className="productInfoItem">
-                  <span className="productInfoKey">Price:</span>
-                  <span className="productInfoValue">{offer.price}</span>
+                <div className='productInfoItem'>
+                  <span className='productInfoKey'>Price:</span>
+                  <span className='productInfoValue'>{offer.price}</span>
                 </div>
-                <div className="productInfoItem">
-                  <span className="productInfoKey">Quantity Available:</span>
-                  <span className="productInfoValue">{offer.quantity}</span>
+                <div className='productInfoItem'>
+                  <span className='productInfoKey'>Quantity Available:</span>
+                  <span className='productInfoValue'>{offer.quantity}</span>
                 </div>
-                <div className="productInfoItem">
-                  <span className="productInfoKey">
-                    Time left for the offer to expire:
-                  </span>
-                  <span className="productInfoValue">{offer.timeLeft}</span>
+                <div className='productInfoItem'>
+                  <span className='productInfoKey'>offer Start:</span>
+                  <span className='productInfoValue'>{offer.timeStart}</span>
                 </div>
-                <div className="productInfoItem">
-                  <span className="productInfoKey">Width:</span>
-                  <span className="productInfoValue">{offer.width}</span>
+                <div className='productInfoItem'>
+                  <span className='productInfoKey'>offer End:</span>
+                  <span className='productInfoValue'>{offer.timeEnd}</span>
                 </div>
-                <div className="productInfoItem">
-                  <span className="productInfoKey">Height:</span>
-                  <span className="productInfoValue">{offer.height}</span>
+                <div className='productInfoItem'>
+                  <span className='productInfoKey'>Width:</span>
+                  <span className='productInfoValue'>{offer.width}</span>
                 </div>
-                <div className="productInfoItem">
-                  <span className="productInfoKey">Length:</span>
-                  <span className="productInfoValue">{offer.length}</span>
+                <div className='productInfoItem'>
+                  <span className='productInfoKey'>Height:</span>
+                  <span className='productInfoValue'>{offer.height}</span>
                 </div>
-                <div className="productInfoItem">
-                  <span className="productInfoKey">Weight:</span>
-                  <span className="productInfoValue">{offer.weight}</span>
+                <div className='productInfoItem'>
+                  <span className='productInfoKey'>Length:</span>
+                  <span className='productInfoValue'>{offer.length}</span>
+                </div>
+                <div className='productInfoItem'>
+                  <span className='productInfoKey'>Weight:</span>
+                  <span className='productInfoValue'>{offer.weight}</span>
                 </div>
               </div>
             </div>
@@ -274,62 +290,111 @@ export default function OfferUser() {
         </div>
       </div>
 
-      <div className="productBottom">
-        <form className="productForm">
-          <div className="productFormLeft">
+      <div className='productBottom'>
+        <form className='productForm'>
+          <div className='productFormLeft'>
             <label>Product Name</label>
             <input
-              className="PTitle"
-              type="text"
-              name="title"
+              className='PTitle'
+              type='text'
+              name='title'
               placeholder={offer.title}
               onChange={handleUpdate}
             />
             <label>Product Description</label>
             <input
-              className="PDesc"
-              type="text"
-              name="desc"
+              className='PDesc'
+              type='text'
+              name='desc'
               placeholder={offer.desc}
+              onChange={handleUpdate}
+            />
+            <label>Original Price</label>
+            <input
+              className='PPrice'
+              type='number'
+              name='originalPrice'
+              placeholder={offer.originalPrice}
               onChange={handleUpdate}
             />
             <label>Price</label>
             <input
-              className="PPrice"
-              type="number"
-              name="price"
+              className='PoriginalPrice'
+              type='number'
+              name='price'
               placeholder={offer.price}
               onChange={handleUpdate}
             />
+
             <label>In Stock</label>
             <select
-              className="PStock"
-              name="inStock"
-              id="idStock"
+              className='PStock'
+              name='inStock'
+              id='idStock'
               onChange={handleUpdate}
             >
-              <option value="true">Yes</option>
-              <option value="false">No</option>
+              <option value='true'>Yes</option>
+              <option value='false'>No</option>
             </select>
+            <label>Width</label>
+            <input
+              className='PWidth'
+              type='text'
+              name='width'
+              placeholder={offer.width}
+              onChange={handleUpdate}
+            />
+            <label>Height</label>
+            <input
+              className='PHeight'
+              type='text'
+              name='height'
+              placeholder={offer.height}
+              onChange={handleUpdate}
+            />
+            <label>Weight</label>
+            <input
+              className='PWeight'
+              type='text'
+              name='weight'
+              placeholder={offer.weight}
+              onChange={handleUpdate}
+            />
+            <label>Length</label>
+            <input
+              className='PLength'
+              type='text'
+              name='length'
+              placeholder={offer.length}
+              onChange={handleUpdate}
+            />
+            <label>Quantity</label>
+            <input
+              className='PQuantity'
+              type='text'
+              name='quantity'
+              placeholder={offer.quantity}
+              onChange={handleUpdate}
+            />
           </div>
-          <div className="productFormRight">
-            <div className="productUpload">
+          <div className='productFormRight'>
+            <div className='productUpload'>
               <img
                 src={offer.img}
                 alt={offer.title}
-                className="productUploadImg"
+                className='productUploadImg'
               />
-              <label for="file">
+              <label for='file'>
                 <Publish />
               </label>
               <input
-                type="file"
-                id="file"
-                style={{ display: "none" }}
+                type='file'
+                id='file'
+                style={{ display: 'none' }}
                 onChange={(e) => setFile(e.target.files[0])}
               />
             </div>
-            <button className="productButton" onClick={handleSubmit}>
+            <button className='productButton' onClick={handleSubmit}>
               Update
             </button>
           </div>
