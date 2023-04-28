@@ -231,9 +231,7 @@ export default function CreateOffer() {
 						document.querySelector(".Weight").value = "";
 						document.querySelector(".expirationDate1").value = "";
 						document.querySelector(".expirationDate2").value = "";
-						document.querySelector(".offerPrice").value = "";
-
-
+						document.querySelector('.offerPrice').value = '';
 						for (const checkbox of document.querySelectorAll(".Size")) {
 							checkbox.checked = true;
 							checkbox.checked = false;
