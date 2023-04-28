@@ -75,7 +75,7 @@ export default function Product() {
         document.querySelector('.PHeight').value == '' &&
         document.querySelector('.PWidth').value == '' &&
         document.querySelector('.PQuantity').value == '' &&
-        document.querySelector('.PLenght').value == '' &&
+        document.querySelector('.PLength').value == '' &&
         document.querySelector('.PDesc').value == '' &&
         document.querySelector('.PPrice').value == ''
       ) {
