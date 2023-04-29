@@ -130,6 +130,7 @@ export default function Product() {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             
             try {
+              
               const product = { ...productUpdateData, img: downloadURL };
               updateProduct(productId, product, dispatch);
               swal('Product Updated', '', 'success');
@@ -262,7 +263,7 @@ export default function Product() {
             />
             <label>Price</label>
             <input
-              type='text'
+              type='number'
               name='price'
               className='PPrice'
               placeholder={product.price}
@@ -280,7 +281,7 @@ export default function Product() {
             </select>
             <label>Quantity</label>
             <input
-              type='text'
+              type='number'
               className='PQuantity'
               name='quantity'
               placeholder={product.quantity}
@@ -290,7 +291,7 @@ export default function Product() {
           <div className='productFormLeft'>
             <label>Width</label>
             <input
-              type='text'
+              type='number'
               className='PWidth'
               name='width'
               placeholder={product.width}
@@ -298,7 +299,7 @@ export default function Product() {
             />
             <label>Height</label>
             <input
-              type='text'
+              type='number'
               className='PHeight'
               name='height'
               placeholder={product.height}
@@ -306,7 +307,7 @@ export default function Product() {
             />
             <label>Lenght</label>
             <input
-              type='text'
+              type='number'
               className='PLength'
               name='length'
               placeholder={product.length}
@@ -314,12 +315,119 @@ export default function Product() {
             />
             <label>Weight</label>
             <input
-              type='text'
+              type='number'
               className='PWeight'
               name='weight'
               placeholder={product.weight}
               onChange={handleUpdate}
             />
+            <fieldset>
+              <legend>Size</legend>
+              <input
+                type='checkbox'
+                className='SizeS'
+                name='size'
+                value='S'
+                // onClick={addSize}
+              />
+              <label> S</label>
+              <br />
+              <input
+                type='checkbox'
+                className='SizeM'
+                name='size'
+                value='M'
+                // onClick={addSize}
+              />
+              <label> M</label>
+              <br />
+              <input
+                type='checkbox'
+                className='SizeL'
+                name='size'
+                value='L'
+                // onClick={addSize}
+              />
+              <label> L</label>
+              <br />
+              <input
+                type='checkbox'
+                className='SizeXL'
+                name='size'
+                value='XL'
+                // onClick={addSize}
+              />
+              <label> XL</label>
+              <br />
+              <input
+                type='checkbox'
+                className='SizeXXL'
+                name='size'
+                value='XXL'
+                // onClick={addSize}
+              />
+              <label> XXL</label>
+              <br />
+            </fieldset>
+            <br />
+            <div className='addProductItem color'>
+              <label>Color</label>
+              <br />
+              <input
+                id='color-picker1'
+                class='color-picker1'
+                name='color1'
+                type='color'
+                // onInput={() => {
+                //   haveColor('color-picker1');
+                // }}
+              />
+              <input
+                id='color-picker2'
+                class='color-picker2'
+                name='color1'
+                type='color'
+                // onInput={() => {
+                //   haveColor('color-picker2');
+                // }}
+              />
+              <input
+                id='color-picker3'
+                class='color-picker3'
+                name='color1'
+                type='color'
+                // onInput={() => {
+                //   haveColor('color-picker3');
+                // }}
+              />
+              <input
+                id='color-picker4'
+                class='color-picker4'
+                name='color1'
+                type='color'
+                // onInput={() => {
+                //   haveColor('color-picker4');
+                // }}
+              />
+              <input
+                id='color-picker5'
+                class='color-picker5'
+                name='color1'
+                type='color'
+                // onInput={() => {
+                //   haveColor('color-picker5');
+                // }}
+              />
+              <input
+                id='color-picker6'
+                class='color-picker6'
+                name='color1'
+                type='color'
+                // onInput={() => {
+                //   haveColor('color-picker6');
+                // }}
+              />
+            </div>
           </div>
 
           <div className='productFormRight'>
@@ -335,6 +443,7 @@ export default function Product() {
                 onChange={(e) => setFile(e.target.files[0])}
               />
             </div>
+
             <button className='productButton' onClick={handleSubmit}>
               Update
             </button>
