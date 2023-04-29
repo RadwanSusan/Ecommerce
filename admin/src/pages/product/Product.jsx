@@ -21,9 +21,13 @@ export default function Product() {
   const [pStats, setPStats] = useState([]);
   const dispatch = useDispatch();
   const [file, setFile] = useState(null);
+
+
   const product = useSelector((state) =>
     state.product.products.find((product) => product._id === productId)
   );
+    const [size, setSize] = useState([...product.size]);
+    const colorArrayUpdate = [];
   const MONTHS = useMemo(
     () => [
       'Jan',
@@ -93,9 +97,28 @@ export default function Product() {
       }
       fileName = product.img;
     
-		try {
+      try {
+      if (document.querySelector('.color-picker1.haveColor')) {
+        colorArrayUpdate.push(document.querySelector('.color-picker1').value);
+      }
+      if (document.querySelector('.color-picker2.haveColor')) {
+        colorArrayUpdate.push(document.querySelector('.color-picker2').value);
+      }
+      if (document.querySelector('.color-picker3.haveColor')) {
+        colorArrayUpdate.push(document.querySelector('.color-picker3').value);
+      }
+      if (document.querySelector('.color-picker4.haveColor')) {
+        colorArrayUpdate.push(document.querySelector('.color-picker4').value);
+      }
+      if (document.querySelector('.color-picker5.haveColor')) {
+        colorArrayUpdate.push(document.querySelector('.color-picker5').value);
+      }
+      if (document.querySelector('.color-picker6.haveColor')) {
+        colorArrayUpdate.push(document.querySelector('.color-picker6').value);
+      }
+      const color = colorArrayUpdate;
 			
-        const product = { ...productUpdateData };
+        const product = { ...productUpdateData,size,color };
         updateProduct(productId, product, dispatch);
         swal('Product Updated', '', 'success');
       } catch (err) {
@@ -131,7 +154,11 @@ export default function Product() {
             
             try {
               
-              const product = { ...productUpdateData, img: downloadURL };
+              const product = {
+                ...productUpdateData,
+                img: downloadURL,
+                size,
+              };
               updateProduct(productId, product, dispatch);
               swal('Product Updated', '', 'success');
             } catch (err) {
@@ -161,7 +188,75 @@ export default function Product() {
     };
     getStats();
   }, [productId, MONTHS]);
-	console.log(product);
+  console.log(product);
+  useEffect(() => {
+    if (product.color[0] !== undefined) {
+      document.querySelector('.color-picker1').classList.add('haveColor');
+      document.querySelector('.color-picker1').value = product.color[0];
+    }
+    if (product.color[1] !== undefined) {
+      document.querySelector('.color-picker2').classList.add('haveColor');
+      document.querySelector('.color-picker2').value = product.color[1];
+    }
+    if (product.color[2] !== undefined) {
+      document.querySelector('.color-picker3').classList.add('haveColor');
+      document.querySelector('.color-picker3').value = product.color[2];
+    }
+    if (product.color[3] !== undefined) {
+      document.querySelector('.color-picker4').classList.add('haveColor');
+      document.querySelector('.color-picker4').value = product.color[3];
+    }
+    if (product.color[4] !== undefined) {
+      document.querySelector('.color-picker5').classList.add('haveColor');
+      document.querySelector('.color-picker5').value = product.color[4];
+    }
+    if (product.color[5] !== undefined) {
+      document.querySelector('.color-picker6').classList.add('haveColor');
+      document.querySelector('.color-picker6').value = product.color[5];
+    }
+    return null;
+  }, [product.color]);
+  useEffect(() => {
+    product.size.map((item) => {
+      if (item === 'S') {
+        document.querySelector('.SizeS').setAttribute('checked', true);
+      } else if (item === 'M') {
+        document.querySelector('.SizeM').checked = true;
+      } else if (item === 'L') {
+        document.querySelector('.SizeL').checked = true;
+      } else if (item === 'XL') {
+        document.querySelector('.SizeXL').checked = true;
+      } else if (item === 'XXL') {
+        document.querySelector('.SizeXXL').checked = true;
+      }
+      return null;
+    });
+  }, [product.size]);
+  const addSize = (e) => {
+    setSize((prev) => {
+      return [...prev, e.target.value];
+    });
+  };
+  const haveColor = (e) => {
+    if (e === 'color-picker1') {
+      document.querySelector('.color-picker1').classList.add('haveColor');
+    }
+    if (e === 'color-picker2') {
+      document.querySelector('.color-picker2').classList.add('haveColor');
+    }
+    if (e === 'color-picker3') {
+      document.querySelector('.color-picker3').classList.add('haveColor');
+    }
+    if (e === 'color-picker4') {
+      document.querySelector('.color-picker4').classList.add('haveColor');
+    }
+    if (e === 'color-picker5') {
+      document.querySelector('.color-picker5').classList.add('haveColor');
+    }
+    if (e === 'color-picker6') {
+      document.querySelector('.color-picker6').classList.add('haveColor');
+    }
+  };
   return (
     <div className='product'>
       <div className='productTitleContainer'>
@@ -328,7 +423,7 @@ export default function Product() {
                 className='SizeS'
                 name='size'
                 value='S'
-                // onClick={addSize}
+                onClick={addSize}
               />
               <label> S</label>
               <br />
@@ -337,7 +432,7 @@ export default function Product() {
                 className='SizeM'
                 name='size'
                 value='M'
-                // onClick={addSize}
+                onClick={addSize}
               />
               <label> M</label>
               <br />
@@ -346,7 +441,7 @@ export default function Product() {
                 className='SizeL'
                 name='size'
                 value='L'
-                // onClick={addSize}
+                onClick={addSize}
               />
               <label> L</label>
               <br />
@@ -355,7 +450,7 @@ export default function Product() {
                 className='SizeXL'
                 name='size'
                 value='XL'
-                // onClick={addSize}
+                onClick={addSize}
               />
               <label> XL</label>
               <br />
@@ -364,7 +459,7 @@ export default function Product() {
                 className='SizeXXL'
                 name='size'
                 value='XXL'
-                // onClick={addSize}
+                onClick={addSize}
               />
               <label> XXL</label>
               <br />
@@ -378,54 +473,54 @@ export default function Product() {
                 class='color-picker1'
                 name='color1'
                 type='color'
-                // onInput={() => {
-                //   haveColor('color-picker1');
-                // }}
+                onInput={() => {
+                  haveColor('color-picker1');
+                }}
               />
               <input
                 id='color-picker2'
                 class='color-picker2'
                 name='color1'
                 type='color'
-                // onInput={() => {
-                //   haveColor('color-picker2');
-                // }}
+                onInput={() => {
+                  haveColor('color-picker2');
+                }}
               />
               <input
                 id='color-picker3'
                 class='color-picker3'
                 name='color1'
                 type='color'
-                // onInput={() => {
-                //   haveColor('color-picker3');
-                // }}
+                onInput={() => {
+                  haveColor('color-picker3');
+                }}
               />
               <input
                 id='color-picker4'
                 class='color-picker4'
                 name='color1'
                 type='color'
-                // onInput={() => {
-                //   haveColor('color-picker4');
-                // }}
+                onInput={() => {
+                  haveColor('color-picker4');
+                }}
               />
               <input
                 id='color-picker5'
                 class='color-picker5'
                 name='color1'
                 type='color'
-                // onInput={() => {
-                //   haveColor('color-picker5');
-                // }}
+                onInput={() => {
+                  haveColor('color-picker5');
+                }}
               />
               <input
                 id='color-picker6'
                 class='color-picker6'
                 name='color1'
                 type='color'
-                // onInput={() => {
-                //   haveColor('color-picker6');
-                // }}
+                onInput={() => {
+                  haveColor('color-picker6');
+                }}
               />
             </div>
           </div>
