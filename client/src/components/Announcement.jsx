@@ -118,7 +118,7 @@ const Announcement = () => {
 						{isGuest
 							? 'Welcome to Venuse store'
 							: 'Welcome ' +
-							  JSON.parse(JSON.parse(tokenState).user).currentUser.username}
+							  JSON.parse(JSON.parse(tokenState).user).username}
 					</MenuItem1>
 					{!isGuest && (
 						<MenuItem>
