@@ -5,7 +5,7 @@ export const userSlice = createSlice({
   initialState: {
     currentUser: null,
     // users: [],
-    username: "",
+    // username: "",
 
     isFetching: false,
     error: false,
