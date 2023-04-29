@@ -27,6 +27,7 @@ const Catog = ({ item }) => {
 	const [product_id, setProduct_id] = useState(0);
 	const [quantity, setQuantity] = useState(1);
 	const [color, setColor] = useState('');
+	const colorToAdd = [];
 	const [size, setSize] = useState('');
 	const dispatch = useDispatch();
 	const [AllProducts, setAllProducts] = useState([]);
@@ -101,7 +102,8 @@ const Catog = ({ item }) => {
 		document.body.style.overflow = 'hidden';
 		document.querySelector('.CatogCard').style.overflow = 'hidden';
 		document.querySelector('.backLayerForShowCart').style.display = 'block';
-		document.querySelector('.backLayerForShowCart').style.overflow = 'hidden';
+		document.querySelector('.backLayerForShowCart').style.overflow =
+			'hidden';
 		const idProduct = item.getAttribute('offer-id');
 		const viewArrCatog = AllProducts.find(
 			(product) => product._id === idProduct,
@@ -109,27 +111,32 @@ const Catog = ({ item }) => {
 		if (!viewArrCatog) {
 			return;
 		}
-		document.querySelector('.CatogCardDesc').textContent = viewArrCatog.desc;
+		document.querySelector('.CatogCardDesc').textContent =
+			viewArrCatog.desc;
 		aramex.innerHTML = '';
 		setZaidVar(viewArrCatog._id);
 		setProduct_id(viewArrCatog._id);
-		viewArrCatog.color.forEach((color) => {
+		viewArrCatog.color.map((color) => {
 			if (color.length !== 0) {
 				const { input, label } = createRadioElement(color);
 				aramex.appendChild(input);
 				aramex.appendChild(label);
 				input.addEventListener('click', (event) => {
 					if (
-						event.target.nextElementSibling.style.border === '3px solid black'
+						event.target.nextElementSibling.style.border ===
+						'3px solid black'
 					) {
 						event.target.nextElementSibling.style.border = 'none';
+						setColor('');
 					} else {
 						setColor(event.target.value);
+						colorToAdd[0] = event.target.value;
 						const siblings = getSiblings(event.target);
 						siblings.forEach((sibling) => {
 							sibling.style.border = 'none';
 						});
-						event.target.nextElementSibling.style.border = '3px solid black';
+						event.target.nextElementSibling.style.border =
+							'3px solid black';
 					}
 				});
 			}
@@ -156,7 +163,8 @@ const Catog = ({ item }) => {
 			document.querySelector('.CatogCard').style.display = 'none';
 			document.body.style.overflow = '';
 			document.querySelector('.CatogCard').style.overflow = '';
-			document.querySelector('.backLayerForShowCart').style.display = 'none';
+			document.querySelector('.backLayerForShowCart').style.display =
+				'none';
 		}),
 	);
 	let cartProducts = JSON.parse(localStorage.getItem('persist:root'));
@@ -215,7 +223,9 @@ const Catog = ({ item }) => {
 		}
 	};
 	const handleQuantity2 = (type, id) => {
-		const item = [...productGet, ...offerGet].find((item) => item._id === id);
+		const item = [...productGet, ...offerGet].find(
+			(item) => item._id === id,
+		);
 		const maxQuantity = item.quantity - 1;
 		if (type === 'dec') {
 			handleQuantityDecrement();
@@ -255,6 +265,7 @@ const Catog = ({ item }) => {
 			return;
 		}
 		if (cartItem && cartItem.quantity + quantity <= item.quantity) {
+			console.log(colorToAdd[0]);
 			dispatch(
 				addProduct({
 					...cartItem,
@@ -272,6 +283,7 @@ const Catog = ({ item }) => {
 		} else if (cartItem) {
 			showInfoMessage('Try with a different amount!');
 		} else {
+			console.log(colorToAdd);
 			dispatch(
 				addProduct({
 					...item,
@@ -422,19 +434,27 @@ const Catog = ({ item }) => {
 											className='fa fa-cog block_specification__button block_specification__button__rotate'
 											aria-hidden='true'
 										></i>
-										<span className='block_specification__text'>spec</span>
+										<span className='block_specification__text'>
+											spec
+										</span>
 									</div>
 									<div className='block_specification__informationShow hide'>
 										<i
 											className='fa fa-info-circle block_specification__button block_specification__button__jump'
 											aria-hidden='true'
 										></i>
-										<span className='block_specification__text'>inform</span>
+										<span className='block_specification__text'>
+											inform
+										</span>
 									</div>
 								</div>
 								<p className='block_model'>
-									<span className='block_model__text'>Model: </span>
-									<span className='block_model__number'>505795</span>
+									<span className='block_model__text'>
+										Model:{' '}
+									</span>
+									<span className='block_model__number'>
+										505795
+									</span>
 								</p>
 								<div className='block_product'>
 									<h2 className='block_name block_name__mainName'>
@@ -456,35 +476,58 @@ const Catog = ({ item }) => {
 													<td>Around Ear</td>
 												</tr>
 												<tr>
-													<td>Transducer Principle</td>
-													<td>Dynamic, Closed-back</td>
+													<td>
+														Transducer Principle
+													</td>
+													<td>
+														Dynamic, Closed-back
+													</td>
 												</tr>
 												<tr>
 													<td>Frequency Response</td>
 													<td>16Hz – 22kHz</td>
 												</tr>
 												<tr>
-													<td>Sound Pressure Level (SPL)</td>
-													<td>113 dB (Passive: 1 kHz/1 Vrms)</td>
+													<td>
+														Sound Pressure Level
+														(SPL)
+													</td>
+													<td>
+														113 dB (Passive: 1 kHz/1
+														Vrms)
+													</td>
 												</tr>
 												<tr>
-													<td>Total Harmonic Distortion (THD)</td>
-													<td>&lt;0.5% (1 kHz, 100 dB SPL)</td>
+													<td>
+														Total Harmonic
+														Distortion (THD)
+													</td>
+													<td>
+														&lt;0.5% (1 kHz, 100 dB
+														SPL)
+													</td>
 												</tr>
 												<tr>
 													<td>Volume Control</td>
-													<td>Earcup control when Bluetooth connected</td>
+													<td>
+														Earcup control when
+														Bluetooth connected
+													</td>
 												</tr>
 												<tr>
 													<td>Microphone Type</td>
 													<td>
-														Dual omni-directional microphone <br />2 mic beam
-														forming array
+														Dual omni-directional
+														microphone <br />2 mic
+														beam forming array
 													</td>
 												</tr>
 												<tr>
 													<td>Cable / Connector</td>
-													<td>1.4m (Detachable) / 3.5mm Angled</td>
+													<td>
+														1.4m (Detachable) /
+														3.5mm Angled
+													</td>
 												</tr>
 												<tr>
 													<td>Weight</td>
@@ -494,8 +537,9 @@ const Catog = ({ item }) => {
 										</div>
 										<div className='block_descriptionInformation'>
 											<span>
-												Peak performance with active noise cancelation.
-												Sennheiser's new MOMENTUM Wireless - Closed
+												Peak performance with active
+												noise cancelation. Sennheiser's
+												new MOMENTUM Wireless - Closed
 												circumauralheadphone featuring{' '}
 												<a
 													className='block_product__link'
@@ -503,20 +547,25 @@ const Catog = ({ item }) => {
 												>
 													Bluetooth<sup>&reg;</sup>
 												</a>{' '}
-												wireless technology and NoiseGard Hybrid active noise
+												wireless technology and
+												NoiseGard Hybrid active noise
 												cancelation
 											</span>
 										</div>
 										<div className='row11 '>
 											<div className='large-6 small-12 column left-align'>
 												<div className='block_price'>
-													<p className='block_price__currency currency'>$</p>
+													<p className='block_price__currency currency'>
+														$
+													</p>
 													<p className='block_price__shipping'>
 														Shipping and taxes extra
 													</p>
 												</div>
 												<div className='block_quantity clearfix'>
-													<span className='text_specification'>Quantity</span>
+													<span className='text_specification'>
+														Quantity
+													</span>
 													<div className='block_quantity__chooseBlock'>
 														<input
 															className='block_quantity__number block_quantity__number2'
@@ -528,7 +577,10 @@ const Catog = ({ item }) => {
 														<button className='block_quantity__button block_quantity__up'>
 															<ArrowDown
 																onClick={() => {
-																	handleQuantity2('dec', zaidVar);
+																	handleQuantity2(
+																		'dec',
+																		zaidVar,
+																	);
 																}}
 																className='AiOutlineArrowUpanddown down5'
 															/>
@@ -536,7 +588,10 @@ const Catog = ({ item }) => {
 														<button className='block_quantity__button block_quantity__down'>
 															<ArrowUp
 																onClick={() => {
-																	handleQuantity2('inc', zaidVar);
+																	handleQuantity2(
+																		'inc',
+																		zaidVar,
+																	);
 																}}
 																className='AiOutlineArrowUpanddown up5'
 															/>
@@ -551,18 +606,28 @@ const Catog = ({ item }) => {
 													</span>
 													<div
 														className='zaid'
-														style={{ display: 'hidden' }}
+														style={{
+															display: 'hidden',
+														}}
 													></div>
 													<div className='block_goodColor__allColors CatogallColors'></div>
 													<FilterSizeCatog
 														className='FilterSizeCatog'
-														onChange={(e) => setSize(e.target.value)}
+														onChange={(e) =>
+															setSize(
+																e.target.value,
+															)
+														}
 													></FilterSizeCatog>
 												</div>
 												{chekAvail2() ? (
 													<button
 														className='AddCart'
-														onClick={() => addToCart(product_id)}
+														onClick={() =>
+															addToCart(
+																product_id,
+															)
+														}
 													>
 														Add to Cart
 													</button>
@@ -625,215 +690,254 @@ const Catog = ({ item }) => {
 														className='owl-stage style-pO7ki'
 														id='style-pO7ki'
 													>
-														{products.slice(0, 4).map((data) => (
-															<div
-																className='owl-item active style-SmoEo'
-																id='style-SmoEo'
-															>
-																<li className='item product product-item '>
-																	<div
-																		className='product-item-info'
-																		data-container='product-grid'
-																	>
-																		<Link
-																			to={`/product/${data._id}`}
-																			className='action quickview-handler sm_quickview_handler'
-																			title='Quick View'
-																			href=''
+														{products
+															.slice(0, 4)
+															.map((data) => (
+																<div
+																	className='owl-item active style-SmoEo'
+																	id='style-SmoEo'
+																>
+																	<li className='item product product-item '>
+																		<div
+																			className='product-item-info'
+																			data-container='product-grid'
 																		>
-																			<div className='image-product'>
-																				<a
-																					href=''
-																					className='product photo product-item-photo'
-																					tabindex='-1'
-																				>
-																					<span
-																						className='product-image-container product-image-container-1 style-bH5WH'
-																						id='style-bH5WH'
+																			<Link
+																				to={`/product/${data._id}`}
+																				className='action quickview-handler sm_quickview_handler'
+																				title='Quick View'
+																				href=''
+																			>
+																				<div className='image-product'>
+																					<a
+																						href=''
+																						className='product photo product-item-photo'
+																						tabindex='-1'
 																					>
 																						<span
-																							className='product-image-wrapper style-MbttD'
-																							id='style-MbttD'
+																							className='product-image-container product-image-container-1 style-bH5WH'
+																							id='style-bH5WH'
 																						>
-																							<img
-																								className='product-image-photo'
-																								src={data.img}
-																								data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-01.jpg'
-																								loading='lazy'
-																								width='300'
-																								height='300'
-																								alt={data.title}
-																							/>
+																							<span
+																								className='product-image-wrapper style-MbttD'
+																								id='style-MbttD'
+																							>
+																								<img
+																									className='product-image-photo'
+																									src={
+																										data.img
+																									}
+																									data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-01.jpg'
+																									loading='lazy'
+																									width='300'
+																									height='300'
+																									alt={
+																										data.title
+																									}
+																								/>
+																							</span>
 																						</span>
-																					</span>
-																				</a>
-																				<Link
-																					to={``}
-																					className='action quickview-handler sm_quickview_handler show-cart2'
-																					title='Quick View'
-																					href=''
-																					offer-id={data._id}
-																				>
-																					<AiOutlineEye />
-																					<span>Quick View</span>
-																				</Link>
-																			</div>
-																		</Link>
-																		<div className='product details product-item-details'>
-																			<strong className='product name product-item-name'>
-																				{data.title}
-																				<a
-																					className='product-item-link'
-																					href='#'
-																				></a>
-																			</strong>
-																			<div
-																				className='price-box price-final_price'
-																				data-role='priceBox'
-																				data-product-id='1'
-																				data-price-box='product-id-1'
-																			>
-																				<span className='price-container price-final_price tax weee'>
-																					<span
-																						id='product-price-1'
-																						data-price-amount='250'
-																						data-price-type='finalPrice'
-																						className='price-wrapper '
+																					</a>
+																					<Link
+																						to={``}
+																						className='action quickview-handler sm_quickview_handler show-cart2'
+																						title='Quick View'
+																						href=''
+																						offer-id={
+																							data._id
+																						}
 																					>
-																						<span className='price'>
-																							$ {data.price}
+																						<AiOutlineEye />
+																						<span>
+																							Quick
+																							View
 																						</span>
-																					</span>
-																				</span>
-																			</div>
-																			<div className='product-item-inner'>
-																				<div className='product actions product-item-actions'>
-																					<div className='actions-primary'></div>
-																					<div
-																						data-role='add-to-links'
-																						className='actions-secondary'
-																					></div>
-																					<Link to={`/product/${data._id}`}>
-																						<button className='Add-to-Cart-new'>
-																							Add to Cart
-																						</button>
 																					</Link>
-																					<div
-																						className='actions-secondary'
-																						data-role='add-to-links'
-																					>
-																						<div
-																							className='action towishlist'
-																							data-action='add-to-wishlist'
-																							title='Add to Wish List'
+																				</div>
+																			</Link>
+																			<div className='product details product-item-details'>
+																				<strong className='product name product-item-name'>
+																					{
+																						data.title
+																					}
+																					<a
+																						className='product-item-link'
+																						href='#'
+																					></a>
+																				</strong>
+																				<div
+																					className='price-box price-final_price'
+																					data-role='priceBox'
+																					data-product-id='1'
+																					data-price-box='product-id-1'
+																				>
+																					<span className='price-container price-final_price tax weee'>
+																						<span
+																							id='product-price-1'
+																							data-price-amount='250'
+																							data-price-type='finalPrice'
+																							className='price-wrapper '
 																						>
-																							{wishlistData.includes(
-																								data._id,
-																							) ? (
-																								<>
-																									<BsHeart
-																										className='add-to-wish list-wish'
-																										onClick={(ele) => {
-																											handleWichlist(
-																												data._id,
-																												ele,
-																											);
-																											addToWishlist(
-																												data._id,
-																												'remove',
-																											);
-																										}}
-																										style={{
-																											display: 'none',
-																										}}
-																									/>
-																									<svg
-																										className='add-to-wish2 list-wish bi bi-heart-fill'
-																										xmlns='http://www.w3.org/2000/svg'
-																										width='16'
-																										height='16'
-																										fill='currentColor'
-																										viewBox='0 0 16 16'
-																										onClick={(ele) => {
-																											handleWichlist(
-																												data._id,
-																												ele,
-																											);
-																											addToWishlist(
-																												data._id,
-																												'add',
-																											);
-																										}}
-																									>
-																										<path
-																											className='add-to-wish2'
-																											fill-rule='evenodd'
-																											d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
-																										/>
-																									</svg>
-																								</>
-																							) : (
-																								<>
-																									<BsHeart
-																										className='add-to-wish list-wish'
-																										onClick={(ele) => {
-																											handleWichlist(
-																												data._id,
-																												ele,
-																											);
-																											addToWishlist(
-																												data._id,
-																												'add',
-																											);
-																										}}
-																									/>
-																									<svg
-																										className='add-to-wish2 list-wish bi bi-heart-fill'
-																										xmlns='http://www.w3.org/2000/svg'
-																										width='16'
-																										height='16'
-																										fill='currentColor'
-																										viewBox='0 0 16 16'
-																										onClick={(ele) => {
-																											handleWichlist(
-																												data._id,
-																												ele,
-																											);
-																											addToWishlist(
-																												data._id,
-																												'remove',
-																											);
-																										}}
-																										style={{
-																											display: 'none',
-																										}}
-																									>
-																										<path
-																											className='add-to-wish2'
-																											fill-rule='evenodd'
-																											d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
-																										/>
-																									</svg>
-																								</>
-																							)}
-																							<span>Add to Wish List</span>
-																						</div>
+																							<span className='price'>
+																								${' '}
+																								{
+																									data.price
+																								}
+																							</span>
+																						</span>
+																					</span>
+																				</div>
+																				<div className='product-item-inner'>
+																					<div className='product actions product-item-actions'>
+																						<div className='actions-primary'></div>
 																						<div
-																							className='action tocompare'
-																							data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/catalog\/product_compare\/add\/","data":{"product":"1","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
-																							title='Add to Compare'
+																							data-role='add-to-links'
+																							className='actions-secondary'
+																						></div>
+																						<Link
+																							to={`/product/${data._id}`}
 																						>
-																							<IoGitCompareOutline />
-																							<span>Add to Compare</span>
+																							<button className='Add-to-Cart-new'>
+																								Add
+																								to
+																								Cart
+																							</button>
+																						</Link>
+																						<div
+																							className='actions-secondary'
+																							data-role='add-to-links'
+																						>
+																							<div
+																								className='action towishlist'
+																								data-action='add-to-wishlist'
+																								title='Add to Wish List'
+																							>
+																								{wishlistData.includes(
+																									data._id,
+																								) ? (
+																									<>
+																										<BsHeart
+																											className='add-to-wish list-wish'
+																											onClick={(
+																												ele,
+																											) => {
+																												handleWichlist(
+																													data._id,
+																													ele,
+																												);
+																												addToWishlist(
+																													data._id,
+																													'remove',
+																												);
+																											}}
+																											style={{
+																												display:
+																													'none',
+																											}}
+																										/>
+																										<svg
+																											className='add-to-wish2 list-wish bi bi-heart-fill'
+																											xmlns='http://www.w3.org/2000/svg'
+																											width='16'
+																											height='16'
+																											fill='currentColor'
+																											viewBox='0 0 16 16'
+																											onClick={(
+																												ele,
+																											) => {
+																												handleWichlist(
+																													data._id,
+																													ele,
+																												);
+																												addToWishlist(
+																													data._id,
+																													'add',
+																												);
+																											}}
+																										>
+																											<path
+																												className='add-to-wish2'
+																												fill-rule='evenodd'
+																												d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
+																											/>
+																										</svg>
+																									</>
+																								) : (
+																									<>
+																										<BsHeart
+																											className='add-to-wish list-wish'
+																											onClick={(
+																												ele,
+																											) => {
+																												handleWichlist(
+																													data._id,
+																													ele,
+																												);
+																												addToWishlist(
+																													data._id,
+																													'add',
+																												);
+																											}}
+																										/>
+																										<svg
+																											className='add-to-wish2 list-wish bi bi-heart-fill'
+																											xmlns='http://www.w3.org/2000/svg'
+																											width='16'
+																											height='16'
+																											fill='currentColor'
+																											viewBox='0 0 16 16'
+																											onClick={(
+																												ele,
+																											) => {
+																												handleWichlist(
+																													data._id,
+																													ele,
+																												);
+																												addToWishlist(
+																													data._id,
+																													'remove',
+																												);
+																											}}
+																											style={{
+																												display:
+																													'none',
+																											}}
+																										>
+																											<path
+																												className='add-to-wish2'
+																												fill-rule='evenodd'
+																												d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
+																											/>
+																										</svg>
+																									</>
+																								)}
+																								<span>
+																									Add
+																									to
+																									Wish
+																									List
+																								</span>
+																							</div>
+																							<div
+																								className='action tocompare'
+																								data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/catalog\/product_compare\/add\/","data":{"product":"1","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
+																								title='Add to Compare'
+																							>
+																								<IoGitCompareOutline />
+																								<span>
+																									Add
+																									to
+																									Compare
+																								</span>
+																							</div>
 																						</div>
 																					</div>
 																				</div>
 																			</div>
 																		</div>
-																	</div>
-																</li>
-															</div>
-														))}
+																	</li>
+																</div>
+															))}
 													</div>
 												</div>
 												<div className='owl-nav'>
@@ -841,13 +945,17 @@ const Catog = ({ item }) => {
 														role='presentation'
 														className='owl-prev disabled'
 													>
-														<span aria-label='Previous'>‹</span>
+														<span aria-label='Previous'>
+															‹
+														</span>
 													</div>
 													<div
 														role='presentation'
 														className='owl-next'
 													>
-														<span aria-label='Next'>›</span>
+														<span aria-label='Next'>
+															›
+														</span>
 													</div>
 												</div>
 												<div className='owl-dots disabled'></div>
