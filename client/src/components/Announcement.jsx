@@ -111,49 +111,40 @@ const Announcement = () => {
 		logoutUser();
 	};
 	const Navbar = ({ isGuest }) => (
-		<Container>
-			<Wrapper>
-				<Left>
-					<MenuItem1>
-						{isGuest
-							? 'Welcome to Venuse store'
-							: 'Welcome ' +
-							  JSON.parse(JSON.parse(tokenState).user).currentUser.username}
-					</MenuItem1>
-					{!isGuest && (
-						<MenuItem>
-							<button onClick={handleLogout}>Logout</button>
-						</MenuItem>
-					)}
-					{isGuest && (
-						<>
-							<MenuItem>
-								<Link to='/Register'>REGISTER</Link>
-							</MenuItem>
-							<MenuItem>
-								<Link to='/Login'>SIGN IN</Link>
-							</MenuItem>
-						</>
-					)}
-				</Left>
-				<Right>
-					{darkMode ? (
-						<SiDarkreader
-							className='CiDark'
-							onClick={toggle}
-						/>
-					) : (
-						<MdOutlineLightMode
-							className='CiDark'
-							onClick={toggle}
-						/>
-					)}
-					<Language>English - </Language>
-					<SearchContainer>USD</SearchContainer>
-				</Right>
-			</Wrapper>
-		</Container>
-	);
+    <Container>
+      <Wrapper>
+        <Left>
+          <MenuItem1>
+            {isGuest ? 'Welcome to Venuse store' : 'Welcome to Venuse store'}
+          </MenuItem1>
+          {!isGuest && (
+            <MenuItem>
+              <button onClick={handleLogout}>Logout</button>
+            </MenuItem>
+          )}
+          {isGuest && (
+            <>
+              <MenuItem>
+                <Link to='/Register'>REGISTER</Link>
+              </MenuItem>
+              <MenuItem>
+                <Link to='/Login'>SIGN IN</Link>
+              </MenuItem>
+            </>
+          )}
+        </Left>
+        <Right>
+          {darkMode ? (
+            <SiDarkreader className='CiDark' onClick={toggle} />
+          ) : (
+            <MdOutlineLightMode className='CiDark' onClick={toggle} />
+          )}
+          <Language>English - </Language>
+          <SearchContainer>USD</SearchContainer>
+        </Right>
+      </Wrapper>
+    </Container>
+  );
 	if (!tokenLoaded) {
 		return null;
 	}
