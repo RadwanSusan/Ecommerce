@@ -31,8 +31,11 @@ import { useContext } from 'react';
 import { DarkModeContext } from './context/darkModeContext';
 
 function App() {
-  const Admin = useSelector((state) => state.user.currentUser.isAdmin);
-  console.log(Admin);
+  const admin = useSelector((state) => state.user.currentUser.isAdmin);
+  if (admin == null) {
+    admin = false;
+  }
+  console.log(admin);
   const { darkMode } = useContext(DarkModeContext);
 
   // const admin = true;
@@ -49,7 +52,7 @@ function App() {
         <Route path='/login'>
           <Login />
         </Route>
-        {Admin && (
+        {admin && (
           <div className={darkMode ? 'app dark' : 'app'}>
             <Topbar />
             <div className='container'>
