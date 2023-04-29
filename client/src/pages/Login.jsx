@@ -69,57 +69,54 @@ const Link = styled.a`
 	cursor: pointer;
 `;
 const Login = () => {
-	const [username, setUsername] = useState('');
+	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const { isFetching, error } = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 	const handleClick = (e) => {
 		e.preventDefault();
-		if (!username || !password) {
-			swal('Please fill in all fields');
-			return;
-		}
-		login(dispatch, { username, password });
+		if (!email || !password) {
+      swal('Please fill in all fields');
+      return;
+    }
+		login(dispatch, { email, password });
 	};
 	useEffect(() => {
 		if (error) {
 			swal('Invalid Credentials Try Again!');
-			setUsername('');
+			setEmail('');
 			setPassword('');
-			document.getElementById('username').value = '';
+			document.getElementById('email').value = '';
 			document.getElementById('password').value = '';
 		}
 	}, [error]);
 	return (
-		<Container>
-			<Wrapper>
-				<Title>SIGN IN</Title>
-				<Form>
-					<Input
-						placeholder='username'
-						id='username'
-						autoComplete='username'
-						onChange={(e) => setUsername(e.target.value)}
-					/>
-					<Input
-						placeholder='password'
-						id='password'
-						type='password'
-						autoComplete='current-password'
-						onChange={(e) => setPassword(e.target.value)}
-					/>
-					<Button
-						onClick={handleClick}
-						disabled={isFetching}
-					>
-						LOGIN
-					</Button>
-					<Link href='/forgot'>DO NOT YOU REMEMBER THE PASSWORD?</Link>
-					<Link href='/register'>CREATE A NEW ACCOUNT</Link>
-				</Form>
-			</Wrapper>
-		</Container>
-	);
+    <Container>
+      <Wrapper>
+        <Title>SIGN IN</Title>
+        <Form>
+          <Input
+            placeholder='email'
+            id='email'
+            autoComplete='email'
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            placeholder='password'
+            id='password'
+            type='password'
+            autoComplete='current-password'
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button onClick={handleClick} disabled={isFetching}>
+            LOGIN
+          </Button>
+          <Link href='/forgot'>DO NOT YOU REMEMBER THE PASSWORD?</Link>
+          <Link href='/register'>CREATE A NEW ACCOUNT</Link>
+        </Form>
+      </Wrapper>
+    </Container>
+  );
 };
 
 export default Login;
