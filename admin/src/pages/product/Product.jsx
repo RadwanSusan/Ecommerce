@@ -27,7 +27,9 @@ export default function Product() {
     state.product.products.find((product) => product._id === productId)
   );
     const [size, setSize] = useState([...product.size]);
-    const colorArrayUpdate = [];
+  const colorArrayUpdate = [];
+	const sizeArrayUpdate = [];
+  
   const MONTHS = useMemo(
     () => [
       'Jan',
@@ -115,8 +117,24 @@ export default function Product() {
       }
       if (document.querySelector('.color-picker6.haveColor')) {
         colorArrayUpdate.push(document.querySelector('.color-picker6').value);
-      }
-      const color = colorArrayUpdate;
+        }
+        	if (document.querySelector('.SizeS.haveSize')) {
+            sizeArrayUpdate.push('S');
+          }
+          if (document.querySelector('.SizeM.haveSize')) {
+            sizeArrayUpdate.push('M');
+          }
+          if (document.querySelector('.SizeL.haveSize')) {
+            sizeArrayUpdate.push('L');
+          }
+          if (document.querySelector('.SizeXL.haveSize')) {
+            sizeArrayUpdate.push('XL');
+          }
+          if (document.querySelector('.SizeXXL.haveSize')) {
+            sizeArrayUpdate.push('XXL');
+          }
+        const color = colorArrayUpdate;
+        const size = sizeArrayUpdate;
 			
         const product = { ...productUpdateData,size,color };
         updateProduct(productId, product, dispatch);
@@ -153,11 +171,93 @@ export default function Product() {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             
             try {
+								if (
+									document.querySelector(
+										'.color-picker1.haveColor',
+									)
+								) {
+									colorArrayUpdate.push(
+										document.querySelector('.color-picker1')
+											.value,
+									);
+								}
+								if (
+									document.querySelector(
+										'.color-picker2.haveColor',
+									)
+								) {
+									colorArrayUpdate.push(
+										document.querySelector('.color-picker2')
+											.value,
+									);
+								}
+								if (
+									document.querySelector(
+										'.color-picker3.haveColor',
+									)
+								) {
+									colorArrayUpdate.push(
+										document.querySelector('.color-picker3')
+											.value,
+									);
+								}
+								if (
+									document.querySelector(
+										'.color-picker4.haveColor',
+									)
+								) {
+									colorArrayUpdate.push(
+										document.querySelector('.color-picker4')
+											.value,
+									);
+								}
+								if (
+									document.querySelector(
+										'.color-picker5.haveColor',
+									)
+								) {
+									colorArrayUpdate.push(
+										document.querySelector('.color-picker5')
+											.value,
+									);
+								}
+								if (
+									document.querySelector(
+										'.color-picker6.haveColor',
+									)
+								) {
+									colorArrayUpdate.push(
+										document.querySelector('.color-picker6')
+											.value,
+									);
+								}
+								if (document.querySelector('.SizeS.haveSize')) {
+									sizeArrayUpdate.push('S');
+								}
+								if (document.querySelector('.SizeM.haveSize')) {
+									sizeArrayUpdate.push('M');
+								}
+								if (document.querySelector('.SizeL.haveSize')) {
+									sizeArrayUpdate.push('L');
+								}
+								if (
+									document.querySelector('.SizeXL.haveSize')
+								) {
+									sizeArrayUpdate.push('XL');
+								}
+								if (
+									document.querySelector('.SizeXXL.haveSize')
+								) {
+									sizeArrayUpdate.push('XXL');
+								}
+                const color = colorArrayUpdate;
+                const size = sizeArrayUpdate;
               
               const product = {
                 ...productUpdateData,
                 img: downloadURL,
                 size,
+                color
               };
               updateProduct(productId, product, dispatch);
               swal('Product Updated', '', 'success');
@@ -188,7 +288,27 @@ export default function Product() {
     };
     getStats();
   }, [productId, MONTHS]);
-  console.log(product);
+  useEffect(() => {
+		product.size.map((item) => {
+			if (item === 'S') {
+				document.querySelector('.SizeS').checked = true;
+				document.querySelector('.SizeS').classList.add('haveSize');
+			} else if (item === 'M') {
+				document.querySelector('.SizeM').checked = true;
+				document.querySelector('.SizeM').classList.add('haveSize');
+			} else if (item === 'L') {
+				document.querySelector('.SizeL').checked = true;
+				document.querySelector('.SizeL').classList.add('haveSize');
+			} else if (item === 'XL') {
+				document.querySelector('.SizeXL').checked = true;
+				document.querySelector('.SizeXL').classList.add('haveSize');
+			} else if (item === 'XXL') {
+				document.querySelector('.SizeXXL').checked = true;
+				document.querySelector('.SizeXXL').classList.add('haveSize');
+			}
+			return null;
+		});
+	}, [product.size]);
   useEffect(() => {
     if (product.color[0] !== undefined) {
       document.querySelector('.color-picker1').classList.add('haveColor');
@@ -233,10 +353,15 @@ export default function Product() {
     });
   }, [product.size]);
   const addSize = (e) => {
-    setSize((prev) => {
-      return [...prev, e.target.value];
-    });
-  };
+		if (e.target.classList.contains('haveSize')) {
+			e.target.classList.remove('haveSize');
+		} else {
+			e.target.classList.add('haveSize');
+		}
+		setSize((prev) => {
+			return [...prev, e.target.value];
+		});
+	};
   const haveColor = (e) => {
     if (e === 'color-picker1') {
       document.querySelector('.color-picker1').classList.add('haveColor');
