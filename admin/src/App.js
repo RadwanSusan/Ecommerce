@@ -31,8 +31,8 @@ import { useContext } from 'react';
 import { DarkModeContext } from './context/darkModeContext';
 
 function App() {
-  const user = useSelector((state) => state.user.currentUser);
-  console.log(user);
+  const Admin = useSelector((state) => state.user.currentUser.isAdmin);
+  console.log(Admin);
   const { darkMode } = useContext(DarkModeContext);
 
   // const admin = true;
@@ -46,8 +46,10 @@ function App() {
           <Reset />
         </Route> */}
 
-        <Route path='/login'>{user ? <Redirect to='/' /> : <Login />}</Route>
-        {user && (
+        <Route path='/login'>
+          <Login />
+        </Route>
+        {Admin && (
           <div className={darkMode ? 'app dark' : 'app'}>
             <Topbar />
             <div className='container'>
@@ -90,8 +92,7 @@ function App() {
               </Route>
             </div>
           </div>
-        ) 
-        }
+        )}
       </Switch>
     </Router>
   );
