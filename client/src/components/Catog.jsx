@@ -327,7 +327,6 @@ const Catog = ({ item }) => {
 	const isMountedRef = useRef(true);
 	const [wishlistData, setWishlistData] = useState([]);
 	let userId = localStorage.getItem('persist:root');
-	console.log(JSON.parse(userId).user);
 	useEffect(async () => {
 		if (JSON.parse(userId).user) {
 			try {
@@ -342,8 +341,6 @@ const Catog = ({ item }) => {
 			} catch (error) {
 				console.error(error);
 			}
-		} else {
-			console.log('ZAIIIIIIIIIIIIIID');
 		}
 		return () => {
 			isMountedRef.current = false;

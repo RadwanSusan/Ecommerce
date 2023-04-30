@@ -1,15 +1,15 @@
-import { useState } from "react";
-import "./createoffer.css";
+import { useState } from 'react';
+import './createoffer.css';
 import {
 	getStorage,
 	ref,
 	uploadBytesResumable,
 	getDownloadURL,
-} from "firebase/storage";
-import app from "../../firebase";
-import { addOffer } from "../../redux/apiCalls";
-import { useDispatch } from "react-redux";
-import swal from "sweetalert";
+} from 'firebase/storage';
+import app from '../../firebase';
+import { addOffer } from '../../redux/apiCalls';
+import { useDispatch } from 'react-redux';
+import swal from 'sweetalert';
 export default function CreateOffer() {
 	const [inputs, setInputs] = useState({});
 	let [file, setFile] = useState(null);
@@ -28,7 +28,7 @@ export default function CreateOffer() {
 		});
 	};
 	const handleCat = (e) => {
-		setCat(e.target.value.split(","));
+		setCat(e.target.value.split(','));
 	};
 	const addSize = (e) => {
 		setSize((prev) => {
@@ -41,21 +41,21 @@ export default function CreateOffer() {
 		colorPicker4,
 		colorPicker5,
 		colorPicker6;
-	const defaultColor = "#FFFFFF";
-	window.addEventListener("load", startup, true);
+	const defaultColor = '#FFFFFF';
+	window.addEventListener('load', startup, true);
 	function startup() {
-		colorPicker1 = document.getElementById("color-picker1");
-		colorPicker1.addEventListener("input", update1);
-		colorPicker2 = document.getElementById("color-picker2");
-		colorPicker2.addEventListener("input", update2);
-		colorPicker3 = document.getElementById("color-picker3");
-		colorPicker3.addEventListener("input", update3);
-		colorPicker4 = document.getElementById("color-picker4");
-		colorPicker4.addEventListener("input", update4);
-		colorPicker5 = document.getElementById("color-picker5");
-		colorPicker5.addEventListener("input", update5);
-		colorPicker6 = document.getElementById("color-picker6");
-		colorPicker6.addEventListener("input", update6);
+		colorPicker1 = document.getElementById('color-picker1');
+		colorPicker1.addEventListener('input', update1);
+		colorPicker2 = document.getElementById('color-picker2');
+		colorPicker2.addEventListener('input', update2);
+		colorPicker3 = document.getElementById('color-picker3');
+		colorPicker3.addEventListener('input', update3);
+		colorPicker4 = document.getElementById('color-picker4');
+		colorPicker4.addEventListener('input', update4);
+		colorPicker5 = document.getElementById('color-picker5');
+		colorPicker5.addEventListener('input', update5);
+		colorPicker6 = document.getElementById('color-picker6');
+		colorPicker6.addEventListener('input', update6);
 		colorPicker1.value = defaultColor;
 		colorPicker2.value = defaultColor;
 		colorPicker3.value = defaultColor;
@@ -107,12 +107,12 @@ export default function CreateOffer() {
 		setColor4([]);
 		setColor5([]);
 		setColor6([]);
-		colorPicker1 = document.getElementById("color-picker1");
-		colorPicker2 = document.getElementById("color-picker2");
-		colorPicker3 = document.getElementById("color-picker3");
-		colorPicker4 = document.getElementById("color-picker4");
-		colorPicker5 = document.getElementById("color-picker5");
-		colorPicker6 = document.getElementById("color-picker6");
+		colorPicker1 = document.getElementById('color-picker1');
+		colorPicker2 = document.getElementById('color-picker2');
+		colorPicker3 = document.getElementById('color-picker3');
+		colorPicker4 = document.getElementById('color-picker4');
+		colorPicker5 = document.getElementById('color-picker5');
+		colorPicker6 = document.getElementById('color-picker6');
 		colorPicker1.value = defaultColor;
 		colorPicker2.value = defaultColor;
 		colorPicker3.value = defaultColor;
@@ -123,15 +123,15 @@ export default function CreateOffer() {
 	const handleClick = (e) => {
 		e.preventDefault();
 		if (file === null) {
-			swal("Error", "Please select an image", "info");
+			swal('Error', 'Please select an image', 'info');
 			return;
 		}
 		if (cat.length === 0) {
-			swal("Error", "Please select at least one category", "info");
+			swal('Error', 'Please select at least one category', 'info');
 			return;
 		}
 		if (size.length === 0) {
-			swal("Error", "Please select at least one size", "info");
+			swal('Error', 'Please select at least one size', 'info');
 			return;
 		}
 		let fileName = new Date().getTime() + file.name;
@@ -139,27 +139,34 @@ export default function CreateOffer() {
 		const storageRef = ref(storage, fileName);
 		const uploadTask = uploadBytesResumable(storageRef, file);
 		uploadTask.on(
-			"state_changed",
+			'state_changed',
 			(snapshot) => {
 				const progress =
 					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-				console.log("Upload is " + progress + "% done");
+				console.log('Upload is ' + progress + '% done');
 				switch (snapshot.state) {
-					case "paused":
-						console.log("Upload is paused");
+					case 'paused':
+						console.log('Upload is paused');
 						break;
-					case "running":
-						console.log("Upload is running");
+					case 'running':
+						console.log('Upload is running');
 						break;
 					default:
 				}
 			},
 			(error) => {
-				swal("Error", error.message, "error");
+				swal('Error', error.message, 'error');
 			},
 			() => {
 				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-					const color = [color1, color2, color3, color4, color5, color6];
+					const color = [
+						color1,
+						color2,
+						color3,
+						color4,
+						color5,
+						color6,
+					];
 					const colors = color.filter((item) => {
 						return item.length !== 0;
 					});
@@ -172,31 +179,31 @@ export default function CreateOffer() {
 					};
 					addOffer(offer, dispatch);
 					swal({
-						title: "Success",
-						text: "Offer added successfully",
-						icon: "success",
-						button: "Ok",
+						title: 'Success',
+						text: 'Offer added successfully',
+						icon: 'success',
+						button: 'Ok',
 						closeOnClickOutside: false,
 						closeOnEsc: false,
 					}).then(() => {
 						setInputs({
-							title: "",
-							desc: "",
-							price: "",
-							originalPrice: "",
-							offerPrice:"",
-							img: "",
+							title: '',
+							desc: '',
+							price: '',
+							originalPrice: '',
+							offerPrice: '',
+							img: '',
 							categories: [],
 							size: [],
 							color: [],
-							quantity: "",
-							width: "",
-							height: "",
-							length: "",
-							weight: "",
+							quantity: '',
+							width: '',
+							height: '',
+							length: '',
+							weight: '',
 						});
 						fileName = null;
-						document.querySelector("#file").value = null;
+						document.querySelector('#file').value = null;
 						setFile(null);
 						file = null;
 						setCat([]);
@@ -207,32 +214,34 @@ export default function CreateOffer() {
 						setColor4([]);
 						setColor5([]);
 						setColor6([]);
-						colorPicker1 = document.getElementById("color-picker1");
-						colorPicker2 = document.getElementById("color-picker2");
-						colorPicker3 = document.getElementById("color-picker3");
-						colorPicker4 = document.getElementById("color-picker4");
-						colorPicker5 = document.getElementById("color-picker5");
-						colorPicker6 = document.getElementById("color-picker6");
+						colorPicker1 = document.getElementById('color-picker1');
+						colorPicker2 = document.getElementById('color-picker2');
+						colorPicker3 = document.getElementById('color-picker3');
+						colorPicker4 = document.getElementById('color-picker4');
+						colorPicker5 = document.getElementById('color-picker5');
+						colorPicker6 = document.getElementById('color-picker6');
 						colorPicker1.value = defaultColor;
 						colorPicker2.value = defaultColor;
 						colorPicker3.value = defaultColor;
 						colorPicker4.value = defaultColor;
 						colorPicker5.value = defaultColor;
 						colorPicker6.value = defaultColor;
-						document.querySelector(".Title").value = "";
-						document.querySelector(".Description").value = "";
-						document.querySelector(".Price").value = "";
-						document.querySelector(".OriginalPrice").value = "";
-						document.querySelector(".Categories").value = "";
-						document.querySelector(".Quantity").value = "";
-						document.querySelector(".Width").value = "";
-						document.querySelector(".Height").value = "";
-						document.querySelector(".Length").value = "";
-						document.querySelector(".Weight").value = "";
-						document.querySelector(".expirationDate1").value = "";
-						document.querySelector(".expirationDate2").value = "";
+						document.querySelector('.Title').value = '';
+						document.querySelector('.Description').value = '';
+						document.querySelector('.Price').value = '';
+						document.querySelector('.OriginalPrice').value = '';
+						document.querySelector('.Categories').value = '';
+						document.querySelector('.Quantity').value = '';
+						document.querySelector('.Width').value = '';
+						document.querySelector('.Height').value = '';
+						document.querySelector('.Length').value = '';
+						document.querySelector('.Weight').value = '';
+						document.querySelector('.expirationDate1').value = '';
+						document.querySelector('.expirationDate2').value = '';
 						document.querySelector('.offerPrice').value = '';
-						for (const checkbox of document.querySelectorAll(".Size")) {
+						for (const checkbox of document.querySelectorAll(
+							'.Size',
+						)) {
 							checkbox.checked = true;
 							checkbox.checked = false;
 						}
@@ -242,219 +251,246 @@ export default function CreateOffer() {
 		);
 	};
 	return (
-    <div className="newProduct">
-      <h1 className="addProductTitle">New Offer</h1>
-      <form className="addProductForm">
-        <div className="divition1">
-          <div className="addProductItem">
-            <label>Image</label>
-            <input
-              type="file"
-              id="file"
-              onChange={(e) => setFile(e.target.files[0])}
-            />
-          </div>
-          <div className="addProductItem">
-            <label>Title</label>
-            <input
-              name="title"
-              className="Title"
-              type="text"
-              placeholder="Apple Airpods"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="addProductItem">
-            <label>Description</label>
-            <input
-              name="desc"
-              className="Description"
-              type="text"
-              placeholder="description..."
-              onChange={handleChange}
-            />
-          </div>
-          <div className="addProductItem">
-            <fieldset>
-              <legend>Size</legend>
-              <input
-                type="checkbox"
-                className="Size"
-                name="size"
-                onClick={addSize}
-                value="S"
-              />
-              <label> S</label>
-              <br />
-              <input
-                type="checkbox"
-                className="Size"
-                name="size"
-                onClick={addSize}
-                value="M"
-              />
-              <label> M</label>
-              <br />
-              <input
-                type="checkbox"
-                className="Size"
-                name="size"
-                onClick={addSize}
-                value="L"
-              />
-              <label> L</label>
-              <br />
-              <input
-                type="checkbox"
-                className="Size"
-                name="size"
-                onClick={addSize}
-                value="XL"
-              />
-              <label> XL</label>
-              <br />
-              <input
-                type="checkbox"
-                name="size"
-                onClick={addSize}
-                value="XXL"
-                className="Size"
-              />
-              <label> XXL</label>
-              <br />
-            </fieldset>
-          </div>
-          <div className="addProductItem color">
-            <label>Color</label>
-            <br />
-            <input id="color-picker1" name="color1" type="color" />
-            <input id="color-picker2" name="color1" type="color" />
-            <input id="color-picker3" name="color1" type="color" />
-            <input id="color-picker4" name="color1" type="color" />
-            <input id="color-picker5" name="color1" type="color" />
-            <input id="color-picker6" name="color1" type="color" />
-          </div>
-          <div className="addProductItem">
-            <button onClick={clearColor}>Clear All Colors</button>
-          </div>
-        </div>
-        <div className="divition2">
-          <div className="addProductItem">
-            <label>Price</label>
-            <input
-              name="price"
-              type="number"
-              placeholder="100"
-              onChange={handleChange}
-              className="Price"
-            />
-          </div>
-          <div className="addProductItem">
-            <label>Offer Price</label>
-            <input
-              name="offerPrice"
-              type="number"
-              placeholder="100"
-              onChange={handleChange}
-              className="offerPrice"
-            />
-          </div>
-          <div className="addProductItem">
-            <label>Original Price</label>
-            <input
-              name="originalPrice"
-              type="number"
-              placeholder="100"
-              onChange={handleChange}
-              className="OriginalPrice"
-            />
-          </div>
-          <div className="addProductItem">
-            <label>Categories</label>
-            <select
-              name="categories"
-              onChange={handleCat}
-              className="Categories"
-            >
-              <option value="">Select Categories</option>
-              <option value="offer">offer</option>
-            </select>
-          </div>
-          <div className="addProductItem">
-            <label>Quantity</label>
-            <input
-              name="quantity"
-              type="number"
-              placeholder="1"
-              onChange={handleChange}
-              className="Quantity"
-            />
-          </div>
-        </div>
-        <div className="divition3">
-          <div className="addProductItem">
-            <label>Offer Width</label>
-            <input
-              name="width"
-              type="number"
-              placeholder="200"
-              onChange={handleChange}
-              className="Width"
-            />
-          </div>
-          <div className="addProductItem">
-            <label>Offer Height</label>
-            <input
-              name="height"
-              type="number"
-              placeholder="200"
-              onChange={handleChange}
-              className="Height"
-            />
-          </div>
-          <div className="addProductItem">
-            <label>Offer Length</label>
-            <input
-              name="length"
-              type="number"
-              placeholder="200"
-              onChange={handleChange}
-              className="Length"
-            />
-          </div>
-          <div className="addProductItem">
-            <label>Offer Weight</label>
-            <input
-              name="weight"
-              type="number"
-              placeholder="200"
-              onChange={handleChange}
-              className="Weight"
-            />
-          </div>
-          <div className="addProductItem">
-            <label>Start Date Offer</label>
-            <input
-              name="timeStart"
-              type="date"
-              onChange={handleChange}
-              className="expirationDate1"
-            />
-          </div>
-          <div className="addProductItem">
-            <label>End Date Offer</label>
-            <input
-              name="timeEnd"
-              type="date"
-              onChange={handleChange}
-              className="expirationDate2"
-            />
-          </div>
-          <button onClick={handleClick} className="addProductButton">
-            Create
-          </button>
-        </div>
-      </form>
-    </div>
-  );
+		<div className='newProduct'>
+			<h1 className='addProductTitle'>New Offer</h1>
+			<form className='addProductForm'>
+				<div className='divition1'>
+					<div className='addProductItem'>
+						<label>Image</label>
+						<input
+							type='file'
+							id='file'
+							onChange={(e) => setFile(e.target.files[0])}
+						/>
+					</div>
+					<div className='addProductItem'>
+						<label>Title</label>
+						<input
+							name='title'
+							className='Title'
+							type='text'
+							placeholder='Apple Airpods'
+							onChange={handleChange}
+						/>
+					</div>
+					<div className='addProductItem'>
+						<label>Description</label>
+						<input
+							name='desc'
+							className='Description'
+							type='text'
+							placeholder='description...'
+							onChange={handleChange}
+						/>
+					</div>
+					<div className='addProductItem'>
+						<fieldset>
+							<legend>Size</legend>
+							<input
+								type='checkbox'
+								className='Size'
+								name='size'
+								onClick={addSize}
+								value='S'
+							/>
+							<label> S</label>
+							<br />
+							<input
+								type='checkbox'
+								className='Size'
+								name='size'
+								onClick={addSize}
+								value='M'
+							/>
+							<label> M</label>
+							<br />
+							<input
+								type='checkbox'
+								className='Size'
+								name='size'
+								onClick={addSize}
+								value='L'
+							/>
+							<label> L</label>
+							<br />
+							<input
+								type='checkbox'
+								className='Size'
+								name='size'
+								onClick={addSize}
+								value='XL'
+							/>
+							<label> XL</label>
+							<br />
+							<input
+								type='checkbox'
+								name='size'
+								onClick={addSize}
+								value='XXL'
+								className='Size'
+							/>
+							<label> XXL</label>
+							<br />
+						</fieldset>
+					</div>
+					<div className='addProductItem color'>
+						<label>Color</label>
+						<br />
+						<input
+							id='color-picker1'
+							name='color1'
+							type='color'
+						/>
+						<input
+							id='color-picker2'
+							name='color1'
+							type='color'
+						/>
+						<input
+							id='color-picker3'
+							name='color1'
+							type='color'
+						/>
+						<input
+							id='color-picker4'
+							name='color1'
+							type='color'
+						/>
+						<input
+							id='color-picker5'
+							name='color1'
+							type='color'
+						/>
+						<input
+							id='color-picker6'
+							name='color1'
+							type='color'
+						/>
+					</div>
+					<div className='addProductItem'>
+						<button onClick={clearColor}>Clear All Colors</button>
+					</div>
+				</div>
+				<div className='divition2'>
+					<div className='addProductItem'>
+						<label>Price</label>
+						<input
+							name='price'
+							type='number'
+							placeholder='100'
+							onChange={handleChange}
+							className='Price'
+						/>
+					</div>
+					<div className='addProductItem'>
+						<label>Offer Price</label>
+						<input
+							name='offerPrice'
+							type='number'
+							placeholder='100'
+							onChange={handleChange}
+							className='offerPrice'
+						/>
+					</div>
+					<div className='addProductItem'>
+						<label>Original Price</label>
+						<input
+							name='originalPrice'
+							type='number'
+							placeholder='100'
+							onChange={handleChange}
+							className='OriginalPrice'
+						/>
+					</div>
+					<div className='addProductItem'>
+						<label>Categories</label>
+						<select
+							name='categories'
+							onChange={handleCat}
+							className='Categories'
+						>
+							<option value=''>Select Categories</option>
+							<option value='offer'>offer</option>
+						</select>
+					</div>
+					<div className='addProductItem'>
+						<label>Quantity</label>
+						<input
+							name='quantity'
+							type='number'
+							placeholder='1'
+							onChange={handleChange}
+							className='Quantity'
+						/>
+					</div>
+				</div>
+				<div className='divition3'>
+					<div className='addProductItem'>
+						<label>Offer Width</label>
+						<input
+							name='width'
+							type='number'
+							placeholder='200'
+							onChange={handleChange}
+							className='Width'
+						/>
+					</div>
+					<div className='addProductItem'>
+						<label>Offer Height</label>
+						<input
+							name='height'
+							type='number'
+							placeholder='200'
+							onChange={handleChange}
+							className='Height'
+						/>
+					</div>
+					<div className='addProductItem'>
+						<label>Offer Length</label>
+						<input
+							name='length'
+							type='number'
+							placeholder='200'
+							onChange={handleChange}
+							className='Length'
+						/>
+					</div>
+					<div className='addProductItem'>
+						<label>Offer Weight</label>
+						<input
+							name='weight'
+							type='number'
+							placeholder='200'
+							onChange={handleChange}
+							className='Weight'
+						/>
+					</div>
+					<div className='addProductItem'>
+						<label>Start Date Offer</label>
+						<input
+							name='timeStart'
+							type='date'
+							onChange={handleChange}
+							className='expirationDate1'
+						/>
+					</div>
+					<div className='addProductItem'>
+						<label>End Date Offer</label>
+						<input
+							name='timeEnd'
+							type='date'
+							onChange={handleChange}
+							className='expirationDate2'
+						/>
+					</div>
+					<button
+						onClick={handleClick}
+						className='addProductButton'
+					>
+						Create
+					</button>
+				</div>
+			</form>
+		</div>
+	);
 }
