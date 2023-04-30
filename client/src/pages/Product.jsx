@@ -144,7 +144,7 @@ const Product = () => {
 	userId = JSON.parse(userId);
 	userId = userId.user;
 	userId = JSON.parse(userId);
-	userId = userId.currentUser._id;
+	userId = userId?.currentUser?._id;
 	useEffect(() => {
 		const getProduct = async () => {
 			try {

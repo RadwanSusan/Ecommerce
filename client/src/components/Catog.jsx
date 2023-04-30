@@ -27,7 +27,6 @@ const Catog = ({ item }) => {
 	const [product_id, setProduct_id] = useState(0);
 	const [quantity, setQuantity] = useState(1);
 	const [color, setColor] = useState('');
-	const colorToAdd = [];
 	const [size, setSize] = useState('');
 	const dispatch = useDispatch();
 	const [AllProducts, setAllProducts] = useState([]);
@@ -39,8 +38,8 @@ const Catog = ({ item }) => {
 		const getProducts = async () => {
 			try {
 				const res = await axios.get(
-					item.cat
-						? `http://localhost:4000/api/products?category=${item.cat}`
+					item?.cat
+						? `http://localhost:4000/api/products?category=${item?.cat}`
 						: 'http://localhost:4000/api/products',
 				);
 				setProducts(res.data);
@@ -49,7 +48,8 @@ const Catog = ({ item }) => {
 			}
 		};
 		getProducts();
-	}, [item.cat]);
+	}, [item?.cat]);
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -66,6 +66,7 @@ const Catog = ({ item }) => {
 		};
 		fetchData();
 	}, []);
+
 	const showCartItems = Array.from(document.querySelectorAll('.show-cart2'));
 	const aramex = document.querySelector('.CatogallColors');
 	const filterSizeCatog = document.querySelector('.FilterSizeCatog');
@@ -130,7 +131,6 @@ const Catog = ({ item }) => {
 						setColor('');
 					} else {
 						setColor(event.target.value);
-						colorToAdd[0] = event.target.value;
 						const siblings = getSiblings(event.target);
 						siblings.forEach((sibling) => {
 							sibling.style.border = 'none';
@@ -168,17 +168,19 @@ const Catog = ({ item }) => {
 		}),
 	);
 	let cartProducts = JSON.parse(localStorage.getItem('persist:root'));
-	cartProducts = cartProducts.cart;
-	cartProducts = JSON.parse(cartProducts);
-	const mergedCart = cartProducts.products.reduce((acc, curr) => {
-		const existingItem = acc.find((item) => item._id === curr._id);
-		if (existingItem) {
-			existingItem.quantity += curr.quantity;
-		} else {
-			acc.push({ ...curr });
-		}
-		return acc;
-	}, []);
+	let mergedCart = [];
+	if (cartProducts.cart.length !== 0) {
+		cartProducts = cartProducts.cart;
+		mergedCart = JSON.parse(cartProducts).products.reduce((acc, curr) => {
+			const existingItem = acc.find((item) => item._id === curr._id);
+			if (existingItem) {
+				existingItem.quantity += curr.quantity;
+			} else {
+				acc.push({ ...curr });
+			}
+			return acc;
+		}, []);
+	}
 	const displayAlert = (title, message, type) => {
 		swal(title, message, type);
 	};
@@ -265,7 +267,6 @@ const Catog = ({ item }) => {
 			return;
 		}
 		if (cartItem && cartItem.quantity + quantity <= item.quantity) {
-			console.log(colorToAdd[0]);
 			dispatch(
 				addProduct({
 					...cartItem,
@@ -283,7 +284,6 @@ const Catog = ({ item }) => {
 		} else if (cartItem) {
 			showInfoMessage('Try with a different amount!');
 		} else {
-			console.log(colorToAdd);
 			dispatch(
 				addProduct({
 					...item,
@@ -315,11 +315,6 @@ const Catog = ({ item }) => {
 			ele.target.parentNode.previousSibling.style.display = 'block';
 		}
 	};
-	let userId = localStorage.getItem('persist:root');
-	userId = JSON.parse(userId);
-	userId = userId.user;
-	userId = JSON.parse(userId);
-	userId = userId.currentUser._id;
 	const addToWishlist = (productId, identifier) => {
 		if (identifier === 'remove') {
 			swal('Success', 'Product removed from wishlist!', 'success');
@@ -331,22 +326,29 @@ const Catog = ({ item }) => {
 	};
 	const isMountedRef = useRef(true);
 	const [wishlistData, setWishlistData] = useState([]);
-	const fetchData = useCallback(async (userID) => {
-		try {
-			const res = await userWishListArrayGet(userID);
-			if (isMountedRef.current) {
-				setWishlistData([...res]);
+	let userId = localStorage.getItem('persist:root');
+	console.log(JSON.parse(userId).user);
+	useEffect(async () => {
+		if (JSON.parse(userId).user) {
+			try {
+				userId = JSON.parse(userId);
+				userId = userId?.user;
+				userId = JSON.parse(userId);
+				userId = userId?.currentUser?._id;
+				const res = await userWishListArrayGet(userId);
+				if (isMountedRef.current) {
+					setWishlistData([...res]);
+				}
+			} catch (error) {
+				console.error(error);
 			}
-		} catch (error) {
-			console.error(error);
+		} else {
+			console.log('ZAIIIIIIIIIIIIIID');
 		}
-	}, []);
-	useEffect(() => {
-		fetchData(userId);
 		return () => {
 			isMountedRef.current = false;
 		};
-	}, [fetchData, userId]);
+	}, [userId]);
 	if (!isMountedRef.current) {
 		return null;
 	}
@@ -652,7 +654,7 @@ const Catog = ({ item }) => {
 				id='listingtabs_0'
 				className='block sm-listing-tabs tab-cms-block slider snipcss-X3nN9'
 			>
-				<h2>{item.title}</h2>
+				<h2>{item?.title}</h2>
 				<div className='block-content'>
 					<div className='ltabs-wrap'>
 						<div className='ltabs-tabs-container'>
@@ -668,7 +670,7 @@ const Catog = ({ item }) => {
 						<div className='listingtabs-cms'>
 							<div className='cms-container'>
 								<div className='banner-image container-hidd'>
-									<Link to={`/products/${item.cat}`}>
+									<Link to={`/products/${item?.cat}`}>
 										<img
 											className='mark-lazy new-lazy'
 											src='http://magento2.magentech.com/themes/sm_venuse/pub/media/wysiwyg/banner/item-6.jpg'
