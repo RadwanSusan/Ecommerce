@@ -9,7 +9,7 @@ import "./login.css"
 const Login = () => {
 	const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-	let { isFetching, error } = useSelector((state) => state.user);
+	let { isFetching, error  } = useSelector((state) => state.user);
   
 	const dispatch = useDispatch();
 
@@ -33,14 +33,14 @@ const Login = () => {
     
     useEffect(() => {
       if (error) {
-        swal("Invalid Credentials Try Again!");
-        setEmail("");
-        setPassword("");
-        document.getElementById("email").value = "";
-        document.getElementById("password").value = "";
+        swal('Invalid Credentials Try Again!');
+        setEmail('');
+        setPassword('');
+        document.getElementById('email').value = '';
+        document.getElementById('password').value = '';
       }
       
-    }, [error]);
+    }, [error ]);
   
 
     

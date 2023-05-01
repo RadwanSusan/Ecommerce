@@ -145,6 +145,13 @@ const Product = () => {
 	userId = userId.user;
 	userId = JSON.parse(userId);
 	userId = userId?.currentUser?._id;
+		const [wishlistLogin, setWishlistLogin] = useState(false);
+
+	useEffect(() => {
+		  if (userId !== undefined) {
+        setWishlistLogin(true);
+      } 
+	}, [userId]);
 	useEffect(() => {
 		const getProduct = async () => {
 			try {
@@ -224,14 +231,33 @@ const Product = () => {
 		}
 		return true;
 	};
+
 	const handleClick = () => {
-		dispatch(addProduct({ ...product, quantity, color, size }));
-		swal("Success", "Product added to cart!", "success");
-		product.quantity -= quantity;
-		if (product.quantity < 1) {
-			document.querySelector(".AddCart").disabled = true;
+		if (wishlistLogin === false) {
+			swal({
+				title: 'You have to login !',
+				icon: 'warning',
+				buttons: true,
+				confirmButtonColor: '#42A5F5',
+				confirmButtonText: 'Login',
+				showCancelButton: true,
+
+				closeOnConfirm: false,
+			}).then((e) => {
+				if (e) {
+					window.location.href = '/login';
+				}
+			});
 		}
-		setQuantity(1);
+		else {
+			dispatch(addProduct({ ...product, quantity, color, size }));
+			swal("Success", "Product added to cart!", "success");
+			product.quantity -= quantity;
+			if (product.quantity < 1) {
+				document.querySelector(".AddCart").disabled = true;
+			}
+			setQuantity(1);
+		}
 	};
 	return (
 		<Container>
