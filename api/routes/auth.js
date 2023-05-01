@@ -27,19 +27,6 @@ router.post('/register', async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-router.get('/findAdmin/:email', async (req, res) => {
-	try {
-	  console.log(req.params);
-
-    const user = await User.findOne(req.params);
-	//   const user = await User.findById(req.params.id);
-	  console.log(user);
-    const { isAdmin } = user._doc;
-    res.status(200).json(isAdmin);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
 
 //LOGIN
 
