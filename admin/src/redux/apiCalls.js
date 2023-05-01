@@ -45,20 +45,22 @@ import {
 export const login = async (dispatch, user ) => {
 	dispatch(loginStart());
 	try {
-		// console.log(user.email);
+		console.log(user.email);
 
 		const res = await publicRequest.post("/auth/login", user);
-		// const res2 = await publicRequest.get(`/auth/findAdmin/${user.email}`);
-
-		// console.log(res);
+		const res2 = await publicRequest.get(`/auth/findAdmin/${user.email}`);
+		let newData =  {
+			
+		}
+		console.log(newData);
 		// console.log(res2);
 		
-		// dispatch(loginSuccess(res.data),);
-		// dispatch(loginSuccess(res2.data));
+		// dispatch(loginSuccess(res.data));
+		// dispatch(loginSuccess(newData));
 
-  setTimeout(() => {
-    window.location.href = '/';
-  });
+//   setTimeout(() => {
+    // window.location.href = '/';
+//   });
 
 	} catch (err) {
 		dispatch(loginFailure());
