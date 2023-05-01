@@ -1,5 +1,5 @@
-import { loginFailure, loginStart, loginSuccess } from "./userRedux";
-import { publicRequest, userRequest } from "../requestMethods";
+import { loginFailure, loginStart, loginSuccess } from './userRedux';
+import { publicRequest, userRequest } from '../requestMethods';
 import {
 	getProductFailure,
 	getProductStart,
@@ -13,7 +13,7 @@ import {
 	addProductFailure,
 	addProductStart,
 	addProductSuccess,
-} from "./productRedux";
+} from './productRedux';
 import {
 	getOfferStart,
 	getOfferSuccess,
@@ -27,7 +27,7 @@ import {
 	updateOfferStart,
 	updateOfferSuccess,
 	updateOfferFailure,
-} from "./offerRedux";
+} from './offerRedux';
 import {
 	getUserStart,
 	getUserSuccess,
@@ -41,39 +41,31 @@ import {
 	addUserStart,
 	addUserSuccess,
 	addUserFailure,
-} from "./userAllRedux";
-export const login = async (dispatch, user ) => {
+} from './userAllRedux';
+export const login = async (dispatch, user) => {
 	dispatch(loginStart());
 	try {
-		console.log(user.email);
-
-		const res = await publicRequest.post("/auth/login", user);
-		const res2 = await publicRequest.get(`/auth/findAdmin/${user.email}`);
-		let newData =  {
-			
+		const res = await publicRequest.post('/auth/login', user);
+		if (res.data.isAdmin) {
+			dispatch(loginSuccess(res.data));
+			setTimeout(() => {
+				window.location.href = '/';
+			});
+		} else {
+			dispatch(loginFailure());
 		}
-		console.log(newData);
-		// console.log(res2);
-		
-		// dispatch(loginSuccess(res.data));
-		// dispatch(loginSuccess(newData));
-
-//   setTimeout(() => {
-    // window.location.href = '/';
-//   });
-
 	} catch (err) {
 		dispatch(loginFailure());
 	}
 };
 export const logoutUser = () => {
-  localStorage.removeItem("persist:root");
-  window.location.href = "/login";
+	localStorage.removeItem('persist:root');
+	window.location.href = '/login';
 };
 export const getProducts = async (dispatch) => {
 	dispatch(getProductStart());
 	try {
-		const res = await publicRequest.get("/products");
+		const res = await publicRequest.get('/products');
 		dispatch(getProductSuccess(res.data));
 	} catch (err) {
 		dispatch(getProductFailure());
@@ -109,7 +101,7 @@ export const addProduct = async (product, dispatch) => {
 export const getUser = async (dispatch) => {
 	dispatch(getUserStart());
 	try {
-		const res = await userRequest.get("/users");
+		const res = await userRequest.get('/users');
 		dispatch(getUserSuccess(res.data));
 	} catch (err) {
 		dispatch(getUserFailure());
