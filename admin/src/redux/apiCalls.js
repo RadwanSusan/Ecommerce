@@ -42,11 +42,20 @@ import {
 	addUserSuccess,
 	addUserFailure,
 } from "./userAllRedux";
-export const login = async (dispatch, user) => {
+export const login = async (dispatch, user ) => {
 	dispatch(loginStart());
 	try {
+		// console.log(user.email);
+
 		const res = await publicRequest.post("/auth/login", user);
-		dispatch(loginSuccess(res.data));
+		// const res2 = await publicRequest.get(`/auth/findAdmin/${user.email}`);
+
+		// console.log(res);
+		// console.log(res2);
+		
+		// dispatch(loginSuccess(res.data),);
+		// dispatch(loginSuccess(res2.data));
+
   setTimeout(() => {
     window.location.href = '/';
   });
