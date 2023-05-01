@@ -38,113 +38,95 @@ const FilterSizeOption = styled.option``;
 const Offer = () => {
 	const [zaidVar, setZaidVar] = useState(0);
 	const [product_id, setProduct_id] = useState(0);
-	window.onload = function () {
-		let input = document.getElementsByClassName(
-			'block_quantity__number',
-		)[0];
-		let idOffer;
-		document.querySelectorAll('.show-cart').forEach((item) =>
-			item.addEventListener('click', (e) => {
-				document.querySelector('.productCard_block').style.display =
-					'block';
-				document.body.style.overflow = 'hidden';
-				document.querySelector('.productCard_block').style.overflow =
-					'hidden';
-				document.querySelector('.backLayerForShowCart').style.display =
-					'block';
-				document.querySelector('.backLayerForShowCart').style.overflow =
-					'hidden';
-				idOffer = item.getAttribute('offer-id');
-				const viewArr = offer.find((offer) => offer._id === idOffer);
-				document.querySelector(
-					'.block_product__advantagesProduct',
-				).innerHTML = '';
-				document
-					.querySelector('.block_product__advantagesProduct')
-					.append(viewArr.desc);
-				let aramex = document.querySelector(
-					'.block_goodColor__allColors',
-				);
-				document.querySelector(
-					'.block_goodColor__allColors',
-				).innerHTML = '';
-				setZaidVar(viewArr._id);
-				setProduct_id(viewArr._id);
-				const getSiblings = (e) => {
-					let siblings = [];
-					if (!e.parentNode) {
-						return siblings;
-					}
-					let sibling = e.parentNode.firstChild;
-					while (sibling) {
-						if (sibling.nodeType === 1 && sibling !== e) {
-							siblings.push(sibling);
-						}
-						sibling = sibling.nextSibling;
-					}
+	let input = document.getElementsByClassName('block_quantity__number')[0];
+	let idOffer;
+	document.querySelectorAll('.show-cart').forEach((item) => {
+		item.addEventListener('click', (e) => {
+			document.querySelector('.productCard_block').style.display = 'block';
+			document.body.style.overflow = 'hidden';
+			document.querySelector('.productCard_block').style.overflow = 'hidden';
+			document.querySelector('.backLayerForShowCart').style.display =
+				'block';
+			document.querySelector('.backLayerForShowCart').style.overflow =
+				'hidden';
+			idOffer = item.getAttribute('offer-id');
+			const viewArr = offer.find((offer) => offer._id === idOffer);
+			document.querySelector('.block_product__advantagesProduct').innerHTML =
+				'';
+			document
+				.querySelector('.block_product__advantagesProduct')
+				.append(viewArr.desc);
+			let aramex = document.querySelector('.block_goodColor__allColors');
+			document.querySelector('.block_goodColor__allColors').innerHTML = '';
+			setZaidVar(viewArr._id);
+			setProduct_id(viewArr._id);
+			const getSiblings = (e) => {
+				let siblings = [];
+				if (!e.parentNode) {
 					return siblings;
-				};
-				viewArr.color.map((e) => {
-					let input1 = document.createElement('input');
-					input1.classList.add('radio_button');
-					input1.setAttribute('id', 'radioColor');
-					input1.setAttribute('name', 'colorOfItem');
-					input1.setAttribute('checked', 'checked');
-					input1.setAttribute('value', e);
-					let label = document.createElement('label');
-					label.setAttribute('for', 'radioColor');
-					label.classList.add(
-						'block_goodColor__radio',
-						'block_goodColor__black',
-					);
-					label.style.backgroundColor = `${e}`;
-					aramex.append(input1);
-					aramex.append(label);
-					input1.addEventListener('click', (e) => {
-						if (
-							e.target.nextElementSibling.style.border ===
-							'3px solid black'
-						) {
-							e.target.nextElementSibling.style.border = 'none';
-							setColor('');
-						} else {
-							setColor(e.target.value);
-							let siblings = getSiblings(e.target);
-							siblings.forEach((sibling) => {
-								sibling.style.border = 'none';
-							});
-							e.target.nextElementSibling.style.border =
-								'3px solid black';
-						}
-					});
-					return null;
+				}
+				let sibling = e.parentNode.firstChild;
+				while (sibling) {
+					if (sibling.nodeType === 1 && sibling !== e) {
+						siblings.push(sibling);
+					}
+					sibling = sibling.nextSibling;
+				}
+				return siblings;
+			};
+			viewArr.color.map((e) => {
+				let input1 = document.createElement('input');
+				input1.classList.add('radio_button');
+				input1.setAttribute('id', 'radioColor');
+				input1.setAttribute('name', 'colorOfItem');
+				input1.setAttribute('checked', 'checked');
+				input1.setAttribute('value', e);
+				let label = document.createElement('label');
+				label.setAttribute('for', 'radioColor');
+				label.classList.add(
+					'block_goodColor__radio',
+					'block_goodColor__black',
+				);
+				label.style.backgroundColor = `${e}`;
+				aramex.append(input1);
+				aramex.append(label);
+				input1.addEventListener('click', (e) => {
+					if (
+						e.target.nextElementSibling.style.border === '3px solid black'
+					) {
+						e.target.nextElementSibling.style.border = 'none';
+						setColor('');
+					} else {
+						setColor(e.target.value);
+						let siblings = getSiblings(e.target);
+						siblings.forEach((sibling) => {
+							sibling.style.border = 'none';
+						});
+						e.target.nextElementSibling.style.border = '3px solid black';
+					}
 				});
-				document.querySelector('.FilterSize').innerHTML = '';
-				viewArr.size.map((e) => {
-					const option = document.createElement('option');
-					option.innerHTML = e;
-					option.setAttribute('key', e);
-					document.querySelector('.FilterSize').append(option);
-				});
-				document.querySelector('.block_price__currency').innerHTML = '';
-				document.querySelector('.block_price__currency').append('$');
-				document
-					.querySelector('.block_price__currency')
-					.append(viewArr.price);
-			}),
-		);
-		document.querySelectorAll('.AiFillCloseCircle').forEach((item) =>
-			item.addEventListener('click', (e) => {
-				document.querySelector('.productCard_block').style.display =
-					'none';
-				document.body.style.overflow = '';
-				document.querySelector('.productCard_block').style.overflow =
-					'';
-				document.querySelector('.backLayerForShowCart').style.display =
-					'none';
-			}),
-		);
-	};
+				return null;
+			});
+			document.querySelector('.FilterSize').innerHTML = '';
+			viewArr.size.map((e) => {
+				const option = document.createElement('option');
+				option.innerHTML = e;
+				option.setAttribute('key', e);
+				document.querySelector('.FilterSize').append(option);
+			});
+			document.querySelector('.block_price__currency').innerHTML = '';
+			document.querySelector('.block_price__currency').append('$');
+			document.querySelector('.block_price__currency').append(viewArr.price);
+		});
+	});
+	document.querySelectorAll('.AiFillCloseCircle').forEach((item) =>
+		item.addEventListener('click', (e) => {
+			document.querySelector('.productCard_block').style.display = 'none';
+			document.body.style.overflow = '';
+			document.querySelector('.productCard_block').style.overflow = '';
+			document.querySelector('.backLayerForShowCart').style.display = 'none';
+		}),
+	);
 	const [quantityUp, setQuantityUp] = useState(1);
 	const [slideIndex, setSlideIndex] = useState(0);
 	const handleClick = (direction) => {
@@ -217,9 +199,7 @@ const Offer = () => {
 		fetchData();
 	}, []);
 	const handleQuantityOffer = (type, id) => {
-		const item = [...productGet, ...offerGet].find(
-			(item) => item._id === id,
-		);
+		const item = [...productGet, ...offerGet].find((item) => item._id === id);
 		const productMerged = mergedCart?.find((item) => item._id === id);
 		const maxQuantity = item.quantity - 1;
 		if (productMerged !== undefined) {
@@ -298,11 +278,7 @@ const Offer = () => {
 			const cartItem = mergedCart?.find((item) => item._id === productId);
 			if (cartItem) {
 				if (cartItem.quantity === item.quantity) {
-					swal(
-						'Info',
-						'You already have the maximum amount!',
-						'info',
-					);
+					swal('Info', 'You already have the maximum amount!', 'info');
 					document.querySelector('.AddCart').disabled = true;
 					return;
 				}
@@ -447,12 +423,8 @@ const Offer = () => {
 									</div>
 								</div>
 								<p className='block_model'>
-									<span className='block_model__text'>
-										Model:{' '}
-									</span>
-									<span className='block_model__number'>
-										505795
-									</span>
+									<span className='block_model__text'>Model: </span>
+									<span className='block_model__number'>505795</span>
 								</p>
 								<div className='block_product'>
 									<h2 className='block_name block_name__mainName'>
@@ -474,58 +446,38 @@ const Offer = () => {
 													<td>Around Ear</td>
 												</tr>
 												<tr>
-													<td>
-														Transducer Principle
-													</td>
-													<td>
-														Dynamic, Closed-back
-													</td>
+													<td>Transducer Principle</td>
+													<td>Dynamic, Closed-back</td>
 												</tr>
 												<tr>
 													<td>Frequency Response</td>
 													<td>16Hz – 22kHz</td>
 												</tr>
 												<tr>
-													<td>
-														Sound Pressure Level
-														(SPL)
-													</td>
-													<td>
-														113 dB (Passive: 1 kHz/1
-														Vrms)
-													</td>
+													<td>Sound Pressure Level (SPL)</td>
+													<td>113 dB (Passive: 1 kHz/1 Vrms)</td>
 												</tr>
 												<tr>
-													<td>
-														Total Harmonic
-														Distortion (THD)
-													</td>
-													<td>
-														&lt;0.5% (1 kHz, 100 dB
-														SPL)
-													</td>
+													<td>Total Harmonic Distortion (THD)</td>
+													<td>&lt;0.5% (1 kHz, 100 dB SPL)</td>
 												</tr>
 												<tr>
 													<td>Volume Control</td>
 													<td>
-														Earcup control when
-														Bluetooth connected
+														Earcup control when Bluetooth
+														connected
 													</td>
 												</tr>
 												<tr>
 													<td>Microphone Type</td>
 													<td>
-														Dual omni-directional
-														microphone <br />2 mic
-														beam forming array
+														Dual omni-directional microphone{' '}
+														<br />2 mic beam forming array
 													</td>
 												</tr>
 												<tr>
 													<td>Cable / Connector</td>
-													<td>
-														1.4m (Detachable) /
-														3.5mm Angled
-													</td>
+													<td>1.4m (Detachable) / 3.5mm Angled</td>
 												</tr>
 												<tr>
 													<td>Weight</td>
@@ -535,19 +487,18 @@ const Offer = () => {
 										</div>
 										<div className='block_descriptionInformation'>
 											<span>
-												Peak performance with active
-												noise cancelation. Sennheiser's
-												new MOMENTUM Wireless - Closed
-												circumauralheadphone featuring{' '}
+												Peak performance with active noise
+												cancelation. Sennheiser's new MOMENTUM
+												Wireless - Closed circumauralheadphone
+												featuring{' '}
 												<a
 													className='block_product__link'
 													href='#'
 												>
 													Bluetooth<sup>&reg;</sup>
 												</a>{' '}
-												wireless technology and
-												NoiseGard Hybrid active noise
-												cancelation
+												wireless technology and NoiseGard Hybrid
+												active noise cancelation
 											</span>
 										</div>
 										<div className='row11 '>
@@ -612,20 +563,14 @@ const Offer = () => {
 													<FilterSize
 														className='FilterSize'
 														onChange={(e) =>
-															setSize(
-																e.target.value,
-															)
+															setSize(e.target.value)
 														}
 													></FilterSize>
 												</div>
 												{chekAvail() ? (
 													<button
 														className='AddCart'
-														onClick={() =>
-															addToCart(
-																product_id,
-															)
-														}
+														onClick={() => addToCart(product_id)}
 													>
 														Add to Cart
 													</button>
@@ -717,307 +662,260 @@ const Offer = () => {
 												id='style-FUF77'
 												slideIndex={slideIndex}
 											>
-												{Object.keys(offer).map(
-													function (data) {
-														const {
-															timeStart,
-															timeEnd,
-														} = offer[data] || {};
-														if (
-															!timeStart ||
-															!timeEnd
-														) {
-															return null;
-														}
-														const [
-															year,
-															month,
-															date,
-														] = new Date()
-															.toISOString()
-															.slice(0, 10)
-															.split('-');
-														const [
-															startYear,
-															startMonth,
-															startDay,
-														] =
-															timeStart.split(
-																'-',
-															);
-														const [
-															endYear,
-															endMonth,
-															endDay,
-														] = timeEnd.split('-');
-														if (
-															year < startYear ||
-															year > endYear ||
-															(year ===
-																startYear &&
-																month <
-																	startMonth) ||
-															(year === endYear &&
-																month >
-																	endMonth) ||
-															(year ===
-																startYear &&
-																month ===
-																	startMonth &&
-																date <
-																	startDay) ||
-															(year === endYear &&
-																month ===
-																	endMonth &&
-																date > endDay)
-														) {
-															return null;
-														} else {
-															return (
-																<div
-																	className='owl-item active style-Ke3kW'
-																	id='style-Ke3kW'
-																>
-																	<div className='item product product-item'>
-																		<div
-																			className='product-item-info'
-																			data-container='product-grid'
-																		>
-																			<Link
-																				to={`/product/${offer[data]['_id']}`}
-																				className='action quickview-handler
+												{Object.keys(offer).map(function (data) {
+													const { timeStart, timeEnd } =
+														offer[data] || {};
+													if (!timeStart || !timeEnd) {
+														return null;
+													}
+													const [year, month, date] = new Date()
+														.toISOString()
+														.slice(0, 10)
+														.split('-');
+													const [startYear, startMonth, startDay] =
+														timeStart.split('-');
+													const [endYear, endMonth, endDay] =
+														timeEnd.split('-');
+													if (
+														year < startYear ||
+														year > endYear ||
+														(year === startYear &&
+															month < startMonth) ||
+														(year === endYear &&
+															month > endMonth) ||
+														(year === startYear &&
+															month === startMonth &&
+															date < startDay) ||
+														(year === endYear &&
+															month === endMonth &&
+															date > endDay)
+													) {
+														return null;
+													} else {
+														return (
+															<div
+																className='owl-item active style-Ke3kW'
+																id='style-Ke3kW'
+															>
+																<div className='item product product-item'>
+																	<div
+																		className='product-item-info'
+																		data-container='product-grid'
+																	>
+																		<Link
+																			to={`/product/${offer[data]['_id']}`}
+																			className='action quickview-handler
 																	sm_quickview_handler'
-																				title='Quick View'
-																				href=''
-																			>
-																				<div className='image-product'>
-																					<div
-																						className='product photo product-item-photo'
-																						tabindex='-1'
-																					>
-																						<span
-																							className='product-image-container product-image-container-13 style-j6oeg'
-																							id='style-j6oeg'
-																						>
-																							<span
-																								className='product-image-wrapper style-gKGpW'
-																								id='style-gKGpW'
-																							>
-																								<img
-																									className='product-image-photo'
-																									src={
-																										offer[
-																											data
-																										][
-																											'img'
-																										]
-																									}
-																									data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/l/-/l-03_1.jpg /'
-																									loading='lazy'
-																									width='250'
-																									height='250'
-																									alt={
-																										offer[
-																											data
-																										][
-																											'img'
-																										]
-																									}
-																								/>
-																							</span>
-																						</span>
-																					</div>
-																					<Link
-																						to={
-																							''
-																						}
-																						className='action quickview-handler
-																	sm_quickview_handler show-cart'
-																						title='Quick View'
-																						offer-id={
-																							offer[
-																								data
-																							][
-																								'_id'
-																							]
-																						}
-																					>
-																						<AiOutlineEye
-																							className='show-cart'
-																							offer-id={
-																								offer[
-																									data
-																								][
-																									'_id'
-																								]
-																							}
-																						/>
-																						<span>
-																							Quick
-																							View
-																						</span>
-																					</Link>
-																				</div>
-																			</Link>
-																			<div className='product details product-item-details'>
-																				<strong className='product name product-item-name'>
-																					<a
-																						className='product-item-link'
-																						href=''
-																					>
-																						{
-																							offer[
-																								data
-																							][
-																								'title'
-																							]
-																						}
-																					</a>
-																				</strong>
+																			title='Quick View'
+																			href=''
+																		>
+																			<div className='image-product'>
 																				<div
-																					className='price-box price-final_price'
-																					data-role='priceBox'
-																					data-product-id='13'
-																					data-price-box='product-id-13'
+																					className='product photo product-item-photo'
+																					tabindex='-1'
 																				>
-																					<span className='price-container price-final_price tax weee'>
+																					<span
+																						className='product-image-container product-image-container-13 style-j6oeg'
+																						id='style-j6oeg'
+																					>
 																						<span
-																							id='product-price-13'
-																							data-price-amount='250'
-																							data-price-type='finalPrice'
-																							className='price-wrapper '
+																							className='product-image-wrapper style-gKGpW'
+																							id='style-gKGpW'
 																						>
-																							<span className='price55'>
-																								${' '}
-																								{
+																							<img
+																								className='product-image-photo'
+																								src={
 																									offer[
 																										data
 																									][
-																										'price'
+																										'img'
 																									]
 																								}
-																							</span>
-																							<span className='priceOffer'>
-																								${' '}
-																								{
+																								data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/l/-/l-03_1.jpg /'
+																								loading='lazy'
+																								width='250'
+																								height='250'
+																								alt={
 																									offer[
 																										data
 																									][
-																										'offerPrice'
+																										'img'
 																									]
 																								}
-																							</span>
+																							/>
 																						</span>
 																					</span>
 																				</div>
-																				<div className='time-countdown-slide'>
-																					<div className='time-wrapper'>
-																						<div className='time-label clearfix'>
-																							<div className='stock-qty'>
-																								Availability:
-																								<span>
-																									150
-																								</span>
-																							</div>
-																							<div className='time-left'>
-																								Time
-																								left:
-																								<span>
-																									{timeago.format(
-																										offer[
-																											data
-																										][
-																											'timeEnd'
-																										],
-																									)}
-																								</span>
-																							</div>
+																				<Link
+																					to={''}
+																					className='action quickview-handler
+																	sm_quickview_handler show-cart'
+																					title='Quick View'
+																					offer-id={
+																						offer[data][
+																							'_id'
+																						]
+																					}
+																				>
+																					<AiOutlineEye
+																						className='show-cart'
+																						offer-id={
+																							offer[
+																								data
+																							]['_id']
+																						}
+																					/>
+																					<span>
+																						Quick View
+																					</span>
+																				</Link>
+																			</div>
+																		</Link>
+																		<div className='product details product-item-details'>
+																			<strong className='product name product-item-name'>
+																				<a
+																					className='product-item-link'
+																					href=''
+																				>
+																					{
+																						offer[data][
+																							'title'
+																						]
+																					}
+																				</a>
+																			</strong>
+																			<div
+																				className='price-box price-final_price'
+																				data-role='priceBox'
+																				data-product-id='13'
+																				data-price-box='product-id-13'
+																			>
+																				<span className='price-container price-final_price tax weee'>
+																					<span
+																						id='product-price-13'
+																						data-price-amount='250'
+																						data-price-type='finalPrice'
+																						className='price-wrapper '
+																					>
+																						<span className='price55'>
+																							${' '}
+																							{
+																								offer[
+																									data
+																								][
+																									'price'
+																								]
+																							}
+																						</span>
+																						<span className='priceOffer'>
+																							${' '}
+																							{
+																								offer[
+																									data
+																								][
+																									'offerPrice'
+																								]
+																							}
+																						</span>
+																					</span>
+																				</span>
+																			</div>
+																			<div className='time-countdown-slide'>
+																				<div className='time-wrapper'>
+																					<div className='time-label clearfix'>
+																						<div className='stock-qty'>
+																							Availability:
+																							<span>
+																								150
+																							</span>
 																						</div>
-																						<div className='time-ranger'>
-																							<div
-																								className='time-pass style-Tx4nd'
-																								id='style-Tx4nd'
-																							></div>
+																						<div className='time-left'>
+																							Time left:
+																							<span>
+																								{timeago.format(
+																									offer[
+																										data
+																									][
+																										'timeEnd'
+																									],
+																								)}
+																							</span>
 																						</div>
+																					</div>
+																					<div className='time-ranger'>
+																						<div
+																							className='time-pass style-Tx4nd'
+																							id='style-Tx4nd'
+																						></div>
 																					</div>
 																				</div>
-																				<div className='product-item-actions'>
-																					<div className='actions-primary'>
-																						<Link
-																							to={``}
+																			</div>
+																			<div className='product-item-actions'>
+																				<div className='actions-primary'>
+																					<Link to={``}>
+																						<button
+																							className='action tocart primary'
+																							data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/checkout\/cart\/add\/uenc\/aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo\/product\/13\/","data":{"product":"13","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
+																							type='button'
+																							title='Add to Cart'
 																						>
-																							<button
-																								className='action tocart primary'
-																								data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/checkout\/cart\/add\/uenc\/aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo\/product\/13\/","data":{"product":"13","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
-																								type='button'
-																								title='Add to Cart'
-																							>
-																								<span>
-																									Add
-																									to
-																									Cart
-																								</span>
-																							</button>
-																						</Link>
-																					</div>
-																					<div
-																						className='actions-secondary'
-																						data-role='add-to-links'
+																							<span>
+																								Add to
+																								Cart
+																							</span>
+																						</button>
+																					</Link>
+																				</div>
+																				<div
+																					className='actions-secondary'
+																					data-role='add-to-links'
+																				>
+																					<a
+																						href='#'
+																						className='action towishlist'
+																						data-action='add-to-wishlist'
+																						title='Add to Wish List'
 																					>
-																						<a
-																							href='#'
-																							className='action towishlist'
-																							data-action='add-to-wishlist'
-																							title='Add to Wish List'
-																						>
-																							<BsHeart />
-																							<span>
-																								Add
-																								to
-																								Wish
-																								List
-																							</span>
-																						</a>
-																						<a
-																							href='#'
-																							className='action tocompare'
-																							title='Add to Compare'
-																						>
-																							<IoGitCompareOutline />
-																							<span>
-																								Add
-																								to
-																								Compare
-																							</span>
-																						</a>
-																					</div>
+																						<BsHeart />
+																						<span>
+																							Add to Wish
+																							List
+																						</span>
+																					</a>
+																					<a
+																						href='#'
+																						className='action tocompare'
+																						title='Add to Compare'
+																					>
+																						<IoGitCompareOutline />
+																						<span>
+																							Add to
+																							Compare
+																						</span>
+																					</a>
 																				</div>
 																			</div>
 																		</div>
 																	</div>
 																</div>
-															);
-														}
-													},
-												)}
+															</div>
+														);
+													}
+												})}
 											</Wrapper1>
 										</div>
 										<div className='owl-nav'>
 											<div
 												role='presentation'
 												className='owl-prev disabled'
-												onClick={() =>
-													handleClick('left')
-												}
+												onClick={() => handleClick('left')}
 											>
 												<BiChevronLeft />
 											</div>
 											<div
 												role='presentation'
 												className='owl-next'
-												onClick={() =>
-													handleClick('right')
-												}
+												onClick={() => handleClick('right')}
 											>
 												<BiChevronRight />
 											</div>
@@ -1025,9 +923,7 @@ const Offer = () => {
 										<div className='owl-dots disabled'></div>
 									</div>
 									<div className='loading-content'>
-										<span className='hidden'>
-											Loading...
-										</span>
+										<span className='hidden'>Loading...</span>
 									</div>
 								</div>
 							</div>
