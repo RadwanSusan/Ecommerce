@@ -382,6 +382,11 @@ export default function Product() {
       document.querySelector('.color-picker6').classList.add('haveColor');
     }
   };
+  // console.log(product.quantity);
+  // if (product.quantity <= 0) {
+  //   product.inStock = false;
+  // }
+  
   return (
     <div className='product'>
       <div className='productTitleContainer'>

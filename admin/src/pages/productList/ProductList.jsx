@@ -69,23 +69,33 @@ export default function ProductList() {
 			},
 		},
 	];
+	const newObj = products.map((row) => ({ ...row }));
+  console.log(`🚀  file: OfferList.jsx:83  newObj =>`, newObj);
+  newObj.map((row) => {
+    if (row.quantity === 0) {
+      row.inStock = false;
+    }
+    return row;
+  });
+  console.log(`🚀  file: OfferList.jsx:85  newObj =>`, newObj);
+
 	return (
-		<div className="productList">
-			<div className="middle-product-create">
-				<h2 className="productAddButton1">Create Product : </h2>
-				<Link to="/newproduct">
-					<button className="productAddButton">Create</button>
-				</Link>
-			</div>
-			<DataGrid
-				rows={products}
-				disableSelectionOnClick
-				columns={columns}
-				getRowId={(row) => row._id}
-				pageSize={13}
-				autoHeight
-				rowsPerPageOptions={[5, 10, 25]}
-			/>
-		</div>
-	);
+    <div className='productList'>
+      <div className='middle-product-create'>
+        <h2 className='productAddButton1'>Create Product : </h2>
+        <Link to='/newproduct'>
+          <button className='productAddButton'>Create</button>
+        </Link>
+      </div>
+      <DataGrid
+        rows={newObj}
+        disableSelectionOnClick
+        columns={columns}
+        getRowId={(row) => row._id}
+        pageSize={13}
+        autoHeight
+        rowsPerPageOptions={[5, 10, 25]}
+      />
+    </div>
+  );
 }

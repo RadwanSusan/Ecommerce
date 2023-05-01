@@ -82,22 +82,22 @@ export default function Offer() {
 	console.log(`🚀  file: OfferList.jsx:85  newObj =>`, newObj);
 
 	return (
-		<div className='productList'>
-			<div className='middle-product-create'>
-				<h2 className='productAddButton1'>Create Offer : </h2>
-				<Link to='/createOffer'>
-					<button className='productAddButton'>Create</button>
-				</Link>
-			</div>
-			<DataGrid
-				rows={offer}
-				disableSelectionOnClick
-				columns={columns}
-				getRowId={(row) => row._id}
-				pageSize={13}
-				autoHeight
-				rowsPerPageOptions={[5, 10, 25]}
-			/>
-		</div>
-	);
+    <div className='productList'>
+      <div className='middle-product-create'>
+        <h2 className='productAddButton1'>Create Offer : </h2>
+        <Link to='/createOffer'>
+          <button className='productAddButton'>Create</button>
+        </Link>
+      </div>
+      <DataGrid
+        rows={newObj}
+        disableSelectionOnClick
+        columns={columns}
+        getRowId={(row) => row._id}
+        pageSize={13}
+        autoHeight
+        rowsPerPageOptions={[5, 10, 25]}
+      />
+    </div>
+  );
 }
