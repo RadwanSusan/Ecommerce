@@ -27,9 +27,11 @@ router.post('/register', async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-router.get('/findAdmin/:id', async (req, res) => {
-  try {
-	  const user = await User.findById(req.params.id);
+router.get('/findAdmin', async (req, res) => {
+	try {
+	  const { email } = req.body;
+    const user = await User.findOne({ email: email });
+	//   const user = await User.findById(req.params.id);
 	  console.log(user);
     const { isAdmin } = user._doc;
     res.status(200).json(isAdmin);
