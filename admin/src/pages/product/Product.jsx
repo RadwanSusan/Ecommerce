@@ -70,6 +70,7 @@ export default function Product() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     let fileName;
     if (file !== null) {
       fileName = file.name;
@@ -382,10 +383,13 @@ export default function Product() {
       document.querySelector('.color-picker6').classList.add('haveColor');
     }
   };
-  // console.log(product.quantity);
-  // if (product.quantity <= 0) {
-  //   product.inStock = false;
-  // }
+  
+  
+  if (productUpdateData.quantity > 0) {
+    productUpdateData.inStock = true;
+  } else {
+    productUpdateData.inStock = false;
+  }
   
   return (
     <div className='product'>

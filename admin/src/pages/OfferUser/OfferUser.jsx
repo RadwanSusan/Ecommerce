@@ -340,6 +340,11 @@ export default function OfferUser() {
 //   if (offer.quantity === 0) {
 //   	offer.inStock = false;
 //   }
+	if (offerUpdateData.quantity > 0) {
+    offerUpdateData.inStock = true;
+  } else {
+    offerUpdateData.inStock = false;
+  }
   return (
     <div className='product'>
       <div className='divition1'>
