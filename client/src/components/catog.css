@@ -829,6 +829,7 @@ print {
 
 	.Add-to-Cart-new {
 		border-radius: 5px;
+		height: 40px;
 	}
 
 	.Add-to-Cart-new:hover {

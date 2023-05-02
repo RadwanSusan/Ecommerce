@@ -32,9 +32,9 @@ const Bloges = () => {
 												<span class="value">June 17, 2019</span>
 											</div>
 											<div class="post-title">
-												<a class="post-item-link" href="">
+												<div class="post-item-link">
 													Join millions of others
-												</a>
+												</div>
 											</div>
 											<div class="post-short-description">
 												<p>
@@ -74,9 +74,9 @@ const Bloges = () => {
 												<span class="value">June 17, 2019</span>
 											</div>
 											<div class="post-title">
-												<a class="post-item-link" href="">
+												<div class="post-item-link">
 													Choose the perfect design
-												</a>
+												</div>
 											</div>
 											<div class="post-short-description">
 												<p>
@@ -113,9 +113,9 @@ const Bloges = () => {
 												<span class="value">May 16, 2019</span>
 											</div>
 											<div class="post-title">
-												<a class="post-item-link" href="">
+												<div class="post-item-link">
 													What are some good electronic
-												</a>
+												</div>
 											</div>
 											<div class="post-short-description">
 												<p>
@@ -152,9 +152,9 @@ const Bloges = () => {
 												<span class="value">May 16, 2019</span>
 											</div>
 											<div class="post-title">
-												<a class="post-item-link" href="">
+												<div class="post-item-link">
 													Standard Blog Post Examples
-												</a>
+												</div>
 											</div>
 											<div class="post-short-description">
 												<p>

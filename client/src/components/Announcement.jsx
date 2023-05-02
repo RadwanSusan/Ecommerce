@@ -12,6 +12,7 @@ import { logoutUser } from '../redux/apiCalls';
 import { MdOutlineLightMode } from 'react-icons/md';
 import { SiDarkreader } from 'react-icons/si';
 import { DarkModeContext } from '../context/darkModeContext';
+import './announcement.css';
 
 const Container = styled.div`
 	height: 60px;

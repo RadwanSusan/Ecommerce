@@ -8,9 +8,9 @@ const Welcom = () => {
 			<div className="text-offer">
 				Wrap new offers / gift every single day on Weekends &gt;&gt;&gt;&gt;&gt;
 				New Coupon code: T0mly81x9z0334c1
-				<a className="explorer" href="#">
+				<div className="explorer">
 					Explorer Now
-				</a>
+				</div>
 			</div>
 		</div>
 	);
