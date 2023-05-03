@@ -22,17 +22,19 @@ const FilterSizeCatog = styled.select`
 	margin-left: 10px;
 	padding: 5px;
 `;
+
 const Catog = ({ item }) => {
 	const [zaidVar, setZaidVar] = useState(0);
 	const [product_id, setProduct_id] = useState(0);
 	const [quantity, setQuantity] = useState(1);
-	const [color, setColor] = useState('');
+	// const [color, setColor] = useState('');
 	const [size, setSize] = useState('');
 	const dispatch = useDispatch();
 	const [AllProducts, setAllProducts] = useState([]);
 	const [productGet, setProductGet] = useState({});
 	const [offerGet, setOfferGet] = useState({});
 	const [products, setProducts] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		const getProducts = async () => {
@@ -64,13 +66,24 @@ const Catog = ({ item }) => {
 				console.log(err);
 			}
 		};
-		fetchData();
-	}, []);
+		fetchData()
+			.then(() => {})
+			.catch((error) => {
+				console.error('Error fetching data:', error);
+				setIsLoading(false);
+			})
+			.finally(() => {
+				if (AllProducts.length === 0) {
+					setIsLoading(true);
+				}
+			});
+	}, [AllProducts.length]);
 
 	const showCartItems = Array.from(document.querySelectorAll('.show-cart2'));
 	const aramex = document.querySelector('.CatogallColors');
 	const filterSizeCatog = document.querySelector('.FilterSizeCatog');
 	const currency = document.querySelector('.currency');
+
 	const getSiblings = (e) => {
 		let siblings = [];
 		if (!e.parentNode) {
@@ -85,6 +98,7 @@ const Catog = ({ item }) => {
 		}
 		return siblings;
 	};
+
 	const createRadioElement = (color) => {
 		const input = document.createElement('input');
 		input.classList.add('radio_button');
@@ -98,64 +112,93 @@ const Catog = ({ item }) => {
 		label.style.backgroundColor = color;
 		return { input, label };
 	};
-	const handleShowCartClick = (item) => {
-		document.querySelector('.CatogCard').style.display = 'block';
-		document.body.style.overflow = 'hidden';
-		document.querySelector('.CatogCard').style.overflow = 'hidden';
-		document.querySelector('.backLayerForShowCart').style.display = 'block';
-		document.querySelector('.backLayerForShowCart').style.overflow = 'hidden';
-		const idProduct = item.getAttribute('offer-id');
-		const viewArrCatog = AllProducts.find(
-			(product) => product._id === idProduct,
-		);
-		if (!viewArrCatog) {
-			return;
-		}
-		document.querySelector('.CatogCardDesc').textContent = viewArrCatog.desc;
-		aramex.innerHTML = '';
-		setZaidVar(viewArrCatog._id);
-		setProduct_id(viewArrCatog._id);
-		viewArrCatog.color.map((color) => {
-			if (color.length !== 0) {
-				const { input, label } = createRadioElement(color);
-				aramex.appendChild(input);
-				aramex.appendChild(label);
-				input.addEventListener('click', (event) => {
-					if (
-						event.target.nextElementSibling.style.border ===
-						'3px solid black'
-					) {
-						event.target.nextElementSibling.style.border = 'none';
-						setColor('');
-					} else {
-						setColor(event.target.value);
-						const siblings = getSiblings(event.target);
-						siblings.forEach((sibling) => {
-							sibling.style.border = 'none';
-						});
-						event.target.nextElementSibling.style.border =
-							'3px solid black';
-					}
-				});
+
+	const handleShowCartClick = useCallback(
+		(item) => {
+			document.querySelectorAll('.AddCart').forEach((item) => {
+				item.removeAttribute('color');
+			});
+			const catogCard = document.querySelector('.CatogCard');
+			const backLayerForShowCart = document.querySelector(
+				'.backLayerForShowCart',
+			);
+			const idProduct = item.getAttribute('catog-id');
+			const viewArrCatog = isLoading
+				? [...productGet, ...offerGet]?.find(
+						(product) => product._id === idProduct,
+				  )
+				: AllProducts?.find((product) => product._id === idProduct);
+
+			if (!viewArrCatog) {
+				return;
 			}
-		});
-		filterSizeCatog.innerHTML = '';
-		viewArrCatog.size.forEach((size) => {
-			const option = new Option(size, size);
-			filterSizeCatog.appendChild(option);
-			if (size === viewArrCatog.size[0]) {
-				option.selected = true;
-				setSize(size);
-			}
-		});
-		currency.textContent = `$${viewArrCatog.price}`;
-	};
+
+			catogCard.style.display = 'block';
+			catogCard.style.overflow = 'hidden';
+			backLayerForShowCart.style.display = 'block';
+			backLayerForShowCart.style.overflow = 'hidden';
+			document.body.style.overflow = 'hidden';
+			document.querySelector('.CatogCardDesc').textContent =
+				viewArrCatog.desc;
+			aramex.innerHTML = '';
+			setZaidVar(viewArrCatog._id);
+			setProduct_id(viewArrCatog._id);
+
+			viewArrCatog.color.forEach((color) => {
+				if (color.length !== 0) {
+					const { input, label } = createRadioElement(color);
+					aramex.appendChild(input);
+					aramex.appendChild(label);
+					input.addEventListener('click', (event) => {
+						if (
+							event.target.nextElementSibling.style.border ===
+							'3px solid black'
+						) {
+							event.target.nextElementSibling.style.border = 'none';
+						} else {
+							document.querySelectorAll('.AddCart').forEach((item) => {
+								item.setAttribute('color', event.target.value);
+							});
+							const siblings = getSiblings(event.target);
+							siblings.forEach((sibling) => {
+								sibling.style.border = 'none';
+							});
+							event.target.nextElementSibling.style.border =
+								'3px solid black';
+						}
+					});
+				}
+			});
+
+			filterSizeCatog.innerHTML = '';
+			viewArrCatog.size.forEach((size) => {
+				const option = new Option(size, size);
+				filterSizeCatog.appendChild(option);
+				if (size === viewArrCatog.size[0]) {
+					option.selected = true;
+					setSize(size);
+				}
+			});
+			currency.textContent = `$${viewArrCatog.price}`;
+		},
+		[
+			AllProducts,
+			aramex,
+			filterSizeCatog,
+			currency,
+			isLoading,
+			offerGet,
+			productGet,
+		],
+	);
+
 	showCartItems.forEach((item) => {
 		item.addEventListener('click', () => {
 			setQuantity(1);
 			handleShowCartClick(item);
 		});
 	});
+
 	document.querySelectorAll('.CloseCatogCard').forEach((item) =>
 		item.addEventListener('click', (e) => {
 			document.querySelector('.CatogCard').style.display = 'none';
@@ -164,9 +207,11 @@ const Catog = ({ item }) => {
 			document.querySelector('.backLayerForShowCart').style.display = 'none';
 		}),
 	);
+
 	let cartProducts = JSON.parse(localStorage.getItem('persist:root'));
 	let mergedCart = [];
-	if (cartProducts?.cart?.length !== 0) {
+
+	if (cartProducts?.cart.length !== 0) {
 		cartProducts = cartProducts.cart;
 		mergedCart = JSON.parse(cartProducts).products.reduce((acc, curr) => {
 			const existingItem = acc.find((item) => item._id === curr._id);
@@ -178,9 +223,11 @@ const Catog = ({ item }) => {
 			return acc;
 		}, []);
 	}
+
 	const displayAlert = (title, message, type) => {
 		swal(title, message, type);
 	};
+
 	const handleQuantityDecrement = () => {
 		if (quantity <= 1) {
 			displayAlert('Info', 'The minimum quantity is 1', 'info');
@@ -188,6 +235,7 @@ const Catog = ({ item }) => {
 			setQuantity(quantity - 1);
 		}
 	};
+
 	const handleQuantityIncrement = (id, maxQuantity) => {
 		const productMerged = mergedCart.find((item) => item._id === id);
 		if (productMerged !== undefined) {
@@ -221,15 +269,19 @@ const Catog = ({ item }) => {
 			}
 		}
 	};
+
 	const handleQuantity2 = (type, id) => {
-		const item = [...productGet, ...offerGet].find((item) => item._id === id);
-		const maxQuantity = item.quantity - 1;
+		const item = [...productGet, ...offerGet].find((item) => {
+			return item._id === id;
+		});
+		const maxQuantity = item?.quantity - 1;
 		if (type === 'dec') {
 			handleQuantityDecrement();
 		} else {
 			handleQuantityIncrement(id, maxQuantity);
 		}
 	};
+
 	const chekAvail2 = () => {
 		let newQuantity = mergedCart.map((item) => {
 			if (item._id === products._id) {
@@ -245,40 +297,30 @@ const Catog = ({ item }) => {
 		}
 		return true;
 	};
+
 	const findItemById = (id) => {
 		const items = [...productGet, ...offerGet];
 		return items.find((item) => item._id === id);
 	};
-	const addToCart = (productId) => {
+
+	const addCartBtn = document.querySelector('.AddCart');
+	const cartItemMap = new Map(mergedCart.map((item) => [item._id, item]));
+
+	const addToCart = (ele) => {
+		const productId = ele.target.getAttribute('product_id');
 		const item = findItemById(productId);
-		const cartItem = mergedCart.find((item) => item._id === productId);
-		const addCartBtn = document.querySelector('.AddCart');
 		if (!item) {
+			showInfoMessage('Product not found!');
 			return;
 		}
+		const cartItem = cartItemMap.get(productId);
 		if (cartItem && cartItem.quantity === item.quantity) {
 			disableAddCartBtn(addCartBtn);
 			showInfoMessage('You already have the maximum amount!');
 			return;
 		}
-		if (cartItem && cartItem.quantity + quantity <= item.quantity) {
-			dispatch(
-				addProduct({
-					...cartItem,
-					quantity,
-					color,
-					size,
-				}),
-			);
-			cartItem.quantity -= quantity;
-			setQuantity(1);
-			showSuccessMessage('Product added to cart!');
-			if (cartItem.quantity <= 1) {
-				disableAddCartBtn(addCartBtn);
-			}
-		} else if (cartItem) {
-			showInfoMessage('Try with a different amount!');
-		} else {
+		if (!cartItem || cartItem.quantity + quantity <= item.quantity) {
+			const color = ele.target.getAttribute('color');
 			dispatch(
 				addProduct({
 					...item,
@@ -289,58 +331,64 @@ const Catog = ({ item }) => {
 			);
 			setQuantity(1);
 			showSuccessMessage('Product added to cart!');
+			if (cartItem && cartItem.quantity <= 1) {
+				disableAddCartBtn(addCartBtn);
+			}
+		} else {
+			showInfoMessage('Try with a different amount!');
 		}
 	};
+
 	const disableAddCartBtn = (btn) => {
 		btn.disabled = true;
 	};
+
 	const showInfoMessage = (message) => {
 		swal('Info', message, 'info');
 	};
+
 	const showSuccessMessage = (message) => {
 		swal('Success', message, 'success');
 	};
-	const [wishlistLogin, setWishlistLogin] = useState(false);
-	const handleWichlist = (id, ele) => {
-		if (ele.target.classList[0] === 'add-to-wish' && wishlistLogin == true) {
-			ele.target.style.display = 'none';
-			ele.target.nextSibling.style.display = 'block';
-		}
-		if (ele.target.classList[0] === 'add-to-wish2' && wishlistLogin == true) {
-			ele.target.parentNode.style.display = 'none';
-			ele.target.parentNode.previousSibling.style.display = 'block';
-		}
-	};
 
-	const addToWishlist = (productId, identifier) => {
-		console.log(wishlistLogin);
-		if (wishlistLogin === false) {
-			swal({
+	const [wishlistLogin, setWishlistLogin] = useState(false);
+
+	const addToWishlist = async (productId, identifier, ele) => {
+		if (!wishlistLogin) {
+			await swal({
 				title: 'You have to login !',
 				icon: 'warning',
 				buttons: true,
-				confirmButtonColor: '#42A5F5',
+				confirmButtonColor: '#42a5f5',
 				confirmButtonText: 'Login',
 				showCancelButton: true,
-
 				closeOnConfirm: false,
-			}).then((e) => {
-				if (e) {
-					window.location.href = '/login';
-				}
 			});
+			window.location.href = '/login';
 			return;
 		}
-
-		if (identifier === 'remove' && wishlistLogin === true) {
-			swal('Success', 'Product removed from wishlist!', 'success');
-			wishlist(productId, userId);
-			return;
+		const targetClass = ele.target.classList[0];
+		try {
+			await wishlist(productId, userId);
+			if (identifier === 'remove') {
+				if (targetClass === 'add-to-wish2') {
+					ele.target.parentNode.style.display = 'none';
+					ele.target.parentNode.previousSibling.style.display = 'block';
+				}
+				swal('Success', 'Product removed from wishlist!', 'success');
+			} else if (identifier === 'addCatog') {
+				if (targetClass === 'add-to-wish') {
+					ele.target.style.display = 'none';
+					ele.target.nextSibling.children[0].style.display = 'block';
+					ele.target.nextSibling.style.display = 'block';
+				}
+				swal('Success', 'Product added to wishlist!', 'success');
+			}
+		} catch (error) {
+			swal('Error', 'Something went wrong', 'error');
 		}
-
-		swal('Success', 'Product added to wishlist!', 'success');
-		wishlist(productId, userId);
 	};
+
 	const isMountedRef = useRef(true);
 	const [wishlistData, setWishlistData] = useState([]);
 	let userId = localStorage.getItem('persist:root');
@@ -355,7 +403,6 @@ const Catog = ({ item }) => {
 				if (userId !== undefined) {
 					setWishlistLogin(true);
 				}
-
 				const res = await userWishListArrayGet(userId);
 				if (isMountedRef.current) {
 					setWishlistData([...res]);
@@ -372,6 +419,7 @@ const Catog = ({ item }) => {
 	if (!isMountedRef.current) {
 		return null;
 	}
+
 	return (
 		<>
 			<div className='backLayerForShowCart'></div>
@@ -615,20 +663,27 @@ const Catog = ({ item }) => {
 														}
 													></FilterSizeCatog>
 												</div>
-												{chekAvail2() ? (
-													<button
-														className='AddCart'
-														onClick={() => addToCart(product_id)}
-													>
-														Add to Cart
-													</button>
+												{isLoading ? (
+													chekAvail2() ? (
+														<button
+															className='AddCart'
+															product_id={product_id}
+															onClick={(ele) => {
+																addToCart(ele);
+															}}
+														>
+															Add to Cart
+														</button>
+													) : (
+														<button
+															className='AddCart'
+															disabled
+														>
+															ADD TO CART
+														</button>
+													)
 												) : (
-													<button
-														className='AddCart'
-														disabled
-													>
-														ADD TO CART
-													</button>
+													<p>loading</p>
 												)}
 											</div>
 										</div>
@@ -699,7 +754,7 @@ const Catog = ({ item }) => {
 																		>
 																			<div className='image-product'>
 																				<a
-																					href=''
+																					href='#'
 																					className='product photo product-item-photo'
 																					tabindex='-1'
 																				>
@@ -732,7 +787,7 @@ const Catog = ({ item }) => {
 																					className='action quickview-handler sm_quickview_handler show-cart2'
 																					title='Quick View'
 																					href=''
-																					offer-id={
+																					catog-id={
 																						data._id
 																					}
 																				>
@@ -805,13 +860,10 @@ const Catog = ({ item }) => {
 																										onClick={(
 																											ele,
 																										) => {
-																											handleWichlist(
-																												data._id,
-																												ele,
-																											);
 																											addToWishlist(
 																												data._id,
-																												'remove',
+																												'addCatog',
+																												ele,
 																											);
 																										}}
 																										style={{
@@ -826,23 +878,20 @@ const Catog = ({ item }) => {
 																										height='16'
 																										fill='currentColor'
 																										viewBox='0 0 16 16'
-																										onClick={(
-																											ele,
-																										) => {
-																											handleWichlist(
-																												data._id,
-																												ele,
-																											);
-																											addToWishlist(
-																												data._id,
-																												'add',
-																											);
-																										}}
 																									>
 																										<path
 																											className='add-to-wish2'
 																											fill-rule='evenodd'
 																											d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
+																											onClick={(
+																												ele,
+																											) => {
+																												addToWishlist(
+																													data._id,
+																													'remove',
+																													ele,
+																												);
+																											}}
 																										/>
 																									</svg>
 																								</>
@@ -853,13 +902,10 @@ const Catog = ({ item }) => {
 																										onClick={(
 																											ele,
 																										) => {
-																											handleWichlist(
-																												data._id,
-																												ele,
-																											);
 																											addToWishlist(
 																												data._id,
-																												'add',
+																												'addCatog',
+																												ele,
 																											);
 																										}}
 																									/>
@@ -870,27 +916,24 @@ const Catog = ({ item }) => {
 																										height='16'
 																										fill='currentColor'
 																										viewBox='0 0 16 16'
-																										onClick={(
-																											ele,
-																										) => {
-																											handleWichlist(
-																												data._id,
-																												ele,
-																											);
-																											addToWishlist(
-																												data._id,
-																												'remove',
-																											);
-																										}}
-																										style={{
-																											display:
-																												'none',
-																										}}
 																									>
 																										<path
 																											className='add-to-wish2'
 																											fill-rule='evenodd'
 																											d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
+																											onClick={(
+																												ele,
+																											) => {
+																												addToWishlist(
+																													data._id,
+																													'remove',
+																													ele,
+																												);
+																											}}
+																											style={{
+																												display:
+																													'none',
+																											}}
 																										/>
 																									</svg>
 																								</>

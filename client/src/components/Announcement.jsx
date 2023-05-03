@@ -87,14 +87,11 @@ const Announcement = () => {
 				(token !== null &&
 					token !== undefined &&
 					token !== '' &&
-					JSON.parse(JSON.parse(token)?.user)?.currentUser !==
-						undefined &&
+					JSON.parse(JSON.parse(token)?.user)?.currentUser !== undefined &&
 					JSON.parse(JSON.parse(token)?.user)?.currentUser !== null &&
-					JSON.parse(JSON.parse(token)?.user)?.username !==
-						undefined &&
+					JSON.parse(JSON.parse(token)?.user)?.username !== undefined &&
 					JSON.parse(JSON.parse(token)?.user)?.username !== null &&
-					JSON.parse(JSON.parse(token)?.user)?.username !==
-						undefined) ||
+					JSON.parse(JSON.parse(token)?.user)?.username !== undefined) ||
 				JSON.parse(JSON.parse(token)?.user)?.username !== ''
 			) {
 				setToken(token);
@@ -112,40 +109,44 @@ const Announcement = () => {
 		logoutUser();
 	};
 	const Navbar = ({ isGuest }) => (
-    <Container>
-      <Wrapper>
-        <Left>
-          <MenuItem1>
-            {isGuest ? 'Welcome to Venuse store' : 'Welcome to Venuse store'}
-          </MenuItem1>
-          {!isGuest && (
-            <MenuItem>
-              <button onClick={handleLogout}>Logout</button>
-            </MenuItem>
-          )}
-          {isGuest && (
-            <>
-              <MenuItem>
-                <Link to='/Register'>REGISTER</Link>
-              </MenuItem>
-              <MenuItem>
-                <Link to='/Login'>SIGN IN</Link>
-              </MenuItem>
-            </>
-          )}
-        </Left>
-        <Right>
-          {darkMode ? (
-            <SiDarkreader className='CiDark' onClick={toggle} />
-          ) : (
-            <MdOutlineLightMode className='CiDark' onClick={toggle} />
-          )}
-          <Language>English - </Language>
-          <SearchContainer>USD</SearchContainer>
-        </Right>
-      </Wrapper>
-    </Container>
-  );
+		<Container>
+			<Wrapper>
+				<Left>
+					<MenuItem1>Welcome to Venuse store</MenuItem1>
+					{!isGuest && (
+						<MenuItem>
+							<button onClick={handleLogout}>Logout</button>
+						</MenuItem>
+					)}
+					{isGuest && (
+						<>
+							<MenuItem>
+								<Link to='/Register'>REGISTER</Link>
+							</MenuItem>
+							<MenuItem>
+								<Link to='/Login'>SIGN IN</Link>
+							</MenuItem>
+						</>
+					)}
+				</Left>
+				<Right>
+					{darkMode ? (
+						<SiDarkreader
+							className='CiDark'
+							onClick={toggle}
+						/>
+					) : (
+						<MdOutlineLightMode
+							className='CiDark'
+							onClick={toggle}
+						/>
+					)}
+					<Language>English - </Language>
+					<SearchContainer>USD</SearchContainer>
+				</Right>
+			</Wrapper>
+		</Container>
+	);
 	if (!tokenLoaded) {
 		return null;
 	}
