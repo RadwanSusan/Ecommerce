@@ -5,6 +5,10 @@
 .newUserForm {
   display: flex;
   flex-wrap: wrap;
+  margin-left: 10px;
+}
+.newUserTitle {
+  margin-left: 10px;
 }
 
 .newUserItem {
@@ -54,4 +58,12 @@
   border-radius: 10px;
   margin-top: 30px;
   cursor: pointer;
+}
+@media only screen and (max-width: 600px) { 
+  .newUserItem {
+    width: 190px;
+  }
+    .newUserButton {
+      width: 180px;
+    }
 }

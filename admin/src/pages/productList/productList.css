@@ -57,3 +57,9 @@ margin-bottom: 20px;
 color: teal ;
 
   }
+  @media only screen and (max-width: 600px) { 
+    .middle-product-create {
+        flex-direction: column;
+        gap: 0;
+    }
+  }

@@ -58,9 +58,15 @@
     }
     .featuredItem {
         padding: 20px;
+        text-align: center;
+        margin: 5px;
     }
     .chart {
         /* width: 87%; */
         display: none;
     }
+        .featuredMoneyContainer {
+            flex-direction: column;
+        }
+    
 }

@@ -62,4 +62,9 @@ input[type="color"] {
   align-items: center;
   gap: 120px;
 }
+@media only screen and (max-width: 600px) {
+  .addProductForm {
+    flex-direction: column;
+  }
+}
 
