@@ -57,6 +57,7 @@ export default function CreateOffer() {
 		const setColor = eval(`setColor${index + 1}`);
 		setColor(() => [color]);
 	}
+
 	const colorPickerClear = document.querySelectorAll('#color-picker');
 
 	const clearColor = (e) => {
