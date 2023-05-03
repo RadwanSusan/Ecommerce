@@ -152,3 +152,25 @@
     color: white;
     font-weight: 600;
 }
+@media only screen and (max-width: 600px) {
+  .userUpdateForm {
+    flex-direction: column;
+    width: 176;
+  }
+    .userContainer {
+      flex-direction: column;
+      width: 165px;
+    }
+        .userUpdateInput {
+          width: 110px;
+        }
+                .userUpdateImg {
+                  margin-right: 0;
+                }
+                                .userUpdateUpload {
+                                  flex-direction: column;
+                                  align-items: center;
+                                  margin: 5px;
+                                }
+
+ }

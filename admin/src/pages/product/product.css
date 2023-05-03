@@ -125,3 +125,8 @@
   font-weight: 600;
   cursor: pointer;
 }
+@media only screen and (max-width: 600px) {
+  .productUpload {
+    margin: 10px;
+  } 
+ }

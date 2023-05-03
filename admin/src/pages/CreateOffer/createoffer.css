@@ -39,7 +39,7 @@
   }
     @media only screen and (max-width: 600px) { 
       .addProductItem{
-        width: 170px;
+        width: 140px;
       }
       .addProductTitle {
         margin-left: 10px;

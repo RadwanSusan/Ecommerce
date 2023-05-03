@@ -133,3 +133,27 @@
     display: flex;
     justify-content: space-between;
   }
+    @media only screen and (max-width: 600px) {
+      .productForm {
+        flex-direction: column;
+        width: 137px;
+      }
+        .productTop {
+          flex-direction: column;
+           }
+         .productInfoBottom {
+            flex-direction: column; 
+                     }
+        .productInfoItem {
+                      width: 130px;
+                   }
+           .productTopRight {
+                     width: 120px;
+                            }
+                                                        .allDiviti {
+                                                          flex-direction: column;
+                                                        }
+                                                                                                                                                                                                .productBottom{
+                                                                                                                                                                                                  padding: 5px;
+                                                                                                                                                                                                }
+     }
