@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './createoffer.css';
 import {
 	getStorage,
@@ -10,6 +10,7 @@ import app from '../../firebase';
 import { addOffer } from '../../redux/apiCalls';
 import { useDispatch } from 'react-redux';
 import swal from 'sweetalert';
+
 export default function CreateOffer() {
 	const [inputs, setInputs] = useState({});
 	let [file, setFile] = useState(null);
@@ -21,11 +22,9 @@ export default function CreateOffer() {
 	const [color4, setColor4] = useState([]);
 	const [color5, setColor5] = useState([]);
 	const [color6, setColor6] = useState([]);
+	const colorPickerRef = useRef(null);
 	const dispatch = useDispatch();
 
-	useEffect(() => {
-		console.log(color1, color2, color3, color4, color5, color6);
-	}, [color1, color2, color3, color4, color5, color6]);
 	const handleChange = (e) => {
 		setInputs((prev) => {
 			return { ...prev, [e.target.name]: e.target.value };
@@ -39,70 +38,27 @@ export default function CreateOffer() {
 			return [...prev, e.target.value];
 		});
 	};
-	let colorPicker1,
-		colorPicker2,
-		colorPicker3,
-		colorPicker4,
-		colorPicker5,
-		colorPicker6;
+
 	const defaultColor = '#FFFFFF';
-	window.addEventListener('load', startup, true);
-	function startup() {
-		colorPicker1 = document.getElementById('color-picker1');
-		colorPicker1.addEventListener('input', update1);
-		colorPicker2 = document.getElementById('color-picker2');
-		colorPicker2.addEventListener('input', update2);
-		colorPicker3 = document.getElementById('color-picker3');
-		colorPicker3.addEventListener('input', update3);
-		colorPicker4 = document.getElementById('color-picker4');
-		colorPicker4.addEventListener('input', update4);
-		colorPicker5 = document.getElementById('color-picker5');
-		colorPicker5.addEventListener('input', update5);
-		colorPicker6 = document.getElementById('color-picker6');
-		colorPicker6.addEventListener('input', update6);
-		colorPicker1.value = defaultColor;
-		colorPicker2.value = defaultColor;
-		colorPicker3.value = defaultColor;
-		colorPicker4.value = defaultColor;
-		colorPicker5.value = defaultColor;
-		colorPicker6.value = defaultColor;
+
+	useEffect(() => {
+		function startup() {
+			colorPickerRef.current = document.querySelectorAll('#color-picker');
+			colorPickerRef.current.forEach((picker, index) => {
+				picker.addEventListener('input', () => updateColor(index));
+				picker.value = defaultColor;
+			});
+		}
+		startup();
+	}, [defaultColor]);
+
+	function updateColor(index) {
+		const color = colorPickerRef.current[index].value;
+		const setColor = eval(`setColor${index + 1}`);
+		setColor(() => [color]);
 	}
-	function update1() {
-		const color = colorPicker1.value;
-		setColor1(() => {
-			return [color];
-		});
-	}
-	function update2() {
-		const color = colorPicker2.value;
-		setColor2(() => {
-			return [color];
-		});
-	}
-	function update3() {
-		const color = colorPicker3.value;
-		setColor3(() => {
-			return [color];
-		});
-	}
-	function update4() {
-		const color = colorPicker4.value;
-		setColor4(() => {
-			return [color];
-		});
-	}
-	function update5() {
-		const color = colorPicker5.value;
-		setColor5(() => {
-			return [color];
-		});
-	}
-	function update6() {
-		const color = colorPicker6.value;
-		setColor6(() => {
-			return [color];
-		});
-	}
+	const colorPickerClear = document.querySelectorAll('#color-picker');
+
 	const clearColor = (e) => {
 		e.preventDefault();
 		setColor1([]);
@@ -111,149 +67,374 @@ export default function CreateOffer() {
 		setColor4([]);
 		setColor5([]);
 		setColor6([]);
-		colorPicker1 = document.getElementById('color-picker1');
-		colorPicker2 = document.getElementById('color-picker2');
-		colorPicker3 = document.getElementById('color-picker3');
-		colorPicker4 = document.getElementById('color-picker4');
-		colorPicker5 = document.getElementById('color-picker5');
-		colorPicker6 = document.getElementById('color-picker6');
-		colorPicker1.value = defaultColor;
-		colorPicker2.value = defaultColor;
-		colorPicker3.value = defaultColor;
-		colorPicker4.value = defaultColor;
-		colorPicker5.value = defaultColor;
-		colorPicker6.value = defaultColor;
+		colorPickerClear.forEach((picker) => {
+			picker.value = defaultColor;
+		});
 	};
-	const handleClick = (e) => {
+	// const handleClick = (e) => {
+	// 	e.preventDefault();
+	// 	if (file === null) {
+	// 		swal('Error', 'Please select an image', 'info');
+	// 		return;
+	// 	}
+	// 	if (cat.length === 0) {
+	// 		swal('Error', 'Please select at least one category', 'info');
+	// 		return;
+	// 	}
+	// 	if (size.length === 0) {
+	// 		swal('Error', 'Please select at least one size', 'info');
+	// 		return;
+	// 	}
+	// 	let fileName = new Date().getTime() + file.name;
+	// 	const storage = getStorage(app);
+	// 	const storageRef = ref(storage, fileName);
+	// 	const uploadTask = uploadBytesResumable(storageRef, file);
+	// 	uploadTask.on(
+	// 		'state_changed',
+	// 		(snapshot) => {
+	// 			const progress =
+	// 				(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+	// 			console.log('Upload is ' + progress + '% done');
+	// 			switch (snapshot.state) {
+	// 				case 'paused':
+	// 					console.log('Upload is paused');
+	// 					break;
+	// 				case 'running':
+	// 					console.log('Upload is running');
+	// 					break;
+	// 				default:
+	// 			}
+	// 		},
+	// 		(error) => {
+	// 			swal('Error', error.message, 'error');
+	// 		},
+	// 		() => {
+	// 			getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+	// 				const color = [color1, color2, color3, color4, color5, color6];
+	// 				const colors = color.filter((item) => {
+	// 					return item.length !== 0;
+	// 				});
+	// 				const offer = {
+	// 					...inputs,
+	// 					img: downloadURL,
+	// 					categories: cat,
+	// 					size: size,
+	// 					color: colors,
+	// 				};
+	// 				addOffer(offer, dispatch).then(() => {
+	// 					swal({
+	// 						title: 'Success',
+	// 						text: 'Offer added successfully',
+	// 						icon: 'success',
+	// 						button: 'Ok',
+	// 						closeOnClickOutside: false,
+	// 						closeOnEsc: false,
+	// 					}).then(() => {
+	// 						setInputs({
+	// 							title: '',
+	// 							desc: '',
+	// 							price: '',
+	// 							originalPrice: '',
+	// 							offerPrice: '',
+	// 							img: '',
+	// 							categories: [],
+	// 							size: [],
+	// 							color: [],
+	// 							quantity: '',
+	// 							width: '',
+	// 							height: '',
+	// 							length: '',
+	// 							weight: '',
+	// 						});
+	// 						fileName = null;
+	// 						document.querySelector('#file').value = null;
+	// 						setFile(null);
+	// 						file = null;
+	// 						setCat([]);
+	// 						setSize([]);
+	// 						setColor1([]);
+	// 						setColor2([]);
+	// 						setColor3([]);
+	// 						setColor4([]);
+	// 						setColor5([]);
+	// 						setColor6([]);
+	// 						colorPickerClear.forEach((picker) => {
+	// 							picker.value = defaultColor;
+	// 						});
+	// 						document.querySelector('.Title').value = '';
+	// 						document.querySelector('.Description').value = '';
+	// 						document.querySelector('.Price').value = '';
+	// 						document.querySelector('.OriginalPrice').value = '';
+	// 						document.querySelector('.Categories').value = '';
+	// 						document.querySelector('.Quantity').value = '';
+	// 						document.querySelector('.Width').value = '';
+	// 						document.querySelector('.Height').value = '';
+	// 						document.querySelector('.Length').value = '';
+	// 						document.querySelector('.Weight').value = '';
+	// 						document.querySelector('.expirationDate1').value = '';
+	// 						document.querySelector('.expirationDate2').value = '';
+	// 						document.querySelector('.offerPrice').value = '';
+	// 						for (const checkbox of document.querySelectorAll(
+	// 							'.Size',
+	// 						)) {
+	// 							checkbox.checked = true;
+	// 							checkbox.checked = false;
+	// 						}
+	// 					});
+	// 				});
+	// 			});
+	// 		},
+	// 	);
+	// };
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// const handleClick = async (e) => {
+	// 	e.preventDefault();
+
+	// 	if (file === null) {
+	// 		swal('Error', 'Please select an image', 'info');
+	// 		return;
+	// 	}
+
+	// 	if (cat.length === 0) {
+	// 		swal('Error', 'Please select at least one category', 'info');
+	// 		return;
+	// 	}
+
+	// 	if (size.length === 0) {
+	// 		swal('Error', 'Please select at least one size', 'info');
+	// 		return;
+	// 	}
+
+	// 	const fileName = new Date().getTime() + file.name;
+	// 	const storage = getStorage(app);
+	// 	const storageRef = ref(storage, fileName);
+	// 	const uploadTask = uploadBytesResumable(storageRef, file);
+
+	// 	uploadTask.on(
+	// 		'state_changed',
+	// 		(snapshot) => {
+	// 			const progress =
+	// 				(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+	// 			console.log(`Upload is ${progress}% done`);
+
+	// 			switch (snapshot.state) {
+	// 				case 'paused':
+	// 					console.log('Upload is paused');
+	// 					break;
+
+	// 				case 'running':
+	// 					console.log('Upload is running');
+	// 					break;
+
+	// 				default:
+	// 					break;
+	// 			}
+	// 		},
+	// 		(error) => {
+	// 			swal('Error', error.message, 'error');
+	// 		},
+	// 		async () => {
+	// 			const color = [color1, color2, color3, color4, color5, color6];
+	// 			const colors = color.filter((item) => item.length !== 0);
+	// 			const offer = {
+	// 				...inputs,
+	// 				img: await getDownloadURL(uploadTask.snapshot.ref),
+	// 				categories: cat,
+	// 				size,
+	// 				color: colors,
+	// 			};
+
+	// 			await addOffer(offer, dispatch);
+
+	// 			swal({
+	// 				title: 'Success',
+	// 				text: 'Offer added successfully',
+	// 				icon: 'success',
+	// 				button: 'Ok',
+	// 				closeOnClickOutside: false,
+	// 				closeOnEsc: false,
+	// 			}).then(() => {
+	// 				setInputs({
+	// 					title: '',
+	// 					desc: '',
+	// 					price: '',
+	// 					originalPrice: '',
+	// 					offerPrice: '',
+	// 					img: '',
+	// 					categories: [],
+	// 					size: [],
+	// 					color: [],
+	// 					quantity: '',
+	// 					width: '',
+	// 					height: '',
+	// 					length: '',
+	// 					weight: '',
+	// 				});
+
+	// 				file = null;
+	// 				setFile(null);
+	// 				setCat([]);
+	// 				setSize([]);
+	// 				setColor1([]);
+	// 				setColor2([]);
+	// 				setColor3([]);
+	// 				setColor4([]);
+	// 				setColor5([]);
+	// 				setColor6([]);
+	// 				colorPickerClear.forEach((picker) => {
+	// 					picker.value = defaultColor;
+	// 				});
+
+	// 				const formFields = document.querySelectorAll(
+	// 					'.Title, .Description, .Price, .OriginalPrice, .Categories, .Quantity, .Width, .Height, .Length, .Weight, .expirationDate1, .expirationDate2, .offerPrice',
+	// 				);
+	// 				formFields.forEach((field) => {
+	// 					field.value = '';
+	// 				});
+
+	// 				const checkboxes = document.querySelectorAll('.Size');
+	// 				checkboxes.forEach((checkbox) => {
+	// 					checkbox.checked = false;
+	// 				});
+	// 			});
+	// 		},
+	// 	);
+	// };
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	const handleAddOffer = async (e) => {
 		e.preventDefault();
-		if (file === null) {
+
+		if (!file) {
 			swal('Error', 'Please select an image', 'info');
 			return;
 		}
-		if (cat.length === 0) {
+
+		if (!cat.length) {
 			swal('Error', 'Please select at least one category', 'info');
 			return;
 		}
-		if (size.length === 0) {
+
+		if (!size.length) {
 			swal('Error', 'Please select at least one size', 'info');
 			return;
 		}
-		let fileName = new Date().getTime() + file.name;
+
+		const fileName = new Date().getTime() + file.name;
 		const storage = getStorage(app);
 		const storageRef = ref(storage, fileName);
 		const uploadTask = uploadBytesResumable(storageRef, file);
+
 		uploadTask.on(
 			'state_changed',
 			(snapshot) => {
 				const progress =
 					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-				console.log('Upload is ' + progress + '% done');
-				switch (snapshot.state) {
-					case 'paused':
-						console.log('Upload is paused');
-						break;
-					case 'running':
-						console.log('Upload is running');
-						break;
-					default:
-				}
+				console.log(`Upload is ${progress}% done`);
 			},
 			(error) => {
 				swal('Error', error.message, 'error');
 			},
-			() => {
-				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-					const color = [color1, color2, color3, color4, color5, color6];
-					console.debug(`🚀  file: CreateOffer.jsx:170  color =>`, color);
-					const colors = color.filter((item) => {
-						return item.length !== 0;
-					});
-					console.debug(
-						`🚀  file: CreateOffer.jsx:174  colors =>`,
-						colors,
-					);
-					const offer = {
-						...inputs,
-						img: downloadURL,
-						categories: cat,
-						size: size,
-						color: colors,
-					};
-					console.debug(`🚀  file: CreateOffer.jsx:181  offer =>`, offer);
-					addOffer(offer, dispatch).then(() => {
-						swal({
-							title: 'Success',
-							text: 'Offer added successfully',
-							icon: 'success',
-							button: 'Ok',
-							closeOnClickOutside: false,
-							closeOnEsc: false,
-						}).then(() => {
-							setInputs({
-								title: '',
-								desc: '',
-								price: '',
-								originalPrice: '',
-								offerPrice: '',
-								img: '',
-								categories: [],
-								size: [],
-								color: [],
-								quantity: '',
-								width: '',
-								height: '',
-								length: '',
-								weight: '',
-							});
-							fileName = null;
-							document.querySelector('#file').value = null;
-							setFile(null);
-							file = null;
-							setCat([]);
-							setSize([]);
-							setColor1([]);
-							setColor2([]);
-							setColor3([]);
-							setColor4([]);
-							setColor5([]);
-							setColor6([]);
-							colorPicker1 = document.getElementById('color-picker1');
-							colorPicker2 = document.getElementById('color-picker2');
-							colorPicker3 = document.getElementById('color-picker3');
-							colorPicker4 = document.getElementById('color-picker4');
-							colorPicker5 = document.getElementById('color-picker5');
-							colorPicker6 = document.getElementById('color-picker6');
-							colorPicker1.value = defaultColor;
-							colorPicker2.value = defaultColor;
-							colorPicker3.value = defaultColor;
-							colorPicker4.value = defaultColor;
-							colorPicker5.value = defaultColor;
-							colorPicker6.value = defaultColor;
-							document.querySelector('.Title').value = '';
-							document.querySelector('.Description').value = '';
-							document.querySelector('.Price').value = '';
-							document.querySelector('.OriginalPrice').value = '';
-							document.querySelector('.Categories').value = '';
-							document.querySelector('.Quantity').value = '';
-							document.querySelector('.Width').value = '';
-							document.querySelector('.Height').value = '';
-							document.querySelector('.Length').value = '';
-							document.querySelector('.Weight').value = '';
-							document.querySelector('.expirationDate1').value = '';
-							document.querySelector('.expirationDate2').value = '';
-							document.querySelector('.offerPrice').value = '';
-							for (const checkbox of document.querySelectorAll(
-								'.Size',
-							)) {
-								checkbox.checked = true;
-								checkbox.checked = false;
-							}
-						});
-					});
+			async () => {
+				const colors = [
+					color1,
+					color2,
+					color3,
+					color4,
+					color5,
+					color6,
+				].filter((color) => color.length !== 0);
+				const offer = {
+					...inputs,
+					img: await getDownloadURL(uploadTask.snapshot.ref),
+					categories: cat,
+					size,
+					color: colors,
+				};
+
+				await addOffer(offer, dispatch);
+
+				swal({
+					title: 'Success',
+					text: 'Offer added successfully',
+					icon: 'success',
+					button: 'Ok',
+					closeOnClickOutside: false,
+					closeOnEsc: false,
+				}).then(() => {
+					resetInputs();
+					resetFile();
+					resetCategory();
+					resetSize();
+					resetColors();
+					resetColorPickers();
+					resetFormFields();
+					resetCheckboxes();
 				});
 			},
 		);
 	};
+
+	const resetInputs = () => {
+		setInputs({
+			title: '',
+			desc: '',
+			price: '',
+			originalPrice: '',
+			offerPrice: '',
+			img: '',
+			categories: [],
+			size: [],
+			color: [],
+			quantity: '',
+			width: '',
+			height: '',
+			length: '',
+			weight: '',
+		});
+	};
+
+	const resetFile = () => {
+		file = null;
+		setFile(null);
+	};
+
+	const resetCategory = () => {
+		setCat([]);
+	};
+
+	const resetSize = () => {
+		setSize([]);
+	};
+
+	const resetColors = () => {
+		const colors = [color1, color2, color3, color4, color5, color6];
+		colors.forEach((color) => {
+			color.length = 0;
+		});
+	};
+
+	const resetColorPickers = () => {
+		colorPickerClear.forEach((picker) => {
+			picker.value = defaultColor;
+		});
+	};
+
+	const resetFormFields = () => {
+		const formFields = document.querySelectorAll(
+			'.Title, .Description, .Price, .OriginalPrice, .Categories, .Quantity, .Width, .Height, .Length, .Weight, .expirationDate1, .expirationDate2, .offerPrice',
+		);
+		formFields.forEach((field) => {
+			field.value = '';
+		});
+	};
+
+	const resetCheckboxes = () => {
+		const checkboxes = document.querySelectorAll('.Size');
+		checkboxes.forEach((checkbox) => {
+			checkbox.checked = false;
+		});
+	};
+
 	return (
 		<div className='newProduct'>
 			<h1 className='addProductTitle'>New Offer</h1>
@@ -341,32 +522,32 @@ export default function CreateOffer() {
 						<label>Color</label>
 						<br />
 						<input
-							id='color-picker1'
+							id='color-picker'
 							name='color1'
 							type='color'
 						/>
 						<input
-							id='color-picker2'
+							id='color-picker'
 							name='color1'
 							type='color'
 						/>
 						<input
-							id='color-picker3'
+							id='color-picker'
 							name='color1'
 							type='color'
 						/>
 						<input
-							id='color-picker4'
+							id='color-picker'
 							name='color1'
 							type='color'
 						/>
 						<input
-							id='color-picker5'
+							id='color-picker'
 							name='color1'
 							type='color'
 						/>
 						<input
-							id='color-picker6'
+							id='color-picker'
 							name='color1'
 							type='color'
 						/>
@@ -488,7 +669,7 @@ export default function CreateOffer() {
 						/>
 					</div>
 					<button
-						onClick={handleClick}
+						onClick={handleAddOffer}
 						className='addProductButton'
 					>
 						Create
