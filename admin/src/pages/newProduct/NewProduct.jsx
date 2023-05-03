@@ -13,7 +13,7 @@ import swal from 'sweetalert';
 
 export default function NewProduct() {
 	const [inputs, setInputs] = useState({});
-	let [file, setFile] = useState(null);
+	const [file, setFile] = useState([]);
 	const [cat, setCat] = useState([]);
 	const [size, setSize] = useState([]);
 	const [color1, setColor1] = useState([]);
@@ -36,6 +36,9 @@ export default function NewProduct() {
 		setSize((prev) => {
 			return [...prev, e.target.value];
 		});
+	};
+	const handleFiles = (event) => {
+		setFile([...event.target.files]);
 	};
 
 	const defaultColor = '#FFFFFF';
@@ -75,7 +78,7 @@ export default function NewProduct() {
 	const handleAddProduct = async (e) => {
 		e.preventDefault();
 
-		if (!file) {
+		if (file.length === 0) {
 			swal('Error', 'Please select an image', 'info');
 			return;
 		}
@@ -90,59 +93,57 @@ export default function NewProduct() {
 			return;
 		}
 
-		const fileName = new Date().getTime() + file.name;
 		const storage = getStorage(app);
-		const storageRef = ref(storage, fileName);
-		const uploadTask = uploadBytesResumable(storageRef, file);
+		const urls = [];
+		for (const fileSingle of file) {
+			const fileName = new Date().getTime() + fileSingle.name;
+			const storageRef = ref(storage, fileName);
+			const uploadTask = uploadBytesResumable(storageRef, fileSingle);
 
-		uploadTask.on(
-			'state_changed',
-			(snapshot) => {
-				const progress =
-					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-				console.log(`Upload is ${progress}% done`);
-			},
-			(error) => {
+			try {
+				await uploadTask;
+				const url = await getDownloadURL(uploadTask.snapshot.ref);
+				urls.push(url);
+			} catch (error) {
 				swal('Error', error.message, 'error');
-			},
-			async () => {
-				const colors = [
-					color1,
-					color2,
-					color3,
-					color4,
-					color5,
-					color6,
-				].filter((color) => color.length !== 0);
-				const product = {
-					...inputs,
-					img: await getDownloadURL(uploadTask.snapshot.ref),
-					categories: cat,
-					size,
-					color: colors,
-				};
+				return;
+			}
+		}
 
-				await addProduct(product, dispatch);
-
-				swal({
-					title: 'Success',
-					text: 'Product added successfully',
-					icon: 'success',
-					button: 'Ok',
-					closeOnClickOutside: false,
-					closeOnEsc: false,
-				}).then(() => {
-					resetInputs();
-					resetFile();
-					resetCategory();
-					resetSize();
-					resetColors();
-					resetColorPickers();
-					resetFormFields();
-					resetCheckboxes();
-				});
-			},
+		const colors = [color1, color2, color3, color4, color5, color6].filter(
+			(color) => color.length !== 0,
 		);
+
+		const offer = {
+			...inputs,
+			img: urls,
+			categories: cat,
+			size,
+			color: colors,
+		};
+
+		try {
+			await addProduct(offer, dispatch);
+			swal({
+				title: 'Success',
+				text: 'Offer added successfully',
+				icon: 'success',
+				button: 'Ok',
+				closeOnClickOutside: false,
+				closeOnEsc: false,
+			}).then(() => {
+				resetInputs();
+				resetFile();
+				resetCategory();
+				resetSize();
+				resetColors();
+				resetColorPickers();
+				resetFormFields();
+				resetCheckboxes();
+			});
+		} catch (error) {
+			swal('Error', error.message, 'error');
+		}
 	};
 
 	const resetInputs = () => {
@@ -208,14 +209,18 @@ export default function NewProduct() {
 	return (
 		<div className='newProduct'>
 			<h1 className='addProductTitle'>New Product</h1>
-			<form className='addProductForm'>
+			<form
+				className='addProductForm'
+				enctype='multipart/form-data'
+			>
 				<div className='divition1'>
 					<div className='addProductItem'>
 						<label>Image</label>
 						<input
 							type='file'
 							id='file'
-							onChange={(e) => setFile(e.target.files[0])}
+							onChange={handleFiles}
+							multiple
 						/>
 					</div>
 					<div className='addProductItem'>
