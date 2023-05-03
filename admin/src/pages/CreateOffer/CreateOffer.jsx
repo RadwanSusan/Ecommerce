@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './createoffer.css';
 import {
 	getStorage,
@@ -22,6 +22,10 @@ export default function CreateOffer() {
 	const [color5, setColor5] = useState([]);
 	const [color6, setColor6] = useState([]);
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		console.log(color1, color2, color3, color4, color5, color6);
+	}, [color1, color2, color3, color4, color5, color6]);
 	const handleChange = (e) => {
 		setInputs((prev) => {
 			return { ...prev, [e.target.name]: e.target.value };
@@ -159,17 +163,15 @@ export default function CreateOffer() {
 			},
 			() => {
 				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-					const color = [
-						color1,
-						color2,
-						color3,
-						color4,
-						color5,
-						color6,
-					];
+					const color = [color1, color2, color3, color4, color5, color6];
+					console.debug(`🚀  file: CreateOffer.jsx:170  color =>`, color);
 					const colors = color.filter((item) => {
 						return item.length !== 0;
 					});
+					console.debug(
+						`🚀  file: CreateOffer.jsx:174  colors =>`,
+						colors,
+					);
 					const offer = {
 						...inputs,
 						img: downloadURL,
@@ -177,74 +179,76 @@ export default function CreateOffer() {
 						size: size,
 						color: colors,
 					};
-					addOffer(offer, dispatch);
-					swal({
-						title: 'Success',
-						text: 'Offer added successfully',
-						icon: 'success',
-						button: 'Ok',
-						closeOnClickOutside: false,
-						closeOnEsc: false,
-					}).then(() => {
-						setInputs({
-							title: '',
-							desc: '',
-							price: '',
-							originalPrice: '',
-							offerPrice: '',
-							img: '',
-							categories: [],
-							size: [],
-							color: [],
-							quantity: '',
-							width: '',
-							height: '',
-							length: '',
-							weight: '',
+					console.debug(`🚀  file: CreateOffer.jsx:181  offer =>`, offer);
+					addOffer(offer, dispatch).then(() => {
+						swal({
+							title: 'Success',
+							text: 'Offer added successfully',
+							icon: 'success',
+							button: 'Ok',
+							closeOnClickOutside: false,
+							closeOnEsc: false,
+						}).then(() => {
+							setInputs({
+								title: '',
+								desc: '',
+								price: '',
+								originalPrice: '',
+								offerPrice: '',
+								img: '',
+								categories: [],
+								size: [],
+								color: [],
+								quantity: '',
+								width: '',
+								height: '',
+								length: '',
+								weight: '',
+							});
+							fileName = null;
+							document.querySelector('#file').value = null;
+							setFile(null);
+							file = null;
+							setCat([]);
+							setSize([]);
+							setColor1([]);
+							setColor2([]);
+							setColor3([]);
+							setColor4([]);
+							setColor5([]);
+							setColor6([]);
+							colorPicker1 = document.getElementById('color-picker1');
+							colorPicker2 = document.getElementById('color-picker2');
+							colorPicker3 = document.getElementById('color-picker3');
+							colorPicker4 = document.getElementById('color-picker4');
+							colorPicker5 = document.getElementById('color-picker5');
+							colorPicker6 = document.getElementById('color-picker6');
+							colorPicker1.value = defaultColor;
+							colorPicker2.value = defaultColor;
+							colorPicker3.value = defaultColor;
+							colorPicker4.value = defaultColor;
+							colorPicker5.value = defaultColor;
+							colorPicker6.value = defaultColor;
+							document.querySelector('.Title').value = '';
+							document.querySelector('.Description').value = '';
+							document.querySelector('.Price').value = '';
+							document.querySelector('.OriginalPrice').value = '';
+							document.querySelector('.Categories').value = '';
+							document.querySelector('.Quantity').value = '';
+							document.querySelector('.Width').value = '';
+							document.querySelector('.Height').value = '';
+							document.querySelector('.Length').value = '';
+							document.querySelector('.Weight').value = '';
+							document.querySelector('.expirationDate1').value = '';
+							document.querySelector('.expirationDate2').value = '';
+							document.querySelector('.offerPrice').value = '';
+							for (const checkbox of document.querySelectorAll(
+								'.Size',
+							)) {
+								checkbox.checked = true;
+								checkbox.checked = false;
+							}
 						});
-						fileName = null;
-						document.querySelector('#file').value = null;
-						setFile(null);
-						file = null;
-						setCat([]);
-						setSize([]);
-						setColor1([]);
-						setColor2([]);
-						setColor3([]);
-						setColor4([]);
-						setColor5([]);
-						setColor6([]);
-						colorPicker1 = document.getElementById('color-picker1');
-						colorPicker2 = document.getElementById('color-picker2');
-						colorPicker3 = document.getElementById('color-picker3');
-						colorPicker4 = document.getElementById('color-picker4');
-						colorPicker5 = document.getElementById('color-picker5');
-						colorPicker6 = document.getElementById('color-picker6');
-						colorPicker1.value = defaultColor;
-						colorPicker2.value = defaultColor;
-						colorPicker3.value = defaultColor;
-						colorPicker4.value = defaultColor;
-						colorPicker5.value = defaultColor;
-						colorPicker6.value = defaultColor;
-						document.querySelector('.Title').value = '';
-						document.querySelector('.Description').value = '';
-						document.querySelector('.Price').value = '';
-						document.querySelector('.OriginalPrice').value = '';
-						document.querySelector('.Categories').value = '';
-						document.querySelector('.Quantity').value = '';
-						document.querySelector('.Width').value = '';
-						document.querySelector('.Height').value = '';
-						document.querySelector('.Length').value = '';
-						document.querySelector('.Weight').value = '';
-						document.querySelector('.expirationDate1').value = '';
-						document.querySelector('.expirationDate2').value = '';
-						document.querySelector('.offerPrice').value = '';
-						for (const checkbox of document.querySelectorAll(
-							'.Size',
-						)) {
-							checkbox.checked = true;
-							checkbox.checked = false;
-						}
 					});
 				});
 			},
