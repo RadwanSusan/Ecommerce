@@ -104,36 +104,71 @@ const Product = ({ item }) => {
       ele.target.parentNode.style.display = 'none';
       ele.target.parentNode.previousSibling.style.display = 'block';
     }
-  };
-
-  const addToWishlist = (productId, identifier) => {
-    if (wishlistLogin === false) {
-      swal({
+	};
+	const addToWishlist = async (productId, identifier, ele) => {
+    if (!wishlistLogin) {
+      await swal({
         title: 'You have to login !',
         icon: 'warning',
         buttons: true,
-        confirmButtonColor: '#42A5F5',
+        confirmButtonColor: '#42a5f5',
         confirmButtonText: 'Login',
         showCancelButton: true,
-
         closeOnConfirm: false,
-      }).then((e) => {
-        if (e) {
-          window.location.href = '/login';
-        }
       });
+      window.location.href = '/login';
       return;
     }
-
-    if (identifier === 'remove' && wishlistLogin === true) {
-      swal('Success', 'Product removed from wishlist!', 'success');
-      wishlist(productId);
-      return;
+    const targetClass = ele.target.classList[0];
+    try {
+      await wishlist(productId, userId);
+      if (identifier === 'remove') {
+        if (targetClass === 'add-to-wish2') {
+          ele.target.parentNode.style.display = 'none';
+          ele.target.parentNode.previousSibling.style.display = 'block';
+        }
+        swal('Success', 'Product removed from wishlist!', 'success');
+      } else if (identifier === 'addCatog') {
+        if (targetClass === 'add-to-wish') {
+          ele.target.style.display = 'none';
+          ele.target.nextSibling.children[0].style.display = 'block';
+          ele.target.nextSibling.style.display = 'block';
+        }
+        swal('Success', 'Product added to wishlist!', 'success');
+      }
+    } catch (error) {
+      swal('Error', 'Something went wrong', 'error');
     }
-
-    swal('Success', 'Product added to wishlist!', 'success');
-    wishlist(productId);
   };
+
+//   const addToWishlist = (productId, identifier) => {
+//     if (wishlistLogin === false) {
+//       swal({
+//         title: 'You have to login !',
+//         icon: 'warning',
+//         buttons: true,
+//         confirmButtonColor: '#42A5F5',
+//         confirmButtonText: 'Login',
+//         showCancelButton: true,
+
+//         closeOnConfirm: false,
+//       }).then((e) => {
+//         if (e) {
+//           window.location.href = '/login';
+//         }
+//       });
+//       return;
+//     }
+
+//     if (identifier === 'remove' && wishlistLogin === true) {
+//       swal('Success', 'Product removed from wishlist!', 'success');
+//       wishlist(productId);
+//       return;
+//     }
+
+//     swal('Success', 'Product added to wishlist!', 'success');
+//     wishlist(productId);
+//   };
   const isMountedRef = useRef(true);
   const [wishlistData, setWishlistData] = useState([]);
   let userId = localStorage.getItem('persist:root');
@@ -184,8 +219,7 @@ const Product = ({ item }) => {
                 <BsHeart
                   className='add-to-wish list-wish'
                   onClick={(ele) => {
-                    handleWichlist(item._id, ele);
-                    addToWishlist(item._id, 'remove');
+                    addToWishlist(item._id, 'addCatog', ele);
                   }}
                   style={{
                     display: 'none',
@@ -198,15 +232,14 @@ const Product = ({ item }) => {
                   height='16'
                   fill='currentColor'
                   viewBox='0 0 16 16'
-                  onClick={(ele) => {
-                    handleWichlist(item._id, ele);
-                    addToWishlist(item._id, 'add');
-                  }}
                 >
                   <path
                     className='add-to-wish2'
                     fill-rule='evenodd'
                     d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
+                    onClick={(ele) => {
+                      addToWishlist(item._id, 'remove', ele);
+                    }}
                   />
                 </svg>
               </>
@@ -215,8 +248,7 @@ const Product = ({ item }) => {
                 <BsHeart
                   className='add-to-wish list-wish'
                   onClick={(ele) => {
-                    handleWichlist(item._id, ele);
-                    addToWishlist(item._id, 'add');
+                    addToWishlist(item._id, 'addCatog', ele);
                   }}
                 />
                 <svg
@@ -226,10 +258,6 @@ const Product = ({ item }) => {
                   height='16'
                   fill='currentColor'
                   viewBox='0 0 16 16'
-                  onClick={(ele) => {
-                    handleWichlist(item._id, ele);
-                    addToWishlist(item._id, 'remove');
-                  }}
                   style={{
                     display: 'none',
                   }}
@@ -238,11 +266,13 @@ const Product = ({ item }) => {
                     className='add-to-wish2'
                     fill-rule='evenodd'
                     d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
+                    onClick={(ele) => {
+                      addToWishlist(item._id, 'remove', ele);
+                    }}
                   />
                 </svg>
               </>
             )}
-            
           </div>
         </Icon>
       </Info>

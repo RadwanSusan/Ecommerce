@@ -260,62 +260,68 @@ const Product = () => {
 		}
 	};
 	return (
-		<Container>
-			<Announcement />
-			<Navbar />
-			<NavbarBottom />
-			<Wrapper>
-				<ImgContainer>
-					<Image src={product.img} />
-				</ImgContainer>
-				<InfoContainer>
-					<Title>{product.title}</Title>
-					<Desc>{product.desc}</Desc>
-					<Price>$ {product.price}</Price>
-					<FilterContainer>
-						<Filter>
-							<FilterTitle>Color : </FilterTitle>
-							{product.color?.map((c) => (
-								<FilterColor
-									className="Color"
-									color={c}
-									key={c}
-									onClick={() => setColor(c)}
-								/>
-							))}
-						</Filter>
-						<Filter>
-							<FilterTitle>Size : </FilterTitle>
-							<FilterSize onChange={(e) => setSize(e.target.value)}>
-								{product.size?.map((s) => (
-									<FilterSizeOption key={s}>{s}</FilterSizeOption>
-								))}
-							</FilterSize>
-						</Filter>
-					</FilterContainer>
-					<AddContainer>
-						<AmountContainer>
-							<Remove onClick={() => handleQuantity("dec")} />
-							<Amount>{quantity}</Amount>
-							<Add onClick={() => handleQuantity("inc")} />
-						</AmountContainer>
-						{chekAvail() ? (
-							<Button className="AddCart" onClick={handleClick}>
-								ADD TO CART
-							</Button>
-						) : (
-							<Button className="AddCart" disabled>
-								ADD TO CART
-							</Button>
-						)}
-					</AddContainer>
-				</InfoContainer>
-			</Wrapper>
-			<Newsletter />
-			<FooterNew />
-			{/* <MobileMenu /> */}
-		</Container>
-	);
+    <Container>
+      <Announcement />
+      <Navbar />
+      <NavbarBottom />
+      <Wrapper>
+        <ImgContainer>
+          <Image src={product.img} />
+        </ImgContainer>
+        <InfoContainer>
+          <Title>{product.title}</Title>
+          <Desc>{product.desc}</Desc>
+					{
+		  if(product.offerPrice!==undefined ||product.offerPrice!==null ||
+          product.offerPrice!==""){
+						<Price className='price55'>$ {product.price}</Price>
+					<Price>$ {product.offerPrice}</Price>
+					}
+		  }
+          <FilterContainer>
+            <Filter>
+              <FilterTitle>Color : </FilterTitle>
+              {product.color?.map((c) => (
+                <FilterColor
+                  className='Color'
+                  color={c}
+                  key={c}
+                  onClick={() => setColor(c)}
+                />
+              ))}
+            </Filter>
+            <Filter>
+              <FilterTitle>Size : </FilterTitle>
+              <FilterSize onChange={(e) => setSize(e.target.value)}>
+                {product.size?.map((s) => (
+                  <FilterSizeOption key={s}>{s}</FilterSizeOption>
+                ))}
+              </FilterSize>
+            </Filter>
+          </FilterContainer>
+          <AddContainer>
+            <AmountContainer>
+              <Remove onClick={() => handleQuantity('dec')} />
+              <Amount>{quantity}</Amount>
+              <Add onClick={() => handleQuantity('inc')} />
+            </AmountContainer>
+            {chekAvail() ? (
+              <Button className='AddCart' onClick={handleClick}>
+                ADD TO CART
+              </Button>
+            ) : (
+              <Button className='AddCart' disabled>
+                ADD TO CART
+              </Button>
+            )}
+          </AddContainer>
+        </InfoContainer>
+      </Wrapper>
+      <Newsletter />
+      <FooterNew />
+      {/* <MobileMenu /> */}
+    </Container>
+  );
 };
 
 export default Product;

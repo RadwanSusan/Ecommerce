@@ -89,13 +89,13 @@ const Offer = () => {
         aramex.append(label);
         input1.addEventListener('click', (e) => {
           if (e.target.nextElementSibling.style.border === '3px solid black') {
-            e.target.nextElementSibling.style.border = 'none';
+            e.target.nextElementSibling.style.border = '1px solid black';
             setColor('');
           } else {
             setColor(e.target.value);
             let siblings = getSiblings(e.target);
             siblings.forEach((sibling) => {
-              sibling.style.border = 'none';
+              sibling.style.border = '1px solid black';
             });
             e.target.nextElementSibling.style.border = '3px solid black';
           }

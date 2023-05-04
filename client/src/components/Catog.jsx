@@ -154,14 +154,14 @@ const Catog = ({ item }) => {
 							event.target.nextElementSibling.style.border ===
 							'3px solid black'
 						) {
-							event.target.nextElementSibling.style.border = 'none';
+							event.target.nextElementSibling.style.border = '1px solid black';
 						} else {
 							document.querySelectorAll('.AddCart').forEach((item) => {
 								item.setAttribute('color', event.target.value);
 							});
 							const siblings = getSiblings(event.target);
 							siblings.forEach((sibling) => {
-								sibling.style.border = 'none';
+								sibling.style.border = '1px solid black';
 							});
 							event.target.nextElementSibling.style.border =
 								'3px solid black';
