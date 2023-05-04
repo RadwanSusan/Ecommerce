@@ -961,7 +961,7 @@ const Offer = () => {
                               </div>
                             );
                           }
-                        })}
+                        }).slice(0,4)}
                       </Wrapper1>
                     </div>
                     <div className='owl-nav'>
