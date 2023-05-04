@@ -677,13 +677,8 @@ const Offer = () => {
                       </div>
                     </div>
                     <div className='timer-content'>
-                      <div className='timer-title'>Hurry Up! Offer End In:</div>
-                      <div
-                        className='deals-countdown'
-                        data-timer='2021/06/24 00:00:00'
-                      >
-                        Now!
-                      </div>
+                      <div className='timer-title'>Hurry Up! Click here to show All Offer</div>
+                      
                     </div>
                   </div>
                 </Link>

@@ -1784,6 +1784,11 @@ input[type="checkbox"]+label,
 input[type="radio"]+label {
 	margin: 0;
 }
+.block_goodColor__allColors > * {
+	/* background-color: #222; */
+	border: 1px solid black;
+
+}
 
 .block_rating__stars>input {
 	display: none;
@@ -1905,7 +1910,7 @@ input[type="radio"]+label {
 .block_quantity {
 	position: relative;
 	height: 46px;
-	margin-top: 45px;
+	margin-top: 85px;
 }
 
 .block_quantity span {

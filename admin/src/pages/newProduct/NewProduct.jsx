@@ -165,8 +165,7 @@ export default function NewProduct() {
 	};
 
 	const resetFile = () => {
-		file = null;
-		setFile(null);
+		setFile([]);
 	};
 
 	const resetCategory = () => {
