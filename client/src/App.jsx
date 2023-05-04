@@ -8,6 +8,9 @@ import Login from './pages/Login';
 import Forgot from './pages/forgot/Forgot';
 
 import Cart from './pages/Cart';
+import OrderHave from './pages/HaveOrder';
+import Wishlist from './pages/Wishlist';
+
 import {
 	BrowserRouter as Router,
 	Switch,
@@ -26,43 +29,44 @@ const App = () => {
 	const { darkMode } = useContext(DarkModeContext);
 
 	return (
-		<div className={darkMode ? 'app dark' : 'app'}>
-			<Router>
-				<Switch>
-					<Route path='/forgot'>
-						<Forgot />
-					</Route>
-					<Route
-						exact
-						path='/'
-					>
-						<Home />
-					</Route>
-					<Route path='/products/:category'>
-						<ProductList />
-					</Route>
-					<Route path='/product/:id'>
-						<Product />
-					</Route>
-					<Route path='/offer/:category'>
-						<OfferProducts />
-					</Route>
-					<Route path='/cart'>
-						<Cart />
-					</Route>
-					<Route path='/success'>
-						<Success />
-					</Route>
-					<Route path='/login'>
-						{user ? <Redirect to='/' /> : <Login />}
-					</Route>
-					<Route path='/register'>
-						{user ? <Redirect to='/' /> : <Register />}
-					</Route>
-				</Switch>
-			</Router>
-		</div>
-	);
+    <div className={darkMode ? 'app dark' : 'app'}>
+      <Router>
+        <Switch>
+          <Route path='/forgot'>
+            <Forgot />
+          </Route>
+          <Route exact path='/'>
+            <Home />
+          </Route>
+          <Route path='/products/:category'>
+            <ProductList />
+          </Route>
+          <Route path='/product/:id'>
+            <Product />
+          </Route>
+          <Route path='/offer/:category'>
+            <OfferProducts />
+          </Route>
+          <Route path='/orderHave'>
+            <OrderHave />
+          </Route>
+          <Route path='/wishList'>
+            <Wishlist />
+          </Route>
+          <Route path='/cart'>
+            <Cart />
+          </Route>
+          <Route path='/success'>
+            <Success />
+          </Route>
+          <Route path='/login'>{user ? <Redirect to='/' /> : <Login />}</Route>
+          <Route path='/register'>
+            {user ? <Redirect to='/' /> : <Register />}
+          </Route>
+        </Switch>
+      </Router>
+    </div>
+  );
 };
 
 export default App;

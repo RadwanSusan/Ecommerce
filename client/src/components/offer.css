@@ -1001,12 +1001,14 @@ print {
 		margin: 0;
 	}
 
-	.product-items .action.towishlist:before,
+	/* .product-items .action.towishlist:before,
 	.action.towishlist:before,
 	.action.towishlist:before {
 		content: "\e601";
-	}
-
+	} */
+.towishlist1 {
+	margin-top: 6px;
+}
 	.group-deal-1 .product-item-info .product-item-details .product-item-actions .actions-secondary .action:before {
 		display: none;
 	}

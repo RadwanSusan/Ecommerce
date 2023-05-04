@@ -402,125 +402,145 @@ email = JSON.parse(email);
 	// 		return true;
 	// 	}
 	// };
+    const [orderHave, setOrderHave] = useState([]);
 
 	useEffect(() => {
 		dispatch(calc());
 	}, [cart.products]);
+	 useEffect(() => {
+     const getOrders = async () => {
+       try {
+         const res = await userRequest.get('/orders/find/' + userId);
+         setOrderHave(res.data);
+       } catch (err) {
+         console.log('error');
+       }
+     };
+     getOrders();
+   }, []);
+
+   console.log(orderHave.length);
 
 	return (
-		<Container>
-			<Announcement />
-			<Navbar />
-			<NavbarBottom />
-			<Wrapper>
-				<Title>YOUR BAG</Title>
-				<Top>
-					<Link to={'/'}>
-						<TopButton>CONTINUE SHOPPING</TopButton>
-					</Link>
-					<TopTexts>
-						<TopText>Shopping Bag(2)</TopText>
-						<TopText>Your Wishlist (0)</TopText>
-					</TopTexts>
-					{/* <TopButton type="filled">CHECKOUT NOW</TopButton> */}
-				</Top>
-				<Bottom>
-					<Info>
-						{mergedCart.map((product) => (
-							<Product>
-								<ProductDetail>
-									<Image src={product.img} />
-									<Details>
-										<ProductName>
-											<b>Product:</b> {product.title}
-										</ProductName>
-										<ProductId>
-											<b>ID:</b> {product._id}
-										</ProductId>
-										<ProductColor color={product.color} />
-										<ProductSize>
-											<b>Size:</b> {product.size}
-										</ProductSize>
-										<ProductSize>
-											<Button1
-												onClick={function () {
-													handleClick2(product._id);
-												}}
-											>
-												Remove
-											</Button1>
-										</ProductSize>
-									</Details>
-								</ProductDetail>
-								<PriceDetail>
-									<ProductAmountContainer>
-										<Remove
-											className={`DecQuantity${product._id}`}
-											onClick={() => {
-												dispatch(decrease(product._id));
-												handleQuantity('dec', product._id);
-											}}
-										/>
-										<ProductAmount>{product.quantity}</ProductAmount>
-										<Add
-											className={`AddQuantity${product._id}`}
-											onClick={() => {
-												dispatch(increase(product._id));
-												handleQuantity('inc', product._id);
-											}}
-										/>
-										{/* )) */}
-										{/* } */}
-										{/* <Add
+    <Container>
+      <Announcement />
+      <Navbar />
+      <NavbarBottom />
+      <Wrapper>
+        <Title>YOUR BAG</Title>
+        <Top>
+          <Link to={'/'}>
+            <TopButton>CONTINUE SHOPPING</TopButton>
+          </Link>
+          <TopTexts>
+            <Link to={'/orderHave'}>
+              <TopText>Shopping Bag({orderHave.length})</TopText>
+            </Link>
+            <Link to={'/wishList'}>
+              <TopText>Your Wishlist (0)</TopText>
+            </Link>
+          </TopTexts>
+          {/* <TopButton type="filled">CHECKOUT NOW</TopButton> */}
+        </Top>
+        <Bottom>
+          <Info>
+            {mergedCart.map((product) => (
+              <Product>
+                <ProductDetail>
+                  <Image src={product.img} />
+                  <Details>
+                    <ProductName>
+                      <b>Product:</b> {product.title}
+                    </ProductName>
+                    <ProductId>
+                      <b>ID:</b> {product._id}
+                    </ProductId>
+                    <ProductColor color={product.color} />
+                    <ProductSize>
+                      <b>Size:</b> {product.size}
+                    </ProductSize>
+                    <ProductSize>
+                      <Button1
+                        onClick={function () {
+                          handleClick2(product._id);
+                        }}
+                      >
+                        Remove
+                      </Button1>
+                    </ProductSize>
+                  </Details>
+                </ProductDetail>
+                <PriceDetail>
+                  <ProductAmountContainer>
+                    <Remove
+                      className={`DecQuantity${product._id}`}
+                      onClick={() => {
+                        dispatch(decrease(product._id));
+                        handleQuantity('dec', product._id);
+                      }}
+                    />
+                    <ProductAmount>{product.quantity}</ProductAmount>
+                    <Add
+                      className={`AddQuantity${product._id}`}
+                      onClick={() => {
+                        dispatch(increase(product._id));
+                        handleQuantity('inc', product._id);
+                      }}
+                    />
+                    {/* )) */}
+                    {/* } */}
+                    {/* <Add
 											className={`AddQuantity${product._id}`}
 											onClick={() => {
 												dispatch(increase(product._id));
 												handleQuantity("inc", product._id);
 											}}
 										/> */}
-									</ProductAmountContainer>
-									<ProductPrice>$ {product.price * product.quantity}</ProductPrice>
-								</PriceDetail>
-							</Product>
-						))}
-						<Hr />
-					</Info>
-					<Summary>
-						<SummaryTitle>ORDER SUMMARY</SummaryTitle>
-						<SummaryItem>
-							<SummaryItemText>Subtotal</SummaryItemText>
-							<SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
-						</SummaryItem>
-						<SummaryItem>
-							<SummaryItemText>Estimated Shipping</SummaryItemText>
-							<SummaryItemPrice>$ 5.90</SummaryItemPrice>
-						</SummaryItem>
-						<SummaryItem>
-							<SummaryItemText>Shipping Discount</SummaryItemText>
-							<SummaryItemPrice>$ -5.90</SummaryItemPrice>
-						</SummaryItem>
-						<SummaryItem type='total'>
-							<SummaryItemText>Total</SummaryItemText>
-							<SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
-						</SummaryItem>
-						<StripeCheckout
-							name='PME Shop'
-							image='https://avatars.githubusercontent.com/u/1486366?v=4'
-							billingAddress
-							shippingAddress
-							description={`Your total is $${cart.total}`}
-							amount={cart.total * 100}
-							token={onToken}
-							stripeKey={KEY}
-						>
-							<Button>CHECKOUT NOW</Button>
-						</StripeCheckout>
-					</Summary>
-				</Bottom>
-			</Wrapper>
-			<FooterNew />
-		</Container>
-	);
+                  </ProductAmountContainer>
+                  <ProductPrice>
+                    $ {product.price * product.quantity}
+                  </ProductPrice>
+                </PriceDetail>
+              </Product>
+            ))}
+            <Hr />
+          </Info>
+          <Summary>
+            <SummaryTitle>ORDER SUMMARY</SummaryTitle>
+            <SummaryItem>
+              <SummaryItemText>Subtotal</SummaryItemText>
+              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+            </SummaryItem>
+            <SummaryItem>
+              <SummaryItemText>Estimated Shipping</SummaryItemText>
+              <SummaryItemPrice>$ 5.90</SummaryItemPrice>
+            </SummaryItem>
+            <SummaryItem>
+              <SummaryItemText>Shipping Discount</SummaryItemText>
+              <SummaryItemPrice>$ -5.90</SummaryItemPrice>
+            </SummaryItem>
+            <SummaryItem type='total'>
+              <SummaryItemText>Total</SummaryItemText>
+              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+            </SummaryItem>
+            <StripeCheckout
+              name='PME Shop'
+              image='https://avatars.githubusercontent.com/u/1486366?v=4'
+              billingAddress
+              shippingAddress
+              description={`Your total is $${cart.total}`}
+              amount={cart.total * 100}
+              token={onToken}
+              stripeKey={KEY}
+            >
+              <Button>CHECKOUT NOW</Button>
+            </StripeCheckout>
+          </Summary>
+        </Bottom>
+      </Wrapper>
+      <FooterNew />
+    </Container>
+  );
 };
 
 export default Cart;
