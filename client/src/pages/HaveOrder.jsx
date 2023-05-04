@@ -11,8 +11,6 @@ import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import { useDispatch } from 'react-redux';
 
-
-
 const Container = styled.div`
   user-select: none;
 `;
@@ -187,9 +185,9 @@ const Button1 = styled.button`
 `;
 
 const OrderHave = () => {
-  
-    const [orderHave, setOrderHave] = useState([]);
- 
+  const [orderHave, setOrderHave] = useState([]);
+  const [orders, setOrders] = useState([]);
+
   let userId = localStorage.getItem('persist:root');
   userId = JSON.parse(userId);
   userId = userId.user;
@@ -200,33 +198,94 @@ const OrderHave = () => {
   email = JSON.parse(email);
 
   email = email.user;
-
+  const [productGet, setProductGet] = useState({});
+    const [offerGet, setOfferGet] = useState({});
+  
   email = JSON.parse(email);
   email = email.currentUser.email;
   console.log(email);
-    useEffect(() => {
-        const getOrders = async () => {
-            try {
-                const res = await userRequest.get('/orders/find/' + userId);        
-                setOrderHave(res.data);
-            } catch (err) {
-                console.log("error");
-            }
-        };
-            getOrders();
+  useEffect(() => {
+    const getOrders = async () => {
+      try {
+        const res = await userRequest.get('/orders/find/' + userId);
+        setOrderHave(res.data);
+      } catch (err) {
+        console.log('error');
+      }
+    };
+    getOrders().finally(() => {
+    
+      const fetchData = async () => {
+        try {
+          const [productsRes, offersRes] = await Promise.all([
+            userRequest.get('/products'),
+            userRequest.get('/offer'),
+          ]);
+          setProductGet(productsRes.data);
+          setOfferGet(offersRes.data);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      fetchData().finally(() => {
+        orderHave.forEach((item) => {
+          [...productGet, ...offerGet]?.find((item2) => {
+            item2._id === item._id
+              ? setOrders(...orders, item2)
+              : console.log(item2);
+          });
+          console.log(item);
+          console.log(productGet);
+          console.log(offerGet);
+        });
+      });
+    
+    console.log(orderHave);
+ })
+  }, [userId]);
 
-    }, []);
-    
-    
-    
-    
-    
+  // const [productGet, setProductGet] = useState({});
+  // const [offerGet, setOfferGet] = useState({});
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const [productsRes, offersRes] = await Promise.all([
+  //         userRequest.get('/products'),
+  //         userRequest.get('/offer'),
+  //       ]);
+  //       setProductGet(productsRes.data);
+  //       setOfferGet(offersRes.data);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+  //   fetchData().finally(() => {
+  //     orderHave.forEach((item) => {
+  //       // [...productGet, ...offerGet]?.find((item2) => {
+  //       //   item2._id === item._id
+  //       //     ? setOrders(...orders, item2)
+  //       //     : console.log(item2);
+  //       // });
+  //       // console.log(item);
+  //       // console.log(productGet);
+  //       // console.log(offerGet);
+  //     });
+  //   });
+  // }, [orderHave]);
+  // console.log(orderHave);
 
-  
-  
-  
-  
- 
+  // orderHave.forEach((item) => {
+  //    [...productGet, ...offerGet].find((item2) => {
+  //      item2._id === item._id ?
+  //        setOrders(...orders, item2) :
+  //        console.log(item2);
+  //   });
+  //  })
+  useEffect(() => {
+    console.log(orders);
+    console.log(productGet);
+    console.log(offerGet);
+  }, [orders, productGet, offerGet]);
   return (
     <Container>
       <Announcement />
@@ -241,36 +300,34 @@ const OrderHave = () => {
         </Top>
         <Bottom>
           <Info>
-            {orderHave.map((p) => (
-              
-                <Product>
-                  <ProductDetail>
-                    <Image src={'z'} />
-                    <Details>
-                      <ProductName>
-                        <b>Product:</b>
-                        zaid
-                        {/* {product.title} */}
-                      </ProductName>
-                      <ProductId>
-                        <b>ID:</b>
+            {orders.map((p) => (
+              <Product>
+                <ProductDetail>
+                  <Image src={'z'} />
+                  <Details>
+                    <ProductName>
+                      <b>Product:</b>
+                      zaid
+                      {/* {product.title} */}
+                    </ProductName>
+                    <ProductId>
+                      <b>ID:</b>
 
-                        {p.userId}
-                      </ProductId>
-                      <ProductColor />
-                      <ProductSize>
-                        <b>Amount:</b>
-                        {p.amount}
-                      </ProductSize>
-                      <ProductSize>
-                        <b>Quantity:</b>
-                        {p.products[0].quantity}
-                      </ProductSize>
-                      <ProductSize></ProductSize>
-                    </Details>
-                  </ProductDetail>
-                </Product>
-              
+                      {p.userId}
+                    </ProductId>
+                    <ProductColor />
+                    <ProductSize>
+                      <b>Amount:</b>
+                      {p.amount}
+                    </ProductSize>
+                    <ProductSize>
+                      <b>Quantity:</b>
+                      {p.products[0].quantity}
+                    </ProductSize>
+                    <ProductSize></ProductSize>
+                  </Details>
+                </ProductDetail>
+              </Product>
             ))}
             <Hr />
           </Info>

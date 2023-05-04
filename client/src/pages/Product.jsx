@@ -271,13 +271,15 @@ const Product = () => {
         <InfoContainer>
           <Title>{product.title}</Title>
           <Desc>{product.desc}</Desc>
-					{
-		  if(product.offerPrice!==undefined ||product.offerPrice!==null ||
-          product.offerPrice!==""){
-						<Price className='price55'>$ {product.price}</Price>
-					<Price>$ {product.offerPrice}</Price>
+					{product.offerPrice !== undefined && product.offerPrice !== null &&
+						product.offerPrice !== "" ?
+						<>
+							 <Price className='price55'>$ {product.price}</Price>
+          <Price>$ {product.offerPrice}</Price>
+						</>
+          :
+						<Price>$ {product.price}</Price>
 					}
-		  }
           <FilterContainer>
             <Filter>
               <FilterTitle>Color : </FilterTitle>
