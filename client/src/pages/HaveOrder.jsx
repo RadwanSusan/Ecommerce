@@ -227,20 +227,20 @@ const OrderHave = () => {
           console.log(err);
         }
       };
-      fetchData().finally(() => {
-        orderHave.forEach((item) => {
-          [...productGet, ...offerGet]?.find((item2) => {
-            item2._id === item._id
-              ? setOrders(...orders, item2)
-              : console.log(item2);
-          });
-          console.log(item);
-          console.log(productGet);
-          console.log(offerGet);
-        });
-      });
+      fetchData();
+      //   .finally(() => {
+      //   orderHave.forEach((item) => {
+      //     [...productGet, ...offerGet]?.find((item2) => {
+      //       item2._id === item._id
+      //         ? setOrders(...orders, item2)
+      //         : console.log(item2);
+      //     });
+      //     console.log(item);
+      //     console.log(productGet);
+      //     console.log(offerGet);
+      //   });
+      // });
     
-    console.log(orderHave);
  })
   }, [userId]);
 
@@ -282,9 +282,9 @@ const OrderHave = () => {
   //   });
   //  })
   useEffect(() => {
-    console.log(orders);
-    console.log(productGet);
-    console.log(offerGet);
+    console.log("order",orders);
+    console.log('productGet', productGet);
+    console.log('offerGet', offerGet);
   }, [orders, productGet, offerGet]);
   return (
     <Container>

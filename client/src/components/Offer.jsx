@@ -38,6 +38,7 @@ const FilterSize = styled.select`
 const FilterSizeOption = styled.option``;
 
 const Offer = () => {
+  const Idref = useRef();
   const [zaidVar, setZaidVar] = useState(0);
   const [product_id, setProduct_id] = useState(0);
   let input = document.getElementsByClassName('block_quantity__number')[0];
@@ -56,6 +57,8 @@ const Offer = () => {
       document
         .querySelector('.block_product__advantagesProduct')
         .append(viewArr.desc);
+      console.log(viewArr.title);
+      document.querySelector('.nameProduct').innerHTML= viewArr.title;
       let aramex = document.querySelector('.block_goodColor__allColors');
       document.querySelector('.block_goodColor__allColors').innerHTML = '';
       setZaidVar(viewArr._id);
@@ -145,6 +148,7 @@ const Offer = () => {
     };
     getOffer(getOffer);
   }, [categoriesOffer.cat]);
+  console.log(offer);
   let cartProducts = JSON.parse(localStorage.getItem('persist:root'));
   if (
     cartProducts === null ||
@@ -475,88 +479,26 @@ const Offer = () => {
                       className='fa fa-cog block_specification__button block_specification__button__rotate'
                       aria-hidden='true'
                     ></i>
-                    <span className='block_specification__text'>spec</span>
                   </div>
                   <div className='block_specification__informationShow hide'>
                     <i
                       className='fa fa-info-circle block_specification__button block_specification__button__jump'
                       aria-hidden='true'
                     ></i>
-                    <span className='block_specification__text'>inform</span>
                   </div>
                 </div>
-                <p className='block_model'>
-                  <span className='block_model__text'>Model: </span>
-                  <span className='block_model__number'>505795</span>
-                </p>
+              
                 <div className='block_product'>
-                  <h2 className='block_name block_name__mainName'>
-                    MOMENTUM<sup>&reg; </sup>
+                  <h2 className='block_name block_name__mainName nameProduct'>
+                    
                   </h2>
-                  <h2 className='block_name block_name__addName'>
-                    Wireless Black
-                  </h2>
+                  
                   <p className='block_product__advantagesProduct'></p>
                   <div className='block_informationAboutDevice'>
                     <div className='block_descriptionCharacteristic block_descriptionCharacteristic__disActive'>
-                      <table className='block_specificationInformation_table'>
-                        <tr>
-                          <th>Characteristic</th>
-                          <th>Value</th>
-                        </tr>
-                        <tr>
-                          <td>Ear Coupling</td>
-                          <td>Around Ear</td>
-                        </tr>
-                        <tr>
-                          <td>Transducer Principle</td>
-                          <td>Dynamic, Closed-back</td>
-                        </tr>
-                        <tr>
-                          <td>Frequency Response</td>
-                          <td>16Hz – 22kHz</td>
-                        </tr>
-                        <tr>
-                          <td>Sound Pressure Level (SPL)</td>
-                          <td>113 dB (Passive: 1 kHz/1 Vrms)</td>
-                        </tr>
-                        <tr>
-                          <td>Total Harmonic Distortion (THD)</td>
-                          <td>&lt;0.5% (1 kHz, 100 dB SPL)</td>
-                        </tr>
-                        <tr>
-                          <td>Volume Control</td>
-                          <td>Earcup control when Bluetooth connected</td>
-                        </tr>
-                        <tr>
-                          <td>Microphone Type</td>
-                          <td>
-                            Dual omni-directional microphone <br />2 mic beam
-                            forming array
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Cable / Connector</td>
-                          <td>1.4m (Detachable) / 3.5mm Angled</td>
-                        </tr>
-                        <tr>
-                          <td>Weight</td>
-                          <td>260g (9.17 oz)</td>
-                        </tr>
-                      </table>
+                      
                     </div>
-                    <div className='block_descriptionInformation'>
-                      <span>
-                        Peak performance with active noise cancelation.
-                        Sennheiser's new MOMENTUM Wireless - Closed
-                        circumauralheadphone featuring{' '}
-                        <a className='block_product__link' href='#'>
-                          Bluetooth<sup>&reg;</sup>
-                        </a>{' '}
-                        wireless technology and NoiseGard Hybrid active noise
-                        cancelation
-                      </span>
-                    </div>
+                   
                     <div className='row11 '>
                       <div className='large-6 small-12 column left-align'>
                         <div className='block_price'>
@@ -731,6 +673,7 @@ const Offer = () => {
                                       to={`/product/${offer[data]['_id']}`}
                                       className='action quickview-handler
 																	sm_quickview_handler'
+                                      
                                       title='Quick View'
                                       href=''
                                     >
