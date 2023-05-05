@@ -221,51 +221,60 @@ const OrderHave = () => {
 	}, []);
 
 	return (
-		<Container>
-			<Announcement />
-			<Navbar />
-			<NavbarBottom />
-			<Wrapper>
-				<Title>YOUR ORDERS</Title>
-				<Top>
-					<Link to={'/'}>
-						<TopButton>CONTINUE SHOPPING</TopButton>
-					</Link>
-				</Top>
-				<Bottom>
-					<Info>
-						{matchedOrders.map((order) => (
-							<Product key={order._id}>
-								{' '}
-								<ProductDetail>
-									<Image src={order.img[0]} />{' '}
-									<Details>
-										<ProductName>
-											<b>Product:</b> {order.title}
-										</ProductName>
-										<ProductId>
-											<b>ID:</b> {order._id}
-										</ProductId>
-										<ProductColor />
-										<ProductSize>
-											<b>Amount:</b> {order.amount}
-										</ProductSize>
-										<ProductSize>
-											<b>Quantity:</b> {order.quantity}
-										</ProductSize>
-										<ProductSize />
-									</Details>
-								</ProductDetail>
-								<ProductPrice>${order.price}</ProductPrice>{' '}
-							</Product>
-						))}
-						<Hr />
-					</Info>
-				</Bottom>
-			</Wrapper>
-			<FooterNew />
-		</Container>
-	);
+    <Container>
+      <Announcement />
+      <Navbar />
+      <NavbarBottom />
+      <Wrapper>
+        <Title>YOUR ORDERS</Title>
+        <Top>
+          <Link to={'/'}>
+            <TopButton>CONTINUE SHOPPING</TopButton>
+          </Link>
+        </Top>
+        {matchedOrders.length !== 0 ? (
+          <Bottom>
+            <Info>
+              {matchedOrders.map((order) => (
+                <Product key={order._id}>
+                  {' '}
+                  <ProductDetail>
+                    <Image src={order.img[0]} />{' '}
+                    <Details>
+                      <ProductName>
+                        <b>Product:</b> {order.title}
+                      </ProductName>
+                      <ProductId>
+                        <b>ID:</b> {order._id}
+                      </ProductId>
+                      <ProductColor />
+                      <ProductSize>
+                        <b>Amount:</b> {order.amount}
+                      </ProductSize>
+                      <ProductSize>
+                        <b>Quantity:</b> {order.quantity}
+                      </ProductSize>
+                      <ProductSize />
+                    </Details>
+                  </ProductDetail>
+                  <ProductPrice>${order.price}</ProductPrice>{' '}
+                </Product>
+              ))}
+              <Hr />
+            </Info>
+          </Bottom>
+        ) : (
+          <div
+            style={{ display:"flex", padding: '70px', fontSize: '30px',justifyContent:"center" }}
+            
+          >
+            No Orders Yet!
+          </div>
+        )}
+      </Wrapper>
+      <FooterNew />
+    </Container>
+  );
 };
 
 export default OrderHave;

@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { popularProducts } from '../data';
 import Product from './Product';
 import { userRequest } from '../requestMethods';
 
-import axios from 'axios';
 
 const Container = styled.div`
   padding: 20px;
@@ -39,7 +37,6 @@ useEffect(() => {
 
       const matchedItems = [];
 
-      
       for (const order of orders) {
         const matchedItem = [...products, ...offers].find(
           (item) => item._id === order
@@ -56,16 +53,19 @@ useEffect(() => {
   };
 
   fetchData();
-}, []);
-useEffect(() => {
-  console.log(matchedOrders);
 }, [matchedOrders]);
+
 
   return (
     <Container>
-      {matchedOrders.map((order) => (
+      {matchedOrders.length!==0?
+      matchedOrders.map((order) => (
         <Product item={order} key={order._id} />
-      ))}
+      )) :
+        <div style={{margin:"auto", padding:"100px", fontSize:"30px" }} >
+          No Products in Wishlist!
+        </div>
+      }
     </Container>
   );
 };

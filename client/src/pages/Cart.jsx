@@ -402,7 +402,9 @@ email = JSON.parse(email);
 	// 		return true;
 	// 	}
 	// };
-    const [orderHave, setOrderHave] = useState([]);
+	const [orderHave, setOrderHave] = useState([]);
+    const [wish, setWish] = useState([]);
+	
 
 	useEffect(() => {
 		dispatch(calc());
@@ -419,7 +421,51 @@ email = JSON.parse(email);
      getOrders();
    }, []);
 
-   console.log(orderHave.length);
+	console.log(orderHave.length);
+	
+	const [matchedOrders, setMatchedOrders] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userId = JSON.parse(
+          JSON.parse(localStorage.getItem('persist:root')).user
+        ).currentUser._id;
+
+        const [ordersRes, productsRes, offersRes] = await Promise.all([
+          userRequest.get(`/users/userWishListArray/${userId}`),
+          userRequest.get('/products'),
+          userRequest.get('/offer'),
+        ]);
+
+        const orders = ordersRes.data;
+        console.log(orders);
+        const products = productsRes.data;
+        console.log(products);
+
+        const offers = offersRes.data;
+        console.log(offers);
+
+        const matchedItems = [];
+
+        for (const order of orders) {
+          const matchedItem = [...products, ...offers].find(
+            (item) => item._id === order
+          );
+          if (matchedItem) {
+            matchedItems.push({ ...matchedItem });
+          }
+        }
+
+        setMatchedOrders(matchedItems);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, [matchedOrders]);
+
 
 	return (
     <Container>
@@ -437,7 +483,7 @@ email = JSON.parse(email);
               <TopText>Shopping Bag({orderHave.length})</TopText>
             </Link>
             <Link to={'/wishList'}>
-              <TopText>Your Wishlist (0)</TopText>
+              <TopText>Your Wishlist ({matchedOrders.length})</TopText>
             </Link>
           </TopTexts>
           {/* <TopButton type="filled">CHECKOUT NOW</TopButton> */}
