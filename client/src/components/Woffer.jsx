@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { popularProducts } from '../data';
 import Product from './Product';
+import { userRequest } from '../requestMethods';
+
 import axios from 'axios';
 
 const Container = styled.div`
@@ -11,67 +13,59 @@ const Container = styled.div`
   justify-content: space-between;
 `;
 
-const Woffer = ({ cat, filters, sort }) => {
-  const [offer, setOffer] = useState([]);
-  const [filteredOffer, setFilteredOffer] = useState([]);
-  const [wishlist, setWishlist] = useState([]);
- useEffect(() => {
-   const getWishlist = async () => {
-     try {
-       const res = await axios.get(
-         'http://localhost:4000/api/users/userWishListArray/644cd71b0e7fb80e5fa5d4a5'
-       );
-       setWishlist(res.data);
-     } catch (err) {}
-   };
-   getWishlist();
- }, []);
-    console.log(wishlist);
-    console.log("555555555555555555555555");
+const Woffer = () => {
+const [matchedOrders, setMatchedOrders] = useState([]);
 
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const userId = JSON.parse(
+        JSON.parse(localStorage.getItem('persist:root')).user
+      ).currentUser._id;
 
-  useEffect(() => {
-    const getOffer = async () => {
-      try {
-        const res = await axios.get(
-          cat
-            ? `http://localhost:4000/api/offer?category=${cat}`
-            : 'http://localhost:4000/api/offer'
+      const [ordersRes, productsRes, offersRes] = await Promise.all([
+        userRequest.get(`/users/userWishListArray/${userId}`),
+        userRequest.get('/products'),
+        userRequest.get('/offer'),
+      ]);
+
+      const orders = ordersRes.data;
+      console.log(orders);
+      const products = productsRes.data;
+      console.log(products);
+
+      const offers = offersRes.data;
+      console.log(offers);
+
+      const matchedItems = [];
+
+      
+      for (const order of orders) {
+        const matchedItem = [...products, ...offers].find(
+          (item) => item._id === order
         );
-        setOffer(res.data);
-      } catch (err) {}
-    };
-    getOffer(getOffer);
-  }, [cat]);
+        if (matchedItem) {
+          matchedItems.push({ ...matchedItem });
+        }
+      }
 
-  useEffect(() => {
-    cat &&
-      setFilteredOffer(
-        offer.filter((item) =>
-          Object.entries(filters).every(([key, value]) =>
-            item[key].includes(value)
-          )
-        )
-      );
-  }, [offer, cat, filters]);
-
-  useEffect(() => {
-    if (sort === 'newest') {
-      setFilteredOffer((prev) =>
-        [...prev].sort((a, b) => a.createdAt - b.createdAt)
-      );
-    } else if (sort === 'asc') {
-      setFilteredOffer((prev) => [...prev].sort((a, b) => a.price - b.price));
-    } else {
-      setFilteredOffer((prev) => [...prev].sort((a, b) => b.price - a.price));
+      setMatchedOrders(matchedItems);
+    } catch (error) {
+      console.error(error);
     }
-  }, [sort]);
+  };
+
+  fetchData();
+}, []);
+useEffect(() => {
+  console.log(matchedOrders);
+}, [matchedOrders]);
 
   return (
     <Container>
-      {cat
-        ? filteredOffer.map((item) => <Product item={item} key={item.id} />)
-        : offer.map((item) => <Product item={item} key={item.id} />)}
+      {matchedOrders.map((order) => (
+        <Product item={order} key={order._id} />
+      ))}
     </Container>
   );
 };
