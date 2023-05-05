@@ -402,6 +402,7 @@ export default function Product() {
         </div>
         <div className='productTopRight'>
           <div className='productInfoTop'>
+            
             <img src={product.img} alt='' className='productInfoImg' />
             <span className='productName'>{product.title}</span>
           </div>
@@ -413,7 +414,9 @@ export default function Product() {
               </div>
               <div className='productInfoItem'>
                 <span className='productInfoKey'>Product description:</span>
-                <span className='productInfoValue'>{product.desc}</span>
+                <span className='productInfoValue productInfoValue2'>
+                  {product.desc}
+                </span>
               </div>
               <div className='productInfoItem'>
                 <span className='productInfoKey'>sales:</span>
@@ -483,7 +486,7 @@ export default function Product() {
               onChange={handleUpdate}
             />
             <label>Product Description</label>
-            <input
+            <textarea
               type='text'
               name='desc'
               className='PDesc'

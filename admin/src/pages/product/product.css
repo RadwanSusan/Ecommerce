@@ -52,8 +52,18 @@
 .productInfoBottom2 {
   display: flex;
     justify-content: space-between;
+    gap: 20px;
 }
-
+.productInfoValue2 {
+  font-weight: 300;
+  overflow-y: scroll;
+  scroll-behavior: auto;
+  height: 90px;
+}
+.PDesc {
+  height: 70px;
+  margin-bottom: 10px;
+}
 .productInfoItem {
   width: 150px;
   display: flex;

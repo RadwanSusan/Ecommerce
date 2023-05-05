@@ -58,7 +58,7 @@
   }
   
   .productInfoItem {
-    width: 150px;
+    width: 300px;
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
@@ -67,6 +67,16 @@
   .productInfoValue {
     font-weight: 300;
   }
+    .productInfoValue2 {
+      font-weight: 300;
+      overflow-y: scroll;
+      scroll-behavior: auto;
+      height: 90px;
+    }
+    .PDesc {
+      height: 70px;
+      margin-bottom: 10px;
+    }
   
   .productBottom {
     padding: 20px;
@@ -132,6 +142,7 @@
   .allDiviti {
     display: flex;
     justify-content: space-between;
+    gap: 20px;
   }
     @media only screen and (max-width: 600px) {
       .productForm {

@@ -372,7 +372,9 @@ export default function OfferUser() {
                 </div>
                 <div className='productInfoItem'>
                   <span className='productInfoKey'>Offer description:</span>
-                  <span className='productInfoValue'>{offer.desc}</span>
+                  <span className='productInfoValue productInfoValue2'>
+                    {offer.desc}
+                  </span>
                 </div>
                 <div className='productInfoItem'>
                   <span className='productInfoKey'>sales:</span>
@@ -457,7 +459,7 @@ export default function OfferUser() {
               onChange={handleUpdate}
             />
             <label>Product Description</label>
-            <input
+            <textarea
               className='PDesc'
               type='text'
               name='desc'
