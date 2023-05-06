@@ -261,9 +261,6 @@ const Product = () => {
 			);
 			swal('Success', 'Product added to cart!', 'success');
 			product.quantity -= quantity;
-			if (product.quantity < 1) {
-				document.querySelector('.AddCart').disabled = true;
-			}
 			setQuantity(1);
 		}
 	};
