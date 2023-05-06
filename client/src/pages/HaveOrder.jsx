@@ -39,15 +39,6 @@ const TopButton = styled.button`
 	color: ${(props) => props.type === 'filled' && 'white'};
 `;
 
-const TopTexts = styled.div`
-	${mobile({ display: 'none' })}
-`;
-const TopText = styled.span`
-	text-decoration: underline;
-	cursor: pointer;
-	margin: 0px 10px;
-`;
-
 const Bottom = styled.div`
 	display: flex;
 	justify-content: space-between;
@@ -104,27 +95,6 @@ const ProductColor = styled.div`
 
 const ProductSize = styled.span``;
 
-const PriceDetail = styled.div`
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-`;
-
-const ProductAmountContainer = styled.div`
-	display: flex;
-	align-items: center;
-	margin-bottom: 20px;
-`;
-
-const ProductAmount = styled.div`
-	font-size: 24px;
-	margin: 5px;
-	${mobile({ margin: '5px 15px' })}
-	border-bottom:1px solid black;
-`;
-
 const ProductPrice = styled.div`
 	font-size: 30px;
 	font-weight: 200;
@@ -135,50 +105,6 @@ const Hr = styled.hr`
 	background-color: #eee;
 	border: none;
 	height: 1px;
-`;
-
-const Summary = styled.div`
-	flex: 1;
-	border: 0.5px solid lightgray;
-	border-radius: 10px;
-	padding: 20px;
-	height: 50vh;
-`;
-
-const SummaryTitle = styled.h1`
-	font-weight: 200;
-`;
-
-const SummaryItem = styled.div`
-	margin: 20px 0px;
-	display: flex;
-	justify-content: space-between;
-	font-weight: ${(props) => props.type === 'total' && '500'};
-	font-size: ${(props) => props.type === 'total' && '24px'};
-`;
-
-const SummaryItemText = styled.span``;
-
-const SummaryItemPrice = styled.span``;
-
-const Button = styled.button`
-	width: 100%;
-	padding: 10px;
-	background-color: black;
-	color: white;
-	font-weight: 600;
-`;
-const Button1 = styled.button`
-	width: 40%;
-	padding: 10px;
-	background-color: #eee;
-	color: black;
-	font-weight: 800;
-	cursor: pointer;
-	margin-top: 5px;
-	font-size: 12px;
-	border-radius: 10%;
-	${mobile({ width: '100%' })};
 `;
 
 const OrderHave = () => {
@@ -203,78 +129,87 @@ const OrderHave = () => {
 				const matchedItems = [];
 
 				for (const order of orders) {
-					const matchedItem = [...products, ...offers].find((item) =>
-						order.products.some((product) => product._id === item._id),
-					);
-					if (matchedItem) {
-						matchedItems.push({ ...matchedItem, amount: order.amount });
+					for (const item of order.products) {
+						const matchedItem = [...products, ...offers].find(
+							(product) => product._id === item._id,
+						);
+						if (matchedItem) {
+							matchedItems.push({
+								...matchedItem,
+								amount: order.amount,
+							});
+						} else {
+							console.log('no matched item');
+						}
 					}
 				}
-
 				setMatchedOrders(matchedItems);
 			} catch (error) {
 				console.error(error);
 			}
 		};
-
 		fetchData();
 	}, []);
 
 	return (
-    <Container>
-      <Announcement />
-      <Navbar />
-      <NavbarBottom />
-      <Wrapper>
-        <Title>YOUR ORDERS</Title>
-        <Top>
-          <Link to={'/'}>
-            <TopButton>CONTINUE SHOPPING</TopButton>
-          </Link>
-        </Top>
-        {matchedOrders.length !== 0 ? (
-          <Bottom>
-            <Info>
-              {matchedOrders.map((order) => (
-                <Product key={order._id}>
-                  {' '}
-                  <ProductDetail>
-                    <Image src={order.img[0]} />{' '}
-                    <Details>
-                      <ProductName>
-                        <b>Product:</b> {order.title}
-                      </ProductName>
-                      <ProductId>
-                        <b>ID:</b> {order._id}
-                      </ProductId>
-                      <ProductColor />
-                      <ProductSize>
-                        <b>Amount:</b> {order.amount}
-                      </ProductSize>
-                      <ProductSize>
-                        <b>Quantity:</b> {order.quantity}
-                      </ProductSize>
-                      <ProductSize />
-                    </Details>
-                  </ProductDetail>
-                  <ProductPrice>${order.price}</ProductPrice>{' '}
-                </Product>
-              ))}
-              <Hr />
-            </Info>
-          </Bottom>
-        ) : (
-          <div
-            style={{ display:"flex", padding: '70px', fontSize: '30px',justifyContent:"center" }}
-            
-          >
-            No Orders Yet!
-          </div>
-        )}
-      </Wrapper>
-      <FooterNew />
-    </Container>
-  );
+		<Container>
+			<Announcement />
+			<Navbar />
+			<NavbarBottom />
+			<Wrapper>
+				<Title>YOUR ORDERS</Title>
+				<Top>
+					<Link to={'/'}>
+						<TopButton>CONTINUE SHOPPING</TopButton>
+					</Link>
+				</Top>
+				{matchedOrders.length !== 0 ? (
+					<Bottom>
+						<Info>
+							{matchedOrders.map((order) => (
+								<Product key={order._id}>
+									{' '}
+									<ProductDetail>
+										<Image src={order.img} />{' '}
+										<Details>
+											<ProductName>
+												<b>Product:</b> {order.title}
+											</ProductName>
+											<ProductId>
+												<b>ID:</b> {order._id}
+											</ProductId>
+											<ProductColor />
+											<ProductSize>
+												<b>Amount:</b> {order.amount}
+											</ProductSize>
+											<ProductSize>
+												<b>Quantity:</b> {order.quantity}
+											</ProductSize>
+											<ProductSize />
+										</Details>
+									</ProductDetail>
+									<ProductPrice>${order.price}</ProductPrice>{' '}
+								</Product>
+							))}
+							<Hr />
+						</Info>
+					</Bottom>
+				) : (
+					<div
+						style={{
+							display: 'flex',
+							padding: '70px',
+							fontSize: '30px',
+							justifyContent: 'center',
+						}}
+					>
+						No Orders Yet!
+					</div>
+				)}
+			</Wrapper>
+			<FooterNew />
+		</Container>
+	);
 };
 
 export default OrderHave;
