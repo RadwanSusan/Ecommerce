@@ -176,10 +176,13 @@ const Product = () => {
 	);
 
 	const handleQuantity = (type) => {
+		const cartProduct = mergedCart.find((item) => item._id === product._id);
+		const cartQuantity = cartProduct ? cartProduct.quantity : 0;
+		const availableQuantity = product.quantity - cartQuantity;
 		if (type === 'dec') {
 			quantity > 1 && setQuantity(quantity - 1);
 		} else {
-			if (quantity >= product.quantity) {
+			if (quantity >= availableQuantity) {
 				swal(
 					'Info',
 					'You have exceeded the number of available products!',
