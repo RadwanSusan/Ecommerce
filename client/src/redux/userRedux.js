@@ -26,4 +26,5 @@ const userSlice = createSlice({
 	},
 });
 export const { loginStart, loginSuccess, loginFailure } = userSlice.actions;
+export const selectCurrentUserId = (state) => state.user.currentUser?._id;
 export default userSlice.reducer;
