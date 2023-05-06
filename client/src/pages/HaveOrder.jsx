@@ -109,7 +109,7 @@ const Hr = styled.hr`
 
 const OrderHave = () => {
 	const [matchedOrders, setMatchedOrders] = useState([]);
-
+	const [orderQuantity, setOrderQuantity] = useState(1);
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -124,6 +124,7 @@ const OrderHave = () => {
 				]);
 
 				const orders = ordersRes.data;
+				setOrderQuantity(orders[0].products[0].quantity);
 				const products = productsRes.data;
 				const offers = offersRes.data;
 				const matchedItems = [];
@@ -137,9 +138,8 @@ const OrderHave = () => {
 							matchedItems.push({
 								...matchedItem,
 								amount: order.amount,
+								quantity: item.quantity,
 							});
-						} else {
-							console.log('no matched item');
 						}
 					}
 				}
