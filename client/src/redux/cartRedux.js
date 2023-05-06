@@ -39,12 +39,16 @@ const cartSlice = createSlice({
 		},
 		clear: (state) => {
 			state.products = [];
+			state.total = 0;
 		},
 		reset: (state, action) => {
 			const cartItem = state.products.findIndex(
 				(item) => item._id === action.payload,
 			);
 			state.products[cartItem].quantity = 1;
+			
+
+			
 		},
 		getAllProduct: (state) => {
 			let cartProducts = state.products;
