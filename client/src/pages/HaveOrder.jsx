@@ -107,9 +107,53 @@ const Hr = styled.hr`
 	height: 1px;
 `;
 
+// const OrderHave = () => {
+// 	const [matchedOrders, setMatchedOrders] = useState([]);
+
+// 	useEffect(() => {
+// 		const fetchData = async () => {
+// 			try {
+// 				const userId = JSON.parse(
+// 					JSON.parse(localStorage.getItem('persist:root')).user,
+// 				).currentUser._id;
+
+// 				const [ordersRes, productsRes, offersRes] = await Promise.all([
+// 					userRequest.get(`/orders/find/${userId}`),
+// 					userRequest.get('/products'),
+// 					userRequest.get('/offer'),
+// 				]);
+
+// 				const orders = ordersRes.data;
+
+// 				const products = productsRes.data;
+// 				const offers = offersRes.data;
+// 				const matchedItems = [];
+
+// 				for (const order of orders) {
+// 					for (const item of order.products) {
+// 						const matchedItem = [...products, ...offers].find(
+// 							(product) => product._id === item._id,
+// 						);
+// 						if (matchedItem) {
+// 							matchedItems.push({
+// 								...matchedItem,
+// 								amount: item.quantity * matchedItem.price,
+// 								quantity: item.quantity,
+// 							});
+// 						}
+// 					}
+// 				}
+// 				setMatchedOrders(matchedItems);
+// 			} catch (error) {
+// 				console.error(error);
+// 			}
+// 		};
+// 		fetchData();
+// 	}, []);
+
 const OrderHave = () => {
 	const [matchedOrders, setMatchedOrders] = useState([]);
-	
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -124,7 +168,7 @@ const OrderHave = () => {
 				]);
 
 				const orders = ordersRes.data;
-				
+				console.debug(`🚀  file: HaveOrder.jsx:171  orders =>`, orders);
 				const products = productsRes.data;
 				const offers = offersRes.data;
 				const matchedItems = [];
@@ -136,12 +180,16 @@ const OrderHave = () => {
 						);
 						if (matchedItem) {
 							matchedItems.push({
-                ...matchedItem,
-                amount: item.quantity * matchedItem.price,
-                quantity: item.quantity,
-              });
+								...matchedItem,
+								amount: item.quantity * matchedItem.price,
+								quantity: item.quantity,
+								seperator: false,
+							});
 						}
 					}
+					matchedItems.push({
+						seperator: true,
+					});
 				}
 				setMatchedOrders(matchedItems);
 			} catch (error) {
@@ -150,6 +198,10 @@ const OrderHave = () => {
 		};
 		fetchData();
 	}, []);
+
+	useEffect(() => {
+		console.log(matchedOrders);
+	}, [matchedOrders]);
 
 	return (
 		<Container>
@@ -166,29 +218,34 @@ const OrderHave = () => {
 				{matchedOrders.length !== 0 ? (
 					<Bottom>
 						<Info>
-							{matchedOrders.map((order) => (
-								<Product key={order._id}>
-									{' '}
-									<ProductDetail>
-										<Image src={order.img} />{' '}
-										<Details>
-											<ProductName>
-												<b>Product:</b> {order.title}
-											</ProductName>
-											
-											<ProductColor />
-											<ProductSize>
-												<b>Price:</b> {order.amount}
-											</ProductSize>
-											<ProductSize>
-												<b>Quantity:</b> {order.quantity}
-											</ProductSize>
-											<ProductSize />
-										</Details>
-									</ProductDetail>
-									<ProductPrice>${order.price}</ProductPrice>{' '}
-								</Product>
-							))}
+							{matchedOrders.map((order) =>
+								order.seperator === true ? (
+									<hr />
+								) : (
+									<Product
+										key={order._id}
+										className='product_hr'
+									>
+										<ProductDetail>
+											<Image src={order.img} />
+											<Details>
+												<ProductName>
+													<b>Product:</b> {order.title}
+												</ProductName>
+												<ProductColor />
+												<ProductSize>
+													<b>Price:</b> {order.amount}
+												</ProductSize>
+												<ProductSize>
+													<b>Quantity:</b> {order.quantity}
+												</ProductSize>
+												<ProductSize />
+											</Details>
+										</ProductDetail>
+										<ProductPrice>${order.price}</ProductPrice>
+									</Product>
+								),
+							)}
 							<Hr />
 						</Info>
 					</Bottom>
