@@ -47,12 +47,14 @@ const Bottom = styled.div`
 
 const Info = styled.div`
 	display: flex;
+	flex-direction: column;
+	width: 100%;
 	flex-wrap: wrap;
 `;
 
 const Product = styled.div`
 	display: flex;
-	width: 48%;
+	width: 100%;
 	justify-content: space-between;
 	${mobile({ flexDirection: 'column' })};
 	border: 1px solid #eee;
@@ -106,7 +108,11 @@ const Hr = styled.hr`
 	border: none;
 	height: 1px;
 `;
-
+const Hr2 = styled.hr`
+  background-color: #bbb;
+  border: none;
+  height: 5px;
+`;
 // const OrderHave = () => {
 // 	const [matchedOrders, setMatchedOrders] = useState([]);
 
@@ -168,7 +174,6 @@ const OrderHave = () => {
 				]);
 
 				const orders = ordersRes.data;
-				console.debug(`🚀  file: HaveOrder.jsx:171  orders =>`, orders);
 				const products = productsRes.data;
 				const offers = offersRes.data;
 				const matchedItems = [];
@@ -199,72 +204,67 @@ const OrderHave = () => {
 		fetchData();
 	}, []);
 
-	useEffect(() => {
-		console.log(matchedOrders);
-	}, [matchedOrders]);
+	
 
 	return (
-		<Container>
-			<Announcement />
-			<Navbar />
-			<NavbarBottom />
-			<Wrapper>
-				<Title>YOUR ORDERS</Title>
-				<Top>
-					<Link to={'/'}>
-						<TopButton>CONTINUE SHOPPING</TopButton>
-					</Link>
-				</Top>
-				{matchedOrders.length !== 0 ? (
-					<Bottom>
-						<Info>
-							{matchedOrders.map((order) =>
-								order.seperator === true ? (
-									<hr />
-								) : (
-									<Product
-										key={order._id}
-										className='product_hr'
-									>
-										<ProductDetail>
-											<Image src={order.img} />
-											<Details>
-												<ProductName>
-													<b>Product:</b> {order.title}
-												</ProductName>
-												<ProductColor />
-												<ProductSize>
-													<b>Price:</b> {order.amount}
-												</ProductSize>
-												<ProductSize>
-													<b>Quantity:</b> {order.quantity}
-												</ProductSize>
-												<ProductSize />
-											</Details>
-										</ProductDetail>
-										<ProductPrice>${order.price}</ProductPrice>
-									</Product>
-								),
-							)}
-							<Hr />
-						</Info>
-					</Bottom>
-				) : (
-					<div
-						style={{
-							display: 'flex',
-							padding: '70px',
-							fontSize: '30px',
-							justifyContent: 'center',
-						}}
-					>
-						No Orders Yet!
-					</div>
-				)}
-			</Wrapper>
-			<FooterNew />
-		</Container>
-	);
+    <Container>
+      <Announcement />
+      <Navbar />
+      <NavbarBottom />
+      <Wrapper>
+        <Title>YOUR ORDERS</Title>
+        <Top>
+          <Link to={'/'}>
+            <TopButton>CONTINUE SHOPPING</TopButton>
+          </Link>
+        </Top>
+        {matchedOrders.length !== 0 ? (
+          <Bottom>
+            <Info>
+              {matchedOrders.map((order) =>
+                order.seperator === true ? (
+                  <Hr2 />
+                ) : (
+                  <Product key={order._id} className='product_hr'>
+                    <ProductDetail>
+                      <Image src={order.img} />
+                      <Details>
+                        <ProductName>
+                          <b>Product:</b> {order.title}
+                        </ProductName>
+                        <ProductColor />
+                        <ProductSize>
+                          <b>Price:</b> {order.amount}
+                        </ProductSize>
+                        <ProductSize>
+                          <b>Quantity:</b> {order.quantity}
+                        </ProductSize>
+                        <ProductSize />
+                      </Details>
+                    </ProductDetail>
+                    <ProductPrice>${order.price}</ProductPrice>
+                  </Product>
+                )
+              )}
+              <Hr />
+            </Info>
+          </Bottom>
+        ) : (
+          <div
+            style={{
+              display: 'flex',
+              padding: '70px',
+              fontSize: '30px',
+              justifyContent: 'center',
+            }}
+          >
+            No Orders Yet!
+          </div>
+        )}
+      </Wrapper>
+      <FooterNew />
+    </Container>
+  );
 };
 
 export default OrderHave;

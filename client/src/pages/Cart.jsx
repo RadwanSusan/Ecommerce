@@ -326,13 +326,13 @@ email = JSON.parse(email);
 				console.log(`🚀 ~ file: Cart.jsx:296 ~ makeRequest ~ res:`, res);
 				dispatch(clear());
 				let newArr2 = {
-					userId: userId,
-					products: mergedCart,
-					amountOrgin: originalPrice,
-					amount: res.data.amount / 100,
-					address: res.data.billing_details.address,
-					status: 'pending',
-				};
+          userId: userId,
+          products: mergedCart,
+          amountOrgin: originalPrice,
+          amount: res.data.amount / 100,
+          address: res.data.billing_details.address,
+          status: 'pending',
+        };
 				addToCart(newArr);
 				addOrder(newArr2);
 				purchaseSuccessfulEmail(email);
@@ -464,7 +464,7 @@ email = JSON.parse(email);
     };
 
     fetchData();
-  }, [matchedOrders]);
+  }, []);
 
 
 	return (

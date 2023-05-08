@@ -1622,6 +1622,7 @@ button:hover {
 	float: right;
 	margin-top: 8px;
 	cursor: pointer;
+	height: 300px;
 	color: #536dfe;
 	transition: all 0.5s;
 }

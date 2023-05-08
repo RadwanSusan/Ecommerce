@@ -486,19 +486,16 @@ const Offer = () => {
                       aria-hidden='true'
                     ></i>
                   </div>
-                </div>
-              
-                <div className='block_product'>
-                  <h2 className='block_name block_name__mainName nameProduct'>
-                    
-                  </h2>
                   
+                </div>
+
+                <div className='block_product'>
+                  <h2 className='block_name block_name__mainName nameProduct'></h2>
+
                   <p className='block_product__advantagesProduct'></p>
                   <div className='block_informationAboutDevice'>
-                    <div className='block_descriptionCharacteristic block_descriptionCharacteristic__disActive'>
-                      
-                    </div>
-                   
+                    <div className='block_descriptionCharacteristic block_descriptionCharacteristic__disActive'></div>
+
                     <div className='row11 '>
                       <div className='large-6 small-12 column left-align'>
                         <div className='block_price'>
@@ -619,8 +616,9 @@ const Offer = () => {
                       </div>
                     </div>
                     <div className='timer-content'>
-                      <div className='timer-title'>Hurry Up! Click here to show All Offer</div>
-                      
+                      <div className='timer-title'>
+                        Hurry Up! Click here to show All Offer
+                      </div>
                     </div>
                   </div>
                 </Link>
@@ -632,274 +630,272 @@ const Offer = () => {
                         id='style-FUF77'
                         slideIndex={slideIndex}
                       >
-                        {Object.keys(offer).map(function (data) {
-                          const { timeStart, timeEnd } = offer[data] || {};
-                          if (!timeStart || !timeEnd) {
-                            return null;
-                          }
-                          const [year, month, date] = new Date()
-                            .toISOString()
-                            .slice(0, 10)
-                            .split('-');
-                          const [startYear, startMonth, startDay] =
-                            timeStart.split('-');
-                          const [endYear, endMonth, endDay] =
-                            timeEnd.split('-');
-                          if (
-                            year < startYear ||
-                            year > endYear ||
-                            (year === startYear && month < startMonth) ||
-                            (year === endYear && month > endMonth) ||
-                            (year === startYear &&
-                              month === startMonth &&
-                              date < startDay) ||
-                            (year === endYear &&
-                              month === endMonth &&
-                              date > endDay)
-                          ) {
-                            return null;
-                          } else {
-                            return (
-                              <div
-                                className='owl-item active style-Ke3kW'
-                                id='style-Ke3kW'
-                              >
-                                <div className='item product product-item'>
-                                  <div
-                                    className='product-item-info'
-                                    data-container='product-grid'
-                                  >
-                                    <Link
-                                      to={`/product/${offer[data]['_id']}`}
-                                      className='action quickview-handler
-																	sm_quickview_handler'
-                                      
-                                      title='Quick View'
-                                      href=''
+                        {Object.keys(offer)
+                          .map(function (data) {
+                            const { timeStart, timeEnd } = offer[data] || {};
+                            if (!timeStart || !timeEnd) {
+                              return null;
+                            }
+                            const [year, month, date] = new Date()
+                              .toISOString()
+                              .slice(0, 10)
+                              .split('-');
+                            const [startYear, startMonth, startDay] =
+                              timeStart.split('-');
+                            const [endYear, endMonth, endDay] =
+                              timeEnd.split('-');
+                            if (
+                              year < startYear ||
+                              year > endYear ||
+                              (year === startYear && month < startMonth) ||
+                              (year === endYear && month > endMonth) ||
+                              (year === startYear &&
+                                month === startMonth &&
+                                date < startDay) ||
+                              (year === endYear &&
+                                month === endMonth &&
+                                date > endDay)
+                            ) {
+                              return null;
+                            } else {
+                              return (
+                                <div
+                                  className='owl-item active style-Ke3kW'
+                                  id='style-Ke3kW'
+                                >
+                                  <div className='item product product-item'>
+                                    <div
+                                      className='product-item-info'
+                                      data-container='product-grid'
                                     >
-                                      <div className='image-product'>
-                                        <div
-                                          className='product photo product-item-photo'
-                                          tabindex='-1'
-                                        >
-                                          <span
-                                            className='product-image-container product-image-container-13 style-j6oeg'
-                                            id='style-j6oeg'
+                                      <Link
+                                        to={`/product/${offer[data]['_id']}`}
+                                        className='action quickview-handler
+																	sm_quickview_handler'
+                                        title='Quick View'
+                                        href=''
+                                      >
+                                        <div className='image-product'>
+                                          <div
+                                            className='product photo product-item-photo'
+                                            tabindex='-1'
                                           >
                                             <span
-                                              className='product-image-wrapper style-gKGpW'
-                                              id='style-gKGpW'
+                                              className='product-image-container product-image-container-13 style-j6oeg'
+                                              id='style-j6oeg'
                                             >
-                                              <img
-                                                className='product-image-photo'
-                                                src={offer[data]['img']}
-                                                data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/l/-/l-03_1.jpg /'
-                                                loading='lazy'
-                                                width='250'
-                                                height='250'
-                                                alt={offer[data]['img']}
-                                              />
-                                            </span>
-                                          </span>
-                                        </div>
-                                        <Link
-                                          to={''}
-                                          className='action quickview-handler
-																	sm_quickview_handler show-cart'
-                                          title='Quick View'
-                                          offer-id={offer[data]['_id']}
-                                        >
-                                          <AiOutlineEye
-                                            className='show-cart'
-                                            offer-id={offer[data]['_id']}
-                                          />
-                                          <span>Quick View</span>
-                                        </Link>
-                                      </div>
-                                    </Link>
-                                    <div className='product details product-item-details'>
-                                      <strong className='product name product-item-name'>
-                                        <div
-                                          className='product-item-link'
-                                          
-                                        >
-                                          {offer[data]['title']}
-                                        </div>
-                                      </strong>
-                                      <div
-                                        className='price-box price-final_price'
-                                        data-role='priceBox'
-                                        data-product-id='13'
-                                        data-price-box='product-id-13'
-                                      >
-                                        <span className='price-container price-final_price tax weee'>
-                                          <span
-                                            id='product-price-13'
-                                            data-price-amount='250'
-                                            data-price-type='finalPrice'
-                                            className='price-wrapper '
-                                          >
-                                            <span className='price55'>
-                                              $ {offer[data]['price']}
-                                            </span>
-                                            <span className='priceOffer'>
-                                              $ {offer[data]['offerPrice']}
-                                            </span>
-                                          </span>
-                                        </span>
-                                      </div>
-                                      <div className='time-countdown-slide'>
-                                        <div className='time-wrapper'>
-                                          <div className='time-label clearfix'>
-                                            <div className='stock-qty'>
-                                              Availability:
-                                              <span>150</span>
-                                            </div>
-                                            <div className='time-left'>
-                                              Time left:
-                                              <span>
-                                                {timeago.format(
-                                                  offer[data]['timeEnd']
-                                                )}
+                                              <span
+                                                className='product-image-wrapper style-gKGpW'
+                                                id='style-gKGpW'
+                                              >
+                                                <img
+                                                  className='product-image-photo'
+                                                  src={offer[data]['img']}
+                                                  data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/l/-/l-03_1.jpg /'
+                                                  loading='lazy'
+                                                  width='250'
+                                                  height='250'
+                                                  alt={offer[data]['img']}
+                                                />
                                               </span>
-                                            </div>
+                                            </span>
                                           </div>
-                                          <div className='time-ranger'>
-                                            <div
-                                              className='time-pass style-Tx4nd'
-                                              id='style-Tx4nd'
-                                            ></div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className='product-item-actions'>
-                                        <div className='actions-primary'>
                                           <Link
-                                            to={`/product/${offer[data]['_id']}`}
+                                            to={''}
+                                            className='action quickview-handler
+																	sm_quickview_handler show-cart'
+                                            title='Quick View'
+                                            offer-id={offer[data]['_id']}
                                           >
-                                            <button
-                                              className='action tocart primary'
-                                              data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/checkout\/cart\/add\/uenc\/aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo\/product\/13\/","data":{"product":"13","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
-                                              type='button'
-                                              title='Add to Cart'
-                                            >
-                                              <span>Add to Cart</span>
-                                            </button>
+                                            <AiOutlineEye
+                                              className='show-cart'
+                                              offer-id={offer[data]['_id']}
+                                            />
+                                            <span>Quick View</span>
                                           </Link>
                                         </div>
-                                        <div
-                                          className='actions-secondary'
-                                          data-role='add-to-links'
-                                        >
-                                          <div className='action towishlist'>
-                                            {wishlistData.includes(
-                                              offer[data]['_id']
-                                            ) ? (
-                                              <>
-                                                <BsHeart
-                                                  className='add-to-wish list-wish'
-                                                  onClick={(ele) => {
-                                                    handleWichlist(
-                                                      offer[data]['_id'],
-                                                      ele
-                                                    );
-                                                    addToWishlist(
-                                                      offer[data]['_id'],
-                                                      'remove'
-                                                    );
-                                                  }}
-                                                  style={{
-                                                    display: 'none',
-                                                  }}
-                                                />
-                                                <svg
-                                                  className='add-to-wish2 list-wish bi bi-heart-fill'
-                                                  xmlns='http://www.w3.org/2000/svg'
-                                                  width='16'
-                                                  height='16'
-                                                  fill='currentColor'
-                                                  viewBox='0 0 16 16'
-                                                  onClick={(ele) => {
-                                                    handleWichlist(
-                                                      offer[data]['_id'],
-                                                      ele
-                                                    );
-                                                    addToWishlist(
-                                                      offer[data]['_id'],
-                                                      'add'
-                                                    );
-                                                  }}
-                                                >
-                                                  <path
-                                                    className='add-to-wish2'
-                                                    fill-rule='evenodd'
-                                                    d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
-                                                  />
-                                                </svg>
-                                              </>
-                                            ) : (
-                                              <>
-                                                <BsHeart
-                                                  className='add-to-wish list-wish'
-                                                  onClick={(ele) => {
-                                                    handleWichlist(
-                                                      offer[data]['_id'],
-                                                      ele
-                                                    );
-                                                    addToWishlist(
-                                                      offer[data]['_id'],
-                                                      'add'
-                                                    );
-                                                  }}
-                                                />
-                                                <svg
-                                                  className='add-to-wish2 list-wish bi bi-heart-fill'
-                                                  xmlns='http://www.w3.org/2000/svg'
-                                                  width='16'
-                                                  height='16'
-                                                  fill='currentColor'
-                                                  viewBox='0 0 16 16'
-                                                  onClick={(ele) => {
-                                                    handleWichlist(
-                                                      offer[data]['_id'],
-                                                      ele
-                                                    );
-                                                    addToWishlist(
-                                                      offer[data]['_id'],
-                                                      'remove'
-                                                    );
-                                                  }}
-                                                  style={{
-                                                    display: 'none',
-                                                  }}
-                                                >
-                                                  <path
-                                                    className='add-to-wish2'
-                                                    fill-rule='evenodd'
-                                                    d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
-                                                  />
-                                                </svg>
-                                              </>
-                                            )}
-                                            <span>Add to Wish List</span>
+                                      </Link>
+                                      <div className='product details product-item-details'>
+                                        <strong className='product name product-item-name'>
+                                          <div className='product-item-link'>
+                                            {offer[data]['title']}
                                           </div>
-                                          <a
-                                            href='#'
-                                            className='action tocompare'
-                                            title='Add to Compare'
+                                        </strong>
+                                        <div
+                                          className='price-box price-final_price'
+                                          data-role='priceBox'
+                                          data-product-id='13'
+                                          data-price-box='product-id-13'
+                                        >
+                                          <span className='price-container price-final_price tax weee'>
+                                            <span
+                                              id='product-price-13'
+                                              data-price-amount='250'
+                                              data-price-type='finalPrice'
+                                              className='price-wrapper '
+                                            >
+                                              <span className='price55'>
+                                                $ {offer[data]['price']}
+                                              </span>
+                                              <span className='priceOffer'>
+                                                $ {offer[data]['offerPrice']}
+                                              </span>
+                                            </span>
+                                          </span>
+                                        </div>
+                                        <div className='time-countdown-slide'>
+                                          <div className='time-wrapper'>
+                                            <div className='time-label clearfix'>
+                                              <div className='stock-qty'>
+                                                Availability:
+                                                <span>150</span>
+                                              </div>
+                                              <div className='time-left'>
+                                                Time left:
+                                                <span>
+                                                  {timeago.format(
+                                                    offer[data]['timeEnd']
+                                                  )}
+                                                </span>
+                                              </div>
+                                            </div>
+                                            <div className='time-ranger'>
+                                              <div
+                                                className='time-pass style-Tx4nd'
+                                                id='style-Tx4nd'
+                                              ></div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div className='product-item-actions'>
+                                          <div className='actions-primary'>
+                                            <Link
+                                              to={`/product/${offer[data]['_id']}`}
+                                            >
+                                              <button
+                                                className='action tocart primary'
+                                                data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/checkout\/cart\/add\/uenc\/aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo\/product\/13\/","data":{"product":"13","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
+                                                type='button'
+                                                title='Add to Cart'
+                                              >
+                                                <span>Add to Cart</span>
+                                              </button>
+                                            </Link>
+                                          </div>
+                                          <div
+                                            className='actions-secondary'
+                                            data-role='add-to-links'
                                           >
-                                            <IoGitCompareOutline />
-                                            <span>Add to Compare</span>
-                                          </a>
+                                            <div className='action towishlist'>
+                                              {wishlistData.includes(
+                                                offer[data]['_id']
+                                              ) ? (
+                                                <>
+                                                  <BsHeart
+                                                    className='add-to-wish list-wish'
+                                                    onClick={(ele) => {
+                                                      handleWichlist(
+                                                        offer[data]['_id'],
+                                                        ele
+                                                      );
+                                                      addToWishlist(
+                                                        offer[data]['_id'],
+                                                        'remove'
+                                                      );
+                                                    }}
+                                                    style={{
+                                                      display: 'none',
+                                                    }}
+                                                  />
+                                                  <svg
+                                                    className='add-to-wish2 list-wish bi bi-heart-fill'
+                                                    xmlns='http://www.w3.org/2000/svg'
+                                                    width='16'
+                                                    height='16'
+                                                    fill='currentColor'
+                                                    viewBox='0 0 16 16'
+                                                    onClick={(ele) => {
+                                                      handleWichlist(
+                                                        offer[data]['_id'],
+                                                        ele
+                                                      );
+                                                      addToWishlist(
+                                                        offer[data]['_id'],
+                                                        'add'
+                                                      );
+                                                    }}
+                                                  >
+                                                    <path
+                                                      className='add-to-wish2'
+                                                      fill-rule='evenodd'
+                                                      d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
+                                                    />
+                                                  </svg>
+                                                </>
+                                              ) : (
+                                                <>
+                                                  <BsHeart
+                                                    className='add-to-wish list-wish'
+                                                    onClick={(ele) => {
+                                                      handleWichlist(
+                                                        offer[data]['_id'],
+                                                        ele
+                                                      );
+                                                      addToWishlist(
+                                                        offer[data]['_id'],
+                                                        'add'
+                                                      );
+                                                    }}
+                                                  />
+                                                  <svg
+                                                    className='add-to-wish2 list-wish bi bi-heart-fill'
+                                                    xmlns='http://www.w3.org/2000/svg'
+                                                    width='16'
+                                                    height='16'
+                                                    fill='currentColor'
+                                                    viewBox='0 0 16 16'
+                                                    onClick={(ele) => {
+                                                      handleWichlist(
+                                                        offer[data]['_id'],
+                                                        ele
+                                                      );
+                                                      addToWishlist(
+                                                        offer[data]['_id'],
+                                                        'remove'
+                                                      );
+                                                    }}
+                                                    style={{
+                                                      display: 'none',
+                                                    }}
+                                                  >
+                                                    <path
+                                                      className='add-to-wish2'
+                                                      fill-rule='evenodd'
+                                                      d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
+                                                    />
+                                                  </svg>
+                                                </>
+                                              )}
+                                              <span>Add to Wish List</span>
+                                            </div>
+                                            <a
+                                              href='#'
+                                              className='action tocompare'
+                                              title='Add to Compare'
+                                            >
+                                              <IoGitCompareOutline />
+                                              <span>Add to Compare</span>
+                                            </a>
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                            );
-                          }
-                        }).slice(0,4)}
+                              );
+                            }
+                          })
+                          .slice(0, 4)}
                       </Wrapper1>
                     </div>
                     <div className='owl-nav'>
