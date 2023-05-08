@@ -17,8 +17,7 @@ export default function FeaturedInfo() {
 				res.data.sort((a, b) => a._id - b._id);
 				//  lastindex = res.data.length - 1;
 				setIncome(res.data.slice(-2));
-				console.log(res.data[1].total * 100);
-				console.log((res.data[1].total * 100) / res.data[0].total - 100);
+				
 				// console.log(res.data.slice(-2));
 				setPerc((res.data[1].total * 100) / res.data[0].total - 100);
 				setPercOrgin(
@@ -30,57 +29,82 @@ export default function FeaturedInfo() {
 		getIncome();
 	}, []);
 	console.log("income", income);
-	// console.log("perc", perc);
+	console.log("perc", perc);
+	console.log('percOrgin', percOrgin);
+
 
 	return (
-		<div className="featured">
-			<div className="featuredItem">
-				<span className="featuredTitle">Revanue</span>
-				<div className="featuredMoneyContainer">
-					<span className="featuredMoney">
-						${income[1]?.total - income[1]?.totalOrgin}
+    <div className='featured'>
+      <div className='featuredItem'>
+        <span className='featuredTitle'>Revanue</span>
+        <div className='featuredMoneyContainer'>
+          <span className='featuredMoney'>
+            {income.length === 0 ? (
+              <h4>No data</h4>
+            ) : income.length === 1 ? (
+              <> ${income[0]?.total - income[0]?.totalOrgin}</>
+            ) : (
+              <> ${income[1]?.total - income[1]?.totalOrgin}</>
+            )}
+          </span>
+          <span className='featuredMoneyRate'>
+            %{Math.floor(perc - percOrgin)}{' '}
+            {perc - percOrgin < 0 ? (
+              <ArrowDownward className='featuredIcon negative' />
+            ) : (
+              <ArrowUpward className='featuredIcon' />
+            )}
+          </span>
+        </div>
+        <span className='featuredSub'>Compared to last month</span>
+      </div>
+      <div className='featuredItem'>
+        <span className='featuredTitle'>Sales</span>
+        <div className='featuredMoneyContainer'>
+          <span className='featuredMoney'>
+            {income.length === 0 ? (
+              <h4>No data</h4>
+            ) : income.length === 1 ? (
+              <> ${income[0]?.total} </>
+            ) : (
+              <> ${income[1]?.total} </>
+            )}
+          </span>
+          <span className='featuredMoneyRate'>
+            %{Math.floor(perc)}{' '}
+            {perc < 0 ? (
+              <ArrowDownward className='featuredIcon negative' />
+            ) : (
+              <ArrowUpward className='featuredIcon' />
+            )}
+          </span>
+        </div>
+        <span className='featuredSub'>Compared to last month</span>
+      </div>
+      <div className='featuredItem'>
+        <span className='featuredTitle'>Cost</span>
+        <div className='featuredMoneyContainer'>
+					<span className='featuredMoney'>
+						
+						 {income.length === 0 ? (
+              <h4>No data</h4>
+            ) : income.length === 1 ? (
+              <> ${income[0]?.totalOrgin} </>
+            ) : (
+              <> ${income[1]?.totalOrgin} </>
+            )}
 					</span>
-					<span className="featuredMoneyRate">
-						%{Math.floor(perc - percOrgin)}{" "}
-						{(perc - percOrgin) < 0 ? (
-							<ArrowDownward className="featuredIcon negative" />
-						) : (
-							<ArrowUpward className="featuredIcon" />
-						)}
-					</span>
-				</div>
-				<span className="featuredSub">Compared to last month</span>
-			</div>
-			<div className="featuredItem">
-				<span className="featuredTitle">Sales</span>
-				<div className="featuredMoneyContainer">
-					<span className="featuredMoney">${income[1]?.total}</span>
-					<span className="featuredMoneyRate">
-						%{Math.floor(perc)}{" "}
-						{perc < 0 ? (
-							<ArrowDownward className="featuredIcon negative" />
-						) : (
-							<ArrowUpward className="featuredIcon" />
-						)}
-					</span>
-				</div>
-				<span className="featuredSub">Compared to last month</span>
-			</div>
-			<div className="featuredItem">
-				<span className="featuredTitle">Cost</span>
-				<div className="featuredMoneyContainer">
-					<span className="featuredMoney">${income[1]?.totalOrgin}</span>
-					<span className="featuredMoneyRate">
-						%{Math.floor(percOrgin)}{" "}
-						{percOrgin < 0 ? (
-							<ArrowDownward className="featuredIcon negative" />
-						) : (
-							<ArrowUpward className="featuredIcon" />
-						)}
-					</span>
-				</div>
-				<span className="featuredSub">Compared to last month</span>
-			</div>
-		</div>
-	);
+          <span className='featuredMoneyRate'>
+            %{Math.floor(percOrgin)}{' '}
+            {percOrgin < 0 ? (
+              <ArrowDownward className='featuredIcon negative' />
+            ) : (
+              <ArrowUpward className='featuredIcon' />
+            )}
+          </span>
+        </div>
+        <span className='featuredSub'>Compared to last month</span>
+      </div>
+    </div>
+  );
 }

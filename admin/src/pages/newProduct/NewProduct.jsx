@@ -114,7 +114,7 @@ export default function NewProduct() {
 			(color) => color.length !== 0,
 		);
 
-		const offer = {
+		const product = {
 			...inputs,
 			img: urls,
 			categories: cat,
@@ -123,10 +123,10 @@ export default function NewProduct() {
 		};
 
 		try {
-			await addProduct(offer, dispatch);
+			await addProduct(product, dispatch);
 			swal({
 				title: 'Success',
-				text: 'Offer added successfully',
+				text: 'Product added successfully',
 				icon: 'success',
 				button: 'Ok',
 				closeOnClickOutside: false,
