@@ -57,3 +57,9 @@
       color: #2a7ade;
   
   }
+  .radwan {
+    display: flex;
+  }
+    .radwan .widgetLgTitle {
+      margin-right: 30px;
+    }

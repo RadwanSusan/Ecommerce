@@ -6,6 +6,8 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOffer, deleteOffer } from '../../redux/apiCalls';
+import { CSVLink } from 'react-csv';
+
 import swal from 'sweetalert';
 
 export default function Offer() {
@@ -72,7 +74,6 @@ export default function Offer() {
 		},
 	];
 	const newObj = offer.map((row) => ({ ...row }));
-	console.log(`🚀  file: OfferList.jsx:83  newObj =>`, newObj);
 	newObj.map((row) => {
 		if (row.quantity === 0) {
 			row.inStock = false;
@@ -88,6 +89,14 @@ export default function Offer() {
         <Link to='/createOffer'>
           <button className='productAddButton'>Create</button>
         </Link>
+        <CSVLink
+          className='productAddButton'
+          style={{ textDecoration: 'none', width: '100px' }}
+          data={newObj}
+          filename='products-data.csv'
+        >
+          Export to Excel
+        </CSVLink>
       </div>
       <DataGrid
         rows={newObj}

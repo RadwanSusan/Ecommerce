@@ -6,6 +6,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, deleteUser } from "../../redux/apiCalls";
 import swal from "sweetalert";
+import { CSVLink } from 'react-csv';
+
 export default function UserList() {
 	const dispatch = useDispatch();
 	useEffect(() => {
@@ -69,22 +71,30 @@ export default function UserList() {
 		},
 	];
 	return (
-		<div className="userList">
-			<div className="middle-product-create">
-				<h2 className="productAddButton1">Create User : </h2>
-				<Link to="/newUser">
-					<button className="productAddButton">Create</button>
-				</Link>
-			</div>
-			<DataGrid
-				rows={user2}
-				disableSelectionOnClick
-				columns={columns}
-				getRowId={(row) => row._id}
-				pageSize={13}
-				autoHeight
-				rowsPerPageOptions={[5, 10, 25]}
-			/>
-		</div>
-	);
+    <div className='userList'>
+      <div className='middle-product-create'>
+        <h2 className='productAddButton1'>Create User : </h2>
+        <Link to='/newUser'>
+          <button className='productAddButton'>Create</button>
+        </Link>
+        <CSVLink
+          className='productAddButton'
+          style={{ textDecoration: 'none', width: '100px' }}
+          data={user2}
+          filename='products-data.csv'
+        >
+          Export to Excel
+        </CSVLink>
+      </div>
+      <DataGrid
+        rows={user2}
+        disableSelectionOnClick
+        columns={columns}
+        getRowId={(row) => row._id}
+        pageSize={13}
+        autoHeight
+        rowsPerPageOptions={[5, 10, 25]}
+      />
+    </div>
+  );
 }
