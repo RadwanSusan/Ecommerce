@@ -2,11 +2,12 @@ import './productList.css';
 import { DataGrid } from '@material-ui/data-grid';
 import { DeleteOutline } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteProduct, getProducts } from '../../redux/apiCalls';
 import swal from 'sweetalert';
 import { CSVLink } from 'react-csv';
+import { ExcelRenderer } from 'react-excel-renderer';
 
 export default function ProductList() {
 	const dispatch = useDispatch();
@@ -14,6 +15,32 @@ export default function ProductList() {
 	useEffect(() => {
 		getProducts(dispatch);
 	}, [dispatch]);
+
+	const [excelData, setExcelData] = useState([]);
+
+	const handleExcelUpload = (event) => {
+		const file = event.target.files[0];
+
+		ExcelRenderer(file, (err, resp) => {
+			if (err) {
+				console.log(err);
+			} else {
+				setExcelData(resp.rows);
+
+				console.log(
+					`🚀  file: ProductList.jsx:20  excelData =>`,
+					excelData,
+				);
+				console.log(
+					`🚀  file: ProductList.jsx:34  resp.rows =>`,
+					resp.rows,
+				);
+				// Update products with the new data from Excel
+				// This assumes the Excel data has the same structure as the existing products
+				dispatch({ type: 'UPDATE_PRODUCTS', payload: resp.rows });
+			}
+		});
+	};
 	const handleDelete = (id) => {
 		swal({
 			title: 'Are you sure?',
@@ -98,6 +125,12 @@ export default function ProductList() {
 				>
 					Export to Excel
 				</CSVLink>
+				<input
+					type='file'
+					accept='.xlsx'
+					onChange={handleExcelUpload}
+					style={{ marginLeft: '20px' }}
+				/>
 			</div>
 			<DataGrid
 				rows={newObj}

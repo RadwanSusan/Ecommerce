@@ -13,3 +13,4 @@ api/node_modules/
 /node_modules/
 thunder-tests
 .safurai/config.yml
+admin/yarn.lock
