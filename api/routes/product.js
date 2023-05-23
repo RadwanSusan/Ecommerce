@@ -1,5 +1,5 @@
 const Product = require('../models/Product');
-const User = require("../models/User");
+const User = require('../models/User');
 
 const {
 	verifyToken,
@@ -16,9 +16,11 @@ router.post('/', verifyTokenAndAdmin, async (req, res) => {
 
 	try {
 		const savedProduct = await newProduct.save();
-		res.status(200).json(savedProduct);
+		console.log(`🚀  file: product.js:19  savedProduct =>`, savedProduct);
+		console.log(res.status(200).json(savedProduct));
 	} catch (err) {
 		res.status(500).json(err);
+		console.log(err);
 	}
 });
 
@@ -148,7 +150,5 @@ router.get('/search/:key/', async (req, res) => {
 // 		res.status(500).json({ message: 'Server Error' });
 // 	}
 // });
-
-
 
 module.exports = router;

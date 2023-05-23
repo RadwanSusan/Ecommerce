@@ -1,11 +1,10 @@
-const router = require("express").Router();
-const User = require("../models/User");
-const CryptoJS = require("crypto-js");
-const { response } = require("express");
-const jwt = require("jsonwebtoken");
+const router = require('express').Router();
+const User = require('../models/User');
+const CryptoJS = require('crypto-js');
+const { response } = require('express');
+const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 // const reset = require('../../admin/src/pages/reset/Reset');
-
 
 //REGISTER
 router.post('/register', async (req, res) => {
@@ -35,12 +34,12 @@ router.post('/login', async (req, res) => {
 		const email = await User.findOne({ email: req.body.email });
 		// !user && res.status(400).json("Wrong user!");
 		if (!email) {
-      return res.status(401).json('Wrong email!');
-    }
+			return res.status(401).json('Wrong email!');
+		}
 		const hashedPassword = CryptoJS.AES.decrypt(
-      email.password,
-      process.env.PASS_SEC
-    );
+			email.password,
+			process.env.PASS_SEC,
+		);
 		const OriginalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
 		// OriginalPassword !== req.body.password &&
 		//   res.status(401).json("Wrong password!");
@@ -79,17 +78,17 @@ router.post('/forgot-password', async (req, res) => {
 		);
 		const link = `http://localhost:4000/api/auth/reset-password/${oldUser._id}/${token}`;
 		const transporter = nodemailer.createTransport({
-      host: 'smtp.office365.com',
-      port: 587,
-      secure: false,
-      auth: {
-        user: 'zaidaltamari511@outlook.com',
-        pass: '1234#$abcd',
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
+			host: 'smtp.office365.com',
+			port: 587,
+			secure: false,
+			auth: {
+				user: 'zaidaltamari511@outlook.com',
+				pass: '1234#$abcd',
+			},
+			tls: {
+				rejectUnauthorized: false,
+			},
+		});
 		const mailOptions = {
 			from: 'zaidaltamari511@outlook.com',
 			to: 'zaidaltamari5@gmail.com',
@@ -155,79 +154,76 @@ router.post('/reset-password/:id/:token', async (req, res) => {
 	}
 });
 
-router.get("/checkEmail/:email", async (req, res) => {
+router.get('/checkEmail/:email', async (req, res) => {
 	const email = req.params.email;
 	const user = await User.findOne({ email });
 	if (user) {
-		return res.status(200).json("Email already exists!");
+		return res.status(200).json('Email already exists!');
 	}
-	res.status(200).json("Email available!");
+	res.status(200).json('Email available!');
 });
 
-router.post("/sendEmail", async (req, res) => {
-  try {
-    const { email } = req.body;
-    
-    
-    
-    const transporter = nodemailer.createTransport({
-      host: "smtp.office365.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: "zaidaltamari511@outlook.com",
-        pass: "1234#$abcd",
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
-    const mailOptions = {
-      from: "zaidaltamari511@outlook.com",
-      to: "zaidaltamari5@gmail.com",
-      subject: "Test email",
-      text: `buy product`,
-    };
-    await transporter.sendMail(mailOptions);
-    console.log("Email sent");
-    return res.json({ status: "Email Sent" });
-  } catch (error) {
-    console.log(error);
-    return res
-      .status(500)
-      .json({ status: "There was a problem sending the email!" });
-  }
-});
-router.post("/sendEmailAdmin", async (req, res) => {
-  try {
+router.post('/sendEmail', async (req, res) => {
+	try {
+		const { email } = req.body;
 
-    const transporter = nodemailer.createTransport({
-      host: "smtp.office365.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: "zaidaltamari511@outlook.com",
-        pass: "1234#$abcd",
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
-    const mailOptions = {
-      from: "zaidaltamari511@outlook.com",
-      to: "zaidaltamari511@outlook.com",
-      subject: "Test email",
-      text: `new order`,
-    };
-    await transporter.sendMail(mailOptions);
-    console.log("Email sent");
-    return res.json({ status: "Email Sent" });
-  } catch (error) {
-    console.log(error);
-    return res
-      .status(500)
-      .json({ status: "There was a problem sending the email!" });
-  }
+		const transporter = nodemailer.createTransport({
+			host: 'smtp.office365.com',
+			port: 587,
+			secure: false,
+			auth: {
+				user: 'zaidaltamari511@outlook.com',
+				pass: '1234#$abcd',
+			},
+			tls: {
+				rejectUnauthorized: false,
+			},
+		});
+		const mailOptions = {
+			from: 'zaidaltamari511@outlook.com',
+			to: 'zaidaltamari5@gmail.com',
+			subject: 'Test email',
+			text: `buy product`,
+		};
+		await transporter.sendMail(mailOptions);
+		console.log('Email sent');
+		return res.json({ status: 'Email Sent' });
+	} catch (error) {
+		console.log(error);
+		return res
+			.status(500)
+			.json({ status: 'There was a problem sending the email!' });
+	}
+});
+router.post('/sendEmailAdmin', async (req, res) => {
+	try {
+		const transporter = nodemailer.createTransport({
+			host: 'smtp.office365.com',
+			port: 587,
+			secure: false,
+			auth: {
+				user: 'zaidaltamari511@outlook.com',
+				pass: '1234#$abcd',
+			},
+			tls: {
+				rejectUnauthorized: false,
+			},
+		});
+		const mailOptions = {
+			from: 'zaidaltamari511@outlook.com',
+			to: 'zaidaltamari511@outlook.com',
+			subject: 'Test email',
+			text: `new order`,
+		};
+		await transporter.sendMail(mailOptions);
+		console.log('Email sent');
+		return res.json({ status: 'Email Sent' });
+	} catch (error) {
+		console.log(error);
+		return res
+			.status(500)
+			.json({ status: 'There was a problem sending the email!' });
+	}
 });
 
 // router.get('checkEmailDuplicate', async (req, res) => {
@@ -238,7 +234,5 @@ router.post("/sendEmailAdmin", async (req, res) => {
 //   }
 //   res.status(200).json('Email available!');
 // });
-
-
 
 module.exports = router;

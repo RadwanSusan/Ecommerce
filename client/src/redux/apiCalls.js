@@ -1,5 +1,6 @@
 import { loginFailure, loginStart, loginSuccess } from './userRedux';
 import { publicRequest } from '../requestMethods';
+import { decode as jwtDecode } from 'jsonwebtoken';
 
 export const login = async (dispatch, user) => {
 	dispatch(loginStart(user.username));
@@ -82,18 +83,50 @@ export const userWishListArrayGet = async (id) => {
 };
 
 export const purchaseSuccessfulEmail = async (email) => {
-  try {
-    const res = await publicRequest.post("auth/sendEmail", email);
-    return res.data;
-  } catch (err) {
-    console.log(err);
-  }
+	try {
+		const res = await publicRequest.post('auth/sendEmail', email);
+		return res.data;
+	} catch (err) {
+		console.log(err);
+	}
 };
 export const purchaseSuccessfulEmailAdmin = async () => {
-  try {
-    const res = await publicRequest.post("auth/sendEmailAdmin");
-    return res.data;
-  } catch (err) {
-    console.log(err);
-  }
+	try {
+		const res = await publicRequest.post('auth/sendEmailAdmin');
+		return res.data;
+	} catch (err) {
+		console.log(err);
+	}
 };
+
+export const TokenValidator = ({ children, logOut }) => {
+	const user = JSON.parse(localStorage.getItem('persist:root'))?.user;
+	const currentUser = user && JSON.parse(user).currentUser;
+	const TOKEN = currentUser?.accessToken;
+
+	if (TOKEN) {
+		const decodedToken = jwtDecode(TOKEN);
+		const currentTime = Date.now() / 1000;
+
+		if (decodedToken.exp < currentTime) {
+			logOut();
+			return null;
+		}
+	}
+
+	return children;
+};
+
+setInterval(() => {
+	const user = JSON.parse(localStorage.getItem('persist:root'))?.user;
+	const currentUser = user && JSON.parse(user).currentUser;
+	const TOKEN = currentUser?.accessToken;
+	if (TOKEN) {
+		const decodedToken = jwtDecode(TOKEN);
+		const currentTime = Date.now() / 1000;
+		if (decodedToken.exp < currentTime) {
+			localStorage.removeItem('persist:root');
+			window.location.reload();
+		}
+	}
+}, 3600000);

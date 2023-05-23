@@ -15,6 +15,14 @@
     margin-right: 10px;
   }
 
+  .productAddButton22 {
+    padding: 5px;
+    background-color: teal;
+    color: white;
+    border-radius: 5px;
+    margin-top: -20px;
+  }
+
 .productListEdit{
     border: none;
     border-radius: 10px;
@@ -57,7 +65,7 @@ margin-bottom: 20px;
 color: teal ;
 
   }
-  @media only screen and (max-width: 600px) { 
+  @media only screen and (max-width: 600px) {
     .middle-product-create {
         flex-direction: column;
         gap: 0;

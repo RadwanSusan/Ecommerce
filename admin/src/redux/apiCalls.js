@@ -172,3 +172,165 @@ export const updateOffer = async (id, offer, dispatch) => {
 		dispatch(updateOfferFailure());
 	}
 };
+export const addAllProduct = async (product) => {
+	//   dispatch(updateProductStart());
+	try {
+		// convert this array to object and take the first array index as key
+		const inputArray = [
+			[
+				'_id',
+				'title',
+				'desc',
+				'img',
+				'categories',
+				'size',
+				'color',
+				'price',
+				'originPrice',
+				'inStock',
+				'quantity',
+				'width',
+				'height',
+				'length',
+				'weight',
+			],
+			// ... other rows
+		];
+
+		/* This code is converting an array of arrays (where the first array contains the keys and the rest
+    of the arrays contain the values) into an array of objects. */
+		const keys = product[0];
+		const result = product.slice(1).map((row) => {
+			return row.reduce((acc, value, index) => {
+				acc[keys[index]] = value;
+				return acc;
+			}, {});
+		});
+		result.forEach((element) => {
+			delete element._id;
+		});
+		console.log(`🚀  file: apiCalls.js:215  result =>`, result);
+
+		/* Iterating over each element in the `result` array and making a POST request to the `/products`
+		endpoint with the current element as the request body. */
+		result.forEach((element) => {
+			try {
+				const res = userRequest.post(`/products`, element);
+			} catch (error) {
+				console.log(error);
+			}
+		});
+
+		console.log(result);
+
+		// product
+		// 	.forEach((element) => {
+		// 		const res = userRequest.post(`/products`, element);
+		// 	})
+		// 	.then((res) => {
+		// 		console.log('res', res);
+		// 	});
+
+		// dispatch(updateProductSuccess(res.data));
+	} catch (err) {
+		// dispatch(updateProductFailure());
+	}
+};
+export const addAllOffer = async (offer) => {
+	//   dispatch(updateProductStart());
+	try {
+		// convert this array to object and take the first array index as key
+		const inputArray = [
+			[
+				'_id',
+				'title',
+				'desc',
+				'img',
+				'categories',
+				'size',
+				'color',
+				'price',
+				'originPrice',
+				'inStock',
+				'quantity',
+				'width',
+				'height',
+
+				'length',
+				'weight',
+			],
+			// ... other rows
+		];
+
+		/* This code is converting an array of arrays (where the first array contains the keys and the rest
+    of the arrays contain the values) into an array of objects. */
+		const keys = offer[0];
+		const result = offer.slice(1).map((row) => {
+			return row.reduce((acc, value, index) => {
+				acc[keys[index]] = value;
+				return acc;
+			}, {});
+		});
+		result.forEach((element) => {
+			delete element._id;
+		});
+		console.log(`🚀  file: apiCalls.js:215  result =>`, result);
+
+		/* Iterating over each element in the `result` array and making a POST request to the `/products`
+		endpoint with the current element as the request body. */
+		result.forEach((element) => {
+			try {
+				const res = userRequest.post(`/offer`, element);
+			} catch (error) {
+				console.log(error);
+			}
+		});
+
+		console.log(result);
+
+		// product
+		// 	.forEach((element) => {
+		// 		const res = userRequest.post(`/products`, element);
+		// 	})
+		// 	.then((res) => {
+		// 		console.log('res', res);
+		// 	});
+
+		// dispatch(updateProductSuccess(res.data));
+	} catch (err) {
+		// dispatch(updateProductFailure());
+	}
+};
+import { decode as jwtDecode } from 'jsonwebtoken';
+
+export const TokenValidator = ({ children, logOut }) => {
+	const user = JSON.parse(localStorage.getItem('persist:root'))?.user;
+	const currentUser = user && JSON.parse(user).currentUser;
+	const TOKEN = currentUser?.accessToken;
+
+	const checkTokenValidity = () => {
+		if (TOKEN) {
+			const decodedToken = jwtDecode(TOKEN);
+			const currentTime = Date.now() / 1000;
+			if (decodedToken.exp < currentTime) {
+				localStorage.removeItem('persist:root');
+				window.location.reload();
+			}
+		}
+	};
+
+	setTimeout(checkTokenValidity, 3600000);
+	setInterval(checkTokenValidity, 3600000);
+
+	if (TOKEN) {
+		const decodedToken = jwtDecode(TOKEN);
+		const currentTime = Date.now() / 1000;
+
+		if (decodedToken.exp < currentTime) {
+			logOut();
+			return null;
+		}
+	}
+
+	return children;
+};

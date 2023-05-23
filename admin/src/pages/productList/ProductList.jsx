@@ -8,6 +8,7 @@ import { deleteProduct, getProducts } from '../../redux/apiCalls';
 import swal from 'sweetalert';
 import { CSVLink } from 'react-csv';
 import { ExcelRenderer } from 'react-excel-renderer';
+import { addAllProduct } from '../../redux/apiCalls';
 
 export default function ProductList() {
 	const dispatch = useDispatch();
@@ -37,7 +38,8 @@ export default function ProductList() {
 				);
 				// Update products with the new data from Excel
 				// This assumes the Excel data has the same structure as the existing products
-				dispatch({ type: 'UPDATE_PRODUCTS', payload: resp.rows });
+				// dispatch({ type: 'UPDATE_PRODUCTS', payload: resp.rows });
+				addAllProduct(resp.rows);
 			}
 		});
 	};
@@ -121,13 +123,13 @@ export default function ProductList() {
 					className='productAddButton'
 					style={{ textDecoration: 'none', width: '100px' }}
 					data={newObj}
-					filename='products-data.csv'
+					filename='products.csv'
 				>
 					Export to Excel
 				</CSVLink>
 				<input
+					className='productAddButton22'
 					type='file'
-					accept='.xlsx'
 					onChange={handleExcelUpload}
 					style={{ marginLeft: '20px' }}
 				/>

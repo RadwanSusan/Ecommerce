@@ -20,53 +20,62 @@ import {
 import Success from './pages/Success';
 import { useSelector } from 'react-redux';
 import './components/style/dark.scss';
-import { useState } from 'react';
 import { useContext } from 'react';
 import { DarkModeContext } from './context/darkModeContext';
-
+import { TokenValidator } from './redux/apiCalls';
 const App = () => {
 	const user = useSelector((state) => state.user.currentUser);
 	const { darkMode } = useContext(DarkModeContext);
-
+	const logOut = () => {
+		localStorage.removeItem('persist:root');
+		window.location.href = '/login';
+	};
 	return (
-    <div className={darkMode ? 'app dark' : 'app'}>
-      <Router>
-        <Switch>
-          <Route path='/forgot'>
-            <Forgot />
-          </Route>
-          <Route exact path='/'>
-            <Home />
-          </Route>
-          <Route path='/products/:category'>
-            <ProductList />
-          </Route>
-          <Route path='/product/:id'>
-            <Product />
-          </Route>
-          <Route path='/offer/:category'>
-            <OfferProducts />
-          </Route>
-          <Route path='/orderHave'>
-            <OrderHave />
-          </Route>
-          <Route path='/wishList'>
-            <Wishlist />
-          </Route>
-          <Route path='/cart'>
-            <Cart />
-          </Route>
-          <Route path='/success'>
-            <Success />
-          </Route>
-          <Route path='/login'>{user ? <Redirect to='/' /> : <Login />}</Route>
-          <Route path='/register'>
-            {user ? <Redirect to='/' /> : <Register />}
-          </Route>
-        </Switch>
-      </Router>
-    </div>
-  );
+		<div className={darkMode ? 'app dark' : 'app'}>
+			<Router>
+				<Switch>
+					<TokenValidator logOut={logOut}>
+						<Route path='/forgot'>
+							<Forgot />
+						</Route>
+						<Route
+							exact
+							path='/'
+						>
+							<Home />
+						</Route>
+						<Route path='/products/:category'>
+							<ProductList />
+						</Route>
+						<Route path='/product/:id'>
+							<Product />
+						</Route>
+						<Route path='/offer/:category'>
+							<OfferProducts />
+						</Route>
+						<Route path='/orderHave'>
+							<OrderHave />
+						</Route>
+						<Route path='/wishList'>
+							<Wishlist />
+						</Route>
+						<Route path='/cart'>
+							<Cart />
+						</Route>
+						<Route path='/success'>
+							<Success />
+						</Route>
+						<Route path='/login'>
+							{user ? <Redirect to='/' /> : <Login />}
+						</Route>
+						<Route path='/register'>
+							{user ? <Redirect to='/' /> : <Register />}
+						</Route>
+					</TokenValidator>
+				</Switch>
+			</Router>
+		</div>
+	);
 };
 
 export default App;
