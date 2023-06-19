@@ -58,7 +58,7 @@ const Offer = () => {
         .querySelector('.block_product__advantagesProduct')
         .append(viewArr.desc);
       console.log(viewArr.title);
-      document.querySelector('.nameProduct').innerHTML= viewArr.title;
+      document.querySelector('.nameProduct').innerHTML = viewArr.title;
       let aramex = document.querySelector('.block_goodColor__allColors');
       document.querySelector('.block_goodColor__allColors').innerHTML = '';
       setZaidVar(viewArr._id);
@@ -325,20 +325,19 @@ const Offer = () => {
   };
   const [wishlistLogin, setWishlistLogin] = useState(false);
   const handleWichlist = (id, ele) => {
-	  if (ele.target.classList[0] === 'add-to-wish' && wishlistLogin == true) {
-		console.log(ele.target.parentNode);
+    if (ele.target.classList[0] === 'add-to-wish' && wishlistLogin == true) {
+      console.log(ele.target.parentNode);
 
-    console.log(ele.target.nextSibling);
+      console.log(ele.target.nextSibling);
       ele.target.style.display = 'none';
       ele.target.nextSibling.style.display = 'block';
     }
-	  if (ele.target.classList[0] === 'add-to-wish2' && wishlistLogin == true) {
-		  console.log(ele.target.parentNode);
-		  
-		  console.log(ele.target.parentNode.previousSibling);
+    if (ele.target.classList[0] === 'add-to-wish2' && wishlistLogin == true) {
+      console.log(ele.target.parentNode);
+
+      console.log(ele.target.parentNode.previousSibling);
       ele.target.parentNode.style.display = 'none';
-		ele.target.parentNode.previousSibling.style.display = 'block';
-		
+      ele.target.parentNode.previousSibling.style.display = 'block';
     }
   };
 
@@ -486,7 +485,6 @@ const Offer = () => {
                       aria-hidden='true'
                     ></i>
                   </div>
-                  
                 </div>
 
                 <div className='block_product'>
@@ -631,6 +629,11 @@ const Offer = () => {
                         slideIndex={slideIndex}
                       >
                         {Object.keys(offer)
+                          .slice(
+                            Math.max(0, Object.keys(offer).length - 4),
+                            Object.keys(offer).length
+                          )
+
                           .map(function (data) {
                             const { timeStart, timeEnd } = offer[data] || {};
                             if (!timeStart || !timeEnd) {
@@ -894,8 +897,7 @@ const Offer = () => {
                                 </div>
                               );
                             }
-                          })
-                          .slice(0, 4)}
+                          })}
                       </Wrapper1>
                     </div>
                     <div className='owl-nav'>

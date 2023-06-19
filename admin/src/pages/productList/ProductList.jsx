@@ -9,6 +9,7 @@ import swal from 'sweetalert';
 import { CSVLink } from 'react-csv';
 import { ExcelRenderer } from 'react-excel-renderer';
 import { addAllProduct } from '../../redux/apiCalls';
+import myFile from '../../Assets/ZAID2.csv';
 
 export default function ProductList() {
 	const dispatch = useDispatch();
@@ -36,9 +37,6 @@ export default function ProductList() {
 					`🚀  file: ProductList.jsx:34  resp.rows =>`,
 					resp.rows,
 				);
-				// Update products with the new data from Excel
-				// This assumes the Excel data has the same structure as the existing products
-				// dispatch({ type: 'UPDATE_PRODUCTS', payload: resp.rows });
 				addAllProduct(resp.rows);
 			}
 		});
@@ -113,36 +111,45 @@ export default function ProductList() {
 	});
 
 	return (
-		<div className='productList'>
-			<div className='middle-product-create'>
-				<h2 className='productAddButton1'>Create Product : </h2>
-				<Link to='/newproduct'>
-					<button className='productAddButton'>Create</button>
-				</Link>
-				<CSVLink
-					className='productAddButton'
-					style={{ textDecoration: 'none', width: '100px' }}
-					data={newObj}
-					filename='products.csv'
-				>
-					Export to Excel
-				</CSVLink>
-				<input
-					className='productAddButton22'
-					type='file'
-					onChange={handleExcelUpload}
-					style={{ marginLeft: '20px' }}
-				/>
-			</div>
-			<DataGrid
-				rows={newObj}
-				disableSelectionOnClick
-				columns={columns}
-				getRowId={(row) => row._id}
-				pageSize={13}
-				autoHeight
-				rowsPerPageOptions={[5, 10, 25]}
-			/>
-		</div>
-	);
+    <div className='productList'>
+      <div className='middle-product-create'>
+        <h2 className='productAddButton1'>Create Product : </h2>
+        <Link to='/newproduct'>
+          <button className='productAddButton'>Create</button>
+        </Link>
+        <CSVLink
+          className='productAddButton'
+          style={{ textDecoration: 'none', width: '100px' }}
+          data={newObj}
+          filename='products.csv'
+        >
+          Export to Excel
+        </CSVLink>
+        <input
+          className='productAddButton22'
+          type='file'
+          onChange={handleExcelUpload}
+          style={{ marginLeft: '20px' }}
+        />
+
+        <a
+          className='productAddButton22'
+          href={myFile}
+          download='my-excel.csv'
+          target='_blank'
+        >
+          <button>Download CSV</button>
+        </a>
+      </div>
+      <DataGrid
+        rows={newObj}
+        disableSelectionOnClick
+        columns={columns}
+        getRowId={(row) => row._id}
+        pageSize={13}
+        autoHeight
+        rowsPerPageOptions={[5, 10, 25]}
+      />
+    </div>
+  );
 }

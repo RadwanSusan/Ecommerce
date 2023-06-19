@@ -253,8 +253,12 @@ export const addAllOffer = async (offer) => {
 				'originPrice',
 				'inStock',
 				'quantity',
+				'timeStart',
+				'timeEnd',
+				'offerPrice',
 				'width',
 				'height',
+
 
 				'length',
 				'weight',

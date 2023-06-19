@@ -1,10 +1,24 @@
 .newProduct {
     flex: 4;
   }
+  .file-dragndrop {
+    border: 1.5px dashed black;
+      padding: 5px;
+  }
   
   .addProductForm {
     margin-top: 10px;
   }
+  .browse {
+    color: blue;
+    cursor: pointer;
+  }
+    .browse:hover {
+      text-decoration: underline;
+    }
+                .file-dragndrop:hover {
+    border: 1.5px dashed blue;
+        }
   
   .addProductItem {
     width: 250px;
