@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { mobile } from '../responsive';
 import { login } from '../redux/apiCalls';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import swal from 'sweetalert';
 
@@ -76,10 +77,10 @@ const Login = () => {
 	const handleClick = (e) => {
 		e.preventDefault();
 		if (!email || !password) {
-      swal('Please fill in all fields');
-      return;
-    }
-		login(dispatch, { email, password });
+			swal('Please fill in all fields');
+			return;
+		}
+		const user = login(dispatch, { email, password });
 	};
 	useEffect(() => {
 		if (error) {
@@ -90,33 +91,53 @@ const Login = () => {
 			document.getElementById('password').value = '';
 		}
 	}, [error]);
+	const history = useHistory();
+	useEffect(() => {
+		return history.listen((location) => {
+			if (location.pathname !== '/forgot') {
+				setPassword('');
+				setEmail('');
+			}
+		});
+	}, [history]);
+
+	useEffect(() => {
+		return history.listen(() => {
+			setEmail('');
+			setPassword('');
+		});
+	}, [history]);
+
 	return (
-    <Container>
-      <Wrapper>
-        <Title>SIGN IN</Title>
-        <Form>
-          <Input
-            placeholder='email'
-            id='email'
-            autoComplete='email'
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Input
-            placeholder='password'
-            id='password'
-            type='password'
-            autoComplete='current-password'
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button onClick={handleClick} disabled={isFetching}>
-            LOGIN
-          </Button>
-          <Link href='/forgot'>DO NOT YOU REMEMBER THE PASSWORD?</Link>
-          <Link href='/register'>CREATE A NEW ACCOUNT</Link>
-        </Form>
-      </Wrapper>
-    </Container>
-  );
+		<Container>
+			<Wrapper>
+				<Title>SIGN IN</Title>
+				<Form>
+					<Input
+						placeholder='email'
+						id='email'
+						autoComplete='email'
+						onChange={(e) => setEmail(e.target.value)}
+					/>
+					<Input
+						placeholder='password'
+						id='password'
+						type='password'
+						autoComplete='current-password'
+						onChange={(e) => setPassword(e.target.value)}
+					/>
+					<Button
+						onClick={handleClick}
+						disabled={isFetching}
+					>
+						LOGIN
+					</Button>
+					<Link href='/forgot'>DO NOT YOU REMEMBER THE PASSWORD?</Link>
+					<Link href='/register'>CREATE A NEW ACCOUNT</Link>
+				</Form>
+			</Wrapper>
+		</Container>
+	);
 };
 
 export default Login;

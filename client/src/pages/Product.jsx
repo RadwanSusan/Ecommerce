@@ -13,6 +13,7 @@ import { addProduct, getAllProduct } from '../redux/cartRedux';
 import { useDispatch, useSelector } from 'react-redux';
 import swal from 'sweetalert';
 import { selectCurrentUserId } from '../redux/userRedux';
+import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 
 const Container = styled.div`
 	user-select: none;
@@ -33,6 +34,10 @@ const Image = styled.img`
 	height: 70vh;
 	object-fit: cover;
 	${mobile({ height: '40vh' })}
+`;
+const Image2 = styled.img`
+	height: 500px;
+	width: 900px;
 `;
 
 const InfoContainer = styled.div`
@@ -109,6 +114,12 @@ const AmountContainer = styled.div`
 	align-items: center;
 	font-weight: 700;
 `;
+const CenterIcons = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 10px 0px;
+`;
 
 const Amount = styled.span`
 	width: 30px;
@@ -145,6 +156,13 @@ const Product = () => {
 	const userId = useSelector(selectCurrentUserId);
 	const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 	const cartProducts = useSelector(cartSelector);
+	const [currentIndex, setCurrentIndex] = useState(0);
+
+	// useEffect(() => {
+	// 	const timer = setTimeout(() => {
+	// 	  setCurrentIndex(currentIndex + 1 )
+	// 	}, 5000);
+
 	// const [newQuantity, setNewQuantity] = useState(product.quantity);
 
 	useEffect(() => {
@@ -165,7 +183,7 @@ const Product = () => {
 		};
 		getProduct();
 	}, [id]);
-
+	// console.log(product.img[0]);
 	document.querySelectorAll('.Color').forEach((item) =>
 		item.addEventListener('click', (e) => {
 			document.querySelectorAll('.Color').forEach((item2) => {
@@ -290,6 +308,25 @@ const Product = () => {
 			setQuantity(1);
 		}
 	};
+
+	const nextSlide = () => {
+		const nextIndex =
+			currentIndex === product.img.length - 1 ? 0 : currentIndex + 1;
+		setCurrentIndex(nextIndex);
+	};
+
+	const prevSlide = () => {
+		const prevIndex =
+			currentIndex === 0 ? product.img.length - 1 : currentIndex - 1;
+		setCurrentIndex(prevIndex);
+	};
+	// setTimeout(() => {
+	// 	setCurrentIndex(currentIndex + 1);
+	// 	if (currentIndex > 1) {
+	// 		setCurrentIndex(0);
+	// 	}
+	// }, 7000);
+
 	return (
 		<Container>
 			<Announcement />
@@ -297,8 +334,32 @@ const Product = () => {
 			<NavbarBottom />
 			<Wrapper>
 				<ImgContainer>
-					<Image src={product.img} />
+					{product.img ? (
+						<>
+							<Image2
+								src={product.img[currentIndex]}
+								alt={`product-${currentIndex}`}
+							/>
+							<CenterIcons>
+								<button
+									style={{ marginRight: '10px' }}
+									onClick={prevSlide}
+								>
+									<FaArrowLeft />
+								</button>
+								<button
+									style={{ marginLeft: '10px' }}
+									onClick={nextSlide}
+								>
+									<FaArrowRight />
+								</button>
+							</CenterIcons>
+						</>
+					) : (
+						<p>No images available</p>
+					)}
 				</ImgContainer>
+
 				<InfoContainer>
 					<Title>{product.title}</Title>
 					<Desc>{product.desc}</Desc>

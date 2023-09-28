@@ -7,7 +7,9 @@ import Newsletter from "../components/Newsletter";
 import { mobile } from "../responsive";
 import NavbarBottom from "../components/NavbarBottom";
 import FooterNew from "../components/FooterNew";
-import { useLocation } from "react-router";
+// import { useLocation } from "react-router";
+import { useLocation } from 'react-router-dom';
+
 import { useState } from "react";
 
 const Container = styled.div``;

@@ -6,6 +6,9 @@ export const login = async (dispatch, user) => {
 	dispatch(loginStart(user.username));
 	try {
 		const res = await publicRequest.post('/auth/login', user);
+		if (res.data.verified === false) {
+			return dispatch(loginFailure());
+		}
 		dispatch(loginSuccess(res.data));
 	} catch (err) {
 		dispatch(loginFailure());

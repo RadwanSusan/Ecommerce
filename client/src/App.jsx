@@ -23,6 +23,7 @@ import './components/style/dark.scss';
 import { useContext } from 'react';
 import { DarkModeContext } from './context/darkModeContext';
 import { TokenValidator } from './redux/apiCalls';
+import VerifyEmail from './pages/VerifyEmail';
 const App = () => {
 	const user = useSelector((state) => state.user.currentUser);
 	const { darkMode } = useContext(DarkModeContext);
@@ -38,6 +39,10 @@ const App = () => {
 						<Route path='/forgot'>
 							<Forgot />
 						</Route>
+						<Route path='/verifyEmail'>
+							<VerifyEmail />
+						</Route>
+
 						<Route
 							exact
 							path='/'

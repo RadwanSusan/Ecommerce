@@ -9,19 +9,21 @@ import { useSelector } from 'react-redux';
 import FooterNew from '../components/FooterNew';
 import StripeCheckout from 'react-stripe-checkout';
 import { userRequest } from '../requestMethods';
-import { useHistory } from 'react-router';
+// import { useHistory } from 'react-router';
 import { removeProduct } from '../redux/cartRedux';
 import { increase, decrease, calc, reset } from '../redux/cartRedux';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
+
 import swal from 'sweetalert';
 import { useDispatch } from 'react-redux';
 import {
-  updateProductOrOffer,
-  addToCart,
-  addOrder,
-  purchaseSuccessfulEmail,
-  purchaseSuccessfulEmailAdmin,
-} from "../redux/apiCalls";
+	updateProductOrOffer,
+	addToCart,
+	addOrder,
+	purchaseSuccessfulEmail,
+	purchaseSuccessfulEmailAdmin,
+} from '../redux/apiCalls';
 
 import { clear } from '../redux/cartRedux';
 
@@ -222,18 +224,14 @@ const Cart = () => {
 	userId = JSON.parse(userId);
 	userId = userId.currentUser._id;
 
-
-
-let email = localStorage.getItem("persist:root");
+	let email = localStorage.getItem('persist:root');
 	email = JSON.parse(email);
-	
+
 	email = email.user;
-	
-	
-email = JSON.parse(email);
+
+	email = JSON.parse(email);
 	email = email.currentUser.email;
 	// console.log(email);
-
 
 	const handleClick2 = (id) => {
 		dispatch(removeProduct(id));
@@ -326,13 +324,13 @@ email = JSON.parse(email);
 				console.log(`🚀 ~ file: Cart.jsx:296 ~ makeRequest ~ res:`, res);
 				dispatch(clear());
 				let newArr2 = {
-          userId: userId,
-          products: mergedCart,
-          amountOrgin: originalPrice,
-          amount: res.data.amount / 100,
-          address: res.data.billing_details.address,
-          status: 'pending',
-        };
+					userId: userId,
+					products: mergedCart,
+					amountOrgin: originalPrice,
+					amount: res.data.amount / 100,
+					address: res.data.billing_details.address,
+					status: 'pending',
+				};
 				addToCart(newArr);
 				addOrder(newArr2);
 				purchaseSuccessfulEmail(email);
@@ -352,8 +350,12 @@ email = JSON.parse(email);
 			if (productMerged.quantity <= 1) {
 				swal('Info', 'The minimum quantity is 1', 'info');
 			} else {
-				if (document.querySelector(`.AddQuantity${id}`).style.display == 'none') {
-					document.querySelector(`.AddQuantity${id}`).style.display = 'block';
+				if (
+					document.querySelector(`.AddQuantity${id}`).style.display ==
+					'none'
+				) {
+					document.querySelector(`.AddQuantity${id}`).style.display =
+						'block';
 				}
 				setQuantity(productMerged.quantity - 1);
 			}
@@ -368,7 +370,8 @@ email = JSON.parse(email);
 			} else {
 				if (productMerged.quantity + 1 > productOrOffer.quantity - 1) {
 					setQuantity(1);
-					document.querySelector(`.AddQuantity${id}`).style.display = 'none';
+					document.querySelector(`.AddQuantity${id}`).style.display =
+						'none';
 					swal(
 						'Info',
 						'You have exceeded the number of available products!',
@@ -376,8 +379,12 @@ email = JSON.parse(email);
 					);
 				} else {
 					setQuantity(productMerged.quantity + 1);
-					if (document.querySelector(`.DecQuantity${id}`).style.display == 'none') {
-						document.querySelector(`.DecQuantity${id}`).style.display = 'block';
+					if (
+						document.querySelector(`.DecQuantity${id}`).style.display ==
+						'none'
+					) {
+						document.querySelector(`.DecQuantity${id}`).style.display =
+							'block';
 					}
 				}
 			}
@@ -403,190 +410,194 @@ email = JSON.parse(email);
 	// 	}
 	// };
 	const [orderHave, setOrderHave] = useState([]);
-    const [wish, setWish] = useState([]);
-	
+	const [wish, setWish] = useState([]);
 
 	useEffect(() => {
 		dispatch(calc());
 	}, [cart.products]);
-	 useEffect(() => {
-     const getOrders = async () => {
-       try {
-         const res = await userRequest.get('/orders/find/' + userId);
-         setOrderHave(res.data);
-       } catch (err) {
-         console.log('error');
-       }
-     };
-     getOrders();
-   }, []);
+	useEffect(() => {
+		const getOrders = async () => {
+			try {
+				const res = await userRequest.get('/orders/find/' + userId);
+				setOrderHave(res.data);
+			} catch (err) {
+				console.log('error');
+			}
+		};
+		getOrders();
+	}, []);
 
 	console.log(orderHave.length);
-	
+
 	const [matchedOrders, setMatchedOrders] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const userId = JSON.parse(
-          JSON.parse(localStorage.getItem('persist:root')).user
-        ).currentUser._id;
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const userId = JSON.parse(
+					JSON.parse(localStorage.getItem('persist:root')).user,
+				).currentUser._id;
 
-        const [ordersRes, productsRes, offersRes] = await Promise.all([
-          userRequest.get(`/users/userWishListArray/${userId}`),
-          userRequest.get('/products'),
-          userRequest.get('/offer'),
-        ]);
+				const [ordersRes, productsRes, offersRes] = await Promise.all([
+					userRequest.get(`/users/userWishListArray/${userId}`),
+					userRequest.get('/products'),
+					userRequest.get('/offer'),
+				]);
 
-        const orders = ordersRes.data;
-        console.log(orders);
-        const products = productsRes.data;
-        console.log(products);
+				const orders = ordersRes.data;
+				console.log(orders);
+				const products = productsRes.data;
+				console.log(products);
 
-        const offers = offersRes.data;
-        console.log(offers);
+				const offers = offersRes.data;
+				console.log(offers);
 
-        const matchedItems = [];
+				const matchedItems = [];
 
-        for (const order of orders) {
-          const matchedItem = [...products, ...offers].find(
-            (item) => item._id === order
-          );
-          if (matchedItem) {
-            matchedItems.push({ ...matchedItem });
-          }
-        }
+				for (const order of orders) {
+					const matchedItem = [...products, ...offers].find(
+						(item) => item._id === order,
+					);
+					if (matchedItem) {
+						matchedItems.push({ ...matchedItem });
+					}
+				}
 
-        setMatchedOrders(matchedItems);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+				setMatchedOrders(matchedItems);
+			} catch (error) {
+				console.error(error);
+			}
+		};
 
-    fetchData();
-  }, []);
-
+		fetchData();
+	}, []);
 
 	return (
-    <Container>
-      <Announcement />
-      <Navbar />
-      <NavbarBottom />
-      <Wrapper>
-        <Title>YOUR BAG</Title>
-        <Top>
-          <Link to={'/'}>
-            <TopButton>CONTINUE SHOPPING</TopButton>
-          </Link>
-          <TopTexts>
-            <Link to={'/orderHave'}>
-              <TopText>Shopping Bag({orderHave.length})</TopText>
-            </Link>
-            <Link to={'/wishList'}>
-              <TopText>Your Wishlist ({matchedOrders.length})</TopText>
-            </Link>
-          </TopTexts>
-          {/* <TopButton type="filled">CHECKOUT NOW</TopButton> */}
-        </Top>
-        <Bottom>
-          <Info>
-            {mergedCart.map((product) => (
-              <Product>
-                <ProductDetail>
-                  <Image src={product.img} />
-                  <Details>
-                    <ProductName>
-                      <b>Product:</b> {product.title}
-                    </ProductName>
-                    <ProductId>
-                      <b>ID:</b> {product._id}
-                    </ProductId>
-                    <ProductColor color={product.color} />
-                    <ProductSize>
-                      <b>Size:</b> {product.size}
-                    </ProductSize>
-                    <ProductSize>
-                      <Button1
-                        onClick={function () {
-                          handleClick2(product._id);
-                        }}
-                      >
-                        Remove
-                      </Button1>
-                    </ProductSize>
-                  </Details>
-                </ProductDetail>
-                <PriceDetail>
-                  <ProductAmountContainer>
-                    <Remove
-                      className={`DecQuantity${product._id}`}
-                      onClick={() => {
-                        dispatch(decrease(product._id));
-                        handleQuantity('dec', product._id);
-                      }}
-                    />
-                    <ProductAmount>{product.quantity}</ProductAmount>
-                    <Add
-                      className={`AddQuantity${product._id}`}
-                      onClick={() => {
-                        dispatch(increase(product._id));
-                        handleQuantity('inc', product._id);
-                      }}
-                    />
-                    {/* )) */}
-                    {/* } */}
-                    {/* <Add
+		<Container>
+			<Announcement />
+			<Navbar />
+			<NavbarBottom />
+			<Wrapper>
+				<Title>YOUR BAG</Title>
+				<Top>
+					<Link to={'/'}>
+						<TopButton>CONTINUE SHOPPING</TopButton>
+					</Link>
+					<TopTexts>
+						<Link to={'/orderHave'}>
+							<TopText>Shopping Bag({orderHave.length})</TopText>
+						</Link>
+						<Link to={'/wishList'}>
+							<TopText>Your Wishlist ({matchedOrders.length})</TopText>
+						</Link>
+					</TopTexts>
+					{/* <TopButton type="filled">CHECKOUT NOW</TopButton> */}
+				</Top>
+				<Bottom>
+					<Info>
+						{mergedCart.length === 0 ? (
+							<div>No products in the cart</div>
+						) : (
+							mergedCart.map((product) => (
+								<Product>
+									<ProductDetail>
+										<Image src={product.img} />
+										<Details>
+											<ProductName>
+												<b>Product:</b> {product.title}
+											</ProductName>
+											<ProductId>
+												<b>ID:</b> {product._id}
+											</ProductId>
+											<ProductColor color={product.color} />
+											<ProductSize>
+												<b>Size:</b> {product.size}
+											</ProductSize>
+											<ProductSize>
+												<Button1
+													onClick={function () {
+														handleClick2(product._id);
+													}}
+												>
+													Remove
+												</Button1>
+											</ProductSize>
+										</Details>
+									</ProductDetail>
+									<PriceDetail>
+										<ProductAmountContainer>
+											<Remove
+												className={`DecQuantity${product._id}`}
+												onClick={() => {
+													dispatch(decrease(product._id));
+													handleQuantity('dec', product._id);
+												}}
+											/>
+											<ProductAmount>
+												{product.quantity}
+											</ProductAmount>
+											<Add
+												className={`AddQuantity${product._id}`}
+												onClick={() => {
+													dispatch(increase(product._id));
+													handleQuantity('inc', product._id);
+												}}
+											/>
+											{/* )) */}
+											{/* } */}
+											{/* <Add
 											className={`AddQuantity${product._id}`}
 											onClick={() => {
 												dispatch(increase(product._id));
 												handleQuantity("inc", product._id);
 											}}
 										/> */}
-                  </ProductAmountContainer>
-                  <ProductPrice>
-                    $ {product.price * product.quantity}
-                  </ProductPrice>
-                </PriceDetail>
-              </Product>
-            ))}
-            <Hr />
-          </Info>
-          <Summary>
-            <SummaryTitle>ORDER SUMMARY</SummaryTitle>
-            <SummaryItem>
-              <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>$ 5.90</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>$ -5.90</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem type='total'>
-              <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
-            </SummaryItem>
-            <StripeCheckout
-              name='PME Shop'
-              image='https://avatars.githubusercontent.com/u/1486366?v=4'
-              billingAddress
-              shippingAddress
-              description={`Your total is $${cart.total}`}
-              amount={cart.total * 100}
-              token={onToken}
-              stripeKey={KEY}
-            >
-              <Button>CHECKOUT NOW</Button>
-            </StripeCheckout>
-          </Summary>
-        </Bottom>
-      </Wrapper>
-      <FooterNew />
-    </Container>
-  );
+										</ProductAmountContainer>
+										<ProductPrice>
+											$ {product.price * product.quantity}
+										</ProductPrice>
+									</PriceDetail>
+								</Product>
+							))
+						)}
+						<Hr />
+					</Info>
+					<Summary>
+						<SummaryTitle>ORDER SUMMARY</SummaryTitle>
+						<SummaryItem>
+							<SummaryItemText>Subtotal</SummaryItemText>
+							<SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+						</SummaryItem>
+						<SummaryItem>
+							<SummaryItemText>Estimated Shipping</SummaryItemText>
+							<SummaryItemPrice>$ 5.90</SummaryItemPrice>
+						</SummaryItem>
+						<SummaryItem>
+							<SummaryItemText>Shipping Discount</SummaryItemText>
+							<SummaryItemPrice>$ -5.90</SummaryItemPrice>
+						</SummaryItem>
+						<SummaryItem type='total'>
+							<SummaryItemText>Total</SummaryItemText>
+							<SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+						</SummaryItem>
+						<StripeCheckout
+							name='PME Shop'
+							image='https://avatars.githubusercontent.com/u/1486366?v=4'
+							billingAddress
+							shippingAddress
+							description={`Your total is $${cart.total}`}
+							amount={cart.total * 100}
+							token={onToken}
+							stripeKey={KEY}
+						>
+							<Button>CHECKOUT NOW</Button>
+						</StripeCheckout>
+					</Summary>
+				</Bottom>
+			</Wrapper>
+			<FooterNew />
+		</Container>
+	);
 };
 
 export default Cart;

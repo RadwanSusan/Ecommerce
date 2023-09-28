@@ -2,69 +2,85 @@
 input type color margin
 */
 
-input[type="color"] {
-  padding: 0px !important;
+input[type='color'] {
+	padding: 0px !important;
 }
 
 .newProduct {
-  flex: 4;
+	flex: 4;
 }
 
 .addProductForm1 {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  gap: 120px;
+	margin-top: 10px;
+	display: flex;
+	align-items: center;
+	gap: 120px;
+}
+.addNewForm {
+	margin-top: 10px;
+	display: flex;
+	width: 50px;
+	height: 50px;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	border: 1px solid black;
+	border-radius: 100%;
+	background-color: darkblue;
+	color: white;
 }
 
 .addProductItem {
-  width: 250px;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
+	width: 250px;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 10px;
+}
+.closeFormButton {
+	position: absolute;
+	left: 1346px;
 }
 
 .color {
-  flex-direction: row !important;
+	flex-direction: row !important;
 }
 
 .color input {
-  margin-left: 8px;
+	margin-left: 8px;
 }
 
-.addProductItem>label {
-  color: gray;
-  font-weight: 600;
-  margin-bottom: 10px;
+.addProductItem > label {
+	color: gray;
+	font-weight: 600;
+	margin-bottom: 10px;
 }
 
-.addProductItem>input {
-  padding: 10px;
+.addProductItem > input {
+	padding: 10px;
 }
 
-.addProductItem>select {
-  padding: 10px;
+.addProductItem > select {
+	padding: 10px;
 }
 
 .addProductButton {
-  margin-top: 10px;
-  padding: 7px 10px;
-  border: none;
-  border-radius: 10px;
-  background-color: darkblue;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
+	margin-top: 10px;
+	padding: 7px 10px;
+	border: none;
+	border-radius: 10px;
+	background-color: darkblue;
+	color: white;
+	font-weight: 600;
+	cursor: pointer;
 }
 .addProductForm {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  gap: 120px;
+	margin-top: 10px;
+	display: flex;
+	align-items: center;
+	gap: 120px;
 }
 @media only screen and (max-width: 600px) {
-  .addProductForm {
-    flex-direction: column;
-  }
+	.addProductForm {
+		flex-direction: column;
+	}
 }
-

@@ -2,7 +2,12 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import axios from 'axios';
 import './catog.css';
 import styled from 'styled-components';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import { AiOutlineEye, AiFillCloseCircle } from 'react-icons/ai';
+import { useMemo } from 'react';
+
 import {
 	BsHeart,
 	BsArrowUpCircle as ArrowUp,
@@ -17,6 +22,7 @@ import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import { addProduct } from '../redux/cartRedux';
 import { useDispatch } from 'react-redux';
+// import ImageSlider from '../pages/ImageSlider.dart';
 
 const FilterSizeCatog = styled.select`
 	margin-left: 10px;
@@ -24,6 +30,16 @@ const FilterSizeCatog = styled.select`
 `;
 
 const Catog = ({ item }) => {
+	const imagesSlider = [];
+	// const imagesSlider = useMemo(
+	// 	() => {
+	// 		// Your code to initialize the `imagesSlider` array
+	// 	},
+	// 	[
+	// 		/* dependencies if any */
+	// 	],
+	// );
+
 	const [zaidVar, setZaidVar] = useState(0);
 	const [product_id, setProduct_id] = useState(0);
 	const [quantity, setQuantity] = useState(1);
@@ -122,6 +138,10 @@ const Catog = ({ item }) => {
 			const backLayerForShowCart = document.querySelector(
 				'.backLayerForShowCart',
 			);
+			const sliderItemsContainer = document.querySelector(
+				'.sliderBlock_items50',
+			);
+
 			const idProduct = item.getAttribute('catog-id');
 			const viewArrCatog = isLoading
 				? [...productGet, ...offerGet]?.find(
@@ -176,6 +196,27 @@ const Catog = ({ item }) => {
 					});
 				}
 			});
+			viewArrCatog.img.forEach((img) => {
+				imagesSlider.push(img);
+			});
+			console.log(imagesSlider);
+
+			// sliderItemsContainer.innerHTML = '';
+
+			// imagesSlider.forEach((imageUrl, index) => {
+			// 	const li = document.createElement('li');
+			// 	li.className = 'sliderBlock_items__itemPhoto55';
+			// 	if (index === 0) {
+			// 		li.classList.add('sliderBlock_items__showing60');
+			// 	}
+
+			// 	const img = document.createElement('img');
+			// 	img.src = imageUrl;
+			// 	img.alt = 'headphones';
+
+			// 	li.appendChild(img);
+			// 	sliderItemsContainer.appendChild(li);
+			// });
 
 			filterSizeCatog.innerHTML = '';
 			viewArrCatog.size.forEach((size) => {
@@ -196,6 +237,7 @@ const Catog = ({ item }) => {
 			isLoading,
 			offerGet,
 			productGet,
+			imagesSlider,
 		],
 	);
 
@@ -361,6 +403,42 @@ const Catog = ({ item }) => {
 
 	const [wishlistLogin, setWishlistLogin] = useState(false);
 
+	// const addToWishlist = async (productId, identifier, ele) => {
+	// 	if (!wishlistLogin) {
+	// 		await swal({
+	// 			title: 'You have to login !',
+	// 			icon: 'warning',
+	// 			buttons: true,
+	// 			confirmButtonColor: '#42a5f5',
+	// 			confirmButtonText: 'Login',
+	// 			showCancelButton: true,
+	// 			closeOnConfirm: false,
+	// 		});
+	// 		window.location.href = '/login';
+	// 		return;
+	// 	}
+
+	// 	const targetClass = ele.target.classList[0];
+	// 	try {
+	// 		await wishlist(productId, userId);
+	// 		if (identifier === 'remove') {
+	// 			if (targetClass === 'add-to-wish2') {
+	// 				ele.target.parentNode.style.display = 'none';
+	// 				ele.target.parentNode.previousSibling.style.display = 'block';
+	// 			}
+	// 			swal('Success', 'Product removed from wishlist!', 'success');
+	// 		} else if (identifier === 'addCatog') {
+	// 			if (targetClass === 'add-to-wish') {
+	// 				ele.target.style.display = 'none';
+	// 				ele.target.nextSibling.children[0].style.display = 'block';
+	// 				ele.target.nextSibling.style.display = 'block';
+	// 			}
+	// 			swal('Success', 'Product added to wishlist!', 'success');
+	// 		}
+	// 	} catch (error) {
+	// 		swal('Error', 'Something went wrong', 'error');
+	// 	}
+	// };
 	const addToWishlist = async (productId, identifier, ele) => {
 		if (!wishlistLogin) {
 			await swal({
@@ -375,20 +453,26 @@ const Catog = ({ item }) => {
 			window.location.href = '/login';
 			return;
 		}
-		const targetClass = ele.target.classList[0];
+
+		let targetElement = ele.target;
+		if (targetElement.tagName === 'path') {
+			targetElement = targetElement.parentNode;
+		}
+		const targetClass = targetElement.classList[0];
+
 		try {
 			await wishlist(productId, userId);
 			if (identifier === 'remove') {
 				if (targetClass === 'add-to-wish2') {
-					ele.target.parentNode.style.display = 'none';
-					ele.target.parentNode.previousSibling.style.display = 'block';
+					targetElement.style.display = 'none';
+					targetElement.previousSibling.style.display = 'block';
 				}
 				swal('Success', 'Product removed from wishlist!', 'success');
 			} else if (identifier === 'addCatog') {
 				if (targetClass === 'add-to-wish') {
-					ele.target.style.display = 'none';
-					ele.target.nextSibling.children[0].style.display = 'block';
-					ele.target.nextSibling.style.display = 'block';
+					targetElement.style.display = 'none';
+					targetElement.nextSibling.children[0].style.display = 'block';
+					targetElement.nextSibling.style.display = 'block';
 				}
 				swal('Success', 'Product added to wishlist!', 'success');
 			}
@@ -428,6 +512,65 @@ const Catog = ({ item }) => {
 		return null;
 	}
 
+	window.addEventListener('DOMContentLoaded', (event) => {
+		let currentSlide = 4;
+		const slides = document.querySelectorAll('.sliderBlock_items__itemPhoto');
+		const totalSlides = slides.length;
+		const nextButton = document.querySelector(
+			'.sliderBlock_controls__arrowForward1',
+		);
+		const prevButton = document.querySelector(
+			'.sliderBlock_controls__arrowBackward1',
+		);
+		const paginatorItems = document.querySelectorAll(
+			'.sliderBlock_positionControls__paginatorItem',
+		);
+
+		let timer = setInterval(() => {
+			goToSlide(currentSlide + 1);
+		}, 3000);
+		if (nextButton !== null) {
+			nextButton.addEventListener('click', function () {
+				console.log('Next button clicked');
+
+				goToSlide(currentSlide + 1);
+			});
+		}
+		if (prevButton !== null) {
+			prevButton.addEventListener('click', function () {
+				console.log('Previous button clicked');
+				goToSlide(currentSlide - 1);
+			});
+		}
+		goToSlide(currentSlide);
+
+		function goToSlide(n) {
+			if (n > totalSlides - 1) {
+				currentSlide = totalSlides - 1;
+			} else if (n < 5) {
+				currentSlide = 5;
+			} else if (n > 9) {
+				currentSlide = 5;
+			} else {
+				currentSlide = n;
+			}
+
+			slides.forEach((slide, index) => {
+				if (index === currentSlide) {
+					slide.classList.add('sliderBlock_items__showing');
+					paginatorItems[index].classList.add(
+						'sliderBlock_positionControls__active',
+					);
+				} else {
+					slide.classList.remove('sliderBlock_items__showing');
+					paginatorItems[index].classList.remove(
+						'sliderBlock_positionControls__active',
+					);
+				}
+			});
+		}
+	});
+
 	return (
 		<>
 			<div className='backLayerForShowCart'></div>
@@ -437,7 +580,7 @@ const Catog = ({ item }) => {
 						<div className='small-12 large-6 columns11'>
 							<div className='productCard_leftSide clearfix'>
 								<div className='sliderBlock'>
-									<ul className='sliderBlock_items'>
+									<ul className='sliderBlock_items50'>
 										<li className='sliderBlock_items__itemPhoto sliderBlock_items__showing'>
 											<img
 												src='https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones1.png?raw=true'
@@ -477,7 +620,7 @@ const Catog = ({ item }) => {
 														className='fa fa-angle-left'
 														aria-hidden='true'
 													>
-														<BsFillArrowLeftCircleFill className='sliderBlock_controls__arrowBackward' />
+														<BsFillArrowLeftCircleFill className='sliderBlock_controls__arrowBackward1' />
 													</i>
 												</div>
 												<div className='sliderBlock_controls__arrow sliderBlock_controls__arrowForward'>
@@ -485,7 +628,7 @@ const Catog = ({ item }) => {
 														className='fa fa-angle-right'
 														aria-hidden='true'
 													>
-														<BsFillArrowRightCircleFill className='sliderBlock_controls__arrowForward ' />
+														<BsFillArrowRightCircleFill className='sliderBlock_controls__arrowForward1' />
 													</i>
 												</div>
 											</div>
@@ -498,6 +641,7 @@ const Catog = ({ item }) => {
 											<li className='sliderBlock_positionControls__paginatorItem'></li>
 										</ul>
 									</div>
+									{/* zaid */}
 								</div>
 							</div>
 						</div>
