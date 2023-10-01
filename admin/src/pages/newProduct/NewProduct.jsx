@@ -23,7 +23,10 @@ export default function NewProduct() {
 	const [color5, setColor5] = useState([]);
 	const [color6, setColor6] = useState([]);
 	const [draggedFile, setDraggedFile] = useState(null);
-	const [forms, setForms] = useState([{}]);
+	// const [forms, setForms] = useState([{}]);
+	const [forms, setForms] = useState([
+		{ file: null, color: null, size: null, quantity: null },
+	]);
 
 	const colorPickerRef = useRef(null);
 	const dispatch = useDispatch();
@@ -105,26 +108,31 @@ export default function NewProduct() {
 		});
 	};
 
+	/**
+	 * The function `handleAddProduct` is an asynchronous function that handles the process of adding a
+	 * product, including validating inputs, uploading images, and saving the product data.
+	 * @returns The function does not explicitly return anything.
+	 */
 	const handleAddProduct = async (e) => {
 		e.preventDefault();
 
-		if (file.length === 0) {
-			swal('Error', 'Please select an image', 'info');
-			return;
-		}
+		// if (file.length === 0) {
+		// 	swal('Error', 'Please select an image', 'info');
+		// 	return;
+		// }
 
-		if (!cat.length) {
-			swal('Error', 'Please select at least one category', 'info');
-			return;
-		}
+		// if (!cat.length) {
+		// 	swal('Error', 'Please select at least one category', 'info');
+		// 	return;
+		// }
 
-		if (!size.length) {
-			swal('Error', 'Please select at least one size', 'info');
-			return;
-		}
+		// if (!size.length) {
+		// 	swal('Error', 'Please select at least one size', 'info');
+		// 	return;
+		// }
 
 		const storage = getStorage(app);
-		const urls = [];
+		const variants = [];
 		for (const fileSingle of file) {
 			const fileName = new Date().getTime() + fileSingle.name;
 			const storageRef = ref(storage, fileName);
@@ -133,23 +141,40 @@ export default function NewProduct() {
 			try {
 				await uploadTask;
 				const url = await getDownloadURL(uploadTask.snapshot.ref);
-				urls.push(url);
+				const variant = {
+					img: [url], // Update this line to use an array with a single element
+					color: [color1], // Update this line to use an array with a single element
+					size: [size[0]], // Update this line to use an array with a single element
+					quantity: inputs.quantity, // Assuming inputs.quantity corresponds to this image
+				};
+
+				variants.push(variant);
 			} catch (error) {
 				swal('Error', error.message, 'error');
 				return;
 			}
 		}
 
-		const colors = [color1, color2, color3, color4, color5, color6].filter(
-			(color) => color.length !== 0,
-		);
+		// Add additional variants dynamically based on user selections
+		const additionalVariants = [];
+
+		for (let i = 0; i < forms.length; i++) {
+			const variant = {
+				img: [file[i]], // Update this line to use an array with a single element
+				color: [color1[i]], // Update this line to use an array with a single element
+				size: [size[i]], // Update this line to use an array with a single element
+				quantity: inputs.quantity[i], // Assuming selectedQuantities corresponds to this variant
+			};
+
+			additionalVariants.push(variant);
+		}
+
+		variants.push(...additionalVariants);
 
 		const product = {
 			...inputs,
-			img: urls,
+			variants,
 			categories: cat,
-			size,
-			color: colors,
 		};
 
 		try {
@@ -245,6 +270,14 @@ export default function NewProduct() {
 		);
 	};
 
+	const handleFormChange = (index, field, value) => {
+		setForms((prevForms) => {
+			const newForms = [...prevForms];
+			newForms[index][field] = value;
+			return newForms;
+		});
+	};
+
 	return (
 		<div
 			className='newProduct'
@@ -267,7 +300,14 @@ export default function NewProduct() {
 								<input
 									type='file'
 									id='file'
-									onChange={handleFiles}
+									// onChange={handleFiles()}
+									onChange={(event) =>
+										handleFormChange(
+											index,
+											'file',
+											event.target.files[0],
+										)
+									}
 									multiple
 									style={{ display: 'none' }}
 								/>
@@ -330,7 +370,14 @@ export default function NewProduct() {
 										type='radio'
 										className='Size'
 										name='size'
-										onClick={addSize}
+										// onClick={addSize}
+										onChange={(event) =>
+											handleFormChange(
+												index,
+												'size',
+												event.target.value,
+											)
+										}
 										value='S'
 									/>
 									<label> S</label>
@@ -339,7 +386,14 @@ export default function NewProduct() {
 										type='radio'
 										className='Size'
 										name='size'
-										onClick={addSize}
+										// onClick={addSize}
+										onChange={(event) =>
+											handleFormChange(
+												index,
+												'size',
+												event.target.value,
+											)
+										}
 										value='M'
 									/>
 									<label> M</label>
@@ -348,7 +402,14 @@ export default function NewProduct() {
 										type='radio'
 										className='Size'
 										name='size'
-										onClick={addSize}
+										// onClick={addSize}
+										onChange={(event) =>
+											handleFormChange(
+												index,
+												'size',
+												event.target.value,
+											)
+										}
 										value='L'
 									/>
 									<label> L</label>
@@ -357,7 +418,14 @@ export default function NewProduct() {
 										type='radio'
 										className='Size'
 										name='size'
-										onClick={addSize}
+										// onClick={addSize}
+										onChange={(event) =>
+											handleFormChange(
+												index,
+												'size',
+												event.target.value,
+											)
+										}
 										value='XL'
 									/>
 									<label> XL</label>
@@ -365,7 +433,14 @@ export default function NewProduct() {
 									<input
 										type='radio'
 										name='size'
-										onClick={addSize}
+										// onClick={addSize}
+										onChange={(event) =>
+											handleFormChange(
+												index,
+												'size',
+												event.target.value,
+											)
+										}
 										value='XXL'
 										className='Size'
 									/>
@@ -380,6 +455,13 @@ export default function NewProduct() {
 									id='color-picker'
 									name='color1'
 									type='color'
+									onChange={(event) =>
+										handleFormChange(
+											index,
+											'color',
+											event.target.value,
+										)
+									}
 								/>
 							</div>
 							<div className='addProductItem'>
@@ -413,7 +495,14 @@ export default function NewProduct() {
 								<label>Categories</label>
 								<select
 									name='categories'
-									onChange={handleCat}
+									// onChange={handleCat}
+									onChange={(event) =>
+										handleFormChange(
+											index,
+											'size',
+											event.target.value,
+										)
+									}
 									className='Categories'
 									disabled={index !== 0}
 								>
