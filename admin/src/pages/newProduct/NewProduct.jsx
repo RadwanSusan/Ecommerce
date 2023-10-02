@@ -23,20 +23,28 @@ export default function NewProduct() {
 	const [color5, setColor5] = useState([]);
 	const [color6, setColor6] = useState([]);
 	const [draggedFile, setDraggedFile] = useState(null);
-	// const [forms, setForms] = useState([{}]);
-	// const [forms, setForms] = useState([
-	// 	{ file: null, color: null, size: null, quantity: null },
-	// ]);
 	const [forms, setForms] = useState([
 		{ file: null, color: '', size: '', quantity: '' },
 	]);
-
 	const colorPickerRef = useRef(null);
+	const [selectedFile, setSelectedFile] = useState(null);
+	const [selectedName, setSelectedName] = useState('');
+	const handleFileChange = (event) => {
+		const file = event.target.files[0];
+		setSelectedFile(file);
+		setSelectedName(file.name);
+		// Additional validation logic
+	};
+
 	const dispatch = useDispatch();
 	const handleChange = (e) => {
 		setInputs((prev) => {
 			return { ...prev, [e.target.name]: e.target.value };
 		});
+
+		if (e.target.name === 'file') {
+			addNewForm();
+		}
 	};
 	const handleCat = (e) => {
 		setCat(e.target.value.split(','));
@@ -47,12 +55,12 @@ export default function NewProduct() {
 		});
 	};
 
-	const handleFiles = (event) => {
-		if (event.target.files.length > 0) {
-			setFile([...event.target.files]);
-			setDraggedFile(null);
-		}
-	};
+	// const handleFiles = (event) => {
+	// 	if (event.target.files.length > 0) {
+	// 		setFile([...event.target.files]);
+	// 		setDraggedFile(null);
+	// 	}
+	// };
 
 	const handleDragEnter = (e) => {
 		e.preventDefault();
@@ -111,22 +119,14 @@ export default function NewProduct() {
 		});
 	};
 
-	/**
-	 * The function `handleAddProduct` is an asynchronous function that handles the process of adding a
-	 * product, including validating inputs, uploading images, and saving the product data.
-	 * @returns The function does not explicitly return anything.
-	 */
 	const handleAddProduct = async (e) => {
 		e.preventDefault();
 
 		const storage = getStorage(app);
-		const variants = [];
 
-		// const [variants, setVariants] = useState([]);
-
-		for (let i = 0; i < forms.length; i++) {
-			const form = forms[i];
+		const uploadPromises = forms.map(async (form) => {
 			const fileSingle = form.file;
+			console.log(`🚀  file: NewProduct.jsx:125  fileSingle =>`, fileSingle);
 			if (fileSingle) {
 				const fileName = new Date().getTime() + fileSingle.name;
 				const storageRef = ref(storage, fileName);
@@ -135,40 +135,38 @@ export default function NewProduct() {
 				try {
 					await uploadTask;
 					const url = await getDownloadURL(uploadTask.snapshot.ref);
-					const variant = {
+
+					return {
 						img: [url],
 						color: [form.color],
 						size: [form.size],
 						quantity: form.quantity,
 					};
-					// setVariants((prevVariants) => [...prevVariants, variant]);
-
-					variants.push(variant);
 				} catch (error) {
-					swal('Error', error.message, 'error');
-					return;
+					console.error(error);
+					throw error;
 				}
 			} else {
-				// Handle the case where fileSingle is null
-				// For example, you could show an error message to the user
-				// swal('Error', 'Please select a file for all forms', 'error');
-				// return;
-				continue;
+				return {
+					img: [],
+					color: [form.color],
+					size: [form.size],
+					quantity: form.quantity,
+				};
 			}
-		}
-
-		const product = {
-			...inputs,
-			variants,
-		};
-
+		});
 		try {
+			const variants = await Promise.all(uploadPromises);
+			const product = {
+				...inputs,
+				variants,
+			};
+
 			await addProduct(product, dispatch);
 			swal({
 				title: 'Success',
 				text: 'Product added successfully',
 				icon: 'success',
-				button: 'Ok',
 				closeOnClickOutside: false,
 				closeOnEsc: false,
 			}).then(() => {
@@ -245,9 +243,6 @@ export default function NewProduct() {
 		});
 	};
 
-	// const addNewForm = () => {
-	// 	setForms((prevForms) => [...prevForms, {}]);
-	// };
 	const addNewForm = () => {
 		setForms((prevForms) => [
 			...prevForms,
@@ -260,13 +255,16 @@ export default function NewProduct() {
 			prevForms.filter((form, index) => index !== indexToRemove),
 		);
 	};
-
 	const handleFormChange = (index, field, value) => {
+		if (field === 'file') {
+			value = value.files[0];
+		}
 		setForms((prevForms) => {
 			const newForms = [...prevForms];
 			newForms[index][field] = value;
 			return newForms;
 		});
+		console.log(forms);
 	};
 
 	return (
@@ -283,12 +281,12 @@ export default function NewProduct() {
 					<form
 						key={index}
 						className='addProductForm'
-						enctype='multipart/form-data'
+						encType='multipart/form-data'
 					>
 						<div className='divition1'>
 							<div className='addProductItem'>
 								<label>Image</label>
-								<input
+								{/* <input
 									type='file'
 									id='file'
 									// onChange={handleFiles()}
@@ -301,7 +299,17 @@ export default function NewProduct() {
 									}
 									multiple
 									style={{ display: 'none' }}
+								/> */}
+								<input
+									type='file'
+									id='file'
+									onChange={(event) =>
+										handleFormChange(index, 'file', event.target)
+									}
+									multiple
+									style={{ display: 'none' }}
 								/>
+
 								{index !== 0 && (
 									<button
 										onClick={() => removeForm(index)}
@@ -443,16 +451,17 @@ export default function NewProduct() {
 								<label>Color</label>
 								<br />
 								<input
-									id='color-picker'
-									name='color1'
-									type='color'
+									type='file'
+									id='file'
 									onChange={(event) =>
 										handleFormChange(
 											index,
-											'color',
-											event.target.value,
+											'file',
+											event.target.files[0],
 										)
 									}
+									multiple
+									style={{ display: 'none' }}
 								/>
 							</div>
 							<div className='addProductItem'>
@@ -582,18 +591,6 @@ export default function NewProduct() {
 									Create
 								</button>
 							)}
-							{/* <button
-								onClick={handleAddProduct}
-								className='addProductButton'
-							>
-								Create
-							</button>
-							<div
-								className='addNewForm'
-								onClick={addNewForm}
-							>
-								+
-							</div> */}
 						</div>
 					</form>
 				))}

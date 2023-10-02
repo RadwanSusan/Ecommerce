@@ -14,3 +14,13 @@ api/node_modules/
 thunder-tests
 .safurai/config.yml
 admin/yarn.lock
+admin/node_modules/
+/node_modules
+api/node_modules/.bin/mime
+api/node_modules/.bin/mime
+api/node_modules/.bin/mime
+api/node_modules/.bin/mime
+*.cmd
+api/node_modules/.bin/nodemon
+*.cmd
+api/node_modules/stripe/VERSION
