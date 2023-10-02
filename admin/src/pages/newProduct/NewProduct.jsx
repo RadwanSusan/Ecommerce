@@ -122,6 +122,8 @@ export default function NewProduct() {
 		const storage = getStorage(app);
 		const variants = [];
 
+		// const [variants, setVariants] = useState([]);
+
 		for (let i = 0; i < forms.length; i++) {
 			const form = forms[i];
 			const fileSingle = form.file;
@@ -139,6 +141,7 @@ export default function NewProduct() {
 						size: [form.size],
 						quantity: form.quantity,
 					};
+					// setVariants((prevVariants) => [...prevVariants, variant]);
 
 					variants.push(variant);
 				} catch (error) {
@@ -157,7 +160,6 @@ export default function NewProduct() {
 		const product = {
 			...inputs,
 			variants,
-			categories: forms[0].categories,
 		};
 
 		try {
@@ -337,7 +339,7 @@ export default function NewProduct() {
 									className='Title'
 									type='text'
 									placeholder='Apple Airpods'
-									disabled={index !== 0}
+									// disabled={index !== 0}
 									onChange={handleChange}
 								/>
 							</div>
@@ -349,7 +351,7 @@ export default function NewProduct() {
 									type='text'
 									placeholder='description...'
 									onChange={handleChange}
-									disabled={index !== 0}
+									// disabled={index !== 0}
 								/>
 							</div>
 							<div className='addProductItem'>
@@ -466,7 +468,7 @@ export default function NewProduct() {
 									placeholder='100'
 									onChange={handleChange}
 									className='Price'
-									disabled={index !== 0}
+									// disabled={index !== 0}
 								/>
 							</div>
 							<div className='addProductItem'>
@@ -477,22 +479,23 @@ export default function NewProduct() {
 									placeholder='100'
 									onChange={handleChange}
 									className='OriginalPrice'
-									disabled={index !== 0}
+									// disabled={index !== 0}
 								/>
 							</div>
 							<div className='addProductItem'>
 								<label>Categories</label>
 								<select
 									name='categories'
-									onChange={(event) =>
-										handleFormChange(
-											index,
-											'categories',
-											event.target.value.split(','),
-										)
-									}
+									onChange={handleChange}
+									// onChange={(event) =>
+									// 	handleFormChange(
+									// 		index,
+									// 		'categories',
+									// 		event.target.value.split(','),
+									// 	)
+									// }
 									className='Categories'
-									disabled={index !== 0}
+									// disabled={index !== 0}
 								>
 									<option value=''>Select Categories</option>
 									<option value='coat'>Coat</option>
@@ -527,7 +530,7 @@ export default function NewProduct() {
 									placeholder='200'
 									onChange={handleChange}
 									className='Width'
-									disabled={index !== 0}
+									// disabled={index !== 0}
 								/>
 							</div>
 							<div className='addProductItem'>
@@ -538,7 +541,7 @@ export default function NewProduct() {
 									placeholder='200'
 									onChange={handleChange}
 									className='Height'
-									disabled={index !== 0}
+									// disabled={index !== 0}
 								/>
 							</div>
 							<div className='addProductItem'>
@@ -549,7 +552,7 @@ export default function NewProduct() {
 									placeholder='200'
 									onChange={handleChange}
 									className='Length'
-									disabled={index !== 0}
+									// disabled={index !== 0}
 								/>
 							</div>
 							<div className='addProductItem'>
@@ -560,7 +563,7 @@ export default function NewProduct() {
 									placeholder='200'
 									onChange={handleChange}
 									className='Weight'
-									disabled={index !== 0}
+									// disabled={index !== 0}
 								/>
 							</div>
 							{index === forms.length - 1 && (
