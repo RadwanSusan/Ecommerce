@@ -46,14 +46,14 @@ export default function NewProduct() {
 			addNewForm();
 		}
 	};
-	const handleCat = (e) => {
-		setCat(e.target.value.split(','));
-	};
-	const addSize = (e) => {
-		setSize((prev) => {
-			return [...prev, e.target.value];
-		});
-	};
+	// const handleCat = (e) => {
+	// 	setCat(e.target.value.split(','));
+	// };
+	// const addSize = (e) => {
+	// 	setSize((prev) => {
+	// 		return [...prev, e.target.value];
+	// 	});
+	// };
 
 	// const handleFiles = (event) => {
 	// 	if (event.target.files.length > 0) {
@@ -451,17 +451,16 @@ export default function NewProduct() {
 								<label>Color</label>
 								<br />
 								<input
-									type='file'
-									id='file'
+									id='color-picker'
+									name='color1'
+									type='color'
 									onChange={(event) =>
 										handleFormChange(
 											index,
-											'file',
-											event.target.files[0],
+											'color',
+											event.target.value,
 										)
 									}
-									multiple
-									style={{ display: 'none' }}
 								/>
 							</div>
 							<div className='addProductItem'>
