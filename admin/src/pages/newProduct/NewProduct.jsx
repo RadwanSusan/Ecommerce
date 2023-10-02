@@ -24,8 +24,11 @@ export default function NewProduct() {
 	const [color6, setColor6] = useState([]);
 	const [draggedFile, setDraggedFile] = useState(null);
 	// const [forms, setForms] = useState([{}]);
+	// const [forms, setForms] = useState([
+	// 	{ file: null, color: null, size: null, quantity: null },
+	// ]);
 	const [forms, setForms] = useState([
-		{ file: null, color: null, size: null, quantity: null },
+		{ file: null, color: '', size: '', quantity: '' },
 	]);
 
 	const colorPickerRef = useRef(null);
@@ -116,65 +119,45 @@ export default function NewProduct() {
 	const handleAddProduct = async (e) => {
 		e.preventDefault();
 
-		// if (file.length === 0) {
-		// 	swal('Error', 'Please select an image', 'info');
-		// 	return;
-		// }
-
-		// if (!cat.length) {
-		// 	swal('Error', 'Please select at least one category', 'info');
-		// 	return;
-		// }
-
-		// if (!size.length) {
-		// 	swal('Error', 'Please select at least one size', 'info');
-		// 	return;
-		// }
-
 		const storage = getStorage(app);
 		const variants = [];
-		for (const fileSingle of file) {
-			const fileName = new Date().getTime() + fileSingle.name;
-			const storageRef = ref(storage, fileName);
-			const uploadTask = uploadBytesResumable(storageRef, fileSingle);
-
-			try {
-				await uploadTask;
-				const url = await getDownloadURL(uploadTask.snapshot.ref);
-				const variant = {
-					img: [url], // Update this line to use an array with a single element
-					color: [color1], // Update this line to use an array with a single element
-					size: [size[0]], // Update this line to use an array with a single element
-					quantity: inputs.quantity, // Assuming inputs.quantity corresponds to this image
-				};
-
-				variants.push(variant);
-			} catch (error) {
-				swal('Error', error.message, 'error');
-				return;
-			}
-		}
-
-		// Add additional variants dynamically based on user selections
-		const additionalVariants = [];
 
 		for (let i = 0; i < forms.length; i++) {
-			const variant = {
-				img: [file[i]], // Update this line to use an array with a single element
-				color: [color1[i]], // Update this line to use an array with a single element
-				size: [size[i]], // Update this line to use an array with a single element
-				quantity: inputs.quantity[i], // Assuming selectedQuantities corresponds to this variant
-			};
+			const form = forms[i];
+			const fileSingle = form.file;
+			if (fileSingle) {
+				const fileName = new Date().getTime() + fileSingle.name;
+				const storageRef = ref(storage, fileName);
+				const uploadTask = uploadBytesResumable(storageRef, fileSingle);
 
-			additionalVariants.push(variant);
+				try {
+					await uploadTask;
+					const url = await getDownloadURL(uploadTask.snapshot.ref);
+					const variant = {
+						img: [url],
+						color: [form.color],
+						size: [form.size],
+						quantity: form.quantity,
+					};
+
+					variants.push(variant);
+				} catch (error) {
+					swal('Error', error.message, 'error');
+					return;
+				}
+			} else {
+				// Handle the case where fileSingle is null
+				// For example, you could show an error message to the user
+				// swal('Error', 'Please select a file for all forms', 'error');
+				// return;
+				continue;
+			}
 		}
-
-		variants.push(...additionalVariants);
 
 		const product = {
 			...inputs,
 			variants,
-			categories: cat,
+			categories: forms[0].categories,
 		};
 
 		try {
@@ -260,8 +243,14 @@ export default function NewProduct() {
 		});
 	};
 
+	// const addNewForm = () => {
+	// 	setForms((prevForms) => [...prevForms, {}]);
+	// };
 	const addNewForm = () => {
-		setForms((prevForms) => [...prevForms, {}]);
+		setForms((prevForms) => [
+			...prevForms,
+			{ file: null, color: '', size: '', quantity: '' },
+		]);
 	};
 
 	const removeForm = (indexToRemove) => {
@@ -495,12 +484,11 @@ export default function NewProduct() {
 								<label>Categories</label>
 								<select
 									name='categories'
-									// onChange={handleCat}
 									onChange={(event) =>
 										handleFormChange(
 											index,
-											'size',
-											event.target.value,
+											'categories',
+											event.target.value.split(','),
 										)
 									}
 									className='Categories'
@@ -518,7 +506,14 @@ export default function NewProduct() {
 									name='quantity'
 									type='number'
 									placeholder='1'
-									onChange={handleChange}
+									// onChange={handleChange}
+									onChange={(event) =>
+										handleFormChange(
+											index,
+											'quantity',
+											event.target.value,
+										)
+									}
 									className='Quantity'
 								/>
 							</div>
