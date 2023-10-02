@@ -122,8 +122,6 @@ export default function NewProduct() {
 		const storage = getStorage(app);
 		const variants = [];
 
-		// const [variants, setVariants] = useState([]);
-
 		for (let i = 0; i < forms.length; i++) {
 			const form = forms[i];
 			const fileSingle = form.file;
@@ -137,11 +135,10 @@ export default function NewProduct() {
 					const url = await getDownloadURL(uploadTask.snapshot.ref);
 					const variant = {
 						img: [url],
-						color: [form.color],
+						color: form.color,
 						size: [form.size],
 						quantity: form.quantity,
 					};
-					// setVariants((prevVariants) => [...prevVariants, variant]);
 
 					variants.push(variant);
 				} catch (error) {
