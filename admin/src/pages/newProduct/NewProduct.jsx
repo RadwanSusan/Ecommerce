@@ -27,14 +27,7 @@ export default function NewProduct() {
 		{ file: null, color: '', size: '', quantity: '' },
 	]);
 	const colorPickerRef = useRef(null);
-	const [selectedFile, setSelectedFile] = useState(null);
-	const [selectedName, setSelectedName] = useState('');
-	const handleFileChange = (event) => {
-		const file = event.target.files[0];
-		setSelectedFile(file);
-		setSelectedName(file.name);
-		// Additional validation logic
-	};
+	const [currentFile, setCurrentFile] = useState(null);
 
 	const dispatch = useDispatch();
 	const handleChange = (e) => {
@@ -46,21 +39,6 @@ export default function NewProduct() {
 			addNewForm();
 		}
 	};
-	// const handleCat = (e) => {
-	// 	setCat(e.target.value.split(','));
-	// };
-	// const addSize = (e) => {
-	// 	setSize((prev) => {
-	// 		return [...prev, e.target.value];
-	// 	});
-	// };
-
-	// const handleFiles = (event) => {
-	// 	if (event.target.files.length > 0) {
-	// 		setFile([...event.target.files]);
-	// 		setDraggedFile(null);
-	// 	}
-	// };
 
 	const handleDragEnter = (e) => {
 		e.preventDefault();
@@ -243,10 +221,17 @@ export default function NewProduct() {
 		});
 	};
 
+	// const addNewForm = () => {
+	// 	setForms((prevForms) => [
+	// 		...prevForms,
+	// 		{ file: null, color: '', size: '', quantity: '' },
+	// 	]);
+	// };
+
 	const addNewForm = () => {
 		setForms((prevForms) => [
 			...prevForms,
-			{ file: null, color: '', size: '', quantity: '' },
+			{ file: currentFile, color: '', size: '', quantity: '' },
 		]);
 	};
 
@@ -255,16 +240,18 @@ export default function NewProduct() {
 			prevForms.filter((form, index) => index !== indexToRemove),
 		);
 	};
-	const handleFormChange = (index, field, value) => {
+
+	const handleFormChange = (index, field, event) => {
+		let value = event;
 		if (field === 'file') {
-			value = value.files[0];
+			value = event.files[0];
+			setCurrentFile(value);
 		}
 		setForms((prevForms) => {
 			const newForms = [...prevForms];
 			newForms[index][field] = value;
 			return newForms;
 		});
-		console.log(forms);
 	};
 
 	return (
@@ -286,20 +273,6 @@ export default function NewProduct() {
 						<div className='divition1'>
 							<div className='addProductItem'>
 								<label>Image</label>
-								{/* <input
-									type='file'
-									id='file'
-									// onChange={handleFiles()}
-									onChange={(event) =>
-										handleFormChange(
-											index,
-											'file',
-											event.target.files[0],
-										)
-									}
-									multiple
-									style={{ display: 'none' }}
-								/> */}
 								<input
 									type='file'
 									id='file'
@@ -347,7 +320,6 @@ export default function NewProduct() {
 									className='Title'
 									type='text'
 									placeholder='Apple Airpods'
-									// disabled={index !== 0}
 									onChange={handleChange}
 								/>
 							</div>
@@ -359,7 +331,6 @@ export default function NewProduct() {
 									type='text'
 									placeholder='description...'
 									onChange={handleChange}
-									// disabled={index !== 0}
 								/>
 							</div>
 							<div className='addProductItem'>
@@ -369,7 +340,6 @@ export default function NewProduct() {
 										type='radio'
 										className='Size'
 										name='size'
-										// onClick={addSize}
 										onChange={(event) =>
 											handleFormChange(
 												index,
@@ -385,7 +355,6 @@ export default function NewProduct() {
 										type='radio'
 										className='Size'
 										name='size'
-										// onClick={addSize}
 										onChange={(event) =>
 											handleFormChange(
 												index,
@@ -401,7 +370,6 @@ export default function NewProduct() {
 										type='radio'
 										className='Size'
 										name='size'
-										// onClick={addSize}
 										onChange={(event) =>
 											handleFormChange(
 												index,
@@ -417,7 +385,6 @@ export default function NewProduct() {
 										type='radio'
 										className='Size'
 										name='size'
-										// onClick={addSize}
 										onChange={(event) =>
 											handleFormChange(
 												index,
@@ -432,7 +399,6 @@ export default function NewProduct() {
 									<input
 										type='radio'
 										name='size'
-										// onClick={addSize}
 										onChange={(event) =>
 											handleFormChange(
 												index,
@@ -476,7 +442,6 @@ export default function NewProduct() {
 									placeholder='100'
 									onChange={handleChange}
 									className='Price'
-									// disabled={index !== 0}
 								/>
 							</div>
 							<div className='addProductItem'>
@@ -487,7 +452,6 @@ export default function NewProduct() {
 									placeholder='100'
 									onChange={handleChange}
 									className='OriginalPrice'
-									// disabled={index !== 0}
 								/>
 							</div>
 							<div className='addProductItem'>
@@ -495,15 +459,7 @@ export default function NewProduct() {
 								<select
 									name='categories'
 									onChange={handleChange}
-									// onChange={(event) =>
-									// 	handleFormChange(
-									// 		index,
-									// 		'categories',
-									// 		event.target.value.split(','),
-									// 	)
-									// }
 									className='Categories'
-									// disabled={index !== 0}
 								>
 									<option value=''>Select Categories</option>
 									<option value='coat'>Coat</option>
@@ -517,7 +473,6 @@ export default function NewProduct() {
 									name='quantity'
 									type='number'
 									placeholder='1'
-									// onChange={handleChange}
 									onChange={(event) =>
 										handleFormChange(
 											index,
@@ -538,7 +493,6 @@ export default function NewProduct() {
 									placeholder='200'
 									onChange={handleChange}
 									className='Width'
-									// disabled={index !== 0}
 								/>
 							</div>
 							<div className='addProductItem'>
@@ -549,7 +503,6 @@ export default function NewProduct() {
 									placeholder='200'
 									onChange={handleChange}
 									className='Height'
-									// disabled={index !== 0}
 								/>
 							</div>
 							<div className='addProductItem'>
@@ -560,7 +513,6 @@ export default function NewProduct() {
 									placeholder='200'
 									onChange={handleChange}
 									className='Length'
-									// disabled={index !== 0}
 								/>
 							</div>
 							<div className='addProductItem'>
@@ -571,7 +523,6 @@ export default function NewProduct() {
 									placeholder='200'
 									onChange={handleChange}
 									className='Weight'
-									// disabled={index !== 0}
 								/>
 							</div>
 							{index === forms.length - 1 && (
