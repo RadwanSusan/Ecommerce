@@ -88,6 +88,7 @@ const Icon = styled.div`
 
 const Product = ({ item }) => {
 	const [wishlistLogin, setWishlistLogin] = useState(false);
+
 	const handleWichlist = (id, ele) => {
 		if (ele.target.classList[0] === 'add-to-wish' && wishlistLogin == true) {
 			console.log(ele.target.parentNode);
@@ -104,41 +105,7 @@ const Product = ({ item }) => {
 			ele.target.parentNode.previousSibling.style.display = 'block';
 		}
 	};
-	// const addToWishlist = async (productId, identifier, ele) => {
-	//   if (!wishlistLogin) {
-	//     await swal({
-	//       title: 'You have to login !',
-	//       icon: 'warning',
-	//       buttons: true,
-	//       confirmButtonColor: '#42a5f5',
-	//       confirmButtonText: 'Login',
-	//       showCancelButton: true,
-	//       closeOnConfirm: false,
-	//     });
-	//     window.location.href = '/login';
-	//     return;
-	//   }
-	//   const targetClass = ele.target.classList[0];
-	//   try {
-	//     await wishlist(productId, userId);
-	//     if (identifier === 'remove') {
-	//       if (targetClass === 'add-to-wish2') {
-	//         ele.target.parentNode.style.display = 'none';
-	//         ele.target.parentNode.previousSibling.style.display = 'block';
-	//       }
-	//       swal('Success', 'Product removed from wishlist!', 'success');
-	//     } else if (identifier === 'addCatog') {
-	//       if (targetClass === 'add-to-wish') {
-	//         ele.target.style.display = 'none';
-	//         ele.target.nextSibling.children[0].style.display = 'block';
-	//         ele.target.nextSibling.style.display = 'block';
-	//       }
-	//       swal('Success', 'Product added to wishlist!', 'success');
-	//     }
-	//   } catch (error) {
-	//     swal('Error', 'Something went wrong', 'error');
-	//   }
-	// };
+
 	const addToWishlist = async (productId, identifier, ele) => {
 		if (!wishlistLogin) {
 			await swal({
@@ -181,34 +148,6 @@ const Product = ({ item }) => {
 		}
 	};
 
-	//   const addToWishlist = (productId, identifier) => {
-	//     if (wishlistLogin === false) {
-	//       swal({
-	//         title: 'You have to login !',
-	//         icon: 'warning',
-	//         buttons: true,
-	//         confirmButtonColor: '#42A5F5',
-	//         confirmButtonText: 'Login',
-	//         showCancelButton: true,
-
-	//         closeOnConfirm: false,
-	//       }).then((e) => {
-	//         if (e) {
-	//           window.location.href = '/login';
-	//         }
-	//       });
-	//       return;
-	//     }
-
-	//     if (identifier === 'remove' && wishlistLogin === true) {
-	//       swal('Success', 'Product removed from wishlist!', 'success');
-	//       wishlist(productId);
-	//       return;
-	//     }
-
-	//     swal('Success', 'Product added to wishlist!', 'success');
-	//     wishlist(productId);
-	//   };
 	const isMountedRef = useRef(true);
 	const [wishlistData, setWishlistData] = useState([]);
 	let userId = localStorage.getItem('persist:root');
@@ -244,7 +183,7 @@ const Product = ({ item }) => {
 	return (
 		<Container>
 			<Circle />
-			<Image src={item.img} />
+			<Image src={item.z} />
 			<Info>
 				<Icon>
 					<Link to={`/product/${item._id}`}>

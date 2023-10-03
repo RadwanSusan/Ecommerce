@@ -183,7 +183,7 @@ const Product = () => {
 		};
 		getProduct();
 	}, [id]);
-	// console.log(product.img[0]);
+	console.log(product.variants);
 	document.querySelectorAll('.Color').forEach((item) =>
 		item.addEventListener('click', (e) => {
 			document.querySelectorAll('.Color').forEach((item2) => {
@@ -222,45 +222,6 @@ const Product = () => {
 		return acc;
 	}, []);
 
-	// const checkAvailability = useCallback(() => {
-	// 	console.debug(`🚀  file: Product.jsx:231  mergedCart =>`, mergedCart);
-	// 	let newQuantity = mergedCart.map((item) => {
-	// 		console.debug(`🚀  file: Product.jsx:231  item =>`, item);
-	// 		if (item._id === product._id) {
-	// 			return {
-	// 				quantity: product.quantity - item.quantity,
-	// 			};
-	// 		}
-	// 	});
-	// 	newQuantity = newQuantity.filter((item) => item !== undefined);
-	// 	console.debug(`🚀  file: Product.jsx:231  newQuantity =>`, newQuantity);
-	// 	if (newQuantity.length > 0) {
-	// 		if (newQuantity[0].quantity < 1) {
-	// 			console.debug(
-	// 				`🚀  file: Product.jsx:231  newQuantity[0].quantity < 1 =>`,
-	// 				newQuantity[0].quantity,
-	// 			);
-	// 			setIsButtonDisabled(true);
-	// 		} else {
-	// 			setIsButtonDisabled(false);
-	// 		}
-	// 	} else {
-	// 		// if (product.quantity < 1) {
-	// 		// 	console.debug(
-	// 		// 		`🚀  file: Product.jsx:231  product.quantity < 1 =>`,
-	// 		// 		product.quantity,
-	// 		// 	);
-	// 		// 	setIsButtonDisabled(true);
-	// 		// } else {
-	// 		// 	setIsButtonDisabled(false);
-	// 		// }
-	// 		if (newQuantity < 1) {
-	// 			setIsButtonDisabled(true);
-	// 		} else {
-	// 			setIsButtonDisabled(false);
-	// 		}
-	// 	}
-	// }, [mergedCart, product._id, product.quantity]);
 	const checkAvailability = useCallback(() => {
 		const cartProduct = mergedCart.find((item) => item._id === product._id);
 		const cartQuantity = cartProduct ? cartProduct.quantity : 0;

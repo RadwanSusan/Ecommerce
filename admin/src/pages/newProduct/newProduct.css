@@ -73,8 +73,36 @@ input[type='color'] {
 	font-weight: 600;
 	cursor: pointer;
 }
+.addProductTitle {
+	margin-left: 10px;
+}
+.spinner {
+	animation: spin 1s linear infinite;
+}
+.progress-icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 600px; /* Adjust the height as needed */
+}
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
 .addProductForm {
+	border: 2px solid;
+	border-radius: 10px;
+	padding: 10px;
 	margin-top: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+
+	margin-bottom: 10px;
+
 	display: flex;
 	align-items: center;
 	gap: 120px;

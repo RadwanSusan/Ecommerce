@@ -10,6 +10,8 @@ import app from '../../firebase';
 import { addProduct } from '../../redux/apiCalls';
 import { useDispatch } from 'react-redux';
 import swal from 'sweetalert';
+import { FaSpinner } from 'react-icons/fa';
+import { original } from '@reduxjs/toolkit';
 
 export default function NewProduct() {
 	const [inputs, setInputs] = useState({});
@@ -22,35 +24,22 @@ export default function NewProduct() {
 	const [color4, setColor4] = useState([]);
 	const [color5, setColor5] = useState([]);
 	const [color6, setColor6] = useState([]);
+	const [loading, setLoading] = useState(false);
 	const [draggedFile, setDraggedFile] = useState(null);
-	// const [forms, setForms] = useState([{}]);
-	// const [forms, setForms] = useState([
-	// 	{ file: null, color: null, size: null, quantity: null },
-	// ]);
 	const [forms, setForms] = useState([
 		{ file: null, color: '', size: '', quantity: '' },
 	]);
-
 	const colorPickerRef = useRef(null);
+	const [currentFile, setCurrentFile] = useState(null);
+
 	const dispatch = useDispatch();
 	const handleChange = (e) => {
 		setInputs((prev) => {
 			return { ...prev, [e.target.name]: e.target.value };
 		});
-	};
-	const handleCat = (e) => {
-		setCat(e.target.value.split(','));
-	};
-	const addSize = (e) => {
-		setSize((prev) => {
-			return [...prev, e.target.value];
-		});
-	};
 
-	const handleFiles = (event) => {
-		if (event.target.files.length > 0) {
-			setFile([...event.target.files]);
-			setDraggedFile(null);
+		if (e.target.name === 'file') {
+			addNewForm();
 		}
 	};
 
@@ -111,20 +100,56 @@ export default function NewProduct() {
 		});
 	};
 
-	/**
-	 * The function `handleAddProduct` is an asynchronous function that handles the process of adding a
-	 * product, including validating inputs, uploading images, and saving the product data.
-	 * @returns The function does not explicitly return anything.
-	 */
 	const handleAddProduct = async (e) => {
 		e.preventDefault();
+		if (forms.some((form) => form.file === null)) {
+			swal({
+				title: 'Error!',
+				text: 'Please select a product image',
+				icon: 'error',
+				button: 'Ok',
+			});
+			return;
+		}
+		if (forms.some((form) => !form.size || !form.color || !form.quantity)) {
+			swal({
+				title: 'Error!',
+				text: 'Please fill all the fields',
+				icon: 'error',
+				button: 'Ok',
+			});
+			return;
+		}
+		if (
+			!inputs.title ||
+			!inputs.desc ||
+			!inputs.price ||
+			!inputs.originalPrice ||
+			!inputs.width ||
+			!inputs.height ||
+			!inputs.length ||
+			!inputs.weight
+		) {
+			swal({
+				title: 'Error!',
+				text: 'Please fill all the fields',
+				icon: 'error',
+				button: 'Ok',
+			});
+			return;
+		}
+
+		setLoading(true);
+		await new Promise((resolve) => setTimeout(resolve, 2000));
+
+		// Actual message creation logic here
+		// setLoading(false);
 
 		const storage = getStorage(app);
-		const variants = [];
 
-		for (let i = 0; i < forms.length; i++) {
-			const form = forms[i];
-			const fileSingle = form.file;
+		const uploadPromises = forms.map(async (form) => {
+			const fileSingle = form.file || null;
+			console.log(`🚀  file: NewProduct.jsx:125  fileSingle =>`, fileSingle);
 			if (fileSingle) {
 				const fileName = new Date().getTime() + fileSingle.name;
 				const storageRef = ref(storage, fileName);
@@ -133,39 +158,40 @@ export default function NewProduct() {
 				try {
 					await uploadTask;
 					const url = await getDownloadURL(uploadTask.snapshot.ref);
-					const variant = {
+					console.log(`File uploaded successfully. Download URL: ${url}`);
+
+					return {
 						img: [url],
-						color: form.color,
+						color: [form.color],
 						size: [form.size],
 						quantity: form.quantity,
 					};
-
-					variants.push(variant);
 				} catch (error) {
-					swal('Error', error.message, 'error');
-					return;
+					console.error('Error uploading file: ', error);
+					throw error;
 				}
 			} else {
-				// Handle the case where fileSingle is null
-				// For example, you could show an error message to the user
-				// swal('Error', 'Please select a file for all forms', 'error');
-				// return;
-				continue;
+				console.error('No file to upload.');
+				return {
+					img: [],
+					color: [form.color],
+					size: [form.size],
+					quantity: form.quantity,
+				};
 			}
-		}
-
-		const product = {
-			...inputs,
-			variants,
-		};
-
+		});
 		try {
+			const variants = await Promise.all(uploadPromises);
+			const product = {
+				...inputs,
+				variants,
+			};
+
 			await addProduct(product, dispatch);
 			swal({
 				title: 'Success',
 				text: 'Product added successfully',
 				icon: 'success',
-				button: 'Ok',
 				closeOnClickOutside: false,
 				closeOnEsc: false,
 			}).then(() => {
@@ -180,6 +206,8 @@ export default function NewProduct() {
 			});
 		} catch (error) {
 			swal('Error', error.message, 'error');
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -189,7 +217,7 @@ export default function NewProduct() {
 			desc: '',
 			price: '',
 			originalPrice: '',
-			img: '',
+			img: [],
 			categories: [],
 			size: [],
 			color: [],
@@ -242,13 +270,10 @@ export default function NewProduct() {
 		});
 	};
 
-	// const addNewForm = () => {
-	// 	setForms((prevForms) => [...prevForms, {}]);
-	// };
 	const addNewForm = () => {
 		setForms((prevForms) => [
 			...prevForms,
-			{ file: null, color: '', size: '', quantity: '' },
+			{ file: currentFile, color: '', size: '', quantity: '' },
 		]);
 	};
 
@@ -258,12 +283,17 @@ export default function NewProduct() {
 		);
 	};
 
-	const handleFormChange = (index, field, value) => {
+	const handleFormChange = (index, field, event) => {
+		let value = event;
 		setForms((prevForms) => {
 			const newForms = [...prevForms];
 			newForms[index][field] = value;
 			return newForms;
 		});
+		if (field === 'file') {
+			value = event.files[0];
+			setCurrentFile(value);
+		}
 	};
 
 	return (
@@ -274,327 +304,317 @@ export default function NewProduct() {
 			onDragOver={handleDragOver}
 			onDrop={handleDrop}
 		>
-			<div className='newProduct'>
-				<h1 className='addProductTitle'>New Product</h1>
-				{forms.map((form, index) => (
-					<form
-						key={index}
-						className='addProductForm'
-						enctype='multipart/form-data'
-					>
-						<div className='divition1'>
-							<div className='addProductItem'>
-								<label>Image</label>
-								<input
-									type='file'
-									id='file'
-									// onChange={handleFiles()}
-									onChange={(event) =>
-										handleFormChange(
-											index,
-											'file',
-											event.target.files[0],
-										)
-									}
-									multiple
-									style={{ display: 'none' }}
-								/>
-								{index !== 0 && (
-									<button
-										onClick={() => removeForm(index)}
-										className='closeFormButton'
+			{loading ? (
+				<div className='progress-icon'>
+					<FaSpinner className='spinner' />
+				</div>
+			) : (
+				<div className='newProduct'>
+					<h1 className='addProductTitle'>New Product</h1>
+					{forms.map((form, index) => (
+						<form
+							key={index}
+							className='addProductForm'
+							encType='multipart/form-data'
+						>
+							<div className='divition1'>
+								<div className='addProductItem'>
+									<label>Image</label>
+									<input
+										type='file'
+										id='file'
+										onChange={(event) =>
+											handleFormChange(index, 'file', event.target)
+										}
+										multiple
+										style={{ display: 'none' }}
+									/>
+
+									{index !== 0 && (
+										<button
+											onClick={() => removeForm(index)}
+											className='closeFormButton'
+										>
+											x
+										</button>
+									)}
+									<div
+										className='file-dragndrop'
+										onDragEnter={() => setDraggedFile(true)}
+										onDragLeave={() => setDraggedFile(false)}
+										onDragOver={(e) => e.preventDefault()}
+										onDrop={() => setDraggedFile(false)}
 									>
-										x
-									</button>
+										{draggedFile ? (
+											<p>Drop your file here</p>
+										) : (
+											<>
+												<p>Drag and drop your files here or</p>
+												<label
+													className='browse'
+													htmlFor='file'
+												>
+													browse
+												</label>
+											</>
+										)}
+									</div>
+								</div>
+								{index < 1 && (
+									<div className='addProductItem'>
+										<label>Title</label>
+										<input
+											name='title'
+											className='Title'
+											type='text'
+											placeholder='Apple Airpods'
+											onChange={handleChange}
+										/>
+									</div>
 								)}
-								<div
-									className='file-dragndrop'
-									onDragEnter={() => setDraggedFile(true)}
-									onDragLeave={() => setDraggedFile(false)}
-									onDragOver={(e) => e.preventDefault()}
-									onDrop={() => setDraggedFile(false)}
-								>
-									{draggedFile ? (
-										<p>Drop your file here</p>
-									) : (
-										<>
-											<p>Drag and drop your files here or</p>
-											<label
-												className='browse'
-												htmlFor='file'
-											>
-												browse
-											</label>
-										</>
+								{index < 1 && (
+									<div className='addProductItem'>
+										<label>Description</label>
+										<input
+											name='desc'
+											className='Description'
+											type='text'
+											placeholder='description...'
+											onChange={handleChange}
+										/>
+									</div>
+								)}
+								<div className='addProductItem'>
+									<fieldset>
+										<legend>Size</legend>
+										<input
+											type='radio'
+											className='Size'
+											name='size'
+											onChange={(event) =>
+												handleFormChange(
+													index,
+													'size',
+													event.target.value,
+												)
+											}
+											value='S'
+										/>
+										<label> S</label>
+										<br />
+										<input
+											type='radio'
+											className='Size'
+											name='size'
+											onChange={(event) =>
+												handleFormChange(
+													index,
+													'size',
+													event.target.value,
+												)
+											}
+											value='M'
+										/>
+										<label> M</label>
+										<br />
+										<input
+											type='radio'
+											className='Size'
+											name='size'
+											onChange={(event) =>
+												handleFormChange(
+													index,
+													'size',
+													event.target.value,
+												)
+											}
+											value='L'
+										/>
+										<label> L</label>
+										<br />
+										<input
+											type='radio'
+											className='Size'
+											name='size'
+											onChange={(event) =>
+												handleFormChange(
+													index,
+													'size',
+													event.target.value,
+												)
+											}
+											value='XL'
+										/>
+										<label> XL</label>
+										<br />
+										<input
+											type='radio'
+											name='size'
+											onChange={(event) =>
+												handleFormChange(
+													index,
+													'size',
+													event.target.value,
+												)
+											}
+											value='XXL'
+											className='Size'
+										/>
+										<label> XXL</label>
+										<br />
+									</fieldset>
+								</div>
+								<div className='addProductItem color'>
+									<label>Color</label>
+									<br />
+									<input
+										id='color-picker'
+										name='color1'
+										type='color'
+										onChange={(event) =>
+											handleFormChange(
+												index,
+												'color',
+												event.target.value,
+											)
+										}
+									/>
+								</div>
+								<div className='addProductItem'>
+									<button onClick={clearColor}>
+										Clear All Colors
+									</button>
+								</div>
+							</div>
+							<div className='divition2'>
+								{index < 1 && (
+									<div className='addProductItem'>
+										<label>Price</label>
+										<input
+											name='price'
+											type='number'
+											placeholder='100'
+											onChange={handleChange}
+											className='Price'
+										/>
+									</div>
+								)}
+								{index < 1 && (
+									<div className='addProductItem'>
+										<label>Original Price</label>
+										<input
+											name='originalPrice'
+											type='number'
+											placeholder='100'
+											onChange={handleChange}
+											className='OriginalPrice'
+										/>
+									</div>
+								)}
+								{index < 1 && (
+									<div className='addProductItem'>
+										<label>Categories</label>
+										<select
+											name='categories'
+											onChange={handleChange}
+											className='Categories'
+										>
+											<option value=''>Select Categories</option>
+											<option value='coat'>Coat</option>
+											<option value='women'>Women</option>
+											<option value='jeans'>Jeans</option>
+										</select>
+									</div>
+								)}
+								<div className='addProductItem'>
+									<label>Quantity</label>
+									<input
+										name='quantity'
+										type='number'
+										placeholder='1'
+										onChange={(event) =>
+											handleFormChange(
+												index,
+												'quantity',
+												event.target.value,
+											)
+										}
+										className='Quantity'
+									/>
+								</div>
+							</div>
+							{
+								<div className='divition2'>
+									{index < 1 && (
+										<div className='addProductItem'>
+											<label>Product Width</label>
+											<input
+												name='width'
+												type='number'
+												placeholder='200'
+												onChange={handleChange}
+												className='Width'
+											/>
+										</div>
+									)}
+									{index < 1 && (
+										<div className='addProductItem'>
+											<label>Product Height</label>
+											<input
+												name='height'
+												type='number'
+												placeholder='200'
+												onChange={handleChange}
+												className='Height'
+											/>
+										</div>
+									)}
+									{index < 1 && (
+										<div className='addProductItem'>
+											<label>Product Length</label>
+											<input
+												name='length'
+												type='number'
+												placeholder='200'
+												onChange={handleChange}
+												className='Length'
+											/>
+										</div>
+									)}
+									{index < 1 && (
+										<div className='addProductItem'>
+											<label>Product Weight</label>
+											<input
+												name='weight'
+												type='number'
+												placeholder='200'
+												onChange={handleChange}
+												className='Weight'
+											/>
+										</div>
+									)}
+									{index === forms.length - 1 && (
+										<div
+											className='addNewForm'
+											onClick={addNewForm}
+										>
+											+
+										</div>
+									)}
+									{index === forms.length - 1 && (
+										<button
+											onClick={handleAddProduct}
+											className='addProductButton'
+										>
+											Create
+										</button>
 									)}
 								</div>
-							</div>
-							<div className='addProductItem'>
-								<label>Title</label>
-								<input
-									name='title'
-									className='Title'
-									type='text'
-									placeholder='Apple Airpods'
-									// disabled={index !== 0}
-									onChange={handleChange}
-								/>
-							</div>
-							<div className='addProductItem'>
-								<label>Description</label>
-								<input
-									name='desc'
-									className='Description'
-									type='text'
-									placeholder='description...'
-									onChange={handleChange}
-									// disabled={index !== 0}
-								/>
-							</div>
-							<div className='addProductItem'>
-								<fieldset>
-									<legend>Size</legend>
-									<input
-										type='radio'
-										className='Size'
-										name='size'
-										// onClick={addSize}
-										onChange={(event) =>
-											handleFormChange(
-												index,
-												'size',
-												event.target.value,
-											)
-										}
-										value='S'
-									/>
-									<label> S</label>
-									<br />
-									<input
-										type='radio'
-										className='Size'
-										name='size'
-										// onClick={addSize}
-										onChange={(event) =>
-											handleFormChange(
-												index,
-												'size',
-												event.target.value,
-											)
-										}
-										value='M'
-									/>
-									<label> M</label>
-									<br />
-									<input
-										type='radio'
-										className='Size'
-										name='size'
-										// onClick={addSize}
-										onChange={(event) =>
-											handleFormChange(
-												index,
-												'size',
-												event.target.value,
-											)
-										}
-										value='L'
-									/>
-									<label> L</label>
-									<br />
-									<input
-										type='radio'
-										className='Size'
-										name='size'
-										// onClick={addSize}
-										onChange={(event) =>
-											handleFormChange(
-												index,
-												'size',
-												event.target.value,
-											)
-										}
-										value='XL'
-									/>
-									<label> XL</label>
-									<br />
-									<input
-										type='radio'
-										name='size'
-										// onClick={addSize}
-										onChange={(event) =>
-											handleFormChange(
-												index,
-												'size',
-												event.target.value,
-											)
-										}
-										value='XXL'
-										className='Size'
-									/>
-									<label> XXL</label>
-									<br />
-								</fieldset>
-							</div>
-							<div className='addProductItem color'>
-								<label>Color</label>
-								<br />
-								<input
-									id='color-picker'
-									name='color1'
-									type='color'
-									onChange={(event) =>
-										handleFormChange(
-											index,
-											'color',
-											event.target.value,
-										)
-									}
-								/>
-							</div>
-							<div className='addProductItem'>
-								<button onClick={clearColor}>Clear All Colors</button>
-							</div>
-						</div>
-						<div className='divition2'>
-							<div className='addProductItem'>
-								<label>Price</label>
-								<input
-									name='price'
-									type='number'
-									placeholder='100'
-									onChange={handleChange}
-									className='Price'
-									// disabled={index !== 0}
-								/>
-							</div>
-							<div className='addProductItem'>
-								<label>Original Price</label>
-								<input
-									name='originalPrice'
-									type='number'
-									placeholder='100'
-									onChange={handleChange}
-									className='OriginalPrice'
-									// disabled={index !== 0}
-								/>
-							</div>
-							<div className='addProductItem'>
-								<label>Categories</label>
-								<select
-									name='categories'
-									onChange={handleChange}
-									// onChange={(event) =>
-									// 	handleFormChange(
-									// 		index,
-									// 		'categories',
-									// 		event.target.value.split(','),
-									// 	)
-									// }
-									className='Categories'
-									// disabled={index !== 0}
-								>
-									<option value=''>Select Categories</option>
-									<option value='coat'>Coat</option>
-									<option value='women'>Women</option>
-									<option value='jeans'>Jeans</option>
-								</select>
-							</div>
-							<div className='addProductItem'>
-								<label>Quantity</label>
-								<input
-									name='quantity'
-									type='number'
-									placeholder='1'
-									// onChange={handleChange}
-									onChange={(event) =>
-										handleFormChange(
-											index,
-											'quantity',
-											event.target.value,
-										)
-									}
-									className='Quantity'
-								/>
-							</div>
-						</div>
-						<div className='divition2'>
-							<div className='addProductItem'>
-								<label>Product Width</label>
-								<input
-									name='width'
-									type='number'
-									placeholder='200'
-									onChange={handleChange}
-									className='Width'
-									// disabled={index !== 0}
-								/>
-							</div>
-							<div className='addProductItem'>
-								<label>Product Height</label>
-								<input
-									name='height'
-									type='number'
-									placeholder='200'
-									onChange={handleChange}
-									className='Height'
-									// disabled={index !== 0}
-								/>
-							</div>
-							<div className='addProductItem'>
-								<label>Product Length</label>
-								<input
-									name='length'
-									type='number'
-									placeholder='200'
-									onChange={handleChange}
-									className='Length'
-									// disabled={index !== 0}
-								/>
-							</div>
-							<div className='addProductItem'>
-								<label>Product Weight</label>
-								<input
-									name='weight'
-									type='number'
-									placeholder='200'
-									onChange={handleChange}
-									className='Weight'
-									// disabled={index !== 0}
-								/>
-							</div>
-							{index === forms.length - 1 && (
-								<div
-									className='addNewForm'
-									onClick={addNewForm}
-								>
-									+
-								</div>
-							)}
-							{index === forms.length - 1 && (
-								<button
-									onClick={handleAddProduct}
-									className='addProductButton'
-								>
-									Create
-								</button>
-							)}
-							{/* <button
-								onClick={handleAddProduct}
-								className='addProductButton'
-							>
-								Create
-							</button>
-							<div
-								className='addNewForm'
-								onClick={addNewForm}
-							>
-								+
-							</div> */}
-						</div>
-					</form>
-				))}
-			</div>
+							}
+						</form>
+					))}
+				</div>
+			)}
 		</div>
 	);
 }

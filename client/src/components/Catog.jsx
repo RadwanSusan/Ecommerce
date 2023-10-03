@@ -887,7 +887,9 @@ const Catog = ({ item }) => {
 																							<img
 																								className='product-image-photo'
 																								src={
-																									data.img
+																									data
+																										.variants[0]
+																										.img
 																								}
 																								data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-01.jpg'
 																								loading='lazy'
