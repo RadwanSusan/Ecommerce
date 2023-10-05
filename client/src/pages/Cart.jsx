@@ -238,7 +238,12 @@ const Cart = () => {
 		// dispatch(clear());
 	};
 	const mergedCart = cart.products.reduce((acc, curr) => {
-		const existingItem = acc.find((item) => item._id === curr._id);
+		const existingItem = acc.find(
+			(item) =>
+				item._id === curr._id &&
+				item.selectedVariant.color === curr.selectedVariant.color &&
+				item.selectedVariant.size === curr.selectedVariant.size,
+		);
 		if (existingItem) {
 			existingItem.quantity += curr.quantity;
 		} else {
@@ -283,10 +288,15 @@ const Cart = () => {
 				mergedCart.map((item) => {
 					AllProducts.map((product) => {
 						if (product._id === item._id) {
-							product.quantity -= item.quantity;
+							const selectedVariant = product.variants.find(
+								(variant) =>
+									variant.color === item.selectedVariant.color &&
+									variant.size === item.selectedVariant.size,
+							);
+							selectedVariant.quantity -= item.quantity;
 							updateProductOrOffer(
 								{
-									quantity: product.quantity,
+									quantity: selectedVariant.quantity,
 								},
 								item._id,
 							);
@@ -346,6 +356,9 @@ const Cart = () => {
 		const offerFind = offerGet.find((item) => item._id === id);
 		const productOrOffer = productFind || offerFind;
 		const productMerged = mergedCart.find((item) => item._id === id);
+		const variantQuantity = productMerged
+			? productMerged.selectedVariant.quantity
+			: 0;
 		if (type === 'dec') {
 			if (productMerged.quantity <= 1) {
 				swal('Info', 'The minimum quantity is 1', 'info');
