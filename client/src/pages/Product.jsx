@@ -238,21 +238,23 @@ const Product = () => {
 	}, []);
 
 	const checkAvailability = useCallback(() => {
+		const variantQuantity = selectedVariant ? selectedVariant.quantity : 0;
 		const cartProduct = mergedCart.find((item) => item._id === product._id);
 		const cartQuantity = cartProduct ? cartProduct.quantity : 0;
-		const availableQuantity = product.quantity - cartQuantity;
 
+		const availableQuantity = variantQuantity - cartQuantity;
 		setIsButtonDisabled(availableQuantity <= 0);
-	}, [mergedCart, product._id, product.quantity]);
-
+	}, [mergedCart, product._id, selectedVariant]);
 	useEffect(() => {
-		// console.log(newQuantity);
-		console.log(isButtonDisabled);
 		checkAvailability();
-		console.log(isButtonDisabled);
-	}, [mergedCart, product._id, product.quantity]);
+	}, [mergedCart, product._id, selectedVariant]);
 
 	const handleClick = () => {
+		if (!selectedVariant) {
+			swal('Please select a variant');
+			return;
+		}
+
 		if (wishlistLogin === false) {
 			swal({
 				title: 'You have to login !',
