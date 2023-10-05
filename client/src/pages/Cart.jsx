@@ -390,25 +390,7 @@ const Cart = () => {
 			}
 		}
 	};
-	// const CheckStyle = (id) => {
-	// 	const productFind = productGet.find((item) => item._id === id);
-	// 	const offerFind = offerGet.find((item) => item._id === id);
-	// 	const productOrOffer = productFind || offerFind;
-	// 	const productMerged = mergedCart.find((item) => item._id === id);
-	// 	console.log(
-	// 		`🚀 ~ file: Cart.jsx:321 ~ CheckStyle ~ productMerged.quantity:`,
-	// 		productMerged.quantity,
-	// 	);
-	// 	console.log(
-	// 		`🚀 ~ file: Cart.jsx:321 ~ CheckStyle ~ productOrOffer.quantity:`,
-	// 		productOrOffer.quantity,
-	// 	);
-	// 	if (productMerged.quantity < productOrOffer.quantity) {
-	// 		return false;
-	// 	} else {
-	// 		return true;
-	// 	}
-	// };
+
 	const [orderHave, setOrderHave] = useState([]);
 	const [wish, setWish] = useState([]);
 
@@ -472,6 +454,8 @@ const Cart = () => {
 		fetchData();
 	}, []);
 
+	console.log(mergedCart);
+
 	return (
 		<Container>
 			<Announcement />
@@ -501,7 +485,7 @@ const Cart = () => {
 							mergedCart.map((product) => (
 								<Product>
 									<ProductDetail>
-										<Image src={product.img} />
+										<Image src={product.variants[0].img} />
 										<Details>
 											<ProductName>
 												<b>Product:</b> {product.title}
@@ -509,10 +493,20 @@ const Cart = () => {
 											<ProductId>
 												<b>ID:</b> {product._id}
 											</ProductId>
-											<ProductColor color={product.color} />
+											<ProductColor
+												color={product.selectedVariant.color}
+											/>
 											<ProductSize>
-												<b>Size:</b> {product.size}
+												<b>Size:</b> {product.selectedVariant.size}
 											</ProductSize>
+											{/* {product.variants.map((variant) => (
+												<>
+													<ProductColor color={variant.color} />
+													<ProductSize>
+														<b>Size:</b> {variant.size}
+													</ProductSize>
+												</> */}
+											{/* ))} */}
 											<ProductSize>
 												<Button1
 													onClick={function () {

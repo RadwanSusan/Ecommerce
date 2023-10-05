@@ -157,6 +157,9 @@ const Product = () => {
 	const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 	const cartProducts = useSelector(cartSelector);
 	const [currentIndex, setCurrentIndex] = useState(0);
+	const [availableSizes, setAvailableSizes] = useState([]);
+	const [availableColors, setAvailableColors] = useState([]);
+	const [selectedVariant, setSelectedVariant] = useState(null);
 
 	// useEffect(() => {
 	// 	const timer = setTimeout(() => {
@@ -179,11 +182,21 @@ const Product = () => {
 					res = await publicRequest.get('/offer/find/' + id);
 				}
 				setProduct(res.data);
+				const colors = Array.from(
+					new Set(res.data.variants.flatMap((variant) => variant.color)),
+				);
+				setAvailableColors(colors);
+				const sizes = Array.from(
+					new Set(res.data.variants.flatMap((variant) => variant.size)),
+				);
+				setAvailableSizes(sizes);
 			} catch {}
 		};
+
 		getProduct();
 	}, [id]);
-	console.log(product.variants);
+	console.log(product);
+
 	document.querySelectorAll('.Color').forEach((item) =>
 		item.addEventListener('click', (e) => {
 			document.querySelectorAll('.Color').forEach((item2) => {
@@ -196,7 +209,9 @@ const Product = () => {
 	const handleQuantity = (type) => {
 		const cartProduct = mergedCart.find((item) => item._id === product._id);
 		const cartQuantity = cartProduct ? cartProduct.quantity : 0;
-		const availableQuantity = product.quantity - cartQuantity;
+		const availableQuantity = selectedVariant
+			? selectedVariant.quantity - cartQuantity
+			: 0;
 		if (type === 'dec') {
 			quantity > 1 && setQuantity(quantity - 1);
 		} else {
@@ -260,8 +275,7 @@ const Product = () => {
 					...product,
 					price: product.offerPrice || product.price,
 					quantity,
-					color,
-					size,
+					selectedVariant,
 				}),
 			);
 			swal('Success', 'Product added to cart!', 'success');
@@ -270,17 +284,17 @@ const Product = () => {
 		}
 	};
 
-	const nextSlide = () => {
-		const nextIndex =
-			currentIndex === product.img.length - 1 ? 0 : currentIndex + 1;
-		setCurrentIndex(nextIndex);
-	};
+	// const nextSlide = () => {
+	// 	const nextIndex =
+	// 		currentIndex === product.img.length - 1 ? 0 : currentIndex + 1;
+	// 	setCurrentIndex(nextIndex);
+	// };
 
-	const prevSlide = () => {
-		const prevIndex =
-			currentIndex === 0 ? product.img.length - 1 : currentIndex - 1;
-		setCurrentIndex(prevIndex);
-	};
+	// const prevSlide = () => {
+	// 	const prevIndex =
+	// 		currentIndex === 0 ? product.img.length - 1 : currentIndex - 1;
+	// 	setCurrentIndex(prevIndex);
+	// };
 	// setTimeout(() => {
 	// 	setCurrentIndex(currentIndex + 1);
 	// 	if (currentIndex > 1) {
@@ -288,6 +302,38 @@ const Product = () => {
 	// 	}
 	// }, 7000);
 
+	const setColor2 = (color) => {
+		const variants = product.variants.filter((variant) =>
+			variant.color.includes(color),
+		);
+		const sizes = variants.flatMap((variant) => variant.size);
+		setAvailableSizes(sizes);
+		setSelectedVariant(variants[0]);
+		setQuantity(1); // Reset quantity
+	};
+
+	const setSize2 = (size) => {
+		const variants = product.variants.filter((variant) =>
+			variant.size.includes(size),
+		);
+		const colors = variants.flatMap((variant) => variant.color);
+		setAvailableColors(colors);
+		setSelectedVariant(variants[0]);
+		setQuantity(1); // Reset quantity
+	};
+
+	const findSelectedVariant = () => {
+		if (product.variants) {
+			const selectedVariant = product.variants.find(
+				(variant) => variant.size === size && variant.color === color,
+			);
+			setSelectedVariant(selectedVariant);
+		}
+	};
+
+	useEffect(() => {
+		findSelectedVariant();
+	}, [size, color]);
 	return (
 		<Container>
 			<Announcement />
@@ -295,22 +341,22 @@ const Product = () => {
 			<NavbarBottom />
 			<Wrapper>
 				<ImgContainer>
-					{product.img ? (
+					{Product ? (
 						<>
 							<Image2
-								src={product.img[currentIndex]}
+								src={product?.variants?.[0]?.img}
 								alt={`product-${currentIndex}`}
 							/>
 							<CenterIcons>
 								<button
 									style={{ marginRight: '10px' }}
-									onClick={prevSlide}
+									// onClick={prevSlide}
 								>
 									<FaArrowLeft />
 								</button>
 								<button
 									style={{ marginLeft: '10px' }}
-									onClick={nextSlide}
+									// onClick={nextSlide}
 								>
 									<FaArrowRight />
 								</button>
@@ -337,19 +383,20 @@ const Product = () => {
 					<FilterContainer>
 						<Filter>
 							<FilterTitle>Color : </FilterTitle>
-							{product.color?.map((c) => (
+							{availableColors.map((c) => (
 								<FilterColor
 									className='Color'
 									color={c}
 									key={c}
-									onClick={() => setColor(c)}
+									onClick={() => setColor2(c)}
+									// onClick={() => setColor(c)}
 								/>
 							))}
 						</Filter>
 						<Filter>
 							<FilterTitle>Size : </FilterTitle>
-							<FilterSize onChange={(e) => setSize(e.target.value)}>
-								{product.size?.map((s) => (
+							<FilterSize onChange={(e) => setSize2(e.target.value)}>
+								{availableSizes.map((s) => (
 									<FilterSizeOption key={s}>{s}</FilterSizeOption>
 								))}
 							</FilterSize>

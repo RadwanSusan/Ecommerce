@@ -46,9 +46,6 @@ const cartSlice = createSlice({
 				(item) => item._id === action.payload,
 			);
 			state.products[cartItem].quantity = 1;
-			
-
-			
 		},
 		getAllProduct: (state) => {
 			let cartProducts = state.products;
