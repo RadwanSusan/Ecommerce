@@ -195,7 +195,6 @@ const Product = () => {
 
 		getProduct();
 	}, [id]);
-	console.log(product);
 
 	document.querySelectorAll('.Color').forEach((item) =>
 		item.addEventListener('click', (e) => {
@@ -208,10 +207,15 @@ const Product = () => {
 
 	const handleQuantity = (type) => {
 		const cartProduct = mergedCart.find((item) => item._id === product._id);
+		console.log(cartProduct);
 		const cartQuantity = cartProduct ? cartProduct.quantity : 0;
+		console.log(cartQuantity);
+
 		const availableQuantity = selectedVariant
 			? selectedVariant.quantity - cartQuantity
 			: 0;
+		console.log(availableQuantity);
+
 		if (type === 'dec') {
 			quantity > 1 && setQuantity(quantity - 1);
 		} else {
@@ -238,11 +242,53 @@ const Product = () => {
 	}, []);
 
 	const checkAvailability = useCallback(() => {
-		const variantQuantity = selectedVariant ? selectedVariant.quantity : 0;
-		const cartProduct = mergedCart.find((item) => item._id === product._id);
-		const cartQuantity = cartProduct ? cartProduct.quantity : 0;
+		const totalAvailableQuantity = selectedVariant
+			? selectedVariant.quantity
+			: 0;
 
-		const availableQuantity = variantQuantity - cartQuantity;
+		let cartQuantity = 0;
+		if (selectedVariant && mergedCart) {
+			const cartProduct = mergedCart.find(
+				(item) => item._id === selectedVariant._id,
+			);
+			cartQuantity = cartProduct ? cartProduct.quantity : 0;
+		}
+		if (selectedVariant && mergedCart) {
+			const updatedCart = mergedCart.map((item) => {
+				const zaid = item.variants.find(
+					(variant) => variant._id === selectedVariant._id,
+				);
+				if (zaid) {
+					return {
+						...item,
+						variants: item.variants.map((variant) => {
+							if (variant._id === selectedVariant._id) {
+								const zaid2 = variant.quantity - quantity;
+								console.log(
+									`🚀  file: Product.jsx:267  zaid2 =>`,
+									zaid2,
+								);
+								if (zaid2 <= 0) {
+									setIsButtonDisabled(true);
+								}
+								return {
+									...variant,
+									quantity: variant.quantity - quantity,
+								};
+							} else {
+								setIsButtonDisabled(false);
+								return variant;
+							}
+						}),
+					};
+				}
+			});
+			// let reduxLocal = JSON.parse(localStorage.getItem('persist:root'));
+			// reduxLocal.cart = JSON.parse(JSON.stringify(updatedCart));
+			// console.log(reduxLocal);
+			// localStorage.setItem('persist:root', JSON.stringify(reduxLocal));
+		}
+		const availableQuantity = totalAvailableQuantity - cartQuantity;
 		setIsButtonDisabled(availableQuantity <= 0);
 	}, [mergedCart, product._id, selectedVariant]);
 	useEffect(() => {
@@ -271,7 +317,6 @@ const Product = () => {
 				}
 			});
 		} else {
-			console.log(quantity);
 			dispatch(
 				addProduct({
 					...product,
@@ -280,29 +325,10 @@ const Product = () => {
 					selectedVariant,
 				}),
 			);
-			swal('Success', 'Product added to cart!', 'success');
-			// setNewQuantity(newQuantity - quantity);
 			setQuantity(1);
+			swal('Success', 'Product added to cart!', 'success');
 		}
 	};
-
-	// const nextSlide = () => {
-	// 	const nextIndex =
-	// 		currentIndex === product.img.length - 1 ? 0 : currentIndex + 1;
-	// 	setCurrentIndex(nextIndex);
-	// };
-
-	// const prevSlide = () => {
-	// 	const prevIndex =
-	// 		currentIndex === 0 ? product.img.length - 1 : currentIndex - 1;
-	// 	setCurrentIndex(prevIndex);
-	// };
-	// setTimeout(() => {
-	// 	setCurrentIndex(currentIndex + 1);
-	// 	if (currentIndex > 1) {
-	// 		setCurrentIndex(0);
-	// 	}
-	// }, 7000);
 
 	const setColor2 = (color) => {
 		const variants = product.variants.filter((variant) =>
