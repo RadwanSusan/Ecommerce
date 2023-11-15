@@ -23,10 +23,14 @@ export default function Product() {
 	const dispatch = useDispatch();
 	const [file, setFile] = useState([]);
 	const [currentIndex, setCurrentIndex] = useState(null);
-
+	// const [colorArrayUpdate, setColorArrayUpdate] = useState([]);
 	const [selectedSize, setSelectedSize] = useState('');
+	const [size, setSize] = useState([]);
 	const product = useSelector((state) =>
 		state.product.products.find((product) => product._id === productId),
+	);
+	const [colorArrayUpdate, setColorArrayUpdate] = useState(
+		product.variants.map((variant) => variant.color),
 	);
 	console.log(`🚀  file: Product.jsx:31  product =>`, product);
 
@@ -38,8 +42,7 @@ export default function Product() {
 		product.variants.map((variant) => variant.img),
 	);
 
-	const [size, setSize] = useState([]);
-	const colorArrayUpdate = [];
+	// const colorArrayUpdate = [];
 	const sizeArrayUpdate = [];
 
 	const MONTHS = useMemo(
@@ -284,34 +287,73 @@ export default function Product() {
 	// 		);
 	// 	}
 	// };
+
 	console.log(productUpdateData, 'zaidoooooooooooo');
+	// useEffect(() => {
+	// 	if (productUpdateData) {
+	// 		setColorArrayUpdate(
+	// 			productUpdateData.variants.map((variant) => variant.color),
+	// 		);
+	// 		console.log(colorArrayUpdate, 'zaid');
+	// 	}
+	// }, [productUpdateData.variants]);
+
 	const handleSubmit = async (e, index) => {
 		e.preventDefault();
-		const colorInput = document.querySelector('.color-picker10');
-		console.log(productUpdateData);
-		console.log(colorInput);
+		// let updatedColors = [...colorArrayUpdate];
+		// console.log(productUpdateData, 'zaidoooooooooooo');
 
-		if (colorInput) {
-			const colorValue = colorInput.value;
-			colorArrayUpdate.push(colorValue);
+		// const colorInputs = document.querySelectorAll('.color-picker1');
+		// console.log(colorInputs, 'colorInputs');
+
+		// if (colorInputs) {
+		// 	colorInputs.forEach((colorInput, index) => {
+		// 		const colorValue = colorInput.value;
+		// 		updatedColors[index] = colorValue;
+		// 		console.log(colorValue);
+		// 		console.log(updatedColors[index]);
+		// 	});
+		// }
+		// console.log(updatedColors);
+
+		// // Update the state variable with the new colors
+		// setColorArrayUpdate(updatedColors);
+		const colorInputs = document.querySelectorAll('.color-picker1');
+
+		if (colorInputs) {
+			setColorArrayUpdate((prevColors) => {
+				let updatedColors = [...prevColors]; // Make a copy of the previous state
+
+				colorInputs.forEach((colorInput, index) => {
+					const colorValue = colorInput.value;
+					updatedColors[index] = colorValue; // Update the copied array
+				});
+
+				return updatedColors; // Return the updated array as the new state
+			});
 		}
-		console.log(sizeArrayUpdate, 'zaid');
-		console.log(colorArrayUpdate, 'zaid');
-		console.log(imageArray, 'zaid');
-		console.log(quantityArray, 'zaid');
+
+		// console.log(productUpdateData);
+
+		// console.log(colorArrayUpdate, 'zaid');
+
 		const newProduct = {
 			...productUpdateData,
-			variants: productUpdateData.variants.map((variant, i) =>
-				i === index
-					? {
-							...variant,
-							size: sizeArrayUpdate[index],
-							color: colorArrayUpdate[index],
-							img: imageArray[index],
-							quantity: quantityArray[index],
-					  }
-					: variant,
-			),
+			// variants: productUpdateData.variants.map((variant, i) =>
+			// 	i === index
+			// 		? {
+			// 				...variant,
+			// 				size: sizeArrayUpdate[i],
+			// 				color: colorArrayUpdate[i],
+			// 				img: imageArray[i],
+			// 				quantity: quantityArray[i],
+			// 		  }
+			// 		: variant,
+			// ),
+			variants: productUpdateData.variants.map((variant, i) => ({
+				...variant,
+				color: colorArrayUpdate[i],
+			})),
 		};
 		console.log(newProduct);
 		updateProduct(productId, newProduct, dispatch);
@@ -513,6 +555,15 @@ export default function Product() {
 		const newImageArray = [...imageArray];
 		newImageArray[index] = previewImage;
 		setImageArray(newImageArray);
+	};
+	const handleColorChange = (event, index) => {
+		// Create a new color array with the updated color
+		const updatedColors = colorArrayUpdate.map((color, i) =>
+			i === index ? event.target.value : color,
+		);
+
+		// Update the state with the new color array
+		setColorArrayUpdate(updatedColors);
 	};
 	console.log(product.variants, 'zaaaaaaaaaaaaaid');
 	return (
@@ -769,6 +820,9 @@ export default function Product() {
 										class={`color-picker1 color-picker1${indexzaid}`}
 										name='color1'
 										type='color'
+										onChange={(event) =>
+											handleColorChange(event, indexzaid)
+										}
 										onInput={() => {
 											haveColor(`color-picker1${indexzaid}`);
 										}}
