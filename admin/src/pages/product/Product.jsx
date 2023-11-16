@@ -8,6 +8,7 @@ import { userRequest } from '../../requestMethods';
 import { useDispatch } from 'react-redux';
 import { updateProduct } from '../../redux/apiCalls';
 import { RiArrowDownCircleLine } from 'react-icons/ri';
+
 import swal from 'sweetalert';
 import {
 	getStorage,
@@ -374,7 +375,10 @@ export default function Product() {
 		};
 
 		console.log(newProduct);
+
 		updateProduct(productId, newProduct, dispatch);
+
+		swal('Product Updated', '', 'success');
 	};
 
 	useEffect(() => {

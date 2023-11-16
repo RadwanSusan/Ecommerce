@@ -1,5 +1,23 @@
 const mongoose = require('mongoose');
 
+const PromoSchema = new mongoose.Schema(
+	{
+		code: { type: String, required: true },
+		startDate: { type: Date, required: true },
+		endDate: { type: Date, required: true },
+	},
+	{ _id: false },
+); // _id is not needed for this sub-document
+
+const DiscountSchema = new mongoose.Schema(
+	{
+		startDate: { type: Date, required: true },
+		endDate: { type: Date, required: true },
+		discount: { type: Number, required: true },
+	},
+	{ _id: false },
+);
+
 const ProductVariantSchema = new mongoose.Schema({
 	color: { type: Array, required: true },
 	size: { type: Array, required: true },
@@ -20,6 +38,8 @@ const ProductSchema = new mongoose.Schema(
 		height: { type: Number, required: true },
 		length: { type: Number, required: true },
 		weight: { type: Number, required: true },
+		promo: PromoSchema, // new field for the promo code
+		discount: DiscountSchema,
 	},
 	{ timestamps: true },
 );

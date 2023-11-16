@@ -259,7 +259,6 @@ export const addAllOffer = async (offer) => {
 				'width',
 				'height',
 
-
 				'length',
 				'weight',
 			],

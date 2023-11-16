@@ -14,7 +14,33 @@ import { FaSpinner } from 'react-icons/fa';
 import { original } from '@reduxjs/toolkit';
 
 export default function NewProduct() {
-	const [inputs, setInputs] = useState({});
+	// const [inputs, setInputs] = useState({});
+	const [inputs, setInputs] = useState({
+		title: '',
+		desc: '',
+		price: '',
+		originalPrice: '',
+		// img: [],
+		categories: [],
+		// size: [],
+		// color: [],
+		// quantity: '',
+		discount: {
+			startDate: '',
+			endDate: '',
+			discount: '',
+		},
+		width: '',
+		height: '',
+		length: '',
+		weight: '',
+		promo: {
+			code: '',
+			startDate: '',
+			endDate: '',
+		},
+	});
+
 	const [file, setFile] = useState([]);
 	const [cat, setCat] = useState([]);
 	const [size, setSize] = useState([]);
@@ -33,13 +59,31 @@ export default function NewProduct() {
 	const [currentFile, setCurrentFile] = useState(null);
 
 	const dispatch = useDispatch();
-	const handleChange = (e) => {
-		setInputs((prev) => {
-			return { ...prev, [e.target.name]: e.target.value };
-		});
+	// const handleChange = (e) => {
+	// 	setInputs((prev) => {
+	// 		return { ...prev, [e.target.name]: e.target.value };
+	// 	});
 
-		if (e.target.name === 'file') {
-			addNewForm();
+	// 	if (e.target.name === 'file') {
+	// 		addNewForm();
+	// 	}
+	// };
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		if (name.startsWith('discount.') || name.startsWith('promo.')) {
+			const [field, key] = name.split('.');
+			setInputs((prev) => ({
+				...prev,
+				[field]: {
+					...prev[field],
+					[key]: value,
+				},
+			}));
+		} else {
+			setInputs((prev) => ({
+				...prev,
+				[name]: value,
+			}));
 		}
 	};
 
@@ -489,6 +533,36 @@ export default function NewProduct() {
 							<div className='divition2'>
 								{index < 1 && (
 									<div className='addProductItem'>
+										<label>Discount Start Date</label>
+										<input
+											name='discount.startDate'
+											type='date'
+											onChange={handleChange}
+										/>
+									</div>
+								)}
+								{index < 1 && (
+									<div className='addProductItem'>
+										<label>Discount End Date</label>
+										<input
+											name='discount.endDate'
+											type='date'
+											onChange={handleChange}
+										/>
+									</div>
+								)}
+								{index < 1 && (
+									<div className='addProductItem'>
+										<label>Discount</label>
+										<input
+											name='discount.discount'
+											type='number'
+											onChange={handleChange}
+										/>
+									</div>
+								)}
+								{index < 1 && (
+									<div className='addProductItem'>
 										<label>Price</label>
 										<input
 											name='price'
@@ -545,6 +619,37 @@ export default function NewProduct() {
 							</div>
 							{
 								<div className='divition2'>
+									{index < 1 && (
+										<div className='addProductItem'>
+											<label>Promo Code</label>
+											<input
+												name='promo.code'
+												type='text'
+												onChange={handleChange}
+											/>
+										</div>
+									)}
+									{index < 1 && (
+										<div className='addProductItem'>
+											<label>Promo Start Date</label>
+											<input
+												name='promo.startDate'
+												type='date'
+												onChange={handleChange}
+											/>
+										</div>
+									)}
+									{index < 1 && (
+										<div className='addProductItem'>
+											<label>Promo End Date</label>
+											<input
+												name='promo.endDate'
+												type='date'
+												onChange={handleChange}
+											/>
+										</div>
+									)}
+
 									{index < 1 && (
 										<div className='addProductItem'>
 											<label>Product Width</label>
