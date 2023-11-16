@@ -850,6 +850,59 @@ export default function Product() {
 									/>
 								</div>
 							</div>
+							{indexzaid === 0 && (
+								<div className='productFormLeft'>
+									<label>Discount Start Date</label>
+									<input
+										type='date'
+										className='PDiscountStartDate'
+										name='discount.startDate'
+										placeholder={product.discount.startDate}
+										onChange={handleUpdate}
+									/>
+									<label>Discount End Date</label>
+									<input
+										type='date'
+										className='PDiscountEndDate'
+										name='discount.endDate'
+										placeholder={product.discount.endDate}
+										onChange={handleUpdate}
+									/>
+									<label>Discount</label>
+									<input
+										type='number'
+										className='PDiscount'
+										name='discount.discount'
+										placeholder={product.discount.discount}
+										onChange={handleUpdate}
+									/>
+
+									<label>Promo Code</label>
+									<input
+										type='text'
+										className='PPromoCode'
+										name='promo.code'
+										placeholder={product.promo.code}
+										onChange={handleUpdate}
+									/>
+									<label>Promo Start Date</label>
+									<input
+										type='date'
+										className='PPromoStartDate'
+										name='promo.startDate'
+										placeholder={product.promo.startDate}
+										onChange={handleUpdate}
+									/>
+									<label>Promo End Date</label>
+									<input
+										type='date'
+										className='PPromoEndDate'
+										name='promo.endDate'
+										placeholder={product.promo.endDate}
+										onChange={handleUpdate}
+									/>
+								</div>
+							)}
 
 							<div className='productFormRight'>
 								<div
