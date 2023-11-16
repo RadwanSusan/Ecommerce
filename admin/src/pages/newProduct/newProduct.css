@@ -16,6 +16,13 @@ input[type='color'] {
 	align-items: center;
 	gap: 120px;
 }
+/* .addProductForm147:not(:first-child) {
+	width: fit-content;
+} */
+.newProduct form:nth-child(n + 3) {
+	width: fit-content;
+}
+
 .addNewForm {
 	margin-top: 10px;
 	display: flex;
@@ -38,7 +45,7 @@ input[type='color'] {
 }
 .closeFormButton {
 	position: absolute;
-	left: 1346px;
+	left: 1120px;
 }
 
 .color {

@@ -314,7 +314,7 @@ export default function NewProduct() {
 					{forms.map((form, index) => (
 						<form
 							key={index}
-							className='addProductForm'
+							className='addProductForm addProductForm147 '
 							encType='multipart/form-data'
 						>
 							<div className='divition1'>

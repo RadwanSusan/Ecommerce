@@ -9,8 +9,9 @@
 	justify-content: space-between;
 }
 
-.productTop {
+.productTop2 {
 	display: flex;
+	height: 313px;
 }
 
 .productTopLeft,
@@ -62,14 +63,24 @@
 	height: 70px;
 	margin-bottom: 10px;
 }
-.productInfoItem {
-	width: 150px;
+.productInfoItem2 {
+	/* width: 150px; */
 	display: flex;
-	justify-content: space-between;
+	/* justify-content: space-between; */
 }
-
+.diviti {
+	flex: 1;
+}
+.diviti2 {
+	flex: 1;
+}
 .productInfoValue {
 	font-weight: 300;
+}
+.productInfoValue3 {
+	list-style: none;
+	display: flex;
+	gap: 10px;
 }
 
 .productBottom {

@@ -322,18 +322,57 @@ export default function Product() {
 				return updatedColors; // Return the updated array as the new state
 			});
 		}
+		const storage = getStorage(app); // Initialize Firebase storage
+
+		const flatImageArray = imageArray.flat();
 
 		const newProduct = {
 			...productUpdateData,
+			variants: await Promise.all(
+				productUpdateData.variants.map(async (variant, i) => {
+					console.log(imageArray, 'imageArray');
+					// let img = imageArray[i];
+					let img = flatImageArray[i];
+					console.log(img, 'img');
 
-			variants: productUpdateData.variants.map((variant, i) => ({
-				...variant,
-				color: colorArrayUpdate[i],
-				size: sizeArrayUpdate[i],
-				img: imageArray[i],
-				quantity: quantityArray[i],
-			})),
+					// Check if img is a File object
+					if (img instanceof File) {
+						// If img is a File object, create a unique path for the image
+						const imagePath = `images/${Date.now()}-${img.name}`;
+
+						// Create a reference to the location where you want to upload the image
+						const storageRef = ref(storage, imagePath);
+
+						// Upload the image to Firebase storage
+						const snapshot = await uploadBytesResumable(storageRef, img);
+
+						// Get the download URL of the uploaded image
+						const imageUrl = await getDownloadURL(snapshot.ref);
+
+						return {
+							...variant,
+							color: colorArrayUpdate[i],
+							size: sizeArrayUpdate[i],
+							img: imageUrl, // Use the download URL of the uploaded image
+							quantity: quantityArray[i],
+						};
+					} else if (typeof img === 'string') {
+						// If img is a URL string, use it directly as the image URL
+						return {
+							...variant,
+							color: colorArrayUpdate[i],
+							size: sizeArrayUpdate[i],
+							img: img, // Use the URL string as the image URL
+							quantity: quantityArray[i],
+						};
+					} else {
+						// If img is neither a File object nor a URL string, throw an error
+						throw new Error('img must be a File object or a URL string');
+					}
+				}),
+			),
 		};
+
 		console.log(newProduct);
 		updateProduct(productId, newProduct, dispatch);
 	};
@@ -544,7 +583,7 @@ export default function Product() {
 			<div className='productTitleContainer'>
 				<h1 className='productTitle'>Product</h1>
 			</div>
-			<div className='productTop'>
+			<div className='productTop2'>
 				<div className='productTopLeft'>
 					<Chart
 						data={pStats}
@@ -563,74 +602,79 @@ export default function Product() {
 					</div>
 					<div className='productInfoBottom productInfoBottom2 '>
 						<div className='diviti'>
-							<div className='productInfoItem'>
+							<div className='productInfoItem2'>
 								<span className='productInfoKey'>Product name:</span>
-								<span className='productInfoValue'>{product._id}</span>
+								<span className='productInfoValue'>
+									{product.title}
+								</span>
 							</div>
-							<div className='productInfoItem'>
+							<div className='productInfoItem2'>
+								<span className='productInfoKey'>Height:</span>
+								<div className='productInfoValue'>{product.height}</div>
+							</div>
+							<div className='productInfoItem2'>
+								<span className='productInfoKey'>Length:</span>
+								<div className='productInfoValue'>{product.length}</div>
+							</div>
+							<div className='productInfoItem2'>
+								<span className='productInfoKey'>Weight:</span>
+								<div className='productInfoValue'>{product.weight}</div>
+							</div>
+							{/* <div className='productInfoItem2'>
+								<span className='productInfoKey'>sales:</span>
+								<span className='productInfoValue'>0</span>
+							</div> */}
+							<div className='productInfoItem2'>
+								<span className='productInfoKey'>in stock:</span>
+								<span className='productInfoValue'>
+									{product.inStock.toString()}
+								</span>
+							</div>
+							{/* <div className='productInfoItem2'>
+								<span className='productInfoKey'>price:</span>
+								<span className='productInfoValue'>
+									{product.price}
+								</span>
+							</div> */}
+							<div className='productInfoItem2'>
+								<span className='productInfoKey'>Width:</span>
+								<div className='productInfoValue'>{product.width}</div>
+							</div>
+						</div>
+						<div className='diviti2'>
+							<div className='productInfoItem2'>
+								<span className='productInfoKey'>size:</span>
+								<ul className='productInfoValue productInfoValue3'>
+									{product.variants.map((item) => {
+										return <li key={item}>{item.size}</li>;
+									})}
+								</ul>
+							</div>
+							<div className='productInfoItem2'>
+								<span className='productInfoKey'>color:</span>
+								<ul className='productInfoValue productInfoValue3'>
+									{product.variants.map((item) => {
+										return <li key={item}>{item.color}</li>;
+									})}
+								</ul>
+							</div>
+							<div className='productInfoItem2'>
+								<span className='productInfoKey'>Quantity:</span>
+								<div className='productInfoValue productInfoValue3'>
+									{product.variants.map((item) => {
+										return <div key={item}>{item.quantity}</div>;
+									})}
+								</div>
+							</div>
+
+							{/* <div className='productInfoItem2'>
 								<span className='productInfoKey'>
 									Product description:
 								</span>
 								<span className='productInfoValue productInfoValue2'>
 									{product.desc}
 								</span>
-							</div>
-							<div className='productInfoItem'>
-								<span className='productInfoKey'>sales:</span>
-								<span className='productInfoValue'>0</span>
-							</div>
-							<div className='productInfoItem'>
-								<span className='productInfoKey'>in stock:</span>
-								<span className='productInfoValue'>
-									{product.inStock.toString()}
-								</span>
-							</div>
-							<div className='productInfoItem'>
-								<span className='productInfoKey'>price:</span>
-								<span className='productInfoValue'>
-									{product.price}
-								</span>
-							</div>
-							<div className='productInfoItem'>
-								<span className='productInfoKey'>color:</span>
-								<ul className='productInfoValue'>
-									{/* {product.color.map((item) => {
-										return <li key={item}>{item}</li>;
-									})} */}
-								</ul>
-							</div>
-						</div>
-						<div className='diviti2'>
-							<div className='productInfoItem'>
-								<span className='productInfoKey'>size:</span>
-								<ul className='productInfoValue'>
-									{/* {product.size.map((item) => {
-										return <li key={item}>{item}</li>;
-									})} */}
-								</ul>
-							</div>
-							<div className='productInfoItem'>
-								<span className='productInfoKey'>Quantity:</span>
-								<div className='productInfoValue'>
-									{product.quantity}
-								</div>
-							</div>
-							<div className='productInfoItem'>
-								<span className='productInfoKey'>Width:</span>
-								<div className='productInfoValue'>{product.width}</div>
-							</div>
-							<div className='productInfoItem'>
-								<span className='productInfoKey'>Height:</span>
-								<div className='productInfoValue'>{product.height}</div>
-							</div>
-							<div className='productInfoItem'>
-								<span className='productInfoKey'>Length:</span>
-								<div className='productInfoValue'>{product.length}</div>
-							</div>
-							<div className='productInfoItem'>
-								<span className='productInfoKey'>Weight:</span>
-								<div className='productInfoValue'>{product.weight}</div>
-							</div>
+							</div> */}
 						</div>
 					</div>
 				</div>
