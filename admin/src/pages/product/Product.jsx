@@ -64,15 +64,36 @@ export default function Product() {
 		[],
 	);
 	console.log(product);
+	// const [productUpdateData, setProductUpdateData] = useState({
+	// 	title: product.title,
+	// 	desc: product.desc,
+	// 	price: product.price,
+	// 	inStock: product.inStock,
+	// 	// img: product.img,
+	// 	categories: product.categories,
+	// 	// size: product.size,
+	// 	// color: product.color,
+	// 	height: product.height,
+	// 	width: product.width,
+	// 	variants: [
+	// 		{
+	// 			color: [],
+	// 			size: [],
+	// 			quantity: [],
+	// 			img: [],
+	// 		},
+	// 	],
+	// 	// quantity: product.quantity,
+	// 	weight: product.weight,
+	// 	length: product.length,
+	// });
+	// productUpdateData object model
 	const [productUpdateData, setProductUpdateData] = useState({
 		title: product.title,
 		desc: product.desc,
 		price: product.price,
 		inStock: product.inStock,
-		// img: product.img,
 		categories: product.categories,
-		// size: product.size,
-		// color: product.color,
 		height: product.height,
 		width: product.width,
 		variants: [
@@ -83,15 +104,83 @@ export default function Product() {
 				img: [],
 			},
 		],
-		// quantity: product.quantity,
 		weight: product.weight,
 		length: product.length,
+		// discount: {
+		// 	startDate: '',
+		// 	endDate: '',
+		// 	discount: '',
+		// },
+		// promo: {
+		// 	code: '',
+		// 	startDate: '',
+		// 	endDate: '',
+		// },
+		discount: {
+			startDate: product.discount.startDate,
+			endDate: product.discount.endDate,
+			discount: product.discount.discount,
+		},
+		promo: {
+			code: product.promo.code,
+			startDate: product.promo.startDate,
+			endDate: product.promo.endDate,
+		},
 	});
+
+	// const handleUpdate = (e) => {
+	// 	setProductUpdateData((prev) => {
+	// 		return { ...prev, [e.target.name]: e.target.value };
+	// 	});
+	// };
+
+	// const handleUpdate = (e) => {
+	// 	const { name, value } = e.target;
+	// 	if (name.startsWith('discount.') || name.startsWith('promo.')) {
+	// 		const [field, key] = name.split('.');
+	// 		setProductUpdateData((prev) => ({
+	// 			...prev,
+	// 			[field]: {
+	// 				...prev[field],
+	// 				[key]: value,
+	// 			},
+	// 		}));
+	// 	} else {
+	// 		setProductUpdateData((prev) => ({
+	// 			...prev,
+	// 			[name]: value,
+	// 		}));
+	// 	}
+	// };
+
 	const handleUpdate = (e) => {
-		setProductUpdateData((prev) => {
-			return { ...prev, [e.target.name]: e.target.value };
-		});
+		const { name, value } = e.target;
+		if (name.startsWith('discount.')) {
+			const key = name.split('.')[1];
+			setProductUpdateData((prev) => ({
+				...prev,
+				discount: {
+					...prev.discount,
+					[key]: value,
+				},
+			}));
+		} else if (name.startsWith('promo.')) {
+			const key = name.split('.')[1];
+			setProductUpdateData((prev) => ({
+				...prev,
+				promo: {
+					...prev.promo,
+					[key]: value,
+				},
+			}));
+		} else {
+			setProductUpdateData((prev) => ({
+				...prev,
+				[name]: value,
+			}));
+		}
 	};
+
 	// const handleSubmit = async (e, index) => {
 	// 	e.preventDefault();
 	// 	let fileName;
@@ -858,6 +947,7 @@ export default function Product() {
 										className='PDiscountStartDate'
 										name='discount.startDate'
 										placeholder={product.discount.startDate}
+										// value={product.discount.startDate.split('T')[0]}
 										onChange={handleUpdate}
 									/>
 									<label>Discount End Date</label>
@@ -866,6 +956,7 @@ export default function Product() {
 										className='PDiscountEndDate'
 										name='discount.endDate'
 										placeholder={product.discount.endDate}
+										// value={product.discount.endDate.split('T')[0]}
 										onChange={handleUpdate}
 									/>
 									<label>Discount</label>
@@ -874,6 +965,7 @@ export default function Product() {
 										className='PDiscount'
 										name='discount.discount'
 										placeholder={product.discount.discount}
+										// value={product.discount.discount}
 										onChange={handleUpdate}
 									/>
 
@@ -891,6 +983,7 @@ export default function Product() {
 										className='PPromoStartDate'
 										name='promo.startDate'
 										placeholder={product.promo.startDate}
+										// value={product.promo.startDate.split('T')[0]}
 										onChange={handleUpdate}
 									/>
 									<label>Promo End Date</label>
@@ -899,6 +992,7 @@ export default function Product() {
 										className='PPromoEndDate'
 										name='promo.endDate'
 										placeholder={product.promo.endDate}
+										// value={product.promo.endDate.split('T')[0]}
 										onChange={handleUpdate}
 									/>
 								</div>
