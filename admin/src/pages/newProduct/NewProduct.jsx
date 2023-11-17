@@ -131,17 +131,31 @@ export default function NewProduct() {
 
 	const colorPickerClear = document.querySelectorAll('#color-picker');
 
-	const clearColor = (e) => {
+	// const clearColor = (e) => {
+	// 	e.preventDefault();
+	// 	setColor1([]);
+	// 	setColor2([]);
+	// 	setColor3([]);
+	// 	setColor4([]);
+	// 	setColor5([]);
+	// 	setColor6([]);
+	// 	colorPickerClear.forEach((picker) => {
+	// 		picker.value = defaultColor;
+	// 	});
+	// };
+
+	const clearColor = (e, colorIndex) => {
 		e.preventDefault();
-		setColor1([]);
-		setColor2([]);
-		setColor3([]);
-		setColor4([]);
-		setColor5([]);
-		setColor6([]);
-		colorPickerClear.forEach((picker) => {
-			picker.value = defaultColor;
-		});
+		const colorSetters = [
+			setColor1,
+			setColor2,
+			setColor3,
+			setColor4,
+			setColor5,
+			setColor6,
+		];
+		colorSetters[colorIndex]([]);
+		colorPickerClear[colorIndex].value = defaultColor;
 	};
 
 	const handleAddProduct = async (e) => {
@@ -525,8 +539,8 @@ export default function NewProduct() {
 									/>
 								</div>
 								<div className='addProductItem'>
-									<button onClick={clearColor}>
-										Clear All Colors
+									<button onClick={(e) => clearColor(e, index)}>
+										Clear The Color
 									</button>
 								</div>
 							</div>
@@ -585,6 +599,38 @@ export default function NewProduct() {
 										/>
 									</div>
 								)}
+							</div>
+							<div className='divition2'>
+								{index < 1 && (
+									<div className='addProductItem'>
+										<label>Promo Code</label>
+										<input
+											name='promo.code'
+											type='text'
+											onChange={handleChange}
+										/>
+									</div>
+								)}
+								{index < 1 && (
+									<div className='addProductItem'>
+										<label>Promo Start Date</label>
+										<input
+											name='promo.startDate'
+											type='date'
+											onChange={handleChange}
+										/>
+									</div>
+								)}
+								{index < 1 && (
+									<div className='addProductItem'>
+										<label>Promo End Date</label>
+										<input
+											name='promo.endDate'
+											type='date'
+											onChange={handleChange}
+										/>
+									</div>
+								)}
 								{index < 1 && (
 									<div className='addProductItem'>
 										<label>Categories</label>
@@ -619,37 +665,6 @@ export default function NewProduct() {
 							</div>
 							{
 								<div className='divition2'>
-									{index < 1 && (
-										<div className='addProductItem'>
-											<label>Promo Code</label>
-											<input
-												name='promo.code'
-												type='text'
-												onChange={handleChange}
-											/>
-										</div>
-									)}
-									{index < 1 && (
-										<div className='addProductItem'>
-											<label>Promo Start Date</label>
-											<input
-												name='promo.startDate'
-												type='date'
-												onChange={handleChange}
-											/>
-										</div>
-									)}
-									{index < 1 && (
-										<div className='addProductItem'>
-											<label>Promo End Date</label>
-											<input
-												name='promo.endDate'
-												type='date'
-												onChange={handleChange}
-											/>
-										</div>
-									)}
-
 									{index < 1 && (
 										<div className='addProductItem'>
 											<label>Product Width</label>
