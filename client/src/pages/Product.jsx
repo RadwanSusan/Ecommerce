@@ -207,14 +207,14 @@ const Product = () => {
 
 	const handleQuantity = (type) => {
 		const cartProduct = mergedCart.find((item) => item._id === product._id);
-		console.log(cartProduct);
+		// console.log(cartProduct);
 		const cartQuantity = cartProduct ? cartProduct.quantity : 0;
-		console.log(cartQuantity);
+		// console.log(cartQuantity);
 
 		const availableQuantity = selectedVariant
 			? selectedVariant.quantity - cartQuantity
 			: 0;
-		console.log(availableQuantity);
+		// console.log(availableQuantity);
 
 		if (type === 'dec') {
 			quantity > 1 && setQuantity(quantity - 1);
@@ -269,7 +269,7 @@ const Product = () => {
 				),
 			);
 
-			console.log(cartProduct);
+			console.log(`🚀  file: Product.jsx:267  cartProduct =>`, cartProduct);
 
 			if (cartProduct) {
 				cartQuantity = cartProduct.quantity;
@@ -289,8 +289,7 @@ const Product = () => {
 						...item,
 						variants: item.variants.map((variant) => {
 							if (variant._id === selectedVariant._id) {
-								const zaid2 =
-									cartProducts.quantity - selectedVariant.quantity;
+								const zaid2 = selectedVariant.quantity - quantity;
 
 								console.log(
 									`🚀  file: Product.jsx:267  quantity =>`,
