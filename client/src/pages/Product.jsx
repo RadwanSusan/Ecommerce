@@ -245,25 +245,62 @@ const Product = () => {
 		const totalAvailableQuantity = selectedVariant
 			? selectedVariant.quantity
 			: 0;
+		//2 , 4
+		console.log(
+			`🚀  file: Product.jsx:267  totalAvailableQuantity =>`,
+			totalAvailableQuantity,
+		);
+		//[]
+		console.log(`🚀  file: Product.jsx:267  mergedCart =>`, mergedCart);
+		// setSelectedVariant
+		if (selectedVariant) {
+			console.log(
+				`🚀  file: Product.jsx:267  selectedVariant =>`,
+				selectedVariant._id,
+			);
+		}
 
 		let cartQuantity = 0;
+
 		if (selectedVariant && mergedCart) {
-			const cartProduct = mergedCart.find(
-				(item) => item._id === selectedVariant._id,
+			const cartProduct = mergedCart.find((item) =>
+				item.variants.find(
+					(variant) => variant._id === selectedVariant._id,
+				),
 			);
-			cartQuantity = cartProduct ? cartProduct.quantity : 0;
+
+			console.log(cartProduct);
+
+			if (cartProduct) {
+				cartQuantity = cartProduct.quantity;
+			}
+			console.log(`🚀  file: Product.jsx:267  cartProduct =>`, cartProduct);
+			// cartQuantity = cartProduct ? cartProduct.quantity : 0;
 		}
 		if (selectedVariant && mergedCart) {
 			const updatedCart = mergedCart.map((item) => {
+				console.log(`🚀  file: Product.jsx:267  item =>`, item);
 				const zaid = item.variants.find(
 					(variant) => variant._id === selectedVariant._id,
 				);
+				console.log(`🚀  file: Product.jsx:267  zaid =>`, zaid);
 				if (zaid) {
 					return {
 						...item,
 						variants: item.variants.map((variant) => {
 							if (variant._id === selectedVariant._id) {
-								const zaid2 = variant.quantity - quantity;
+								const zaid2 =
+									cartProducts.quantity - selectedVariant.quantity;
+
+								console.log(
+									`🚀  file: Product.jsx:267  quantity =>`,
+									quantity,
+								);
+								console.log(
+									`🚀  file: Product.jsx:267  variant.quantity =>`,
+									variant.quantity,
+								);
+
 								console.log(
 									`🚀  file: Product.jsx:267  zaid2 =>`,
 									zaid2,
@@ -271,12 +308,15 @@ const Product = () => {
 								if (zaid2 <= 0) {
 									setIsButtonDisabled(true);
 								}
+
 								return {
 									...variant,
-									quantity: variant.quantity - quantity,
+									quantity:
+										cartProducts.quantity - selectedVariant.quantity,
 								};
 							} else {
 								setIsButtonDisabled(false);
+
 								return variant;
 							}
 						}),
@@ -293,7 +333,7 @@ const Product = () => {
 	}, [mergedCart, product._id, selectedVariant]);
 	useEffect(() => {
 		checkAvailability();
-	}, [mergedCart, product._id, selectedVariant]);
+	}, [mergedCart, product._id]);
 
 	const handleClick = () => {
 		if (!selectedVariant) {
