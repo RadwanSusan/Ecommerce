@@ -260,7 +260,7 @@ const Product = () => {
 			);
 		}
 
-		let cartQuantity = 0;
+		let cartQuantityNew = 0;
 
 		if (selectedVariant && mergedCart) {
 			const cartProduct = mergedCart.find((item) =>
@@ -272,7 +272,20 @@ const Product = () => {
 			console.log(`🚀  file: Product.jsx:267  cartProduct =>`, cartProduct);
 
 			if (cartProduct) {
-				cartQuantity = cartProduct.quantity;
+				// cartQuantity = cartProduct.quantity;
+				cartProducts.products.forEach((item) => {
+					if (item._id === cartProduct._id) {
+						console.log(
+							`🚀  file: Product.jsx:267  item =>`,
+							item.selectedVariant._id,
+						);
+						console.log(
+							`🚀  file: Product.jsx:267  cartProduct =>`,
+							cartProduct.selectedVariant._id,
+						);
+						cartQuantityNew = item.quantity;
+					}
+				});
 			}
 			console.log(`🚀  file: Product.jsx:267  cartProduct =>`, cartProduct);
 			// cartQuantity = cartProduct ? cartProduct.quantity : 0;
@@ -289,8 +302,15 @@ const Product = () => {
 						...item,
 						variants: item.variants.map((variant) => {
 							if (variant._id === selectedVariant._id) {
-								const zaid2 = selectedVariant.quantity - quantity;
-
+								const zaid2 = variant.quantity - cartQuantityNew;
+								console.log(
+									`🚀  file: Product.jsx:267  cartProducts =>`,
+									cartProducts.products,
+								);
+								console.log(
+									`🚀  file: Product.jsx:267  selectedVariant.quantity =>`,
+									selectedVariant.quantity,
+								);
 								console.log(
 									`🚀  file: Product.jsx:267  quantity =>`,
 									quantity,
@@ -327,12 +347,12 @@ const Product = () => {
 			// console.log(reduxLocal);
 			// localStorage.setItem('persist:root', JSON.stringify(reduxLocal));
 		}
-		const availableQuantity = totalAvailableQuantity - cartQuantity;
+		const availableQuantity = totalAvailableQuantity - cartQuantityNew;
 		setIsButtonDisabled(availableQuantity <= 0);
-	}, [mergedCart, product._id, selectedVariant]);
+	}, [mergedCart, product._id, selectedVariant, quantity]);
 	useEffect(() => {
 		checkAvailability();
-	}, [mergedCart, product._id]);
+	}, [mergedCart, product._id, selectedVariant, quantity, checkAvailability]);
 
 	const handleClick = () => {
 		if (!selectedVariant) {
@@ -360,7 +380,7 @@ const Product = () => {
 				addProduct({
 					...product,
 					price: product.offerPrice || product.price,
-					quantity,
+					quantity: quantity,
 					selectedVariant,
 				}),
 			);
@@ -377,6 +397,7 @@ const Product = () => {
 		setAvailableSizes(sizes);
 		setSelectedVariant(variants[0]);
 		setQuantity(1); // Reset quantity
+		checkAvailability();
 	};
 
 	const setSize2 = (size) => {
@@ -387,6 +408,7 @@ const Product = () => {
 		setAvailableColors(colors);
 		setSelectedVariant(variants[0]);
 		setQuantity(1); // Reset quantity
+		checkAvailability();
 	};
 
 	const findSelectedVariant = () => {

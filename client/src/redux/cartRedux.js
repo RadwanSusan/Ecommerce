@@ -9,14 +9,22 @@ const cartSlice = createSlice({
 	},
 	reducers: {
 		addProduct: (state, action) => {
-			state.quantity += 1;
-			state.products.push(action.payload);
-			console.debug(
-				`🚀  file: cartRedux.js:14  action.payload =>`,
-				action.payload,
+			const newProduct = action.payload;
+			const existingProduct = state.products.find(
+				(product) =>
+					product._id === newProduct._id &&
+					product.selectedVariant._id === newProduct.selectedVariant._id,
 			);
-			state.total += action.payload.price * action.payload.quantity;
+			if (existingProduct) {
+				// Product is already in cart, update its quantity and selectedVariant
+				existingProduct.quantity += newProduct.quantity;
+				existingProduct.selectedVariant = newProduct.selectedVariant;
+			} else {
+				// Product is not in cart, add it
+				state.products.push(newProduct);
+			}
 		},
+
 		removeProduct: (state, action) => {
 			const itemId = action.payload;
 			state.products = state.products.filter((item) => item._id !== itemId);
