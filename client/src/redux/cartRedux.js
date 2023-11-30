@@ -16,11 +16,10 @@ const cartSlice = createSlice({
 					product.selectedVariant._id === newProduct.selectedVariant._id,
 			);
 			if (existingProduct) {
-				// Product is already in cart, update its quantity and selectedVariant
+				// Variant is already in cart, update its quantity
 				existingProduct.quantity += newProduct.quantity;
-				existingProduct.selectedVariant = newProduct.selectedVariant;
 			} else {
-				// Product is not in cart, add it
+				// Variant is not in cart, add it
 				state.products.push(newProduct);
 			}
 		},

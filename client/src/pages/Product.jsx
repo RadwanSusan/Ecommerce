@@ -206,15 +206,27 @@ const Product = () => {
 	);
 
 	const handleQuantity = (type) => {
-		const cartProduct = mergedCart.find((item) => item._id === product._id);
-		// console.log(cartProduct);
+		console.log(mergedCart);
+
+		const cartProduct = mergedCart.find(
+			(item) =>
+				item._id === product._id &&
+				item.selectedVariant._id === selectedVariant._id,
+		);
 		const cartQuantity = cartProduct ? cartProduct.quantity : 0;
-		// console.log(cartQuantity);
+
+		// the cartQuantity of all variants i want each variants quantity to be the same as the cartQuantity
+
+		// const cartQuantity = cartProduct.variants.find(
+		// 	(variant) => variant.color === color && variant.size === size,
+		// )?.quantity;
+
+		console.log(cartQuantity);
 
 		const availableQuantity = selectedVariant
 			? selectedVariant.quantity - cartQuantity
 			: 0;
-		// console.log(availableQuantity);
+		console.log(availableQuantity);
 
 		if (type === 'dec') {
 			quantity > 1 && setQuantity(quantity - 1);
