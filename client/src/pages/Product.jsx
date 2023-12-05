@@ -163,6 +163,11 @@ const Product = () => {
 	const [availableQuantityAfterUpdate, setavailableQuantityAfterUpdate] =
 		useState(selectedVariant?.quantity);
 
+	// const [imageSrc, setImageSrc] = useState(product?.variants?.[0]?.img);
+	const [imageSrc, setImageSrc] = useState(null);
+
+	console.log(`imageSrc`, product?.variants?.[0]?.img);
+
 	// console.log(`selectedVariant`, selectedVariant?.quantity);
 
 	// console.log(`cartProducts`, cartProducts.products[0]?.quantity);
@@ -189,6 +194,7 @@ const Product = () => {
 					new Set(res.data.variants.flatMap((variant) => variant.size)),
 				);
 				setAvailableSizes(sizes);
+				setImageSrc(res.data.variants[0].img);
 			} catch {}
 		};
 
@@ -461,6 +467,8 @@ const Product = () => {
 			);
 		}
 
+		setImageSrc(newSelectedVariant.img);
+
 		checkAvailability();
 	};
 
@@ -524,10 +532,12 @@ const Product = () => {
 				addProduct({
 					...product,
 					price: product.offerPrice || product.price,
+
 					quantity: quantity,
 					selectedVariant,
 				}),
 			);
+
 			setQuantity(1);
 			setavailableQuantityAfterUpdate(selectedVariant.quantity - quantity);
 			swal('Success', 'Product added to cart!', 'success');
@@ -578,7 +588,7 @@ const Product = () => {
 					{Product ? (
 						<>
 							<Image2
-								src={product?.variants?.[0]?.img}
+								src={imageSrc}
 								alt={`product-${currentIndex}`}
 							/>
 							<CenterIcons>
