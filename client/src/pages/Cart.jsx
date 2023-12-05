@@ -233,10 +233,10 @@ const Cart = () => {
 	email = email.currentUser.email;
 	// console.log(email);
 
-	const handleClick2 = (id) => {
-		dispatch(removeProduct(id));
-		// dispatch(clear());
-	};
+	// const handleClick2 = (id) => {
+	// 	dispatch(removeProduct(id));
+	// 	// dispatch(clear());
+	// };
 	const mergedCart = cart.products.reduce((acc, curr) => {
 		const existingItem = acc.find(
 			(item) =>
@@ -522,8 +522,14 @@ const Cart = () => {
 											{/* ))} */}
 											<ProductSize>
 												<Button1
-													onClick={function () {
-														handleClick2(product._id);
+													onClick={() => {
+														dispatch(
+															removeProduct({
+																productId: product._id,
+																variantId:
+																	product.selectedVariant._id,
+															}),
+														);
 													}}
 												>
 													Remove

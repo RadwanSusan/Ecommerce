@@ -30,11 +30,13 @@ const cartSlice = createSlice({
 		},
 
 		removeProduct: (state, action) => {
-			const itemId = action.payload;
-			state.products = state.products.filter((item) => item._id !== itemId);
-			state.quantity -= 1;
-			state.total = 20;
+			const { productId, variantId } = action.payload;
+			state.products = state.products.filter(
+				(item) =>
+					item._id !== productId || item.selectedVariant._id !== variantId,
+			);
 		},
+
 		increase: (state, action) => {
 			const cartItem = state.products.findIndex(
 				(item) => item._id === action.payload,
