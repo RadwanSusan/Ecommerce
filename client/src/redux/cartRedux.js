@@ -22,6 +22,11 @@ const cartSlice = createSlice({
 				// Variant is not in cart, add it
 				state.products.push(newProduct);
 			}
+			// Update the total
+			state.total = state.products.reduce(
+				(total, product) => total + product.price * product.quantity,
+				0,
+			);
 		},
 
 		removeProduct: (state, action) => {
