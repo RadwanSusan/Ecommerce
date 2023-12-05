@@ -432,41 +432,6 @@ const Product = () => {
 		}
 	}, [selectedVariant, mergedCart, product._id]);
 
-	// const setColor2 = (color) => {
-	// 	const variants = product.variants.filter((variant) =>
-	// 		variant.color.includes(color),
-	// 	);
-	// 	const sizes = variants.flatMap((variant) => variant.size);
-	// 	setAvailableSizes(sizes);
-	// 	setSelectedVariant(variants[0]);
-	// 	setQuantity(1);
-	// 	console.log(`🚀  file: Product.jsx:267  color =>`, color);
-	// 	setColor(color);
-
-	// 	const cartProduct = mergedCart.find(
-	// 		(item) =>
-	// 			item._id === product._id &&
-	// 			item.selectedVariant._id === variants[0]._id,
-	// 	);
-
-	// 	// const cartProduct = mergedCart.find((item) =>
-	// 	// 		item.variants.find(
-	// 	// 			(variant) => variant._id === selectedVariant._id,
-	// 	// 		),
-	// 	// 	);
-
-	// 	console.log(cartProduct);
-
-	// 	// If the product variant exists in the cart, update availableQuantityAfterUpdate with the new quantity
-	// 	if (cartProduct) {
-	// 		setavailableQuantityAfterUpdate(cartProduct.quantity);
-	// 	} else {
-	// 		setavailableQuantityAfterUpdate(variants[0] ? variants[0].quantity : 0);
-	// 	}
-
-	// 	checkAvailability();
-	// };
-
 	const setColor2 = (color) => {
 		const variants = product.variants.filter((variant) =>
 			variant.color.includes(color),
@@ -506,21 +471,24 @@ const Product = () => {
 		const colors = variants.flatMap((variant) => variant.color);
 		setAvailableColors(colors);
 		setSelectedVariant(variants[0]);
+		const newSelectedVariant = variants[0];
+		setSelectedVariant(newSelectedVariant);
 		setQuantity(1);
 		setSize(size);
 		const cartProduct = mergedCart.find(
 			(item) =>
 				item._id === product._id &&
-				item.selectedVariant._id === variants[0]._id,
+				item.selectedVariant._id === newSelectedVariant._id,
 		);
 
-		console.log(`🚀  file: Product.jsx:267  cartProduct =>`, cartProduct);
-
-		// If the product variant exists in the cart, update availableQuantityAfterUpdate with the new quantity
 		if (cartProduct) {
-			setavailableQuantityAfterUpdate(cartProduct.quantity);
+			setavailableQuantityAfterUpdate(
+				newSelectedVariant.quantity - cartProduct.quantity,
+			);
 		} else {
-			setavailableQuantityAfterUpdate(0);
+			setavailableQuantityAfterUpdate(
+				newSelectedVariant ? newSelectedVariant.quantity : 0,
+			);
 		}
 		console.log(
 			`🚀  file: Product.jsx:499  availableQuantityAfterUpdate =>`,
