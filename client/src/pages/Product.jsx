@@ -160,13 +160,12 @@ const Product = () => {
 	const [availableSizes, setAvailableSizes] = useState([]);
 	const [availableColors, setAvailableColors] = useState([]);
 	const [selectedVariant, setSelectedVariant] = useState(null);
+	const [availableQuantityAfterUpdate, setavailableQuantityAfterUpdate] =
+		useState(selectedVariant?.quantity);
 
-	// useEffect(() => {
-	// 	const timer = setTimeout(() => {
-	// 	  setCurrentIndex(currentIndex + 1 )
-	// 	}, 5000);
+	// console.log(`selectedVariant`, selectedVariant?.quantity);
 
-	// const [newQuantity, setNewQuantity] = useState(product.quantity);
+	// console.log(`cartProducts`, cartProducts.products[0]?.quantity);
 
 	useEffect(() => {
 		if (userId !== undefined) {
@@ -215,12 +214,6 @@ const Product = () => {
 		);
 		const cartQuantity = cartProduct ? cartProduct.quantity : 0;
 
-		// the cartQuantity of all variants i want each variants quantity to be the same as the cartQuantity
-
-		// const cartQuantity = cartProduct.variants.find(
-		// 	(variant) => variant.color === color && variant.size === size,
-		// )?.quantity;
-
 		console.log(cartQuantity);
 
 		const availableQuantity = selectedVariant
@@ -244,7 +237,11 @@ const Product = () => {
 	};
 
 	const mergedCart = cartProducts.products.reduce((acc, curr) => {
-		const existingItem = acc.find((item) => item._id === curr._id);
+		const existingItem = acc.find(
+			(item) =>
+				item._id === curr._id &&
+				item.selectedVariant._id === curr.selectedVariant._id,
+		);
 		if (existingItem) {
 			existingItem.quantity += curr.quantity;
 		} else {
@@ -253,26 +250,20 @@ const Product = () => {
 		return acc;
 	}, []);
 
+	let totalAvailableQuantity = selectedVariant ? selectedVariant.quantity : 0;
+
 	const checkAvailability = useCallback(() => {
-		const totalAvailableQuantity = selectedVariant
-			? selectedVariant.quantity
-			: 0;
-		//2 , 4
 		console.log(
 			`🚀  file: Product.jsx:267  totalAvailableQuantity =>`,
 			totalAvailableQuantity,
 		);
-		//[]
 		console.log(`🚀  file: Product.jsx:267  mergedCart =>`, mergedCart);
-		// setSelectedVariant
 		if (selectedVariant) {
 			console.log(
 				`🚀  file: Product.jsx:267  selectedVariant =>`,
 				selectedVariant._id,
 			);
 		}
-
-		let cartQuantityNew = 0;
 
 		if (selectedVariant && mergedCart) {
 			const cartProduct = mergedCart.find((item) =>
@@ -284,23 +275,35 @@ const Product = () => {
 			console.log(`🚀  file: Product.jsx:267  cartProduct =>`, cartProduct);
 
 			if (cartProduct) {
-				// cartQuantity = cartProduct.quantity;
-				cartProducts.products.forEach((item) => {
-					if (item._id === cartProduct._id) {
+				cartProducts.products.map((item) => {
+					if (
+						item.selectedVariant._id === cartProduct.selectedVariant._id
+					) {
 						console.log(
 							`🚀  file: Product.jsx:267  item =>`,
-							item.selectedVariant._id,
+							item.selectedVariant.quantity,
 						);
 						console.log(
 							`🚀  file: Product.jsx:267  cartProduct =>`,
 							cartProduct.selectedVariant._id,
 						);
-						cartQuantityNew = item.quantity;
+
+						console.log(
+							`🚀  file: Product.jsx:267  availableQuantityAfterUpdate =>`,
+							availableQuantityAfterUpdate,
+						);
+						setavailableQuantityAfterUpdate(
+							item.selectedVariant.quantity - item.quantity,
+						);
+
+						console.log(
+							`🚀  file: Product.jsx:267  availableQuantityAfterUpdate =>`,
+							availableQuantityAfterUpdate,
+						);
 					}
 				});
 			}
 			console.log(`🚀  file: Product.jsx:267  cartProduct =>`, cartProduct);
-			// cartQuantity = cartProduct ? cartProduct.quantity : 0;
 		}
 		if (selectedVariant && mergedCart) {
 			const updatedCart = mergedCart.map((item) => {
@@ -309,23 +312,33 @@ const Product = () => {
 					(variant) => variant._id === selectedVariant._id,
 				);
 				console.log(`🚀  file: Product.jsx:267  zaid =>`, zaid);
+
 				if (zaid) {
 					return {
 						...item,
 						variants: item.variants.map((variant) => {
 							if (variant._id === selectedVariant._id) {
-								const zaid2 = variant.quantity - cartQuantityNew;
+								console.log(
+									`🚀  file: Product.jsx:267  variant =>`,
+									variant,
+								);
+								const zaid2 =
+									variant.quantity - availableQuantityAfterUpdate;
 								console.log(
 									`🚀  file: Product.jsx:267  cartProducts =>`,
 									cartProducts.products,
+								);
+								console.log(
+									`🚀  file: Product.jsx:267  cartProducts =>`,
+									cartProducts,
 								);
 								console.log(
 									`🚀  file: Product.jsx:267  selectedVariant.quantity =>`,
 									selectedVariant.quantity,
 								);
 								console.log(
-									`🚀  file: Product.jsx:267  quantity =>`,
-									quantity,
+									`🚀  file: Product.jsx:267  availableQuantityAfterUpdate =>`,
+									availableQuantityAfterUpdate,
 								);
 								console.log(
 									`🚀  file: Product.jsx:267  variant.quantity =>`,
@@ -336,15 +349,22 @@ const Product = () => {
 									`🚀  file: Product.jsx:267  zaid2 =>`,
 									zaid2,
 								);
+
+								totalAvailableQuantity = totalAvailableQuantity - zaid2;
+								console.log(
+									`🚀  file: Product.jsx:267  totalAvailableQuantity =>`,
+									totalAvailableQuantity,
+								);
+
 								if (zaid2 <= 0) {
 									setIsButtonDisabled(true);
 								}
 
-								return {
-									...variant,
-									quantity:
-										cartProducts.quantity - selectedVariant.quantity,
-								};
+								// return {
+								// 	...variant,
+								// 	quantity:
+								// 		cartProducts.quantity - selectedVariant.quantity,
+								// };
 							} else {
 								setIsButtonDisabled(false);
 
@@ -354,17 +374,161 @@ const Product = () => {
 					};
 				}
 			});
-			// let reduxLocal = JSON.parse(localStorage.getItem('persist:root'));
-			// reduxLocal.cart = JSON.parse(JSON.stringify(updatedCart));
-			// console.log(reduxLocal);
-			// localStorage.setItem('persist:root', JSON.stringify(reduxLocal));
 		}
-		const availableQuantity = totalAvailableQuantity - cartQuantityNew;
+		let availableQuantity;
+		if (availableQuantityAfterUpdate > 0) {
+			availableQuantity = availableQuantityAfterUpdate;
+		} else {
+			availableQuantity = totalAvailableQuantity;
+		}
+		console.log(
+			`🚀  file: Product.jsx:267  totalAvailableQuantity =>`,
+			totalAvailableQuantity,
+		);
+		console.log(
+			`🚀  file: Product.jsx:267  availableQuantityAfterUpdate =>`,
+			availableQuantityAfterUpdate,
+		);
+		console.log(
+			`🚀  file: Product.jsx:267  availableQuantity =>`,
+			availableQuantity,
+		);
+
+		// setIsButtonDisabled(availableQuantityAfterUpdate <= 0 && totalAvailableQuantity <= 0);
 		setIsButtonDisabled(availableQuantity <= 0);
-	}, [mergedCart, product._id, selectedVariant, quantity]);
+	}, [
+		mergedCart,
+		product._id,
+		selectedVariant,
+		quantity,
+		availableQuantityAfterUpdate,
+	]);
 	useEffect(() => {
 		checkAvailability();
-	}, [mergedCart, product._id, selectedVariant, quantity, checkAvailability]);
+		console.log(`checkAvailability =>`);
+	}, [
+		mergedCart,
+		product._id,
+		selectedVariant,
+		quantity,
+		checkAvailability,
+		availableQuantityAfterUpdate,
+	]);
+
+	useEffect(() => {
+		const cartProduct = mergedCart.find(
+			(item) =>
+				item?._id === product?._id &&
+				item?.selectedVariant?._id === selectedVariant?._id,
+		);
+		if (cartProduct) {
+			setavailableQuantityAfterUpdate(
+				selectedVariant.quantity - cartProduct.quantity,
+			);
+		} else {
+			setavailableQuantityAfterUpdate(
+				selectedVariant ? selectedVariant.quantity : 0,
+			);
+		}
+	}, [selectedVariant, mergedCart, product._id]);
+
+	// const setColor2 = (color) => {
+	// 	const variants = product.variants.filter((variant) =>
+	// 		variant.color.includes(color),
+	// 	);
+	// 	const sizes = variants.flatMap((variant) => variant.size);
+	// 	setAvailableSizes(sizes);
+	// 	setSelectedVariant(variants[0]);
+	// 	setQuantity(1);
+	// 	console.log(`🚀  file: Product.jsx:267  color =>`, color);
+	// 	setColor(color);
+
+	// 	const cartProduct = mergedCart.find(
+	// 		(item) =>
+	// 			item._id === product._id &&
+	// 			item.selectedVariant._id === variants[0]._id,
+	// 	);
+
+	// 	// const cartProduct = mergedCart.find((item) =>
+	// 	// 		item.variants.find(
+	// 	// 			(variant) => variant._id === selectedVariant._id,
+	// 	// 		),
+	// 	// 	);
+
+	// 	console.log(cartProduct);
+
+	// 	// If the product variant exists in the cart, update availableQuantityAfterUpdate with the new quantity
+	// 	if (cartProduct) {
+	// 		setavailableQuantityAfterUpdate(cartProduct.quantity);
+	// 	} else {
+	// 		setavailableQuantityAfterUpdate(variants[0] ? variants[0].quantity : 0);
+	// 	}
+
+	// 	checkAvailability();
+	// };
+
+	const setColor2 = (color) => {
+		const variants = product.variants.filter((variant) =>
+			variant.color.includes(color),
+		);
+		const sizes = variants.flatMap((variant) => variant.size);
+		setAvailableSizes(sizes);
+
+		const newSelectedVariant = variants[0];
+		setSelectedVariant(newSelectedVariant);
+
+		setQuantity(1);
+		setColor(color);
+
+		const cartProduct = mergedCart.find(
+			(item) =>
+				item._id === product._id &&
+				item.selectedVariant._id === newSelectedVariant._id,
+		);
+
+		if (cartProduct) {
+			setavailableQuantityAfterUpdate(
+				newSelectedVariant.quantity - cartProduct.quantity,
+			);
+		} else {
+			setavailableQuantityAfterUpdate(
+				newSelectedVariant ? newSelectedVariant.quantity : 0,
+			);
+		}
+
+		checkAvailability();
+	};
+
+	const setSize2 = (size) => {
+		const variants = product.variants.filter((variant) =>
+			variant.size.includes(size),
+		);
+		const colors = variants.flatMap((variant) => variant.color);
+		setAvailableColors(colors);
+		setSelectedVariant(variants[0]);
+		setQuantity(1);
+		setSize(size);
+		const cartProduct = mergedCart.find(
+			(item) =>
+				item._id === product._id &&
+				item.selectedVariant._id === variants[0]._id,
+		);
+
+		console.log(`🚀  file: Product.jsx:267  cartProduct =>`, cartProduct);
+
+		// If the product variant exists in the cart, update availableQuantityAfterUpdate with the new quantity
+		if (cartProduct) {
+			setavailableQuantityAfterUpdate(cartProduct.quantity);
+		} else {
+			setavailableQuantityAfterUpdate(0);
+		}
+		console.log(
+			`🚀  file: Product.jsx:499  availableQuantityAfterUpdate =>`,
+			availableQuantityAfterUpdate,
+		);
+
+		checkAvailability();
+	};
 
 	const handleClick = () => {
 		if (!selectedVariant) {
@@ -397,44 +561,45 @@ const Product = () => {
 				}),
 			);
 			setQuantity(1);
+			setavailableQuantityAfterUpdate(selectedVariant.quantity - quantity);
 			swal('Success', 'Product added to cart!', 'success');
+			checkAvailability();
 		}
 	};
 
-	const setColor2 = (color) => {
-		const variants = product.variants.filter((variant) =>
-			variant.color.includes(color),
-		);
-		const sizes = variants.flatMap((variant) => variant.size);
-		setAvailableSizes(sizes);
-		setSelectedVariant(variants[0]);
-		setQuantity(1); // Reset quantity
-		checkAvailability();
-	};
-
-	const setSize2 = (size) => {
-		const variants = product.variants.filter((variant) =>
-			variant.size.includes(size),
-		);
-		const colors = variants.flatMap((variant) => variant.color);
-		setAvailableColors(colors);
-		setSelectedVariant(variants[0]);
-		setQuantity(1); // Reset quantity
-		checkAvailability();
-	};
-
 	const findSelectedVariant = () => {
+		console.log('product.variants', product.variants);
+		console.log(`🚀  file: Product.jsx:267  size =>`, size);
+		console.log(`🚀  file: Product.jsx:267  color =>`, color);
 		if (product.variants) {
-			const selectedVariant = product.variants.find(
-				(variant) => variant.size === size && variant.color === color,
+			const selectedVariant2 = product.variants.find(
+				(variant) => variant.size[0] === size || variant.color[0] === color,
 			);
-			setSelectedVariant(selectedVariant);
+			console.log(
+				`🚀  file: Product.jsx:267  selectedVariant2 =>`,
+				selectedVariant2,
+			);
+			setSelectedVariant(selectedVariant2);
+			// setavailableQuantityAfterUpdate(selectedVariant2 ? selectedVariant2.quantity : 0);
+			console.log(
+				`🚀  file: Product.jsx:267  selectedVariant =>`,
+				selectedVariant,
+			);
 		}
 	};
 
 	useEffect(() => {
 		findSelectedVariant();
-	}, [size, color]);
+	}, [
+		size,
+		color,
+		product.variants,
+		checkAvailability,
+		availableQuantityAfterUpdate,
+		setColor,
+		setColor2,
+	]);
+
 	return (
 		<Container>
 			<Announcement />
@@ -449,16 +614,10 @@ const Product = () => {
 								alt={`product-${currentIndex}`}
 							/>
 							<CenterIcons>
-								<button
-									style={{ marginRight: '10px' }}
-									// onClick={prevSlide}
-								>
+								<button style={{ marginRight: '10px' }}>
 									<FaArrowLeft />
 								</button>
-								<button
-									style={{ marginLeft: '10px' }}
-									// onClick={nextSlide}
-								>
+								<button style={{ marginLeft: '10px' }}>
 									<FaArrowRight />
 								</button>
 							</CenterIcons>
@@ -490,7 +649,6 @@ const Product = () => {
 									color={c}
 									key={c}
 									onClick={() => setColor2(c)}
-									// onClick={() => setColor(c)}
 								/>
 							))}
 						</Filter>
