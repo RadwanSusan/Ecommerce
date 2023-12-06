@@ -183,7 +183,9 @@ const Product = ({ item }) => {
 	return (
 		<Container>
 			<Circle />
-			<Image src={item.z} />
+			<Image src={item.variants[0].img[0]} />
+			{console.log(`item=>`, item)}
+
 			<Info>
 				<Icon>
 					<Link to={`/product/${item._id}`}>
