@@ -31,14 +31,6 @@ const FilterSizeCatog = styled.select`
 
 const Catog = ({ item }) => {
 	const imagesSlider = [];
-	// const imagesSlider = useMemo(
-	// 	() => {
-	// 		// Your code to initialize the `imagesSlider` array
-	// 	},
-	// 	[
-	// 		/* dependencies if any */
-	// 	],
-	// );
 
 	const [zaidVar, setZaidVar] = useState(0);
 	const [product_id, setProduct_id] = useState(0);
@@ -153,6 +145,8 @@ const Catog = ({ item }) => {
 				return;
 			}
 
+			console.log(`viewArrCatog`, viewArrCatog);
+
 			catogCard.style.display = 'block';
 			catogCard.style.overflow = 'hidden';
 			backLayerForShowCart.style.display = 'block';
@@ -170,37 +164,72 @@ const Catog = ({ item }) => {
 				.querySelector('.block_product__advantagesProduct')
 				.append(viewArrCatog.desc);
 
-			viewArrCatog.color.forEach((color) => {
-				if (color.length !== 0) {
-					const { input, label } = createRadioElement(color);
-					aramex.appendChild(input);
-					aramex.appendChild(label);
-					input.addEventListener('click', (event) => {
-						if (
-							event.target.nextElementSibling.style.border ===
-							'3px solid black'
-						) {
-							event.target.nextElementSibling.style.border =
-								'1px solid black';
-						} else {
-							document.querySelectorAll('.AddCart').forEach((item) => {
-								item.setAttribute('color', event.target.value);
-							});
-							const siblings = getSiblings(event.target);
-							siblings.forEach((sibling) => {
-								sibling.style.border = '1px solid black';
-							});
-							event.target.nextElementSibling.style.border =
-								'3px solid black';
-						}
-					});
-				}
-			});
-			viewArrCatog.img.forEach((img) => {
-				imagesSlider.push(img);
+			//////test
+
+			// viewArrCatog.color.forEach((color) => {
+			// 	if (color.length !== 0) {
+			// 		const { input, label } = createRadioElement(color);
+			// 		aramex.appendChild(input);
+			// 		aramex.appendChild(label);
+			// 		input.addEventListener('click', (event) => {
+			// 			if (
+			// 				event.target.nextElementSibling.style.border ===
+			// 				'3px solid black'
+			// 			) {
+			// 				event.target.nextElementSibling.style.border =
+			// 					'1px solid black';
+			// 			} else {
+			// 				document.querySelectorAll('.AddCart').forEach((item) => {
+			// 					item.setAttribute('color', event.target.value);
+			// 				});
+			// 				const siblings = getSiblings(event.target);
+			// 				siblings.forEach((sibling) => {
+			// 					sibling.style.border = '1px solid black';
+			// 				});
+			// 				event.target.nextElementSibling.style.border =
+			// 					'3px solid black';
+			// 			}
+			// 		});
+			// 	}
+			// });
+
+			viewArrCatog.variants.forEach((variant) => {
+				variant.color.forEach((color) => {
+					if (color.length !== 0) {
+						const { input, label } = createRadioElement(color);
+						aramex.appendChild(input);
+						aramex.appendChild(label);
+						input.addEventListener('click', (event) => {
+							if (
+								event.target.nextElementSibling.style.border ===
+								'3px solid black'
+							) {
+								event.target.nextElementSibling.style.border =
+									'1px solid black';
+							} else {
+								document
+									.querySelectorAll('.AddCart')
+									.forEach((item) => {
+										item.setAttribute('color', event.target.value);
+									});
+								const siblings = getSiblings(event.target);
+								siblings.forEach((sibling) => {
+									sibling.style.border = '1px solid black';
+								});
+								event.target.nextElementSibling.style.border =
+									'3px solid black';
+							}
+						});
+					}
+				});
 			});
 
-			// sliderItemsContainer.innerHTML = '';
+			//////test
+			// viewArrCatog.img.forEach((img) => {
+			// 	imagesSlider.push(img);
+			// });
+
+			//root	// sliderItemsContainer.innerHTML = '';
 
 			// imagesSlider.forEach((imageUrl, index) => {
 			// 	const li = document.createElement('li');
@@ -215,17 +244,30 @@ const Catog = ({ item }) => {
 
 			// 	li.appendChild(img);
 			// 	sliderItemsContainer.appendChild(li);
-			// });
+			// });   //root
 
 			filterSizeCatog.innerHTML = '';
-			viewArrCatog.size.forEach((size) => {
-				const option = new Option(size, size);
-				filterSizeCatog.appendChild(option);
-				if (size === viewArrCatog.size[0]) {
-					option.selected = true;
-					setSize(size);
-				}
+
+			///test
+			// viewArrCatog.size.forEach((size) => {
+			// 	const option = new Option(size, size);
+			// 	filterSizeCatog.appendChild(option);
+			// 	if (size === viewArrCatog.size[0]) {
+			// 		option.selected = true;
+			// 		setSize(size);
+			// 	}
+			// });
+			viewArrCatog.variants.forEach((variant) => {
+				variant.size.forEach((size) => {
+					const option = new Option(size, size);
+					filterSizeCatog.appendChild(option);
+					if (size === variant.size[0]) {
+						option.selected = true;
+						setSize(size);
+					}
+				});
 			});
+
 			currency.textContent = `$${viewArrCatog.price}`;
 		},
 		[
@@ -401,42 +443,6 @@ const Catog = ({ item }) => {
 
 	const [wishlistLogin, setWishlistLogin] = useState(false);
 
-	// const addToWishlist = async (productId, identifier, ele) => {
-	// 	if (!wishlistLogin) {
-	// 		await swal({
-	// 			title: 'You have to login !',
-	// 			icon: 'warning',
-	// 			buttons: true,
-	// 			confirmButtonColor: '#42a5f5',
-	// 			confirmButtonText: 'Login',
-	// 			showCancelButton: true,
-	// 			closeOnConfirm: false,
-	// 		});
-	// 		window.location.href = '/login';
-	// 		return;
-	// 	}
-
-	// 	const targetClass = ele.target.classList[0];
-	// 	try {
-	// 		await wishlist(productId, userId);
-	// 		if (identifier === 'remove') {
-	// 			if (targetClass === 'add-to-wish2') {
-	// 				ele.target.parentNode.style.display = 'none';
-	// 				ele.target.parentNode.previousSibling.style.display = 'block';
-	// 			}
-	// 			swal('Success', 'Product removed from wishlist!', 'success');
-	// 		} else if (identifier === 'addCatog') {
-	// 			if (targetClass === 'add-to-wish') {
-	// 				ele.target.style.display = 'none';
-	// 				ele.target.nextSibling.children[0].style.display = 'block';
-	// 				ele.target.nextSibling.style.display = 'block';
-	// 			}
-	// 			swal('Success', 'Product added to wishlist!', 'success');
-	// 		}
-	// 	} catch (error) {
-	// 		swal('Error', 'Something went wrong', 'error');
-	// 	}
-	// };
 	const addToWishlist = async (productId, identifier, ele) => {
 		if (!wishlistLogin) {
 			await swal({
@@ -529,7 +535,6 @@ const Catog = ({ item }) => {
 		}, 3000);
 		if (nextButton !== null) {
 			nextButton.addEventListener('click', function () {
-
 				goToSlide(currentSlide + 1);
 			});
 		}
