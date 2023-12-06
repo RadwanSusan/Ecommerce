@@ -10,11 +10,14 @@ const cartSlice = createSlice({
 	reducers: {
 		addProduct: (state, action) => {
 			const newProduct = action.payload;
+			console.log(`newProduct`, newProduct);
+			console.log(`state`, state.products);
 			const existingProduct = state.products.find(
 				(product) =>
 					product._id === newProduct._id &&
 					product.selectedVariant._id === newProduct.selectedVariant._id,
 			);
+			console.log(`existingProduct`, existingProduct);
 			if (existingProduct) {
 				// Variant is already in cart, update its quantity
 				existingProduct.quantity += newProduct.quantity;
@@ -38,27 +41,41 @@ const cartSlice = createSlice({
 		},
 
 		increase: (state, action) => {
+			const variantId = action.payload;
+			console.log(`variantId`, variantId);
+			console.log(`state.products`, state.products);
 			const cartItem = state.products.findIndex(
-				(item) => item._id === action.payload,
+				(item) => item.selectedVariant._id === variantId,
 			);
+			console.log(`cartItem`, cartItem);
 			state.products[cartItem].quantity += 1;
 		},
 		decrease: (state, action) => {
+			const variantId = action.payload;
+			console.log(`variantId`, variantId);
+			console.log(`state.products`, state.products);
 			const cartItem = state.products.findIndex(
-				(item) => item._id === action.payload,
+				(item) => item.selectedVariant._id === variantId,
 			);
-			if (state.products[cartItem].quantity > 1) {
-				state.products[cartItem].quantity -= 1;
-			}
+			console.log(`cartItem`, cartItem);
+			state.products[cartItem].quantity -= 1;
 		},
 		clear: (state) => {
 			state.products = [];
 			state.total = 0;
 		},
 		reset: (state, action) => {
+			// const cartItem = state.products.findIndex(
+			// 	(item) => item._id === action.payload,
+			// );
+			// state.products[cartItem].quantity = 1;
+			const variantId = action.payload;
+			console.log(`variantId`, variantId);
+			console.log(`state.products`, state.products);
 			const cartItem = state.products.findIndex(
-				(item) => item._id === action.payload,
+				(item) => item.selectedVariant._id === variantId,
 			);
+			console.log(`cartItem`, cartItem);
 			state.products[cartItem].quantity = 1;
 		},
 		getAllProduct: (state) => {

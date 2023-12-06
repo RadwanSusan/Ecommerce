@@ -232,6 +232,7 @@ const Cart = () => {
 	email = JSON.parse(email);
 	email = email.currentUser.email;
 	// console.log(email);
+	console.log(`cart`, cart);
 
 	// const handleClick2 = (id) => {
 	// 	dispatch(removeProduct(id));
@@ -351,55 +352,38 @@ const Cart = () => {
 		};
 		stripeToken && makeRequest();
 	}, [stripeToken, cart.total, history]);
-	const handleQuantity = (type, id) => {
+
+	console.log(`productGet`, productGet);
+	const handleQuantity = (type, id, selectedVariantId) => {
 		const productFind = productGet.find((item) => item._id === id);
-		const offerFind = offerGet.find((item) => item._id === id);
-		const productOrOffer = productFind || offerFind;
-		const productMerged = mergedCart.find((item) => item._id === id);
-		const variantQuantity = productMerged
-			? productMerged.selectedVariant.quantity
-			: 0;
+		console.log(`productFind`, productFind);
+		const productFindSelected = productFind.variants.find(
+			(item) => item._id === selectedVariantId,
+		);
+		console.log(`productFindSelected`, productFindSelected);
+		console.log(`productFindSelected`, productFindSelected.quantity);
+
+		const updatedQuantity = cart.products.find(
+			(item) => item.selectedVariant._id === selectedVariantId,
+		);
+		console.log(`updatedQuantity`, updatedQuantity.quantity);
+
 		if (type === 'dec') {
-			if (productMerged.quantity <= 1) {
+			if (updatedQuantity.quantity <= 1) {
+				dispatch(reset(selectedVariantId));
 				swal('Info', 'The minimum quantity is 1', 'info');
 			} else {
-				if (
-					document.querySelector(`.AddQuantity${id}`).style.display ==
-					'none'
-				) {
-					document.querySelector(`.AddQuantity${id}`).style.display =
-						'block';
-				}
-				setQuantity(productMerged.quantity - 1);
+				setQuantity(updatedQuantity.quantity - 1);
 			}
 		} else {
-			if (productMerged.quantity >= productOrOffer.quantity - 1) {
-				dispatch(reset(id));
+			if (updatedQuantity.quantity >= productFindSelected.quantity) {
+				dispatch(reset(selectedVariantId));
+
 				swal(
 					'Info',
 					'You have exceeded the number of available products!, the quantity will be reset',
 					'info',
 				);
-			} else {
-				if (productMerged.quantity + 1 > productOrOffer.quantity - 1) {
-					setQuantity(1);
-					document.querySelector(`.AddQuantity${id}`).style.display =
-						'none';
-					swal(
-						'Info',
-						'You have exceeded the number of available products!',
-						'info',
-					);
-				} else {
-					setQuantity(productMerged.quantity + 1);
-					if (
-						document.querySelector(`.DecQuantity${id}`).style.display ==
-						'none'
-					) {
-						document.querySelector(`.DecQuantity${id}`).style.display =
-							'block';
-					}
-				}
 			}
 		}
 	};
@@ -498,7 +482,7 @@ const Cart = () => {
 							mergedCart.map((product) => (
 								<Product>
 									<ProductDetail>
-										<Image src={product.variants[0].img} />
+										<Image src={product.selectedVariant.img[0]} />
 										<Details>
 											<ProductName>
 												<b>Product:</b> {product.title}
@@ -542,18 +526,37 @@ const Cart = () => {
 											<Remove
 												className={`DecQuantity${product._id}`}
 												onClick={() => {
-													dispatch(decrease(product._id));
-													handleQuantity('dec', product._id);
+													dispatch(
+														decrease(product.selectedVariant._id),
+													);
+													handleQuantity(
+														'dec',
+														product._id,
+
+														product.selectedVariant._id,
+													);
 												}}
 											/>
+											{console.log(
+												`decrease(product._id) =>`,
+												decrease(product.selectedVariant._id),
+											)}
+
 											<ProductAmount>
 												{product.quantity}
 											</ProductAmount>
 											<Add
 												className={`AddQuantity${product._id}`}
 												onClick={() => {
-													dispatch(increase(product._id));
-													handleQuantity('inc', product._id);
+													dispatch(
+														increase(product.selectedVariant._id),
+													);
+													handleQuantity(
+														'inc',
+														product._id,
+
+														product.selectedVariant._id,
+													);
 												}}
 											/>
 											{/* )) */}
