@@ -51,7 +51,6 @@ const Navbar = () => {
 				setDataAll([]);
 				return;
 			}
-			console.log(catogName);
 			const res = await axios.get(
 				`http://localhost:4000/api/products/search/${queryName}?category=${catogName}`,
 			);

@@ -57,7 +57,6 @@ const Offer = () => {
       document
         .querySelector('.block_product__advantagesProduct')
         .append(viewArr.desc);
-      console.log(viewArr.title);
       document.querySelector('.nameProduct').innerHTML = viewArr.title;
       let aramex = document.querySelector('.block_goodColor__allColors');
       document.querySelector('.block_goodColor__allColors').innerHTML = '';
@@ -148,7 +147,6 @@ const Offer = () => {
     };
     getOffer(getOffer);
   }, [categoriesOffer.cat]);
-  console.log(offer);
   let cartProducts = JSON.parse(localStorage.getItem('persist:root'));
   if (
     cartProducts === null ||
@@ -326,16 +324,12 @@ const Offer = () => {
   const [wishlistLogin, setWishlistLogin] = useState(false);
   const handleWichlist = (id, ele) => {
     if (ele.target.classList[0] === 'add-to-wish' && wishlistLogin == true) {
-      console.log(ele.target.parentNode);
 
-      console.log(ele.target.nextSibling);
       ele.target.style.display = 'none';
       ele.target.nextSibling.style.display = 'block';
     }
     if (ele.target.classList[0] === 'add-to-wish2' && wishlistLogin == true) {
-      console.log(ele.target.parentNode);
 
-      console.log(ele.target.parentNode.previousSibling);
       ele.target.parentNode.style.display = 'none';
       ele.target.parentNode.previousSibling.style.display = 'block';
     }

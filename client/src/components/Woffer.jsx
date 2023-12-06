@@ -28,12 +28,9 @@ useEffect(() => {
       ]);
 
       const orders = ordersRes.data;
-      console.log(orders);
       const products = productsRes.data;
-      console.log(products);
 
       const offers = offersRes.data;
-      console.log(offers);
 
       const matchedItems = [];
 

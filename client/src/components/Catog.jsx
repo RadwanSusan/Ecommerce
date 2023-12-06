@@ -199,7 +199,6 @@ const Catog = ({ item }) => {
 			viewArrCatog.img.forEach((img) => {
 				imagesSlider.push(img);
 			});
-			console.log(imagesSlider);
 
 			// sliderItemsContainer.innerHTML = '';
 
@@ -370,7 +369,6 @@ const Catog = ({ item }) => {
 		}
 		if (!cartItem || cartItem.quantity + quantity <= item.quantity) {
 			const color = ele.target.getAttribute('color');
-			console.log(item);
 			dispatch(
 				addProduct({
 					...item,
@@ -531,14 +529,12 @@ const Catog = ({ item }) => {
 		}, 3000);
 		if (nextButton !== null) {
 			nextButton.addEventListener('click', function () {
-				console.log('Next button clicked');
 
 				goToSlide(currentSlide + 1);
 			});
 		}
 		if (prevButton !== null) {
 			prevButton.addEventListener('click', function () {
-				console.log('Previous button clicked');
 				goToSlide(currentSlide - 1);
 			});
 		}

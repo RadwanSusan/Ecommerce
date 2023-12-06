@@ -33,7 +33,6 @@ export default function Product() {
 	const [colorArrayUpdate, setColorArrayUpdate] = useState(
 		product.variants.map((variant) => variant.color),
 	);
-	console.log(`🚀  file: Product.jsx:31  product =>`, product);
 
 	const [quantityArray, setQuantityArray] = useState(
 		product.variants.map((variant) => variant.quantity),
@@ -63,7 +62,6 @@ export default function Product() {
 		],
 		[],
 	);
-	console.log(product);
 	// const [productUpdateData, setProductUpdateData] = useState({
 	// 	title: product.title,
 	// 	desc: product.desc,
@@ -148,12 +146,10 @@ export default function Product() {
 	};
 
 
-	console.log(productUpdateData, 'zaidoooooooooooo');
 
 	const handleSubmit = async (e, index) => {
 		e.preventDefault();
 		// get value the image and loop over it and add it to imageArray
-		console.log(imageArray, 'imageArray');
 
 		// Rest of the code...
 
@@ -166,7 +162,6 @@ export default function Product() {
 		});
 
 		const sizeInputsS = document.querySelector('.SizeS').checked;
-		console.log(sizeInputsS, 'sizeInputs');
 
 		const colorInputs = document.querySelectorAll('.color-picker1');
 
@@ -190,10 +185,8 @@ export default function Product() {
 			...productUpdateData,
 			variants: await Promise.all(
 				productUpdateData.variants.map(async (variant, i) => {
-					console.log(imageArray, 'imageArray');
 					// let img = imageArray[i];
 					let img = flatImageArray[i];
-					console.log(img, 'img');
 
 					// Check if img is a File object
 					if (img instanceof File) {
@@ -233,7 +226,6 @@ export default function Product() {
 			),
 		};
 
-		console.log(newProduct);
 
 		updateProduct(productId, newProduct, dispatch);
 
@@ -392,39 +384,30 @@ export default function Product() {
 			})),
 		};
 
-		console.log(`🚀  file: Product.jsx:472  tempVariant =>`, tempVariant);
 
 		setProductUpdateData((prev) => ({
 			...prev,
 			variants: tempVariant.variants,
 		}));
 	}, [quantityArray, setProductUpdateData]);
-	console.log(productUpdateData, 'zzzzzzzzzzzzzzzzzzzzz');
 
 	const [selectedClassName, setSelectedClassName] = useState(null);
 
 	const handleFileChange = (e, item, index2) => {
-		console.log(e.target, 'zaid');
 		setSelectedClassName(e.target.className);
 
 		setCurrentIndex(index2);
 		const file = e.target.files[0];
-		console.log(`file: ${file}`);
 		// const className = e.target.className;
-		console.log(`selectedClassName: ${selectedClassName}`);
 
 		const selectItem = item.img[0];
-		console.log(`selectItem: ${selectItem}`);
-		console.log(`index: ${index2}`);
 
 		const newFileArray = [...fileArray]; // clone the current file array
-		console.log(`newFileArray: ${newFileArray}`);
 		newFileArray[index2] = selectItem; // replace the file at the given index
 		setFileArray(newFileArray); // update the state with the new file array
 
 		// Create a URL representing the selected file
 		const previewImage = URL.createObjectURL(file);
-		console.log(`previewImage: ${previewImage}`);
 
 		// Update the imageArray state to reflect the selected image
 		const newImageArray = [...imageArray];
@@ -440,7 +423,6 @@ export default function Product() {
 		// Update the state with the new color array
 		setColorArrayUpdate(updatedColors);
 	};
-	console.log(product.variants, 'zaaaaaaaaaaaaaid');
 	return (
 		<div className='product'>
 			<div className='productTitleContainer'>
@@ -543,7 +525,6 @@ export default function Product() {
 				</div>
 			</div>
 			{product.variants.map((item, indexzaid) => {
-				console.log(`Outside onChange: ${indexzaid}`);
 				return (
 					<div
 						id={`productBottom ${indexzaid}`}
@@ -802,7 +783,6 @@ export default function Product() {
 										style={{ display: 'none' }}
 										onChange={(event) => {
 											handleFileChange(event, item, indexzaid);
-											console.log(`Inside onChange: ${indexzaid}`);
 										}}
 									/>
 								</div>

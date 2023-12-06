@@ -91,16 +91,12 @@ const Product = ({ item }) => {
 
 	const handleWichlist = (id, ele) => {
 		if (ele.target.classList[0] === 'add-to-wish' && wishlistLogin == true) {
-			console.log(ele.target.parentNode);
 
-			console.log(ele.target.nextSibling);
 			ele.target.style.display = 'none';
 			ele.target.nextSibling.style.display = 'block';
 		}
 		if (ele.target.classList[0] === 'add-to-wish2' && wishlistLogin == true) {
-			console.log(ele.target.parentNode);
 
-			console.log(ele.target.parentNode.previousSibling);
 			ele.target.parentNode.style.display = 'none';
 			ele.target.parentNode.previousSibling.style.display = 'block';
 		}
@@ -184,7 +180,6 @@ const Product = ({ item }) => {
 		<Container>
 			<Circle />
 			<Image src={item.variants[0].img[0]} />
-			{console.log(`item=>`, item)}
 
 			<Info>
 				<Icon>

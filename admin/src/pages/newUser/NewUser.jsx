@@ -1,15 +1,15 @@
-import { useState } from "react";
-import "./newUser.css";
+import { useState } from 'react';
+import './newUser.css';
 import {
 	getStorage,
 	ref,
 	uploadBytesResumable,
 	getDownloadURL,
-} from "firebase/storage";
-import app from "../../firebase";
-import { addUser } from "../../redux/apiCalls";
-import { useDispatch } from "react-redux";
-import swal from "sweetalert";
+} from 'firebase/storage';
+import app from '../../firebase';
+import { addUser } from '../../redux/apiCalls';
+import { useDispatch } from 'react-redux';
+import swal from 'sweetalert';
 
 export default function NewUser() {
 	const [inputs, setInputs] = useState({});
@@ -23,7 +23,7 @@ export default function NewUser() {
 	const handleClick = (e) => {
 		e.preventDefault();
 		if (file === null) {
-			swal("Please upload an image");
+			swal('Please upload an image');
 			return;
 		}
 		const fileName = new Date().getTime() + file.name;
@@ -31,17 +31,15 @@ export default function NewUser() {
 		const storageRef = ref(storage, fileName);
 		const uploadTask = uploadBytesResumable(storageRef, file);
 		uploadTask.on(
-			"state_changed",
+			'state_changed',
 			(snapshot) => {
 				const progress =
 					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-				console.log("Upload is " + progress + "% done");
+
 				switch (snapshot.state) {
-					case "paused":
-						console.log("Upload is paused");
+					case 'paused':
 						break;
-					case "running":
-						console.log("Upload is running");
+					case 'running':
 						break;
 					default:
 				}
@@ -50,14 +48,14 @@ export default function NewUser() {
 			() => {
 				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
 					const user = { ...inputs, img: downloadURL };
-					console.log(user);
+
 					const regex =
 						/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 					if (!regex.test(user.email)) {
 						swal(
-							"Warning",
-							"Email is not valid , please enter a valid email",
-							"warning",
+							'Warning',
+							'Email is not valid , please enter a valid email',
+							'warning',
 						);
 						return;
 					}
@@ -65,61 +63,61 @@ export default function NewUser() {
 						/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
 					if (!passRegex.test(user.password)) {
 						swal(
-							"Warning",
-							"Password is not valid , please enter at least 6 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character",
-							"warning",
+							'Warning',
+							'Password is not valid , please enter at least 6 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character',
+							'warning',
 						);
 						return;
 					}
 					user.email = user.email.toLowerCase();
 					addUser(user, dispatch);
 					swal({
-						title: "Success",
-						text: "User added successfully",
-						icon: "success",
-						button: "Ok",
+						title: 'Success',
+						text: 'User added successfully',
+						icon: 'success',
+						button: 'Ok',
 						closeOnClickOutside: false,
 						closeOnEsc: false,
 					}).then(() => {
 						setInputs({
-							username: "",
-							email: "",
-							password: "",
-							img: "",
+							username: '',
+							email: '',
+							password: '',
+							img: '',
 							isAdmin: false,
 						});
 						setFile(null);
 						file = null;
-						document.querySelector("#file").value = "";
-						document.querySelector(".Email").value = "";
-						document.querySelector(".Password").value = "";
-						document.querySelector(".IsAdmin").value = "no";
-						document.querySelector(".Username").value = "";
+						document.querySelector('#file').value = '';
+						document.querySelector('.Email').value = '';
+						document.querySelector('.Password').value = '';
+						document.querySelector('.IsAdmin').value = 'no';
+						document.querySelector('.Username').value = '';
 					});
 				});
 			},
 		);
 	};
 	return (
-		<div className="newUser">
-			<h1 className="newUserTitle">New User</h1>
-			<form className="newUserForm">
-				<div className="newUserItem">
+		<div className='newUser'>
+			<h1 className='newUserTitle'>New User</h1>
+			<form className='newUserForm'>
+				<div className='newUserItem'>
 					<label>Image</label>
 					<input
-						type="file"
-						id="file"
+						type='file'
+						id='file'
 						onChange={(e) => setFile(e.target.files[0])}
 					/>
 				</div>
-				<div className="newUserItem">
+				<div className='newUserItem'>
 					<label>Username</label>
 					<input
-						id="username"
-						className="Username"
-						name="username"
-						type="text"
-						placeholder="john"
+						id='username'
+						className='Username'
+						name='username'
+						type='text'
+						placeholder='john'
 						onChange={handleChange}
 					/>
 				</div>
@@ -127,26 +125,26 @@ export default function NewUser() {
 					<label>Full Name</label>
 					<input type="text" placeholder="John Smith" />
 				</div> */}
-				<div className="newUserItem">
+				<div className='newUserItem'>
 					<label>Email</label>
 					<input
-						name="email"
-						type="email"
-						placeholder="john@gmail.com"
+						name='email'
+						type='email'
+						placeholder='john@gmail.com'
 						onChange={handleChange}
-						className="Email"
-						id="email"
+						className='Email'
+						id='email'
 					/>
 				</div>
-				<div className="newUserItem">
+				<div className='newUserItem'>
 					<label>Password</label>
 					<input
-						name="password"
-						type="password"
-						placeholder="password"
+						name='password'
+						type='password'
+						placeholder='password'
 						onChange={handleChange}
-						className="Password"
-						id="password"
+						className='Password'
+						id='password'
 					/>
 				</div>
 				{/* <div className="newUserItem">
@@ -168,20 +166,23 @@ export default function NewUser() {
 						<label for="other">Other</label>
 					</div>
 				</div> */}
-				<div className="newUserItem">
+				<div className='newUserItem'>
 					<label>Admin?</label>
 					<select
-						defaultValue={"no"}
-						className="IsAdmin newUserSelect"
-						name="isAdmin"
-						id="isAdmin"
+						defaultValue={'no'}
+						className='IsAdmin newUserSelect'
+						name='isAdmin'
+						id='isAdmin'
 						onChange={handleChange}
 					>
-						<option value="yes">Yes</option>
-						<option value="no">No</option>
+						<option value='yes'>Yes</option>
+						<option value='no'>No</option>
 					</select>
 				</div>
-				<button onClick={handleClick} className="newUserButton">
+				<button
+					onClick={handleClick}
+					className='newUserButton'
+				>
 					Create
 				</button>
 			</form>

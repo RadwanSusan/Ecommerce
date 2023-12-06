@@ -207,7 +207,7 @@ export default function NewProduct() {
 
 		const uploadPromises = forms.map(async (form) => {
 			const fileSingle = form.file || null;
-			console.log(`🚀  file: NewProduct.jsx:125  fileSingle =>`, fileSingle);
+
 			if (fileSingle) {
 				const fileName = new Date().getTime() + fileSingle.name;
 				const storageRef = ref(storage, fileName);
@@ -216,7 +216,7 @@ export default function NewProduct() {
 				try {
 					await uploadTask;
 					const url = await getDownloadURL(uploadTask.snapshot.ref);
-					console.log(`File uploaded successfully. Download URL: ${url}`);
+					
 
 					return {
 						img: [url],

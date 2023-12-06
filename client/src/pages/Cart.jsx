@@ -231,8 +231,6 @@ const Cart = () => {
 
 	email = JSON.parse(email);
 	email = email.currentUser.email;
-	// console.log(email);
-	console.log(`cart`, cart);
 
 	// const handleClick2 = (id) => {
 	// 	dispatch(removeProduct(id));
@@ -320,19 +318,14 @@ const Cart = () => {
 					products: cart,
 				});
 				let originalPrice = 0;
-				console.log(
-					`🚀 ~ file: Cart.jsx:298 ~ mergedCart.map ~ mergedCart:`,
-					mergedCart,
-				);
+
 				mergedCart.map((item) => {
 					originalPrice += item.originalPrice * item.quantity;
 				});
-				console.log(originalPrice);
 				let newArr = {
 					userId: userId,
 					products: mergedCart,
 				};
-				console.log(`🚀 ~ file: Cart.jsx:296 ~ makeRequest ~ res:`, res);
 				dispatch(clear());
 				let newArr2 = {
 					userId: userId,
@@ -353,20 +346,16 @@ const Cart = () => {
 		stripeToken && makeRequest();
 	}, [stripeToken, cart.total, history]);
 
-	console.log(`productGet`, productGet);
 	const handleQuantity = (type, id, selectedVariantId) => {
 		const productFind = productGet.find((item) => item._id === id);
-		console.log(`productFind`, productFind);
 		const productFindSelected = productFind.variants.find(
 			(item) => item._id === selectedVariantId,
 		);
-		console.log(`productFindSelected`, productFindSelected);
-		console.log(`productFindSelected`, productFindSelected.quantity);
+
 
 		const updatedQuantity = cart.products.find(
 			(item) => item.selectedVariant._id === selectedVariantId,
 		);
-		console.log(`updatedQuantity`, updatedQuantity.quantity);
 
 		if (type === 'dec') {
 			if (updatedQuantity.quantity <= 1) {
@@ -406,7 +395,6 @@ const Cart = () => {
 		getOrders();
 	}, []);
 
-	console.log(orderHave.length);
 
 	const [matchedOrders, setMatchedOrders] = useState([]);
 
@@ -424,12 +412,9 @@ const Cart = () => {
 				]);
 
 				const orders = ordersRes.data;
-				console.log(orders);
 				const products = productsRes.data;
-				console.log(products);
 
 				const offers = offersRes.data;
-				console.log(offers);
 
 				const matchedItems = [];
 
@@ -451,7 +436,6 @@ const Cart = () => {
 		fetchData();
 	}, []);
 
-	console.log(mergedCart);
 
 	return (
 		<Container>
@@ -537,10 +521,7 @@ const Cart = () => {
 													);
 												}}
 											/>
-											{console.log(
-												`decrease(product._id) =>`,
-												decrease(product.selectedVariant._id),
-											)}
+										
 
 											<ProductAmount>
 												{product.quantity}

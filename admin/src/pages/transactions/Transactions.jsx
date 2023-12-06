@@ -20,16 +20,13 @@ export default function Transactions() {
   const showMore = (id) => {
     let order = orders.find((order) => order._id === id);
 
-    console.log(order.products);
     const array11 = [];
     const array12 = [];
 
     const productsAll4 = order.products.map((p) => {
-      // console.log(p);
       array11.push(p._id);
       array12.push(p.quantity);
 
-      // console.log(array11);
     });
     swal({
       icon: 'info',

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 export const ImageSlider = ({ allimages }) => {
 	const [current, setCurrent] = useState(0);
-	console.log(allimages);
 	// const length = allimages.length;
 
 	// const nextSlide = () => {

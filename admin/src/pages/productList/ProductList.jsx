@@ -29,14 +29,6 @@ export default function ProductList() {
 			} else {
 				setExcelData(resp.rows);
 
-				console.log(
-					`🚀  file: ProductList.jsx:20  excelData =>`,
-					excelData,
-				);
-				console.log(
-					`🚀  file: ProductList.jsx:34  resp.rows =>`,
-					resp.rows,
-				);
 				addAllProduct(resp.rows);
 			}
 		});
@@ -111,45 +103,45 @@ export default function ProductList() {
 	});
 
 	return (
-    <div className='productList'>
-      <div className='middle-product-create'>
-        <h2 className='productAddButton1'>Create Product : </h2>
-        <Link to='/newproduct'>
-          <button className='productAddButton'>Create</button>
-        </Link>
-        <CSVLink
-          className='productAddButton'
-          style={{ textDecoration: 'none', width: '100px' }}
-          data={newObj}
-          filename='products.csv'
-        >
-          Export to Excel
-        </CSVLink>
-        <input
-          className='productAddButton22'
-          type='file'
-          onChange={handleExcelUpload}
-          style={{ marginLeft: '20px' }}
-        />
+		<div className='productList'>
+			<div className='middle-product-create'>
+				<h2 className='productAddButton1'>Create Product : </h2>
+				<Link to='/newproduct'>
+					<button className='productAddButton'>Create</button>
+				</Link>
+				<CSVLink
+					className='productAddButton'
+					style={{ textDecoration: 'none', width: '100px' }}
+					data={newObj}
+					filename='products.csv'
+				>
+					Export to Excel
+				</CSVLink>
+				<input
+					className='productAddButton22'
+					type='file'
+					onChange={handleExcelUpload}
+					style={{ marginLeft: '20px' }}
+				/>
 
-        <a
-          className='productAddButton22'
-          href={myFile}
-          download='my-excel.csv'
-          target='_blank'
-        >
-          <button>Download CSV</button>
-        </a>
-      </div>
-      <DataGrid
-        rows={newObj}
-        disableSelectionOnClick
-        columns={columns}
-        getRowId={(row) => row._id}
-        pageSize={13}
-        autoHeight
-        rowsPerPageOptions={[5, 10, 25]}
-      />
-    </div>
-  );
+				<a
+					className='productAddButton22'
+					href={myFile}
+					download='my-excel.csv'
+					target='_blank'
+				>
+					<button>Download CSV</button>
+				</a>
+			</div>
+			<DataGrid
+				rows={newObj}
+				disableSelectionOnClick
+				columns={columns}
+				getRowId={(row) => row._id}
+				pageSize={13}
+				autoHeight
+				rowsPerPageOptions={[5, 10, 25]}
+			/>
+		</div>
+	);
 }
