@@ -44,6 +44,11 @@ const Catog = ({ item }) => {
 	const [products, setProducts] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 
+	const [selectedColor, setSelectedColor] = useState('');
+	const [selectedVariants, setSelectedVariants] = useState([]);
+
+	const [viewArrCatog, setViewArrCatog] = useState(null);
+
 	useEffect(() => {
 		const getProducts = async () => {
 			try {
@@ -135,11 +140,14 @@ const Catog = ({ item }) => {
 			);
 
 			const idProduct = item.getAttribute('catog-id');
-			const viewArrCatog = isLoading
-				? [...productGet, ...offerGet]?.find(
-						(product) => product._id === idProduct,
-				  )
-				: AllProducts?.find((product) => product._id === idProduct);
+
+			setViewArrCatog(
+				isLoading
+					? [...productGet, ...offerGet]?.find(
+							(product) => product._id === idProduct,
+					  )
+					: AllProducts?.find((product) => product._id === idProduct),
+			);
 
 			if (!viewArrCatog) {
 				return;
@@ -200,6 +208,15 @@ const Catog = ({ item }) => {
 						aramex.appendChild(input);
 						aramex.appendChild(label);
 						input.addEventListener('click', (event) => {
+							setSelectedColor(event.target.value);
+
+							const selectedVariant = viewArrCatog.variants.find(
+								(variant) => variant.color.includes(event.target.value),
+							);
+							setSelectedVariants([selectedVariant]);
+							setQuantity(1);
+
+							console.log(`selectedVariant`, selectedVariant);
 							if (
 								event.target.nextElementSibling.style.border ===
 								'3px solid black'
@@ -281,6 +298,23 @@ const Catog = ({ item }) => {
 			imagesSlider,
 		],
 	);
+	useEffect(() => {
+		if (viewArrCatog) {
+			const filteredSizes = viewArrCatog.variants
+				.filter((variant) => variant.color.includes(selectedColor))
+				.flatMap((variant) => variant.size);
+
+			filterSizeCatog.innerHTML = '';
+			filteredSizes.forEach((size) => {
+				const option = new Option(size, size);
+				filterSizeCatog.appendChild(option);
+				if (size === filteredSizes[0]) {
+					option.selected = true;
+					setSize(size);
+				}
+			});
+		}
+	}, [selectedColor, viewArrCatog]);
 
 	showCartItems.forEach((item) => {
 		item.addEventListener('click', () => {
@@ -326,50 +360,20 @@ const Catog = ({ item }) => {
 		}
 	};
 
-	const handleQuantityIncrement = (id, maxQuantity) => {
-		const productMerged = mergedCart.find((item) => item._id === id);
-		if (productMerged !== undefined) {
-			if (productMerged.quantity > maxQuantity) {
-				displayAlert(
-					'Info',
-					`You have exceeded the number of available products!`,
-					'info',
-				);
-			} else {
-				const newQuantity = productMerged.quantity + 1;
-				if (newQuantity > maxQuantity) {
-					displayAlert(
-						'Info',
-						'You have exceeded the number of available products!',
-						'info',
-					);
-				} else {
-					setQuantity(newQuantity);
-				}
-			}
-		} else {
-			if (quantity > maxQuantity) {
-				displayAlert(
-					'Info',
-					'You have exceeded the number of available products!',
-					'info',
-				);
-			} else {
-				setQuantity(quantity + 1);
-			}
-		}
-	};
-
-	const handleQuantity2 = (type, id) => {
-		const item = [...productGet, ...offerGet].find((item) => {
-			return item._id === id;
-		});
-		const maxQuantity = item?.quantity - 1;
-		if (type === 'dec') {
-			handleQuantityDecrement();
-		} else {
-			handleQuantityIncrement(id, maxQuantity);
-		}
+	const handleQuantityIncrement = (id) => {
+		console.log(id);
+		setQuantity(quantity + 1);
+		console.log(quantity);
+		console.log(`selectedVariants`, selectedVariants);
+		// if (quantity >= selectedVariants[0].quantity) {
+		// 	displayAlert(
+		// 		'Info',
+		// 		'You have exceeded the number of available products!',
+		// 		'info',
+		// 	);
+		// } else {
+		// 	setQuantity(quantity + 1);
+		// }
 	};
 
 	const chekAvail2 = () => {
@@ -741,8 +745,7 @@ const Catog = ({ item }) => {
 														<button className='block_quantity__button block_quantity__up'>
 															<ArrowDown
 																onClick={() => {
-																	handleQuantity2(
-																		'dec',
+																	handleQuantityDecrement(
 																		zaidVar,
 																	);
 																}}
@@ -752,8 +755,7 @@ const Catog = ({ item }) => {
 														<button className='block_quantity__button block_quantity__down'>
 															<ArrowUp
 																onClick={() => {
-																	handleQuantity2(
-																		'inc',
+																	handleQuantityIncrement(
 																		zaidVar,
 																	);
 																}}
