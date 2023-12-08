@@ -131,13 +131,6 @@ const Catog = ({ item }) => {
 			document.querySelectorAll('.AddCart').forEach((item) => {
 				item.removeAttribute('color');
 			});
-			const catogCard = document.querySelector('.CatogCard');
-			const backLayerForShowCart = document.querySelector(
-				'.backLayerForShowCart',
-			);
-			const sliderItemsContainer = document.querySelector(
-				'.sliderBlock_items50',
-			);
 
 			const idProduct = item.getAttribute('catog-id');
 
@@ -148,10 +141,19 @@ const Catog = ({ item }) => {
 					  )
 					: AllProducts?.find((product) => product._id === idProduct),
 			);
+		},
+		[AllProducts, isLoading, offerGet, productGet],
+	);
 
-			if (!viewArrCatog) {
-				return;
-			}
+	useEffect(() => {
+		if (viewArrCatog) {
+			const catogCard = document.querySelector('.CatogCard');
+			const backLayerForShowCart = document.querySelector(
+				'.backLayerForShowCart',
+			);
+			const sliderItemsContainer = document.querySelector(
+				'.sliderBlock_items50',
+			);
 
 			console.log(`viewArrCatog`, viewArrCatog);
 
@@ -172,35 +174,12 @@ const Catog = ({ item }) => {
 				.querySelector('.block_product__advantagesProduct')
 				.append(viewArrCatog.desc);
 
-			//////test
+			// Rest of your code that relies on `viewArrCatog`
+		}
+	}, [viewArrCatog]);
 
-			// viewArrCatog.color.forEach((color) => {
-			// 	if (color.length !== 0) {
-			// 		const { input, label } = createRadioElement(color);
-			// 		aramex.appendChild(input);
-			// 		aramex.appendChild(label);
-			// 		input.addEventListener('click', (event) => {
-			// 			if (
-			// 				event.target.nextElementSibling.style.border ===
-			// 				'3px solid black'
-			// 			) {
-			// 				event.target.nextElementSibling.style.border =
-			// 					'1px solid black';
-			// 			} else {
-			// 				document.querySelectorAll('.AddCart').forEach((item) => {
-			// 					item.setAttribute('color', event.target.value);
-			// 				});
-			// 				const siblings = getSiblings(event.target);
-			// 				siblings.forEach((sibling) => {
-			// 					sibling.style.border = '1px solid black';
-			// 				});
-			// 				event.target.nextElementSibling.style.border =
-			// 					'3px solid black';
-			// 			}
-			// 		});
-			// 	}
-			// });
-
+	useEffect(() => {
+		if (viewArrCatog) {
 			viewArrCatog.variants.forEach((variant) => {
 				variant.color.forEach((color) => {
 					if (color.length !== 0) {
@@ -209,114 +188,33 @@ const Catog = ({ item }) => {
 						aramex.appendChild(label);
 						input.addEventListener('click', (event) => {
 							setSelectedColor(event.target.value);
-
 							const selectedVariant = viewArrCatog.variants.find(
 								(variant) => variant.color.includes(event.target.value),
 							);
 							setSelectedVariants([selectedVariant]);
 							setQuantity(1);
-
-							console.log(`selectedVariant`, selectedVariant);
-							if (
-								event.target.nextElementSibling.style.border ===
-								'3px solid black'
-							) {
-								event.target.nextElementSibling.style.border =
-									'1px solid black';
-							} else {
-								document
-									.querySelectorAll('.AddCart')
-									.forEach((item) => {
-										item.setAttribute('color', event.target.value);
-									});
-								const siblings = getSiblings(event.target);
-								siblings.forEach((sibling) => {
-									sibling.style.border = '1px solid black';
-								});
-								event.target.nextElementSibling.style.border =
-									'3px solid black';
-							}
 						});
 					}
 				});
 			});
 
-			//////test
-			// viewArrCatog.img.forEach((img) => {
-			// 	imagesSlider.push(img);
-			// });
-
-			//root	// sliderItemsContainer.innerHTML = '';
-
-			// imagesSlider.forEach((imageUrl, index) => {
-			// 	const li = document.createElement('li');
-			// 	li.className = 'sliderBlock_items__itemPhoto55';
-			// 	if (index === 0) {
-			// 		li.classList.add('sliderBlock_items__showing60');
-			// 	}
-
-			// 	const img = document.createElement('img');
-			// 	img.src = imageUrl;
-			// 	img.alt = 'headphones';
-
-			// 	li.appendChild(img);
-			// 	sliderItemsContainer.appendChild(li);
-			// });   //root
+			// Generate unique sizes for all variants
+			const allSizes = viewArrCatog.variants.flatMap(
+				(variant) => variant.size,
+			);
+			const uniqueSizes = Array.from(new Set(allSizes));
 
 			filterSizeCatog.innerHTML = '';
-
-			///test
-			// viewArrCatog.size.forEach((size) => {
-			// 	const option = new Option(size, size);
-			// 	filterSizeCatog.appendChild(option);
-			// 	if (size === viewArrCatog.size[0]) {
-			// 		option.selected = true;
-			// 		setSize(size);
-			// 	}
-			// });
-			viewArrCatog.variants.forEach((variant) => {
-				const uniqueSizes = Array.from(new Set(variant.size));
-				uniqueSizes.forEach((size) => {
-					const option = new Option(size, size);
-
-					filterSizeCatog.appendChild(option);
-					if (size === uniqueSizes[0]) {
-						option.selected = true;
-						setSize(size);
-					}
-				});
-			});
-
-			currency.textContent = `$${viewArrCatog.price}`;
-		},
-		[
-			AllProducts,
-			aramex,
-			filterSizeCatog,
-			currency,
-			isLoading,
-			offerGet,
-			productGet,
-			imagesSlider,
-		],
-	);
-	useEffect(() => {
-		if (viewArrCatog) {
-			const filteredSizes = viewArrCatog.variants
-				.filter((variant) => variant.color.includes(selectedColor))
-				.flatMap((variant) => variant.size);
-
-			filterSizeCatog.innerHTML = '';
-			filteredSizes.forEach((size) => {
+			uniqueSizes.forEach((size) => {
 				const option = new Option(size, size);
 				filterSizeCatog.appendChild(option);
-				if (size === filteredSizes[0]) {
+				if (size === uniqueSizes[0]) {
 					option.selected = true;
 					setSize(size);
 				}
 			});
 		}
-	}, [selectedColor, viewArrCatog]);
+	}, [viewArrCatog]);
 
 	showCartItems.forEach((item) => {
 		item.addEventListener('click', () => {
