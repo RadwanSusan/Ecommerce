@@ -275,10 +275,12 @@ const Catog = ({ item }) => {
 			// 	}
 			// });
 			viewArrCatog.variants.forEach((variant) => {
-				variant.size.forEach((size) => {
+				const uniqueSizes = Array.from(new Set(variant.size));
+				uniqueSizes.forEach((size) => {
 					const option = new Option(size, size);
+
 					filterSizeCatog.appendChild(option);
-					if (size === variant.size[0]) {
+					if (size === uniqueSizes[0]) {
 						option.selected = true;
 						setSize(size);
 					}
