@@ -191,12 +191,20 @@ const Catog = ({ item }) => {
 						aramex.appendChild(label);
 						input.addEventListener('click', (event) => {
 							setSelectedColor(event.target.value);
+							const previousSelectedColor =
+								document.querySelector('.selectedColor');
+							if (previousSelectedColor) {
+								previousSelectedColor.classList.remove('selectedColor');
+							}
+
+							label.classList.add('selectedColor');
 
 							const selectedVariant = viewArrCatog.variants.find(
 								(variant) => variant.color.includes(event.target.value),
 							);
 							setSelectedVariants([selectedVariant]);
 							setQuantity(1);
+							console.log(`selectedVariants`, selectedVariants);
 
 							// Generate unique sizes for selected color
 							const allSizes = selectedVariant.size;
@@ -294,6 +302,13 @@ const Catog = ({ item }) => {
 		swal(title, message, type);
 	};
 
+	useEffect(() => {
+		setSelectedVariants(selectedVariants);
+		// Now this will run after selectedVariants has been updated
+		console.log(`selectedVariants`, selectedVariants);
+	}, [selectedVariants]);
+	console.log(`selectedVariants`, selectedVariants);
+
 	const handleQuantityDecrement = () => {
 		if (quantity <= 1) {
 			displayAlert('Info', 'The minimum quantity is 1', 'info');
@@ -302,21 +317,32 @@ const Catog = ({ item }) => {
 		}
 	};
 
-	const handleQuantityIncrement = (id) => {
-		console.log(id);
-		setQuantity(quantity + 1);
-		console.log(quantity);
-		console.log(`selectedVariants`, selectedVariants);
-		// if (quantity >= selectedVariants[0].quantity) {
-		// 	displayAlert(
-		// 		'Info',
-		// 		'You have exceeded the number of available products!',
-		// 		'info',
-		// 	);
-		// } else {
-		// 	setQuantity(quantity + 1);
-		// }
-	};
+	const handleQuantityIncrement = useCallback(() => {
+		setQuantity((prevQuantity) => {
+			const newQuantity = prevQuantity + 1;
+			console.log(newQuantity);
+
+			let variantExceeded = false;
+			if (selectedVariants.length > 0) {
+				for (let variant of selectedVariants) {
+					if (newQuantity > variant.quantity) {
+						displayAlert(
+							'Info',
+							'You have exceeded the number of available products!',
+							'info',
+						);
+						variantExceeded = true;
+						break;
+					}
+				}
+			} else {
+				displayAlert('Info', 'Please select a color first', 'info');
+				variantExceeded = true;
+			}
+
+			return variantExceeded ? 1 : newQuantity;
+		});
+	}, [selectedVariants]);
 
 	const chekAvail2 = () => {
 		let newQuantity = mergedCart.map((item) => {
