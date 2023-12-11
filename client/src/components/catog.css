@@ -227,6 +227,9 @@
 	.block:last-child {
 		margin-bottom: 0;
 	}
+	.selectedColor {
+		border: 2px solid #000; /* Change border color as needed */
+	}
 
 	*,
 	:before,

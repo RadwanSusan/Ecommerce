@@ -45,6 +45,9 @@ const Catog = ({ item }) => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const [selectedColor, setSelectedColor] = useState('');
+	const [selectedSize, setSelectedSize] = useState(null);
+	const [selectedColorElement, setSelectedColorElement] = useState(null);
+
 	const [selectedVariants, setSelectedVariants] = useState([]);
 
 	const [viewArrCatog, setViewArrCatog] = useState(null);
@@ -188,17 +191,32 @@ const Catog = ({ item }) => {
 						aramex.appendChild(label);
 						input.addEventListener('click', (event) => {
 							setSelectedColor(event.target.value);
+
 							const selectedVariant = viewArrCatog.variants.find(
 								(variant) => variant.color.includes(event.target.value),
 							);
 							setSelectedVariants([selectedVariant]);
 							setQuantity(1);
+
+							// Generate unique sizes for selected color
+							const allSizes = selectedVariant.size;
+							const uniqueSizes = Array.from(new Set(allSizes));
+
+							filterSizeCatog.innerHTML = '';
+							uniqueSizes.forEach((size) => {
+								const option = new Option(size, size);
+								filterSizeCatog.appendChild(option);
+								if (size === uniqueSizes[0]) {
+									option.selected = true;
+									setSize(size);
+								}
+							});
 						});
 					}
 				});
 			});
 
-			// Generate unique sizes for all variants
+			// Generate all unique sizes initially
 			const allSizes = viewArrCatog.variants.flatMap(
 				(variant) => variant.size,
 			);
@@ -215,6 +233,30 @@ const Catog = ({ item }) => {
 			});
 		}
 	}, [viewArrCatog]);
+
+	useEffect(() => {
+		if (selectedSize) {
+			const selectedVariants = viewArrCatog.variants.filter((variant) =>
+				variant.size.includes(selectedSize),
+			);
+			setSelectedVariants(selectedVariants);
+
+			// Generate unique colors for selected size
+			const allColors = selectedVariants.flatMap((variant) => variant.color);
+			const uniqueColors = Array.from(new Set(allColors));
+
+			aramex.innerHTML = '';
+			uniqueColors.forEach((color) => {
+				const { input, label } = createRadioElement(color);
+				aramex.appendChild(input);
+				aramex.appendChild(label);
+				if (color === uniqueColors[0]) {
+					input.checked = true;
+					setSelectedColor(color);
+				}
+			});
+		}
+	}, [selectedSize, viewArrCatog]);
 
 	showCartItems.forEach((item) => {
 		item.addEventListener('click', () => {
@@ -569,57 +611,6 @@ const Catog = ({ item }) => {
 
 									<p className='block_product__advantagesProduct CatogCardDesc'></p>
 									<div className='block_informationAboutDevice'>
-										<div className='block_descriptionCharacteristic block_descriptionCharacteristic__disActive'>
-											<table className='block_specificationInformation_table'>
-												<tr>
-													<th>Characteristic</th>
-													<th>Value</th>
-												</tr>
-												<tr>
-													<td>Ear Coupling</td>
-													<td>Around Ear</td>
-												</tr>
-												<tr>
-													<td>Transducer Principle</td>
-													<td>Dynamic, Closed-back</td>
-												</tr>
-												<tr>
-													<td>Frequency Response</td>
-													<td>16Hz – 22kHz</td>
-												</tr>
-												<tr>
-													<td>Sound Pressure Level (SPL)</td>
-													<td>113 dB (Passive: 1 kHz/1 Vrms)</td>
-												</tr>
-												<tr>
-													<td>Total Harmonic Distortion (THD)</td>
-													<td>&lt;0.5% (1 kHz, 100 dB SPL)</td>
-												</tr>
-												<tr>
-													<td>Volume Control</td>
-													<td>
-														Earcup control when Bluetooth
-														connected
-													</td>
-												</tr>
-												<tr>
-													<td>Microphone Type</td>
-													<td>
-														Dual omni-directional microphone{' '}
-														<br />2 mic beam forming array
-													</td>
-												</tr>
-												<tr>
-													<td>Cable / Connector</td>
-													<td>1.4m (Detachable) / 3.5mm Angled</td>
-												</tr>
-												<tr>
-													<td>Weight</td>
-													<td>260g (9.17 oz)</td>
-												</tr>
-											</table>
-										</div>
-
 										<div className='row11 '>
 											<div className='large-6 small-12 column left-align'>
 												<div className='block_price'>
