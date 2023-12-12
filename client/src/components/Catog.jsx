@@ -52,6 +52,8 @@ const Catog = ({ item }) => {
 
 	const [viewArrCatog, setViewArrCatog] = useState(null);
 
+	let selectedVariantTemp;
+
 	useEffect(() => {
 		const getProducts = async () => {
 			try {
@@ -202,9 +204,11 @@ const Catog = ({ item }) => {
 							const selectedVariant = viewArrCatog.variants.find(
 								(variant) => variant.color.includes(event.target.value),
 							);
+							selectedVariantTemp = selectedVariant;
 							setSelectedVariants([selectedVariant]);
 							setQuantity(1);
 							console.log(`selectedVariants`, selectedVariants);
+							console.log(`selectedVariantTemp`, selectedVariantTemp);
 
 							// Generate unique sizes for selected color
 							const allSizes = selectedVariant.size;
@@ -304,10 +308,11 @@ const Catog = ({ item }) => {
 
 	useEffect(() => {
 		setSelectedVariants(selectedVariants);
+		selectedVariantTemp = selectedVariants;
 		// Now this will run after selectedVariants has been updated
 		console.log(`selectedVariants`, selectedVariants);
+		console.log(`selectedVariantTemp`, selectedVariantTemp);
 	}, [selectedVariants]);
-	console.log(`selectedVariants`, selectedVariants);
 
 	const handleQuantityDecrement = () => {
 		if (quantity <= 1) {
@@ -316,33 +321,26 @@ const Catog = ({ item }) => {
 			setQuantity(quantity - 1);
 		}
 	};
-
 	const handleQuantityIncrement = useCallback(() => {
-		setQuantity((prevQuantity) => {
-			const newQuantity = prevQuantity + 1;
-			console.log(newQuantity);
-
-			let variantExceeded = false;
-			if (selectedVariants.length > 0) {
-				for (let variant of selectedVariants) {
-					if (newQuantity > variant.quantity) {
-						displayAlert(
-							'Info',
-							'You have exceeded the number of available products!',
-							'info',
-						);
-						variantExceeded = true;
-						break;
-					}
+		if (viewArrCatog) {
+			if (selectedVariantTemp) {
+				// Check the temporary variable instead of selectedVariants
+				if (quantity < selectedVariantTemp.quantity) {
+					// Use the temporary variable here as well
+					setQuantity(quantity + 1);
+				} else {
+					displayAlert(
+						'Info',
+						'You have exceeded the number of available products!',
+						'info',
+					);
+					setQuantity(1);
 				}
 			} else {
 				displayAlert('Info', 'Please select a color first', 'info');
-				variantExceeded = true;
 			}
-
-			return variantExceeded ? 1 : newQuantity;
-		});
-	}, [selectedVariants]);
+		}
+	}, [quantity, selectedVariantTemp, viewArrCatog]);
 
 	const chekAvail2 = () => {
 		let newQuantity = mergedCart.map((item) => {
