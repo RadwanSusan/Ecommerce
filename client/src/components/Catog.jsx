@@ -33,6 +33,7 @@ const Catog = ({ item }) => {
 	const imagesSlider = [];
 
 	const [zaidVar, setZaidVar] = useState(0);
+	const [idSelected, setIdSelected] = useState(0);
 	const [product_id, setProduct_id] = useState(0);
 	const [quantity, setQuantity] = useState(1);
 	// const [color, setColor] = useState('');
@@ -171,6 +172,7 @@ const Catog = ({ item }) => {
 				viewArrCatog.desc;
 			aramex.innerHTML = '';
 			setZaidVar(viewArrCatog._id);
+
 			setProduct_id(viewArrCatog._id);
 			document.querySelector('.nameProducts2').innerHTML =
 				viewArrCatog.title;
@@ -204,9 +206,10 @@ const Catog = ({ item }) => {
 							const selectedVariant = viewArrCatog.variants.find(
 								(variant) => variant.color.includes(event.target.value),
 							);
-							selectedVariantTemp = selectedVariant;
 							setSelectedVariants([selectedVariant]);
+							selectedVariantTemp = selectedVariant;
 							setQuantity(1);
+							setIdSelected(selectedVariant._id);
 							console.log(`selectedVariants`, selectedVariants);
 							console.log(`selectedVariantTemp`, selectedVariantTemp);
 
@@ -306,27 +309,24 @@ const Catog = ({ item }) => {
 		swal(title, message, type);
 	};
 
+	const selectedVariantTempRef = useRef();
+
 	useEffect(() => {
-		setSelectedVariants(selectedVariants);
-		selectedVariantTemp = selectedVariants;
-		// Now this will run after selectedVariants has been updated
-		console.log(`selectedVariants`, selectedVariants);
-		console.log(`selectedVariantTemp`, selectedVariantTemp);
+		setSelectedVariants((selectedVariants) => {
+			selectedVariantTempRef.current = selectedVariants;
+			console.log(`selectedVariants`, selectedVariants);
+			console.log(`selectedVariantTemp`, selectedVariantTempRef.current);
+			return selectedVariants;
+		});
 	}, [selectedVariants]);
 
-	const handleQuantityDecrement = () => {
-		if (quantity <= 1) {
-			displayAlert('Info', 'The minimum quantity is 1', 'info');
-		} else {
-			setQuantity(quantity - 1);
-		}
-	};
-	const handleQuantityIncrement = useCallback(() => {
+	const handleQuantityIncrement = () => {
+		console.log(`selectedVariantTemp`, selectedVariantTempRef.current);
+
+		console.log(`viewArrCatog`, viewArrCatog);
 		if (viewArrCatog) {
 			if (selectedVariantTemp) {
-				// Check the temporary variable instead of selectedVariants
 				if (quantity < selectedVariantTemp.quantity) {
-					// Use the temporary variable here as well
 					setQuantity(quantity + 1);
 				} else {
 					displayAlert(
@@ -340,7 +340,14 @@ const Catog = ({ item }) => {
 				displayAlert('Info', 'Please select a color first', 'info');
 			}
 		}
-	}, [quantity, selectedVariantTemp, viewArrCatog]);
+	};
+	const handleQuantityDecrement = () => {
+		if (quantity <= 1) {
+			displayAlert('Info', 'The minimum quantity is 1', 'info');
+		} else {
+			setQuantity(quantity - 1);
+		}
+	};
 
 	const chekAvail2 = () => {
 		let newQuantity = mergedCart.map((item) => {
@@ -672,6 +679,7 @@ const Catog = ({ item }) => {
 																onClick={() => {
 																	handleQuantityIncrement(
 																		zaidVar,
+																		idSelected,
 																	);
 																}}
 																className='AiOutlineArrowUpanddown up5'

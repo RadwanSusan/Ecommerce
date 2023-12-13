@@ -459,11 +459,9 @@ const Product = () => {
 	const findSelectedVariant = () => {
 		if (product.variants) {
 			const selectedVariant2 = product.variants.find(
-				(variant) => variant.size[0] === size || variant.color[0] === color,
+				(variant) => variant.size[0] === size && variant.color[0] === color,
 			);
-
 			setSelectedVariant(selectedVariant2);
-			// setavailableQuantityAfterUpdate(selectedVariant2 ? selectedVariant2.quantity : 0);
 		}
 	};
 
