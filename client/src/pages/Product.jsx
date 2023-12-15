@@ -365,6 +365,13 @@ const Product = () => {
 
 		setQuantity(1);
 		setColor(color);
+		const defaultSize = sizes[0];
+		setSize(defaultSize);
+
+		// Filter the variants based on the selected color and the default size
+		const selectedVariant = variants.find((variant) =>
+			variant.size.includes(defaultSize),
+		);
 
 		const cartProduct = mergedCart.find(
 			(item) =>
@@ -457,9 +464,24 @@ const Product = () => {
 	};
 
 	const findSelectedVariant = () => {
-		if (product.variants) {
+		if (
+			product &&
+			product.variants &&
+			availableSizes.length === 1 &&
+			availableColors.length === 1
+		) {
+			// When there is only one available size and color, find the variant that matches both.
 			const selectedVariant2 = product.variants.find(
-				(variant) => variant.size[0] === size && variant.color[0] === color,
+				(variant) =>
+					variant.size.includes(availableSizes[0]) &&
+					variant.color.includes(availableColors[0]),
+			);
+			setSelectedVariant(selectedVariant2);
+		} else if (product && product.variants) {
+			// When there is more than one available size or color, find the variant that matches the currently selected size and color.
+			const selectedVariant2 = product.variants.find(
+				(variant) =>
+					variant.size.includes(size) && variant.color.includes(color),
 			);
 			setSelectedVariant(selectedVariant2);
 		}
