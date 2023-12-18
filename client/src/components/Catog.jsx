@@ -53,9 +53,18 @@ const Catog = ({ item }) => {
 
 	const [viewArrCatog, setViewArrCatog] = useState(null);
 
-	let selectedVariantTemp;
+	const [resetTrigger, setResetTrigger] = useState(0);
 
 	useEffect(() => {
+		console.log('Selected color has changed to:', selectedColor); // Add this line
+		setQuantity(1);
+		setResetTrigger((prev) => prev + 1); // Increment the reset trigger to force re-render
+	}, [selectedColor]);
+
+	// let selectedVariantTemp;
+	const selectedVariantTemp = useRef();
+	useEffect(() => {
+		console.log('60');
 		const getProducts = async () => {
 			try {
 				const res = await axios.get(
@@ -72,6 +81,7 @@ const Catog = ({ item }) => {
 	}, [item?.cat]);
 
 	useEffect(() => {
+		console.log('76');
 		const fetchData = async () => {
 			try {
 				const [productsRes, offersRes] = await Promise.all([
@@ -152,7 +162,18 @@ const Catog = ({ item }) => {
 	);
 
 	useEffect(() => {
+		console.log('156');
 		if (viewArrCatog) {
+			selectedVariantTemp.current = viewArrCatog.variants[0];
+			console.log('FIRST USEEFFECT');
+		}
+	}, [viewArrCatog]);
+
+	useEffect(() => {
+		console.log('163');
+		if (viewArrCatog) {
+			const setAttributeForQuintity =
+				document.querySelector('.selectedColor');
 			const catogCard = document.querySelector('.CatogCard');
 			const backLayerForShowCart = document.querySelector(
 				'.backLayerForShowCart',
@@ -185,6 +206,24 @@ const Catog = ({ item }) => {
 		}
 	}, [viewArrCatog]);
 
+	const handleQuantityIncrement = () => {
+		const selectedcolorquantity = document.querySelector('.selectedColor');
+		console.log(selectedcolorquantity?.getAttribute('quantity'));
+		const quantity501 = parseInt(
+			selectedcolorquantity?.getAttribute('quantity'),
+		);
+		if (viewArrCatog) {
+			if (quantity501 < quantity + 1) {
+				swal('Error', 'The maximum quantity is ' + quantity, 'error');
+			} else {
+				setQuantity((prevQuantity) => {
+					const newQuantity = prevQuantity + 1;
+					return newQuantity;
+				});
+			}
+		}
+	};
+
 	useEffect(() => {
 		if (viewArrCatog) {
 			viewArrCatog.variants.forEach((variant) => {
@@ -200,36 +239,53 @@ const Catog = ({ item }) => {
 							if (previousSelectedColor) {
 								previousSelectedColor.classList.remove('selectedColor');
 							}
-
 							label.classList.add('selectedColor');
-
 							const selectedVariant = viewArrCatog.variants.find(
 								(variant) => variant.color.includes(event.target.value),
 							);
+							selectedVariantTemp.current = selectedVariant;
+							// Update the quantity attribute of the selected color
+							label.setAttribute('quantity', selectedVariant.quantity);
 							setSelectedVariants([selectedVariant]);
-							selectedVariantTemp = selectedVariant;
-							setQuantity(1);
 							setIdSelected(selectedVariant._id);
-							console.log(`selectedVariants`, selectedVariants);
-							console.log(`selectedVariantTemp`, selectedVariantTemp);
 
-							// Generate unique sizes for selected color
-							const allSizes = selectedVariant.size;
-							const uniqueSizes = Array.from(new Set(allSizes));
+							const sizesForSelectedColor = selectedVariant.size;
+							console.log(sizesForSelectedColor);
+
+							setQuantity(1);
+
+							const uniqueSizes = Array.from(
+								new Set(sizesForSelectedColor),
+							);
 
 							filterSizeCatog.innerHTML = '';
+
 							uniqueSizes.forEach((size) => {
 								const option = new Option(size, size);
 								filterSizeCatog.appendChild(option);
-								if (size === uniqueSizes[0]) {
-									option.selected = true;
-									setSize(size);
-								}
+								option.addEventListener('click', (event) => {
+									setSelectedSize(event.target.value);
+									const selectedVariant = viewArrCatog.variants.find(
+										(variant) =>
+											variant.size.includes(event.target.value),
+									);
+									selectedVariantTemp.current = selectedVariant;
+									// Update the quantity attribute of the selected size
+									option.setAttribute(
+										'quantity',
+										selectedVariant.quantity,
+									);
+									setSelectedVariants([selectedVariant]);
+									setIdSelected(selectedVariant._id);
+									setQuantity(1);
+								});
 							});
 						});
 					}
 				});
 			});
+
+			///
 
 			// Generate all unique sizes initially
 			const allSizes = viewArrCatog.variants.flatMap(
@@ -246,8 +302,16 @@ const Catog = ({ item }) => {
 					setSize(size);
 				}
 			});
+
+			//
 		}
-	}, [viewArrCatog]);
+	}, [
+		viewArrCatog,
+		selectedVariantTemp,
+		setSelectedColor,
+		setSelectedVariants,
+		setQuantity,
+	]);
 
 	useEffect(() => {
 		if (selectedSize) {
@@ -255,11 +319,8 @@ const Catog = ({ item }) => {
 				variant.size.includes(selectedSize),
 			);
 			setSelectedVariants(selectedVariants);
-
-			// Generate unique colors for selected size
 			const allColors = selectedVariants.flatMap((variant) => variant.color);
 			const uniqueColors = Array.from(new Set(allColors));
-
 			aramex.innerHTML = '';
 			uniqueColors.forEach((color) => {
 				const { input, label } = createRadioElement(color);
@@ -268,10 +329,11 @@ const Catog = ({ item }) => {
 				if (color === uniqueColors[0]) {
 					input.checked = true;
 					setSelectedColor(color);
+					setQuantity(1);
 				}
 			});
 		}
-	}, [selectedSize, viewArrCatog]);
+	}, [selectedSize, viewArrCatog, setSelectedVariants, setSelectedColor]);
 
 	showCartItems.forEach((item) => {
 		item.addEventListener('click', () => {
@@ -311,36 +373,6 @@ const Catog = ({ item }) => {
 
 	const selectedVariantTempRef = useRef();
 
-	useEffect(() => {
-		setSelectedVariants((selectedVariants) => {
-			selectedVariantTempRef.current = selectedVariants;
-			console.log(`selectedVariants`, selectedVariants);
-			console.log(`selectedVariantTemp`, selectedVariantTempRef.current);
-			return selectedVariants;
-		});
-	}, [selectedVariants]);
-
-	const handleQuantityIncrement = () => {
-		console.log(`selectedVariantTemp`, selectedVariantTempRef.current);
-
-		console.log(`viewArrCatog`, viewArrCatog);
-		if (viewArrCatog) {
-			if (selectedVariantTemp) {
-				if (quantity < selectedVariantTemp.quantity) {
-					setQuantity(quantity + 1);
-				} else {
-					displayAlert(
-						'Info',
-						'You have exceeded the number of available products!',
-						'info',
-					);
-					setQuantity(1);
-				}
-			} else {
-				displayAlert('Info', 'Please select a color first', 'info');
-			}
-		}
-	};
 	const handleQuantityDecrement = () => {
 		if (quantity <= 1) {
 			displayAlert('Info', 'The minimum quantity is 1', 'info');
@@ -461,11 +493,9 @@ const Catog = ({ item }) => {
 			swal('Error', 'Something went wrong', 'error');
 		}
 	};
-
 	const isMountedRef = useRef(true);
 	const [wishlistData, setWishlistData] = useState([]);
 	let userId = localStorage.getItem('persist:root');
-
 	useEffect(async () => {
 		if (JSON.parse(userId).user) {
 			try {
@@ -493,7 +523,7 @@ const Catog = ({ item }) => {
 		return null;
 	}
 
-	window.addEventListener('DOMContentLoaded', (event) => {
+	window.addEventListener('DOMContentLoaded', () => {
 		let currentSlide = 4;
 		const slides = document.querySelectorAll('.sliderBlock_items__itemPhoto');
 		const totalSlides = slides.length;
@@ -646,7 +676,7 @@ const Catog = ({ item }) => {
 											<div className='large-6 small-12 column left-align'>
 												<div className='block_price'>
 													<p className='block_price__currency currency'>
-														$
+														$ {viewArrCatog?.price}
 													</p>
 													<p className='block_price__shipping'>
 														Shipping and taxes extra
@@ -656,13 +686,19 @@ const Catog = ({ item }) => {
 													<span className='text_specification'>
 														Quantity
 													</span>
-													<div className='block_quantity__chooseBlock'>
+													<div
+														key={resetTrigger}
+														zaid={resetTrigger}
+														className='block_quantity__chooseBlock'
+														readOnly
+													>
 														<input
 															className='block_quantity__number block_quantity__number2'
 															name='quantityNumber'
 															type='text'
 															min='1'
 															value={quantity}
+															readOnly
 														/>
 														<button className='block_quantity__button block_quantity__up'>
 															<ArrowDown
