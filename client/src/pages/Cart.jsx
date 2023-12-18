@@ -352,7 +352,6 @@ const Cart = () => {
 			(item) => item._id === selectedVariantId,
 		);
 
-
 		const updatedQuantity = cart.products.find(
 			(item) => item.selectedVariant._id === selectedVariantId,
 		);
@@ -395,7 +394,6 @@ const Cart = () => {
 		getOrders();
 	}, []);
 
-
 	const [matchedOrders, setMatchedOrders] = useState([]);
 
 	useEffect(() => {
@@ -436,7 +434,6 @@ const Cart = () => {
 		fetchData();
 	}, []);
 
-
 	return (
 		<Container>
 			<Announcement />
@@ -466,7 +463,7 @@ const Cart = () => {
 							mergedCart.map((product) => (
 								<Product>
 									<ProductDetail>
-										<Image src={product.selectedVariant.img[0]} />
+										<Image src={product.selectedVariant?.img[0]} />
 										<Details>
 											<ProductName>
 												<b>Product:</b> {product.title}
@@ -475,10 +472,10 @@ const Cart = () => {
 												<b>ID:</b> {product._id}
 											</ProductId>
 											<ProductColor
-												color={product.selectedVariant.color}
+												color={product.selectedVariant?.color}
 											/>
 											<ProductSize>
-												<b>Size:</b> {product.selectedVariant.size}
+												<b>Size:</b> {product.selectedVariant?.size}
 											</ProductSize>
 											{/* {product.variants.map((variant) => (
 												<>
@@ -521,7 +518,6 @@ const Cart = () => {
 													);
 												}}
 											/>
-										
 
 											<ProductAmount>
 												{product.quantity}

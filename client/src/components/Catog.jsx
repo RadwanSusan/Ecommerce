@@ -319,6 +319,7 @@ const Catog = ({ item }) => {
 				variant.size.includes(selectedSize),
 			);
 			setSelectedVariants(selectedVariants);
+			console.log(selectedVariants);
 			const allColors = selectedVariants.flatMap((variant) => variant.color);
 			const uniqueColors = Array.from(new Set(allColors));
 			aramex.innerHTML = '';
@@ -407,27 +408,47 @@ const Catog = ({ item }) => {
 
 	const addToCart = (ele) => {
 		const productId = ele.target.getAttribute('product_id');
+
+		const colorSelected = document.querySelector('.radio_button').value;
+
+		console.log(colorSelected);
+
+		const sizeSelected = document.querySelector('.FilterSizeCatog').value;
+
+		console.log(sizeSelected);
+
 		const item = findItemById(productId);
+		console.log(item);
+
+		const selectedvariantsNew = item.variants.find(
+			(variant) =>
+				variant.color[0] === colorSelected &&
+				variant.size[0] === sizeSelected,
+		);
+		console.log(selectedvariantsNew);
+
 		if (!item) {
 			showInfoMessage('Product not found!');
 			return;
 		}
+
 		const cartItem = cartItemMap.get(productId);
 		if (cartItem && cartItem.quantity === item.quantity) {
 			disableAddCartBtn(addCartBtn);
 			showInfoMessage('You already have the maximum amount!');
 			return;
 		}
-		if (!cartItem || cartItem.quantity + quantity <= item.quantity) {
-			const color = ele.target.getAttribute('color');
+		if (true) {
 			dispatch(
 				addProduct({
 					...item,
 					quantity,
-					color,
-					size,
+					selectedVariant: selectedvariantsNew,
 				}),
 			);
+			console.log({
+				...item,
+			});
 			setQuantity(1);
 			showSuccessMessage('Product added to cart!');
 			if (cartItem && cartItem.quantity <= 1) {
