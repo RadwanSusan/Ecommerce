@@ -131,12 +131,12 @@ const Catog = ({ item }) => {
 	const createRadioElement = (color) => {
 		const input = document.createElement('input');
 		input.classList.add('radio_button');
-		input.setAttribute('id', 'radioColor');
+		input.setAttribute('id', `radioColor ${color}`);
 		input.setAttribute('name', 'colorOfItem');
 		input.setAttribute('checked', 'checked');
 		input.setAttribute('value', color);
 		const label = document.createElement('label');
-		label.setAttribute('for', 'radioColor');
+		label.setAttribute('for', `radioColor ${color}`);
 		label.classList.add('block_goodColor__radio', 'block_goodColor__black');
 		label.style.backgroundColor = color;
 		return { input, label };
@@ -212,12 +212,14 @@ const Catog = ({ item }) => {
 		const quantity501 = parseInt(
 			selectedcolorquantity?.getAttribute('quantity'),
 		);
+
 		if (viewArrCatog) {
 			if (quantity501 < quantity + 1) {
 				swal('Error', 'The maximum quantity is ' + quantity, 'error');
 			} else {
 				setQuantity((prevQuantity) => {
 					const newQuantity = prevQuantity + 1;
+
 					return newQuantity;
 				});
 			}
@@ -409,7 +411,17 @@ const Catog = ({ item }) => {
 	const addToCart = (ele) => {
 		const productId = ele.target.getAttribute('product_id');
 
-		const colorSelected = document.querySelector('.radio_button').value;
+		// const colorSelected = document.querySelector('.radio_button').value;
+		const selectedLabel = document.querySelector('.selectedColor');
+		console.log(selectedLabel);
+
+		const inputId = selectedLabel.htmlFor;
+		console.log(inputId);
+		// Get the input element
+		const inputElement = document.getElementById(inputId);
+		console.log(inputElement);
+		// Get the color from the input element
+		const colorSelected = inputElement.value;
 
 		console.log(colorSelected);
 
@@ -419,6 +431,15 @@ const Catog = ({ item }) => {
 
 		const item = findItemById(productId);
 		console.log(item);
+		console.log(colorSelected);
+		console.log(sizeSelected);
+		console.log(
+			item.variants.find(
+				(variant) =>
+					variant.color[0] === colorSelected &&
+					variant.size[0] === sizeSelected,
+			),
+		);
 
 		const selectedvariantsNew = item.variants.find(
 			(variant) =>
@@ -438,6 +459,9 @@ const Catog = ({ item }) => {
 			showInfoMessage('You already have the maximum amount!');
 			return;
 		}
+		console.log(item);
+		console.log(selectedvariantsNew);
+
 		if (true) {
 			dispatch(
 				addProduct({
@@ -446,10 +470,12 @@ const Catog = ({ item }) => {
 					selectedVariant: selectedvariantsNew,
 				}),
 			);
+
 			console.log({
 				...item,
 			});
 			setQuantity(1);
+
 			showSuccessMessage('Product added to cart!');
 			if (cartItem && cartItem.quantity <= 1) {
 				disableAddCartBtn(addCartBtn);

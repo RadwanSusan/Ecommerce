@@ -239,9 +239,9 @@ const Cart = () => {
 	const mergedCart = cart.products.reduce((acc, curr) => {
 		const existingItem = acc.find(
 			(item) =>
-				item._id === curr._id &&
-				item.selectedVariant.color === curr.selectedVariant.color &&
-				item.selectedVariant.size === curr.selectedVariant.size,
+				item?._id === curr?._id &&
+				item.selectedVariant?.color === curr.selectedVariant?.color &&
+				item.selectedVariant?.size === curr.selectedVariant?.size,
 		);
 		if (existingItem) {
 			existingItem.quantity += curr.quantity;
