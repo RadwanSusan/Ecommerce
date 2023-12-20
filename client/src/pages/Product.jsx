@@ -446,7 +446,6 @@ const Product = () => {
 				}
 			});
 		} else {
-			console.log(product);
 			dispatch(
 				addProduct({
 					...product,

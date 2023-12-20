@@ -14,8 +14,8 @@ const cartSlice = createSlice({
 			console.log(`state`, state.products);
 			const existingProduct = state.products.find(
 				(product) =>
-					product?._id === newProduct?._id &&
-					product.selectedVariant?._id === newProduct.selectedVariant?._id,
+					product._id === newProduct._id &&
+					product.selectedVariant._id === newProduct.selectedVariant._id,
 			);
 			console.log(`existingProduct`, existingProduct);
 			if (existingProduct) {
