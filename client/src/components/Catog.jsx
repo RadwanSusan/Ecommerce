@@ -54,11 +54,37 @@ const Catog = ({ item }) => {
 	const [viewArrCatog, setViewArrCatog] = useState(null);
 
 	const [resetTrigger, setResetTrigger] = useState(0);
+	const filterSizeCatog = document.querySelector('.FilterSizeCatog');
 
 	useEffect(() => {
 		console.log('Selected color has changed to:', selectedColor); // Add this line
 		setQuantity(1);
 		setResetTrigger((prev) => prev + 1); // Increment the reset trigger to force re-render
+
+		// filterSizeCatog.innerHTML = '';
+		// let option;
+		// const sizesForSelectedColor = Array.from(
+		// 	new Set(selectedVariants.flatMap((variant) => variant.size)),
+		// );
+
+		// sizesForSelectedColor.forEach((size) => {
+		// 	option = new Option(size, size);
+		// 	filterSizeCatog.appendChild(option);
+		// 	filterSizeCatog.addEventListener('change', (event) => {
+		// 		setSelectedSize(event.target.value);
+		// 		const selectedVariant = viewArrCatog.variants.find((variant) =>
+		// 			variant.size.includes(event.target.value),
+		// 		);
+		// 		selectedVariantTemp.current = selectedVariant;
+		// 		option.setAttribute('quantity', selectedVariant.quantity);
+
+		// 		setSelectedVariants([selectedVariant]);
+		// 		setIdSelected(selectedVariant._id);
+		// 		setQuantity(1);
+		// 	});
+		// });
+
+		//make filter on the size
 	}, [selectedColor]);
 
 	// let selectedVariantTemp;
@@ -110,7 +136,6 @@ const Catog = ({ item }) => {
 
 	const showCartItems = Array.from(document.querySelectorAll('.show-cart2'));
 	const aramex = document.querySelector('.CatogallColors');
-	const filterSizeCatog = document.querySelector('.FilterSizeCatog');
 	const currency = document.querySelector('.currency');
 
 	const getSiblings = (e) => {
@@ -143,7 +168,8 @@ const Catog = ({ item }) => {
 	};
 
 	const handleShowCartClick = useCallback(
-		(item) => {
+		(event, item) => {
+			event.preventDefault();
 			document.querySelectorAll('.AddCart').forEach((item) => {
 				item.removeAttribute('color');
 			});
@@ -157,6 +183,8 @@ const Catog = ({ item }) => {
 					  )
 					: AllProducts?.find((product) => product._id === idProduct),
 			);
+			setSelectedColor('');
+			setSelectedSize(null);
 		},
 		[AllProducts, isLoading, offerGet, productGet],
 	);
@@ -207,11 +235,22 @@ const Catog = ({ item }) => {
 	}, [viewArrCatog]);
 
 	const handleQuantityIncrement = () => {
-		const selectedcolorquantity = document.querySelector('.selectedColor');
-		console.log(selectedcolorquantity?.getAttribute('quantity'));
-		const quantity501 = parseInt(
-			selectedcolorquantity?.getAttribute('quantity'),
-		);
+		// const selectedcolorquantity = document.querySelector(FilterSizeCatog);
+		// console.log(selectedcolorquantity);
+		// // console.log(selectedcolorquantity?.getAttribute('quantity'));
+		// const quantity501 = parseInt(
+		// 	selectedcolorquantity?.getAttribute('quantity'),
+		// );
+		const selectedOption =
+			filterSizeCatog.options[filterSizeCatog.length - 1];
+		console.log(selectedOption);
+		const quantity501 = parseInt(selectedOption.getAttribute('quantity'));
+		console.log(quantity501);
+
+		// const options = filterSizeCatog.options;
+		// const lastOption = options[options.length - 1];
+		// const quantity = lastOption.getAttribute('quantity');
+		// console.log(quantity); // Logs the quantity
 
 		if (viewArrCatog) {
 			if (quantity501 < quantity + 1) {
@@ -227,10 +266,15 @@ const Catog = ({ item }) => {
 	};
 
 	useEffect(() => {
-		if (viewArrCatog) {
+		if (viewArrCatog && !selectedSize) {
+			aramex.innerHTML = '';
+			let option;
+			const addedColors = new Set();
+
 			viewArrCatog.variants.forEach((variant) => {
 				variant.color.forEach((color) => {
-					if (color.length !== 0) {
+					if (!addedColors.has(color)) {
+						addedColors.add(color);
 						const { input, label } = createRadioElement(color);
 						aramex.appendChild(input);
 						aramex.appendChild(label);
@@ -242,44 +286,52 @@ const Catog = ({ item }) => {
 								previousSelectedColor.classList.remove('selectedColor');
 							}
 							label.classList.add('selectedColor');
-							const selectedVariant = viewArrCatog.variants.find(
+
+							const selectedVariants = viewArrCatog.variants.filter(
 								(variant) => variant.color.includes(event.target.value),
 							);
-							selectedVariantTemp.current = selectedVariant;
-							// Update the quantity attribute of the selected color
-							label.setAttribute('quantity', selectedVariant.quantity);
-							setSelectedVariants([selectedVariant]);
-							setIdSelected(selectedVariant._id);
+							console.log('selectedVariants', selectedVariants);
+							console.log('2');
 
-							const sizesForSelectedColor = selectedVariant.size;
-							console.log(sizesForSelectedColor);
+							const sizesForSelectedColor = Array.from(
+								new Set(
+									selectedVariants.flatMap((variant) => variant.size),
+								),
+							);
+							console.log(
+								'sizesForSelectedColor',
+								sizesForSelectedColor,
+							);
 
 							setQuantity(1);
 
-							const uniqueSizes = Array.from(
-								new Set(sizesForSelectedColor),
-							);
-
 							filterSizeCatog.innerHTML = '';
 
-							uniqueSizes.forEach((size) => {
-								const option = new Option(size, size);
+							sizesForSelectedColor.forEach((size) => {
+								option = new Option(size, size);
+
 								filterSizeCatog.appendChild(option);
-								option.addEventListener('click', (event) => {
+								filterSizeCatog.addEventListener('change', (event) => {
 									setSelectedSize(event.target.value);
 									const selectedVariant = viewArrCatog.variants.find(
 										(variant) =>
 											variant.size.includes(event.target.value),
 									);
 									selectedVariantTemp.current = selectedVariant;
-									// Update the quantity attribute of the selected size
 									option.setAttribute(
 										'quantity',
 										selectedVariant.quantity,
 									);
+
 									setSelectedVariants([selectedVariant]);
 									setIdSelected(selectedVariant._id);
 									setQuantity(1);
+
+									sizesForSelectedColor.forEach((size) => {
+										if (size === event.target.value) {
+											option.setAttribute('selected', 'selected');
+										}
+									});
 								});
 							});
 						});
@@ -287,9 +339,6 @@ const Catog = ({ item }) => {
 				});
 			});
 
-			///
-
-			// Generate all unique sizes initially
 			const allSizes = viewArrCatog.variants.flatMap(
 				(variant) => variant.size,
 			);
@@ -304,44 +353,148 @@ const Catog = ({ item }) => {
 					setSize(size);
 				}
 			});
-
-			//
+			filterSizeCatog.addEventListener('change', (event) => {
+				setSelectedSize(event.target.value);
+				const selectedVariant = viewArrCatog.variants.find((variant) =>
+					variant.size.includes(event.target.value),
+				);
+				selectedVariantTemp.current = selectedVariant;
+				// option.setAttribute('quantity', selectedVariant.quantity);
+				setSelectedVariants([selectedVariant]);
+				setIdSelected(selectedVariant?._id);
+				setQuantity(1);
+			});
 		}
 	}, [
 		viewArrCatog,
 		selectedVariantTemp,
 		setSelectedColor,
 		setSelectedVariants,
+		setSelectedSize,
+		setQuantity,
+	]);
+	useEffect(() => {
+		if (viewArrCatog && !selectedSize) {
+			aramex.innerHTML = '';
+			let option;
+			const addedColors = new Set();
+
+			viewArrCatog.variants.forEach((variant) => {
+				variant.color.forEach((color) => {
+					if (!addedColors.has(color)) {
+						addedColors.add(color);
+						const { input, label } = createRadioElement(color);
+						aramex.appendChild(input);
+						aramex.appendChild(label);
+						input.addEventListener('click', (event) => {
+							setSelectedColor(event.target.value);
+
+							const previousSelectedColor =
+								document.querySelector('.selectedColor');
+							if (previousSelectedColor) {
+								previousSelectedColor.classList.remove('selectedColor');
+							}
+							label.classList.add('selectedColor');
+
+							const selectedVariants = viewArrCatog.variants.filter(
+								(variant) => variant.color.includes(event.target.value),
+							);
+							console.log('selectedVariants', selectedVariants);
+
+							const sizesForSelectedColor = Array.from(
+								new Set(
+									selectedVariants.flatMap((variant) => variant.size),
+								),
+							);
+
+							setQuantity(1);
+
+							filterSizeCatog.innerHTML = '';
+
+							filterSizeCatog.addEventListener('click', (event) => {
+								console.log(event.target.value);
+								console.log(selectedSize);
+
+								// const selectedVariant = viewArrCatog.variants.find(
+								// 	(variant) =>
+								// 		variant.size.includes(event.target.value) ,
+								// );
+
+								const selectedVariant = selectedVariants.find(
+									(variant) =>
+										variant.size.includes(event.target.value),
+								);
+								console.log(selectedVariant);
+
+								selectedVariantTemp.current = selectedVariant;
+								// option.setAttribute('quantity', selectedVariant.quantity);
+								setSelectedVariants([selectedVariant]);
+								console.log(selectedVariants);
+								setIdSelected(selectedVariant?._id);
+								setQuantity(1);
+								console.log(sizesForSelectedColor);
+								sizesForSelectedColor.find((size) => {
+									if (size === event.target.value) {
+										option.setAttribute('selected', 'selected');
+										option.setAttribute(
+											'quantity',
+											selectedVariant.quantity,
+										);
+									}
+								});
+							});
+
+							sizesForSelectedColor.forEach((size) => {
+								option = new Option(size, size);
+								console.log(size);
+								console.log(event.target.value);
+								// setSelectedSize(size);
+								// console.log(selectedSize);
+
+								if (size === event.target.value) {
+									// option.setAttribute('selected', 'selected');
+									console.log('selected');
+								}
+
+								filterSizeCatog.appendChild(option);
+								console.log(option);
+							});
+						});
+					}
+				});
+			});
+		}
+	}, [
+		viewArrCatog,
+		selectedVariantTemp,
+		setSelectedColor,
+		setSelectedSize,
 		setQuantity,
 	]);
 
-	useEffect(() => {
-		if (selectedSize) {
-			const selectedVariants = viewArrCatog.variants.filter((variant) =>
-				variant.size.includes(selectedSize),
-			);
-			setSelectedVariants(selectedVariants);
-			console.log(selectedVariants);
-			const allColors = selectedVariants.flatMap((variant) => variant.color);
-			const uniqueColors = Array.from(new Set(allColors));
-			aramex.innerHTML = '';
-			uniqueColors.forEach((color) => {
-				const { input, label } = createRadioElement(color);
-				aramex.appendChild(input);
-				aramex.appendChild(label);
-				if (color === uniqueColors[0]) {
-					input.checked = true;
-					setSelectedColor(color);
-					setQuantity(1);
-				}
-			});
-		}
-	}, [selectedSize, viewArrCatog, setSelectedVariants, setSelectedColor]);
+	// useEffect(() => {
+	// 	if (viewArrCatog) {
+	// 		filterSizeCatog.addEventListener =
+	// 			('change',
+	// 			(event) => {
+	// 				setSelectedSize(event.target.value);
+	// 				const selectedVariant = viewArrCatog.variants.find((variant) =>
+	// 					variant.size.includes(event.target.value),
+	// 				);
+	// 				selectedVariantTemp.current = selectedVariant;
+	// 				// option.setAttribute('quantity', selectedVariant.quantity);
+	// 				setSelectedVariants([selectedVariant]);
+	// 				setIdSelected(selectedVariant._id);
+	// 				setQuantity(1);
+	// 				console.log('zz');
+	// 			});
+	// 	}
+	// }, [selectedSize]);
 
 	showCartItems.forEach((item) => {
-		item.addEventListener('click', () => {
+		item.addEventListener('click', (event) => {
 			setQuantity(1);
-			handleShowCartClick(item);
+			handleShowCartClick(event, item);
 		});
 	});
 
@@ -453,8 +606,12 @@ const Catog = ({ item }) => {
 			return;
 		}
 
+		console.log(cartItemMap);
+
 		const cartItem = cartItemMap.get(productId);
-		if (cartItem && cartItem.quantity === item.quantity) {
+		console.log(cartItem);
+		console.log(item);
+		if (quantity > item.quantity) {
 			disableAddCartBtn(addCartBtn);
 			showInfoMessage('You already have the maximum amount!');
 			return;
