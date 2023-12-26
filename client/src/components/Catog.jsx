@@ -61,29 +61,6 @@ const Catog = ({ item }) => {
 		setQuantity(1);
 		setResetTrigger((prev) => prev + 1); // Increment the reset trigger to force re-render
 
-		// filterSizeCatog.innerHTML = '';
-		// let option;
-		// const sizesForSelectedColor = Array.from(
-		// 	new Set(selectedVariants.flatMap((variant) => variant.size)),
-		// );
-
-		// sizesForSelectedColor.forEach((size) => {
-		// 	option = new Option(size, size);
-		// 	filterSizeCatog.appendChild(option);
-		// 	filterSizeCatog.addEventListener('change', (event) => {
-		// 		setSelectedSize(event.target.value);
-		// 		const selectedVariant = viewArrCatog.variants.find((variant) =>
-		// 			variant.size.includes(event.target.value),
-		// 		);
-		// 		selectedVariantTemp.current = selectedVariant;
-		// 		option.setAttribute('quantity', selectedVariant.quantity);
-
-		// 		setSelectedVariants([selectedVariant]);
-		// 		setIdSelected(selectedVariant._id);
-		// 		setQuantity(1);
-		// 	});
-		// });
-
 		//make filter on the size
 	}, [selectedColor]);
 
@@ -235,22 +212,39 @@ const Catog = ({ item }) => {
 	}, [viewArrCatog]);
 
 	const handleQuantityIncrement = () => {
-		// const selectedcolorquantity = document.querySelector(FilterSizeCatog);
-		// console.log(selectedcolorquantity);
-		// // console.log(selectedcolorquantity?.getAttribute('quantity'));
-		// const quantity501 = parseInt(
-		// 	selectedcolorquantity?.getAttribute('quantity'),
-		// );
+		const selectedColorLabel = document.querySelector('label.selectedColor');
+		const associatedInput = document?.getElementById(
+			selectedColorLabel?.getAttribute('for'),
+		)?.value;
+		console.log('associatedInput', associatedInput);
+
+		const filterSizeCatog = document.querySelector('.FilterSizeCatog');
+		console.log('filterSizeCatog', filterSizeCatog);
+		// iwant get  if the size is selected
+		const selectedSizeNew =
+			filterSizeCatog.options[filterSizeCatog.length - 1].getAttribute(
+				'selected',
+			);
+
+		console.log('selectedSizeNew', selectedSizeNew);
+
+		if (!associatedInput) {
+			swal('Error', 'Please select a color', 'error');
+			return;
+		}
+		if (!selectedSize && !selectedSizeNew) {
+			swal('Error', 'Please select a size', 'error');
+			return;
+		}
 		const selectedOption =
 			filterSizeCatog.options[filterSizeCatog.length - 1];
 		console.log(selectedOption);
 		const quantity501 = parseInt(selectedOption.getAttribute('quantity'));
 		console.log(quantity501);
-
-		// const options = filterSizeCatog.options;
-		// const lastOption = options[options.length - 1];
-		// const quantity = lastOption.getAttribute('quantity');
-		// console.log(quantity); // Logs the quantity
+		if (!quantity501) {
+			swal('Error', 'Please select a size', 'error');
+			return;
+		}
 
 		if (viewArrCatog) {
 			if (quantity501 < quantity + 1) {
@@ -472,25 +466,6 @@ const Catog = ({ item }) => {
 		setQuantity,
 	]);
 
-	// useEffect(() => {
-	// 	if (viewArrCatog) {
-	// 		filterSizeCatog.addEventListener =
-	// 			('change',
-	// 			(event) => {
-	// 				setSelectedSize(event.target.value);
-	// 				const selectedVariant = viewArrCatog.variants.find((variant) =>
-	// 					variant.size.includes(event.target.value),
-	// 				);
-	// 				selectedVariantTemp.current = selectedVariant;
-	// 				// option.setAttribute('quantity', selectedVariant.quantity);
-	// 				setSelectedVariants([selectedVariant]);
-	// 				setIdSelected(selectedVariant._id);
-	// 				setQuantity(1);
-	// 				console.log('zz');
-	// 			});
-	// 	}
-	// }, [selectedSize]);
-
 	showCartItems.forEach((item) => {
 		item.addEventListener('click', (event) => {
 			setQuantity(1);
@@ -563,6 +538,14 @@ const Catog = ({ item }) => {
 
 	const addToCart = (ele) => {
 		const productId = ele.target.getAttribute('product_id');
+		console.log(cartProducts);
+		// console.log(cartProducts.cart);
+
+		console.log(mergedCart);
+		const quantityCart = mergedCart.map((item) => item.quantity)[0];
+		console.log(quantityCart);
+
+		console.log(cartProducts);
 
 		// const colorSelected = document.querySelector('.radio_button').value;
 		const selectedLabel = document.querySelector('.selectedColor');
@@ -599,17 +582,17 @@ const Catog = ({ item }) => {
 				variant.color[0] === colorSelected &&
 				variant.size[0] === sizeSelected,
 		);
-		console.log(selectedvariantsNew);
+		console.log(selectedvariantsNew.quantity);
 
 		if (!item) {
 			showInfoMessage('Product not found!');
 			return;
 		}
 
-		console.log(cartItemMap);
+		console.log(cartItemMap); ///??
 
 		const cartItem = cartItemMap.get(productId);
-		console.log(cartItem);
+		console.log(cartItem); ////?
 		console.log(item);
 		if (quantity > item.quantity) {
 			disableAddCartBtn(addCartBtn);
