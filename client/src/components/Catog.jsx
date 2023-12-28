@@ -482,11 +482,18 @@ const Catog = ({ item }) => {
 		}),
 	);
 
-	let cartProducts = JSON.parse(localStorage.getItem('persist:root'));
+	let cartProducts = localStorage.getItem('persist:root');
+	if (cartProducts) {
+		cartProducts = JSON.parse(cartProducts);
+	} else {
+		cartProducts = [];
+	}
+
 	let mergedCart = [];
 
-	if (cartProducts?.cart?.length !== 0) {
+	if (cartProducts && cartProducts.cart && cartProducts.cart.length !== 0) {
 		cartProducts = cartProducts.cart;
+		console.log(cartProducts.cart);
 		mergedCart = JSON.parse(cartProducts).products.reduce((acc, curr) => {
 			const existingItem = acc.find((item) => item._id === curr._id);
 			if (existingItem) {
@@ -521,12 +528,24 @@ const Catog = ({ item }) => {
 			}
 			return item;
 		});
+		console.log(newQuantity);
 		newQuantity = newQuantity.filter((item) => item !== undefined);
+
+		const lastQuantity = newQuantity.map((item) => item.quantity)[0];
+		console.log(lastQuantity);
+		if (lastQuantity > 5) {
+			return false;
+		}
+
 		if (newQuantity.length > 0) {
 			return newQuantity[0].quantity >= 1;
 		}
 		return true;
 	};
+
+	useEffect(() => {
+		chekAvail2();
+	}, [mergedCart, products._id, products.quantity, setQuantity, quantity]);
 
 	const findItemById = (id) => {
 		const items = [...productGet, ...offerGet];
@@ -595,7 +614,7 @@ const Catog = ({ item }) => {
 		console.log(cartItem); ////?
 		console.log(item);
 		if (quantity > item.quantity) {
-			disableAddCartBtn(addCartBtn);
+			// disableAddCartBtn(addCartBtn);
 			showInfoMessage('You already have the maximum amount!');
 			return;
 		}
@@ -603,13 +622,57 @@ const Catog = ({ item }) => {
 		console.log(selectedvariantsNew);
 
 		if (true) {
-			dispatch(
-				addProduct({
-					...item,
-					quantity,
-					selectedVariant: selectedvariantsNew,
-				}),
+			const newItem = {
+				...item,
+				quantity,
+				selectedVariant: selectedvariantsNew,
+			};
+
+			let existingProducts = localStorage.getItem('persist:root');
+			existingProducts = existingProducts
+				? JSON.parse(existingProducts)
+				: [];
+			if (!Array.isArray(existingProducts)) {
+				existingProducts = [];
+			}
+
+			const existingItem = existingProducts.find(
+				(product) => product._id === newItem._id,
 			);
+
+			if (existingItem) {
+				// If the item exists, increase its quantity
+				existingItem.quantity += newItem.quantity;
+			} else {
+				// If the item doesn't exist, add it to the cart
+				existingProducts.push(newItem);
+			}
+
+			localStorage.setItem('persist:root', JSON.stringify(existingProducts));
+
+			// Update cartProducts and mergedCart
+			cartProducts = existingProducts;
+			mergedCart = cartProducts.reduce((acc, curr) => {
+				const existingItem = acc.find((item) => item._id === curr._id);
+				if (existingItem) {
+					existingItem.quantity += curr.quantity;
+				} else {
+					acc.push({ ...curr });
+				}
+				return acc;
+			}, []);
+
+			dispatch(addProduct(newItem));
+
+			console.log(cartProducts);
+			// cartProducts = cartProducts.map((item) => {
+			// 	return {
+			// 		...item,
+			// 		quantity: quantity,
+			// 	};
+			// });
+			console.log(cartProducts);
+			console.log(mergedCart);
 
 			console.log({
 				...item,
@@ -617,8 +680,11 @@ const Catog = ({ item }) => {
 			setQuantity(1);
 
 			showSuccessMessage('Product added to cart!');
-			if (cartItem && cartItem.quantity <= 1) {
+			console.log(quantityCart);
+			console.log(selectedvariantsNew.quantity);
+			if (quantityCart >= selectedvariantsNew.quantity) {
 				disableAddCartBtn(addCartBtn);
+				swal('Info', 'You already have the maximum amount!', 'info');
 			}
 		} else {
 			showInfoMessage('Try with a different amount!');
@@ -626,7 +692,10 @@ const Catog = ({ item }) => {
 	};
 
 	const disableAddCartBtn = (btn) => {
-		btn.disabled = true;
+		// btn.disabled = true;
+		btn.pointerEvents = 'none';
+		btn.style.opacity = '0.5';
+		btn.style.cursor = 'not-allowed';
 	};
 
 	const showInfoMessage = (message) => {
