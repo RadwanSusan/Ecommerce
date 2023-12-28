@@ -441,6 +441,7 @@ const Catog = ({ item }) => {
 							sizesForSelectedColor.forEach((size) => {
 								option = new Option(size, size);
 								console.log(size);
+								setSize(size);
 								console.log(event.target.value);
 								// setSelectedSize(size);
 								// console.log(selectedSize);
@@ -493,9 +494,12 @@ const Catog = ({ item }) => {
 
 	if (cartProducts && cartProducts.cart && cartProducts.cart.length !== 0) {
 		cartProducts = cartProducts.cart;
-		console.log(cartProducts.cart);
 		mergedCart = JSON.parse(cartProducts).products.reduce((acc, curr) => {
-			const existingItem = acc.find((item) => item._id === curr._id);
+			const existingItem = acc.find(
+				(item) =>
+					item._id === curr._id &&
+					item.selectedVariant._id === curr.selectedVariant._id,
+			);
 			if (existingItem) {
 				existingItem.quantity += curr.quantity;
 			} else {
@@ -520,19 +524,50 @@ const Catog = ({ item }) => {
 	};
 
 	const chekAvail2 = () => {
+		// console.log(products);
+		console.log(AllProducts);
+
 		let newQuantity = mergedCart.map((item) => {
-			if (item._id === products._id) {
+			const selectedVariant = item.selectedVariant;
+			// selectedVariant.find((variant) => {
+			// variant.color.includes(selectedColor)
+			// })
+			console.log(selectedColor);
+			console.log(size);
+			console.log(selectedVariant);
+
+			// const radwan = selectedVariant.find((variant) => {
+			// 	if (
+			// 		variant.color.includes(selectedColor) &&
+			// 		variant.size.includes(size)
+			// 	) {
+			// 		console.log(variant);
+			// 	}
+			// });
+			// console.log(radwan);
+
+			if (
+				item._id === AllProducts._id &&
+				item.selectedVariant._id === AllProducts.selectedVariant._id
+			) {
 				return {
-					quantity: products.quantity - item.quantity,
+					quantity: AllProducts.selectedVariant.quantity - item.quantity,
 				};
 			}
 			return item;
 		});
 		console.log(newQuantity);
-		newQuantity = newQuantity.filter((item) => item !== undefined);
+		console.log(mergedCart);
+		// newQuantity = newQuantity.filter((item) => item !== undefined);
+		newQuantity = newQuantity.filter(
+			(item) => item !== undefined && item.quantity !== undefined,
+		);
+		console.log(newQuantity);
 
 		const lastQuantity = newQuantity.map((item) => item.quantity)[0];
+
 		console.log(lastQuantity);
+		// const newQuantity2 = newQuantity.map((item) => item.quantity);
 		if (lastQuantity > 5) {
 			return false;
 		}
@@ -543,9 +578,9 @@ const Catog = ({ item }) => {
 		return true;
 	};
 
-	useEffect(() => {
-		chekAvail2();
-	}, [mergedCart, products._id, products.quantity, setQuantity, quantity]);
+	// useEffect(() => {
+	// 	chekAvail2();
+	// }, [mergedCart, products._id, products.quantity, setQuantity, quantity]);
 
 	const findItemById = (id) => {
 		const items = [...productGet, ...offerGet];
@@ -557,10 +592,7 @@ const Catog = ({ item }) => {
 
 	const addToCart = (ele) => {
 		const productId = ele.target.getAttribute('product_id');
-		console.log(cartProducts);
-		// console.log(cartProducts.cart);
 
-		console.log(mergedCart);
 		const quantityCart = mergedCart.map((item) => item.quantity)[0];
 		console.log(quantityCart);
 
@@ -621,6 +653,11 @@ const Catog = ({ item }) => {
 		console.log(item);
 		console.log(selectedvariantsNew);
 
+		console.log(cartProducts);
+		// console.log(cartProducts.cart);
+
+		console.log(mergedCart);
+
 		if (true) {
 			const newItem = {
 				...item,
@@ -678,6 +715,7 @@ const Catog = ({ item }) => {
 				...item,
 			});
 			setQuantity(1);
+			chekAvail2();
 
 			showSuccessMessage('Product added to cart!');
 			console.log(quantityCart);
