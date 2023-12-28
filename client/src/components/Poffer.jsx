@@ -1,68 +1,76 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import styled from "styled-components";
-import { popularProducts } from "../data";
 import Product from "./Product";
 import axios from "axios";
 
 const Container = styled.div`
-	padding: 20px;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 `;
 
-const Poffer = ({ cat, filters, sort }) => {
-	const [offer, setOffer] = useState([]);
-	const [filteredOffer, setFilteredOffer] = useState([]);
-
-	useEffect(() => {
-		const getOffer = async () => {
-			try {
-				const res = await axios.get(
-					cat
-						? `http://localhost:4000/api/offer?category=${cat}`
-						: "http://localhost:4000/api/offer",
-				);
-				setOffer(res.data);
-			} catch (err) {}
-		};
-		getOffer(getOffer);
-	}, [cat]);
-
-	useEffect(() => {
-		cat &&
-			setFilteredOffer(
-				offer.filter((item) =>
-					Object.entries(filters).every(([key, value]) =>
-						item[key].includes(value),
-					),
-				),
-			);
-	}, [offer, cat, filters]);
-
-	useEffect(() => {
-		if (sort === "newest") {
-			setFilteredOffer((prev) =>
-				[...prev].sort((a, b) => a.createdAt - b.createdAt),
-			);
-		} else if (sort === "asc") {
-			setFilteredOffer((prev) =>
-				[...prev].sort((a, b) => a.price - b.price),
-			);
-		} else {
-			setFilteredOffer((prev) =>
-				[...prev].sort((a, b) => b.price - a.price),
-			);
-		}
-	}, [sort]);
-
-	return (
-		<Container>
-			{cat
-				? filteredOffer.map((item) => <Product item={item} key={item.id} />)
-				: offer.map((item) => <Product item={item} key={item.id} />)}
-		</Container>
-	);
+const SORT_TYPES = {
+  NEWEST: "newest",
+  ASC: "asc",
+  DESC: "desc",
 };
+
+const Poffer = React.memo(({ filters, sort }) => {
+  const [products, setProducts] = useState([]);
+
+  const filteredOffer = useMemo(() => {
+    const currentDate = new Date();
+    return products
+      .filter(
+        (product) =>
+          product.discount &&
+          new Date(product.discount.startDate) <= currentDate &&
+          new Date(product.discount.endDate) >= currentDate
+      )
+      .filter((product) =>
+        product.variants.some((variant) =>
+          Object.entries(filters).every(([key, value]) =>
+            variant[key].includes(value)
+          )
+        )
+      )
+      .sort((a, b) => {
+        if (sort === SORT_TYPES.NEWEST) {
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        } else {
+          const lowestPriceA = Math.min(
+            ...a.variants.map((variant) => variant.price)
+          );
+          const lowestPriceB = Math.min(
+            ...b.variants.map((variant) => variant.price)
+          );
+          return sort === SORT_TYPES.ASC
+            ? lowestPriceA - lowestPriceB
+            : lowestPriceB - lowestPriceA;
+        }
+      });
+  }, [sort, filters, products]);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/products");
+        setProducts(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getProducts();
+  }, []);
+
+  return (
+    <Container>
+      {filteredOffer.map((item) => (
+        <Product item={item} key={item.id} />
+      ))}
+    </Container>
+  );
+});
 
 export default Poffer;
