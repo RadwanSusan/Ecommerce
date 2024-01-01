@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './offer.css';
 import styled from 'styled-components';
 import { IoGitCompareOutline } from 'react-icons/io5';
@@ -6,14 +6,13 @@ import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { AiOutlineEye, AiFillCloseCircle } from 'react-icons/ai';
 import {
 	BsHeart,
-	BsArrowUpCircle,
-	BsArrowDownCircle,
 	BsFillArrowRightCircleFill,
 	BsFillArrowLeftCircleFill,
+	BsArrowUpCircle as ArrowUp,
+	BsArrowDownCircle as ArrowDown,
 } from 'react-icons/bs';
 import { wishlist, userWishListArrayGet } from '../redux/apiCalls';
 import axios from 'axios';
-import { categoriesOffer } from '../data';
 import { Link } from 'react-router-dom';
 import { userRequest } from '../requestMethods';
 import * as timeago from 'timeago.js';
@@ -26,23 +25,563 @@ const Wrapper1 = styled.div`
 	transition: all 0.75s ease;
 	transform: translateX(${(props) => props.slideIndex * -40}vw);
 `;
-const FilterSize = styled.select`
+const FilterSizeCatog = styled.select`
 	margin-left: 10px;
 	padding: 5px;
 `;
 const Offer = () => {
-	const [zaidVar, setZaidVar] = useState(0);
-	const [product_id, setProduct_id] = useState(0);
 	const [offer, setOffer] = useState([]);
-	document.querySelectorAll('.AiFillCloseCircle').forEach((item) =>
-		item.addEventListener('click', () => {
-			document.querySelector('.productCard_block').style.display = 'none';
+	const [wishlistLogin, setWishlistLogin] = useState(false);
+	const [zaidVar, setZaidVar] = useState(0);
+	const [idSelected, setIdSelected] = useState(0);
+	const [product_id, setProduct_id] = useState(0);
+	const [quantity, setQuantity] = useState(1);
+	const [size, setSize] = useState('');
+	const dispatch = useDispatch();
+	const [AllProducts, setAllProducts] = useState([]);
+	const [productGet, setProductGet] = useState({});
+	const [offerGet, setOfferGet] = useState({});
+	const [products, setProducts] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
+	const [selectedColor, setSelectedColor] = useState('');
+	const [selectedSize, setSelectedSize] = useState(null);
+	const [selectedVariants, setSelectedVariants] = useState([]);
+	const [viewArrCatog, setViewArrCatog] = useState(null);
+	const [resetTrigger, setResetTrigger] = useState(0);
+	const [slideIndex, setSlideIndex] = useState(0);
+	const [visibleSlide, setVisibleSlide] = useState(0);
+	const [currentSlide, setCurrentSlide] = useState(0);
+	const filterSizeCatog = document.querySelector('.FilterSizeCatog2');
+	let mergedCart = [];
+	const slides = [
+		{
+			image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones1.png?raw=true',
+			alt: 'headphones',
+		},
+		{
+			image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones2.png?raw=true',
+			alt: 'headphones',
+		},
+		{
+			image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones3.png?raw=true',
+			alt: 'headphones',
+		},
+		{
+			image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones4.png?raw=true',
+			alt: 'headphones',
+		},
+		{
+			image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones5.png?raw=true',
+			alt: 'headphones',
+		},
+	];
+	useEffect(() => {
+		const interval = setInterval(goToNextSlide, 3000);
+		return () => {
+			clearInterval(interval);
+		};
+	}, []);
+	const totalSlides = slides.length;
+	document.querySelectorAll('.CloseCatogCard').forEach((item) =>
+		item.addEventListener('click', (e) => {
+			document.querySelector('.CatogCard2').style.display = 'none';
 			document.body.style.overflow = '';
-			document.querySelector('.productCard_block').style.overflow = '';
-			document.querySelector('.backLayerForShowCart').style.display = 'none';
+			document.querySelector('.CatogCard2').style.overflow = '';
+			document.querySelector('.backLayerForShowCart2').style.display =
+				'none';
 		}),
 	);
-	const [slideIndex, setSlideIndex] = useState(0);
+	const goToNextSlide = () => {
+		setCurrentSlide((prevSlide) =>
+			prevSlide === totalSlides - 1 ? 0 : prevSlide + 1,
+		);
+		setVisibleSlide((prevSlide) =>
+			prevSlide === totalSlides - 1 ? 0 : prevSlide + 1,
+		);
+	};
+
+	const goToPreviousSlide = () => {
+		setCurrentSlide((prevSlide) =>
+			prevSlide === 0 ? totalSlides - 1 : prevSlide - 1,
+		);
+		setVisibleSlide((prevSlide) =>
+			prevSlide === 0 ? totalSlides - 1 : prevSlide - 1,
+		);
+	};
+
+	// 	let currentSlide = 4;
+	// 	const slides = document.querySelectorAll(
+	// 		'.sliderBlock_items__itemPhoto2',
+	// 	);
+	// 	const totalSlides = slides.length;
+	// 	const nextButton = document.querySelector(
+	// 		'.sliderBlock_controls__arrowForward2',
+	// 	);
+	// 	const prevButton = document.querySelector(
+	// 		'.sliderBlock_controls__arrowBackward2',
+	// 	);
+	// 	const paginatorItems = document.querySelectorAll(
+	// 		'.sliderBlock_positionControls__paginatorItem2',
+	// 	);
+	// 	setInterval(() => {
+	// 		goToSlide(currentSlide + 1);
+	// 	}, 3000);
+	// 	if (nextButton !== null) {
+	// 		nextButton.addEventListener('click', function () {
+	// 			goToSlide(currentSlide + 1);
+	// 		});
+	// 	}
+	// 	if (prevButton !== null) {
+	// 		prevButton.addEventListener('click', function () {
+	// 			goToSlide(currentSlide - 1);
+	// 		});
+	// 	}
+	// 	goToSlide(currentSlide);
+	// 	function goToSlide(n) {
+	// 		if (n > totalSlides - 1) {
+	// 			currentSlide = totalSlides - 1;
+	// 		} else if (n < 5) {
+	// 			currentSlide = 5;
+	// 		} else if (n > 9) {
+	// 			currentSlide = 5;
+	// 		} else {
+	// 			currentSlide = n;
+	// 		}
+
+	// 		slides.forEach((slide, index) => {
+	// 			if (index === currentSlide) {
+	// 				console.log('slide Added');
+	// 				slide.classList.add('sliderBlock_items__showing2');
+	// 				paginatorItems[index].classList.add(
+	// 					'sliderBlock_positionControls__active2',
+	// 				);
+	// 			} else {
+	// 				console.log('slide Removed');
+	// 				slide.classList.remove('sliderBlock_items__showing2');
+	// 				paginatorItems[index].classList.remove(
+	// 					'sliderBlock_positionControls__active2',
+	// 				);
+	// 			}
+	// 		});
+	// 	}
+	// });
+	const chekAvail2 = () => {
+		let newQuantity = mergedCart.map((item) => {
+			const selectedVariant = item.selectedVariant;
+			if (
+				item._id === AllProducts._id &&
+				item.selectedVariant._id === AllProducts.selectedVariant._id
+			) {
+				return {
+					quantity: AllProducts.selectedVariant.quantity - item.quantity,
+				};
+			}
+			return item;
+		});
+		newQuantity = newQuantity.filter(
+			(item) => item !== undefined && item.quantity !== undefined,
+		);
+		const lastQuantity = newQuantity.map((item) => item.quantity)[0];
+		if (lastQuantity > 5) {
+			return false;
+		}
+		if (newQuantity.length > 0) {
+			return newQuantity[0].quantity >= 1;
+		}
+		return true;
+	};
+	useEffect(() => {
+		setQuantity(1);
+		setResetTrigger((prev) => prev + 1);
+	}, [selectedColor]);
+	const selectedVariantTemp = useRef();
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const [productsRes, offersRes] = await Promise.all([
+					userRequest.get('/products'),
+					userRequest.get('/offer'),
+				]);
+				setAllProducts(productsRes.data);
+				setProductGet(productsRes.data);
+				setOfferGet(offersRes.data);
+			} catch (err) {
+				console.log(err);
+			}
+		};
+		fetchData()
+			.then(() => {})
+			.catch((error) => {
+				console.error('Error fetching data:', error);
+				setIsLoading(false);
+			})
+			.finally(() => {
+				if (AllProducts.length === 0) {
+					setIsLoading(true);
+				}
+			});
+	}, [AllProducts.length]);
+	const showCartItems = Array.from(document.querySelectorAll('.show-cart3'));
+	const aramex = document.querySelector('.CatogallColors');
+	const currency = document.querySelector('.currency');
+	const createRadioElement = (color) => {
+		const input = document.createElement('input');
+		input.classList.add('radio_button');
+		input.setAttribute('id', `radioColor ${color}`);
+		input.setAttribute('name', 'colorOfItem');
+		input.setAttribute('checked', 'checked');
+		input.setAttribute('value', color);
+		const label = document.createElement('label');
+		label.setAttribute('for', `radioColor ${color}`);
+		label.classList.add('block_goodColor__radio', 'block_goodColor__black');
+		label.style.backgroundColor = color;
+		return { input, label };
+	};
+	const handleShowCartClick = useCallback(
+		(event, item) => {
+			console.log('clicked');
+			event.preventDefault();
+			document.querySelectorAll('.AddCart2').forEach((item) => {
+				item.removeAttribute('color');
+			});
+			const idProduct = item.getAttribute('catog-id');
+			setViewArrCatog(
+				isLoading
+					? [...productGet, ...offerGet]?.find(
+							(product) => product._id === idProduct,
+					  )
+					: AllProducts?.find((product) => product._id === idProduct),
+			);
+			setSelectedColor('');
+			setSelectedSize(null);
+		},
+		[AllProducts, isLoading, offerGet, productGet],
+	);
+	useEffect(() => {
+		if (viewArrCatog) {
+			selectedVariantTemp.current = viewArrCatog.variants[0];
+		}
+	}, [viewArrCatog]);
+	useEffect(() => {
+		console.log('clicking');
+		if (viewArrCatog) {
+			console.log('clicking');
+			const setAttributeForQuintity =
+				document.querySelector('.selectedColor');
+			const catogCard = document.querySelector('.CatogCard2');
+			const productCard_block2 = document.querySelector(
+				'.productCard_block2',
+			);
+			const backLayerForShowCart = document.querySelector(
+				'.backLayerForShowCart2',
+			);
+			const sliderItemsContainer = document.querySelector(
+				'.sliderBlock_items50',
+			);
+			catogCard.style.display = 'block';
+			catogCard.style.overflow = 'hidden';
+			backLayerForShowCart.style.display = 'block';
+			backLayerForShowCart.style.overflow = 'hidden';
+			productCard_block2.style.display = 'block';
+			productCard_block2.style.overflow = 'hidden';
+			document.body.style.overflow = 'hidden';
+			document.querySelector('.CatogCardDesc2').textContent =
+				viewArrCatog.desc;
+			aramex.innerHTML = '';
+			setZaidVar(viewArrCatog._id);
+			setProduct_id(viewArrCatog._id);
+			document.querySelector('.nameProducts2').innerHTML =
+				viewArrCatog.title;
+			document
+				.querySelector('.block_product__advantagesProduct')
+				.append(viewArrCatog.desc);
+		}
+	}, [viewArrCatog]);
+	const displayAlert = (title, message, type) => {
+		swal(title, message, type);
+	};
+	const showInfoMessage = (message) => {
+		swal('Info', message, 'info');
+	};
+	const showSuccessMessage = (message) => {
+		swal('Success', message, 'success');
+	};
+	const disableAddCartBtn = (btn) => {
+		btn.pointerEvents = 'none';
+		btn.style.opacity = '0.5';
+		btn.style.cursor = 'not-allowed';
+	};
+	const handleQuantityDecrement = () => {
+		if (quantity <= 1) {
+			displayAlert('Info', 'The minimum quantity is 1', 'info');
+		} else {
+			setQuantity(quantity - 1);
+		}
+	};
+	const handleQuantityIncrement = () => {
+		const selectedColorLabel = document.querySelector('label.selectedColor');
+		const associatedInput = document?.getElementById(
+			selectedColorLabel?.getAttribute('for'),
+		)?.value;
+		const filterSizeCatog = document.querySelector('.FilterSizeCatog2');
+		const selectedSizeNew =
+			filterSizeCatog.options[filterSizeCatog.length - 1].getAttribute(
+				'selected',
+			);
+		if (!associatedInput) {
+			swal('Error', 'Please select a color', 'error');
+			return;
+		}
+		if (!selectedSize && !selectedSizeNew) {
+			swal('Error', 'Please select a size', 'error');
+			return;
+		}
+		const selectedOption =
+			filterSizeCatog.options[filterSizeCatog.length - 1];
+		const quantity501 = parseInt(selectedOption.getAttribute('quantity'));
+		if (!quantity501) {
+			swal('Error', 'Please select a size', 'error');
+			return;
+		}
+		if (viewArrCatog) {
+			if (quantity501 < quantity + 1) {
+				swal('Error', 'The maximum quantity is ' + quantity, 'error');
+			} else {
+				setQuantity((prevQuantity) => {
+					const newQuantity = prevQuantity + 1;
+
+					return newQuantity;
+				});
+			}
+		}
+	};
+	useEffect(() => {
+		if (viewArrCatog && !selectedSize) {
+			aramex.innerHTML = '';
+			let option;
+			const addedColors = new Set();
+			viewArrCatog.variants.forEach((variant) => {
+				variant.color.forEach((color) => {
+					if (!addedColors.has(color)) {
+						addedColors.add(color);
+						const { input, label } = createRadioElement(color);
+						aramex.appendChild(input);
+						aramex.appendChild(label);
+						input.addEventListener('click', (event) => {
+							setSelectedColor(event.target.value);
+							const previousSelectedColor =
+								document.querySelector('.selectedColor');
+							if (previousSelectedColor) {
+								previousSelectedColor.classList.remove('selectedColor');
+							}
+							label.classList.add('selectedColor');
+
+							const selectedVariants = viewArrCatog.variants.filter(
+								(variant) => variant.color.includes(event.target.value),
+							);
+							const sizesForSelectedColor = Array.from(
+								new Set(
+									selectedVariants.flatMap((variant) => variant.size),
+								),
+							);
+							setQuantity(1);
+							filterSizeCatog.innerHTML = '';
+							sizesForSelectedColor.forEach((size) => {
+								option = new Option(size, size);
+								filterSizeCatog.appendChild(option);
+								filterSizeCatog.addEventListener('change', (event) => {
+									setSelectedSize(event.target.value);
+									const selectedVariant = viewArrCatog.variants.find(
+										(variant) =>
+											variant.size.includes(event.target.value),
+									);
+									selectedVariantTemp.current = selectedVariant;
+									option.setAttribute(
+										'quantity',
+										selectedVariant.quantity,
+									);
+									setSelectedVariants([selectedVariant]);
+									setIdSelected(selectedVariant._id);
+									setQuantity(1);
+									sizesForSelectedColor.forEach((size) => {
+										if (size === event.target.value) {
+											option.setAttribute('selected', 'selected');
+										}
+									});
+								});
+							});
+						});
+					}
+				});
+			});
+			const allSizes = viewArrCatog.variants.flatMap(
+				(variant) => variant.size,
+			);
+			const uniqueSizes = Array.from(new Set(allSizes));
+			filterSizeCatog.innerHTML = '';
+			uniqueSizes.forEach((size) => {
+				const option = new Option(size, size);
+				filterSizeCatog.appendChild(option);
+				if (size === uniqueSizes[0]) {
+					option.selected = true;
+					setSize(size);
+				}
+			});
+			filterSizeCatog.addEventListener('change', (event) => {
+				setSelectedSize(event.target.value);
+				const selectedVariant = viewArrCatog.variants.find((variant) =>
+					variant.size.includes(event.target.value),
+				);
+				selectedVariantTemp.current = selectedVariant;
+				setSelectedVariants([selectedVariant]);
+				setIdSelected(selectedVariant?._id);
+				setQuantity(1);
+			});
+		}
+	}, [
+		viewArrCatog,
+		selectedVariantTemp,
+		setSelectedColor,
+		setSelectedVariants,
+		setSelectedSize,
+		setQuantity,
+	]);
+	useEffect(() => {
+		if (viewArrCatog && !selectedSize) {
+			aramex.innerHTML = '';
+			let option;
+			const addedColors = new Set();
+
+			viewArrCatog.variants.forEach((variant) => {
+				variant.color.forEach((color) => {
+					if (!addedColors.has(color)) {
+						addedColors.add(color);
+						const { input, label } = createRadioElement(color);
+						aramex.appendChild(input);
+						aramex.appendChild(label);
+						input.addEventListener('click', (event) => {
+							setSelectedColor(event.target.value);
+							const previousSelectedColor =
+								document.querySelector('.selectedColor');
+							if (previousSelectedColor) {
+								previousSelectedColor.classList.remove('selectedColor');
+							}
+							label.classList.add('selectedColor');
+							const selectedVariants = viewArrCatog.variants.filter(
+								(variant) => variant.color.includes(event.target.value),
+							);
+							const sizesForSelectedColor = Array.from(
+								new Set(
+									selectedVariants.flatMap((variant) => variant.size),
+								),
+							);
+							setQuantity(1);
+							filterSizeCatog.innerHTML = '';
+							filterSizeCatog.addEventListener('click', (event) => {
+								const selectedVariant = selectedVariants.find(
+									(variant) =>
+										variant.size.includes(event.target.value),
+								);
+								selectedVariantTemp.current = selectedVariant;
+								setSelectedVariants([selectedVariant]);
+								setIdSelected(selectedVariant?._id);
+								setQuantity(1);
+								sizesForSelectedColor.find((size) => {
+									if (size === event.target.value) {
+										option.setAttribute('selected', 'selected');
+										option.setAttribute(
+											'quantity',
+											selectedVariant.quantity,
+										);
+									}
+								});
+							});
+							sizesForSelectedColor.forEach((size) => {
+								option = new Option(size, size);
+								setSize(size);
+								filterSizeCatog.appendChild(option);
+							});
+						});
+					}
+				});
+			});
+		}
+	}, [
+		viewArrCatog,
+		selectedVariantTemp,
+		setSelectedColor,
+		setSelectedSize,
+		setQuantity,
+	]);
+	showCartItems.forEach((item) => {
+		item.addEventListener('click', (event) => {
+			setQuantity(1);
+			handleShowCartClick(event, item);
+		});
+	});
+	const findItemById = (id) => {
+		const items = [...productGet, ...offerGet];
+		return items.find((item) => item._id === id);
+	};
+	const addCartBtn = document.querySelector('.AddCart2');
+	const cartItemMap = new Map(mergedCart.map((item) => [item._id, item]));
+	const addToCart = (ele) => {
+		const productId = ele.target.getAttribute('product_id');
+		const quantityCart = mergedCart.map((item) => item.quantity)[0];
+		const selectedLabel = document.querySelector('.selectedColor');
+		const inputId = selectedLabel.htmlFor;
+		const inputElement = document.getElementById(inputId);
+		const colorSelected = inputElement.value;
+		const sizeSelected = document.querySelector('.FilterSizeCatog2').value;
+		const item = findItemById(productId);
+		const selectedvariantsNew = item.variants.find(
+			(variant) =>
+				variant.color[0] === colorSelected &&
+				variant.size[0] === sizeSelected,
+		);
+		if (quantity > item.quantity) {
+			showInfoMessage('You already have the maximum amount!');
+			return;
+		}
+		const newItem = {
+			...item,
+			quantity,
+			selectedVariant: selectedvariantsNew,
+		};
+		let existingProducts = localStorage.getItem('persist:root');
+		existingProducts = existingProducts ? JSON.parse(existingProducts) : [];
+		if (!Array.isArray(existingProducts)) {
+			existingProducts = [];
+		}
+		const existingItem = existingProducts.find(
+			(product) => product._id === newItem._id,
+		);
+		if (existingItem) {
+			existingItem.quantity += newItem.quantity;
+		} else {
+			existingProducts.push(newItem);
+		}
+		localStorage.setItem('persist:root', JSON.stringify(existingProducts));
+		cartProducts = existingProducts;
+		mergedCart = cartProducts.reduce((acc, curr) => {
+			const existingItem = acc.find((item) => item._id === curr._id);
+			if (existingItem) {
+				existingItem.quantity += curr.quantity;
+			} else {
+				acc.push({ ...curr });
+			}
+			return acc;
+		}, []);
+		dispatch(addProduct(newItem));
+		setQuantity(1);
+		chekAvail2();
+		showSuccessMessage('Product added to cart!');
+		if (quantityCart >= selectedvariantsNew.quantity) {
+			console.log('clicking');
+			disableAddCartBtn(addCartBtn);
+			swal('Info', 'You already have the maximum amount!', 'info');
+		}
+	};
 	const handleClick = (direction) => {
 		if (direction === 'left') {
 			setSlideIndex(slideIndex > 0 ? slideIndex - 1 : 2);
@@ -50,28 +589,32 @@ const Offer = () => {
 			setSlideIndex(slideIndex < 3 ? slideIndex + 1 : 0);
 		}
 	};
-	const filteredOffer = useMemo(() => {
-		const currentDate = new Date();
-		return offer
-			.filter(
-				(product) =>
-					product.discount &&
-					new Date(product.discount.startDate) <= currentDate &&
-					new Date(product.discount.endDate) >= currentDate,
-			)
-			.slice(0, 4);
-	}, [offer]);
 	useEffect(() => {
 		const getProducts = async () => {
 			try {
 				const res = await axios.get('http://localhost:4000/api/products');
-				setOffer(res.data);
+				const currentDate = Date.parse(new Date());
+				const filteredOffer = res.data
+					.filter((product) => {
+						const startDate = Date.parse(product.discount.startDate);
+						const endDate = Date.parse(product.discount.endDate);
+
+						return (
+							product.discount &&
+							startDate <= currentDate &&
+							endDate >= currentDate
+						);
+					})
+					.slice(0, 4);
+				setOffer(filteredOffer);
+				setProducts(res.data);
 			} catch (err) {
 				console.error('Error fetching data:', err);
 			}
 		};
 		getProducts();
 	}, []);
+
 	let cartProducts = JSON.parse(localStorage.getItem('persist:root'));
 	if (
 		cartProducts === null ||
@@ -84,167 +627,6 @@ const Offer = () => {
 	} else {
 		cartProducts = cartProducts.cart;
 	}
-	const mergedCart = cartProducts?.products?.reduce((acc, curr) => {
-		const existingItem = acc.find((item) => item._id === curr._id);
-		if (existingItem) {
-			existingItem.quantity += curr.quantity;
-		} else {
-			acc.push({ ...curr });
-		}
-		return acc;
-	}, []);
-	const [quantity, setQuantity] = useState(1);
-	const [color, setColor] = useState('');
-	const [size, setSize] = useState('');
-	const dispatch = useDispatch();
-	const [AllProducts, setAllProducts] = useState([]);
-	const [AllOffers, setAllOffers] = useState([]);
-	let [productGet, setProductGet] = useState({});
-	let [offerGet, setOfferGet] = useState({});
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const [productsRes, offersRes] = await Promise.all([
-					userRequest.get('/products'),
-					userRequest.get('/offer'),
-				]);
-				setAllProducts(productsRes.data);
-				setProductGet(productsRes.data);
-				setAllOffers(offersRes.data);
-				setOfferGet(offersRes.data);
-			} catch (err) {
-				console.error('Error fetching data:', err);
-			}
-		};
-		fetchData();
-	}, []);
-	const handleQuantityOffer = (type, id) => {
-		const item = [...productGet, ...offerGet].find((item) => item._id === id);
-		const productMerged = mergedCart?.find((item) => item._id === id);
-		const maxQuantity = item.quantity - 1;
-		if (productMerged !== undefined) {
-			if (type === 'dec') {
-				if (quantity <= 1) {
-					swal('Info', 'The minimum quantity is 1', 'info');
-				} else {
-					setQuantity(quantity - 1);
-				}
-			} else {
-				if (productMerged.quantity > maxQuantity) {
-					swal(
-						'Info',
-						'You have exceeded the number of available products!, the quantity will be reset',
-						'info',
-					);
-				} else {
-					const newQuantity = productMerged.quantity + 1;
-					if (newQuantity > maxQuantity) {
-						swal(
-							'Info',
-							'You have exceeded the number of available products!',
-							'info',
-						);
-					} else {
-						setQuantity(newQuantity);
-					}
-				}
-			}
-		} else {
-			if (type === 'dec') {
-				if (quantity <= 1) {
-					swal('Info', 'The minimum quantity is 1', 'info');
-				} else {
-					setQuantity(quantity - 1);
-				}
-			} else {
-				if (quantity > maxQuantity) {
-					swal(
-						'Info',
-						'You have exceeded the number of available products!, the quantity will be reset',
-						'info',
-					);
-				} else {
-					setQuantity(quantity + 1);
-				}
-			}
-		}
-	};
-	const chekAvail = () => {
-		let newQuantity = mergedCart?.map((item) => {
-			if (item._id === offer._id) {
-				return {
-					quantity: offer.quantity - item.quantity,
-				};
-			}
-		});
-		newQuantity = newQuantity?.filter((item) => item !== undefined);
-		if (newQuantity?.length > 0) {
-			if (newQuantity[0]?.quantity < 1) {
-				return false;
-			} else {
-				return true;
-			}
-		}
-		return true;
-	};
-	const addToCart = (productId) => {
-		const item = [...productGet, ...offerGet].find(
-			(item) => item._id === productId,
-		);
-		const product = [...productGet, ...offerGet].find(
-			(item) => item._id === productId,
-		);
-		if (offer.length > 0) {
-			const cartItem = mergedCart?.find((item) => item._id === productId);
-			if (cartItem) {
-				if (cartItem.quantity === item.quantity) {
-					swal('Info', 'You already have the maximum amount!', 'info');
-					document.querySelector('.AddCart').disabled = true;
-					return;
-				}
-				if (cartItem.quantity + quantity <= item.quantity) {
-					dispatch(
-						addProduct({
-							...cartItem,
-							quantity,
-							color,
-							size,
-						}),
-					);
-					if (cartItem.quantity < 1) {
-						document.querySelector('.AddCart').disabled = true;
-						return;
-					}
-					cartItem.quantity -= quantity;
-					setQuantity(1);
-					swal('Success', 'Product added to cart!', 'success');
-					if (cartItem.quantity <= 1) {
-						document.querySelector('.AddCart').disabled = true;
-					}
-				} else {
-					swal('Info', 'Try with a different amount!', 'info');
-					return;
-				}
-			} else {
-				dispatch(
-					addProduct({
-						...product,
-						quantity,
-						color,
-						size,
-					}),
-				);
-				item.quantity -= quantity;
-				setQuantity(1);
-				swal('Success', 'Product added to cart!', 'success');
-				if (quantity === item.quantity) {
-					document.querySelector('.AddCart').disabled = true;
-					return;
-				}
-			}
-		}
-	};
-	const [wishlistLogin, setWishlistLogin] = useState(false);
 	const handleWichlist = (id, ele) => {
 		if (ele.target.classList[0] === 'add-to-wish' && wishlistLogin == true) {
 			ele.target.style.display = 'none';
@@ -305,77 +687,62 @@ const Offer = () => {
 	}
 	return (
 		<>
-			<div className='backLayerForShowCart'></div>
+			<div className='backLayerForShowCart2'></div>
 			<div className='column small-centered'>
-				<div className='productCard_block'>
+				<div className='productCard_block2 CatogCard2'>
 					<div className='row11'>
 						<div className='small-12 large-6 columns11'>
 							<div className='productCard_leftSide clearfix'>
 								<div className='sliderBlock'>
-									<ul className='sliderBlock_items'>
-										<li className='sliderBlock_items__itemPhoto sliderBlock_items__showing'>
-											<img
-												src='https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones1.png?raw=true'
-												alt='headphones'
-											/>
-										</li>
-										<li className='sliderBlock_items__itemPhoto'>
-											<img
-												src='https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones2.png?raw=true'
-												alt='headphones'
-											/>
-										</li>
-										<li className='sliderBlock_items__itemPhoto'>
-											<img
-												src='https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones3.png?raw=true'
-												alt='headphones'
-											/>
-										</li>
-										<li className='sliderBlock_items__itemPhoto'>
-											<img
-												src='https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones4.png?raw=true'
-												alt='headphones'
-											/>
-										</li>
-										<li className='sliderBlock_items__itemPhoto'>
-											<img
-												src='https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones5.png?raw=true'
-												alt='headphones'
-											/>
-										</li>
+									<ul className='sliderBlock_items50'>
+										{slides.map((slide, index) => (
+											<li
+												key={index}
+												className={`sliderBlock_items__itemPhoto2 ${
+													index === currentSlide
+														? 'sliderBlock_items__showing2'
+														: ''
+												}`}>
+												<img
+													src={slide.image}
+													alt={slide.alt}
+												/>
+											</li>
+										))}
 									</ul>
+
 									<div className='sliderBlock_controls'>
 										<div className='sliderBlock_controls__navigatin'>
 											<div className='sliderBlock_controls__wrapper'>
-												<div className='sliderBlock_controls__arrow sliderBlock_controls__arrowBackward'>
-													<i
-														className='fa fa-angle-left'
-														aria-hidden='true'>
-														<BsFillArrowLeftCircleFill className='sliderBlock_controls__arrowBackward' />
-													</i>
+												<div
+													className='sliderBlock_controls__arrow sliderBlock_controls__arrowForward2'
+													onClick={goToNextSlide}>
+													<BsFillArrowRightCircleFill className='sliderBlock_controls__arrowForward2' />
 												</div>
-												<div className='sliderBlock_controls__arrow sliderBlock_controls__arrowForward'>
-													<i
-														className='fa fa-angle-right'
-														aria-hidden='true'>
-														<BsFillArrowRightCircleFill className='sliderBlock_controls__arrowForward ' />
-													</i>
+												<div
+													className='sliderBlock_controls__arrow sliderBlock_controls__arrowBackward2'
+													onClick={goToPreviousSlide}>
+													<BsFillArrowLeftCircleFill className='sliderBlock_controls__arrowBackward2' />
 												</div>
 											</div>
 										</div>
 										<ul className='sliderBlock_positionControls'>
-											<li className='sliderBlock_positionControls__paginatorItem sliderBlock_positionControls__active'></li>
-											<li className='sliderBlock_positionControls__paginatorItem'></li>
-											<li className='sliderBlock_positionControls__paginatorItem'></li>
-											<li className='sliderBlock_positionControls__paginatorItem'></li>
-											<li className='sliderBlock_positionControls__paginatorItem'></li>
+											{slides.map((_, index) => (
+												<li
+													key={index}
+													className={`sliderBlock_positionControls__paginatorItem2 ${
+														index === visibleSlide
+															? 'sliderBlock_positionControls__active2'
+															: ''
+													}`}></li>
+											))}
 										</ul>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div className='small-12 large-6 columns11'>
-							<div className='AiFillCloseCircle'>
+							<div className='AiFillCloseCircle CloseCatogCard'>
 								<AiFillCloseCircle />
 							</div>
 							<div className='productCard_rightSide'>
@@ -385,23 +752,18 @@ const Offer = () => {
 											className='fa fa-cog block_specification__button block_specification__button__rotate'
 											aria-hidden='true'></i>
 									</div>
-									<div className='block_specification__informationShow hide'>
-										<i
-											className='fa fa-info-circle block_specification__button block_specification__button__jump'
-											aria-hidden='true'></i>
-									</div>
 								</div>
 
 								<div className='block_product'>
-									<h2 className='block_name block_name__mainName nameProduct'></h2>
-									<p className='block_product__advantagesProduct'></p>
+									<h2 className='block_name block_name__mainName nameProducts2'></h2>
+
+									<p className='block_product__advantagesProduct CatogCardDesc2'></p>
 									<div className='block_informationAboutDevice'>
-										<div className='block_descriptionCharacteristic block_descriptionCharacteristic__disActive'></div>
 										<div className='row11 '>
 											<div className='large-6 small-12 column left-align'>
 												<div className='block_price'>
-													<p className='block_price__currency'>
-														$
+													<p className='block_price__currency currency'>
+														$ {viewArrCatog?.price}
 													</p>
 													<p className='block_price__shipping'>
 														Shipping and taxes extra
@@ -411,19 +773,23 @@ const Offer = () => {
 													<span className='text_specification'>
 														Quantity
 													</span>
-													<div className='block_quantity__chooseBlock'>
+													<div
+														key={resetTrigger}
+														zaid={resetTrigger}
+														className='block_quantity__chooseBlock'
+														readOnly>
 														<input
-															className='block_quantity__number'
+															className='block_quantity__number block_quantity__number2'
 															name='quantityNumber'
 															type='text'
 															min='1'
 															value={quantity}
+															readOnly
 														/>
 														<button className='block_quantity__button block_quantity__up'>
-															<BsArrowDownCircle
+															<ArrowDown
 																onClick={() => {
-																	handleQuantityOffer(
-																		'dec',
+																	handleQuantityDecrement(
 																		zaidVar,
 																	);
 																}}
@@ -431,11 +797,11 @@ const Offer = () => {
 															/>
 														</button>
 														<button className='block_quantity__button block_quantity__down'>
-															<BsArrowUpCircle
+															<ArrowUp
 																onClick={() => {
-																	handleQuantityOffer(
-																		'inc',
+																	handleQuantityIncrement(
 																		zaidVar,
+																		idSelected,
 																	);
 																}}
 																className='AiOutlineArrowUpanddown up5'
@@ -454,25 +820,32 @@ const Offer = () => {
 														style={{
 															display: 'hidden',
 														}}></div>
-													<div className='block_goodColor__allColors'></div>
-													<FilterSize
-														className='FilterSize'
+													<div className='block_goodColor__allColors CatogallColors'></div>
+													<FilterSizeCatog
+														className='FilterSizeCatog2'
 														onChange={(e) =>
 															setSize(e.target.value)
-														}></FilterSize>
+														}></FilterSizeCatog>
 												</div>
-												{chekAvail() ? (
-													<button
-														className='AddCart'
-														onClick={() => addToCart(product_id)}>
-														Add to Cart
-													</button>
+												{isLoading ? (
+													chekAvail2() ? (
+														<button
+															className='AddCart2'
+															product_id={product_id}
+															onClick={(ele) => {
+																addToCart(ele);
+															}}>
+															Add to Cart
+														</button>
+													) : (
+														<button
+															className='AddCart2'
+															disabled>
+															ADD TO CART
+														</button>
+													)
 												) : (
-													<button
-														className='AddCart'
-														disabled>
-														ADD TO CART
-													</button>
+													<p>loading</p>
 												)}
 											</div>
 										</div>
@@ -495,7 +868,8 @@ const Offer = () => {
 							<div
 								id='filterproducts_1'
 								className='product-deal-list'>
-								<Link to={`/offer/${categoriesOffer[0].cat}`}>
+								{/* <Link to={`/offer/${categoriesOffer[0].cat}`}> */}
+								<Link to={`/`}>
 									<div className='deal-left'>
 										<div className='deal-description'>
 											<div>
@@ -524,7 +898,7 @@ const Offer = () => {
 												className='owl-stage style-FUF77'
 												id='style-FUF77'
 												slideIndex={slideIndex}>
-												{filteredOffer.map((data) => (
+												{offer.map((data) => (
 													<div
 														className='owl-item active style-Ke3kW'
 														id='style-Ke3kW'>
@@ -567,15 +941,12 @@ const Offer = () => {
 																			</span>
 																		</div>
 																		<Link
-																			to={''}
+																			to={``}
 																			className='action quickview-handler
-																	sm_quickview_handler show-cart'
+																	sm_quickview_handler show-cart3'
 																			title='Quick View'
-																			offer-id={data._id}>
-																			<AiOutlineEye
-																				className='show-cart'
-																				offer-id={data._id}
-																			/>
+																			catog-id={data._id}>
+																			<AiOutlineEye />
 																			<span>Quick View</span>
 																		</Link>
 																	</div>
