@@ -751,7 +751,10 @@ const Catog = ({ item }) => {
 			dispatch(addProduct(newItem));
 
 			const filterSizeCatog = document.querySelector('.FilterSizeCatog');
-			console.log('filterSizeCatog', filterSizeCatog);
+			console.log(
+				'filterSizeCatogzzzzzzzzzzzzzzzzzzzzzzzzz',
+				filterSizeCatog,
+			);
 			// iwant get  if the size is selected
 			const selectedSizeNew2 = filterSizeCatog.options[
 				filterSizeCatog.length - 1
