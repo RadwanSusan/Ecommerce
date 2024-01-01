@@ -300,6 +300,13 @@ const Catog = ({ item }) => {
 											variant.size.includes(event.target.value),
 									);
 									selectedVariantTemp.current = selectedVariant;
+									// const quantityInCart = mergedCart.find(
+									// 	(item) => item._id === selectedVariant._id,
+									// ).quantity;
+									// console.log(
+									// 	'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
+									// 	quantityInCart,
+									// );
 									option.setAttribute(
 										'quantity',
 										selectedVariant.quantity,
