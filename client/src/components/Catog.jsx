@@ -407,6 +407,8 @@ const Catog = ({ item }) => {
 
 							filterSizeCatog.addEventListener('click', (event) => {
 								console.log(event.target.value);
+								setSize(event.target.value);
+
 								console.log(selectedSize);
 
 								// const selectedVariant = viewArrCatog.variants.find(
@@ -536,16 +538,6 @@ const Catog = ({ item }) => {
 			console.log(size);
 			console.log(selectedVariant);
 
-			// const radwan = selectedVariant.find((variant) => {
-			// 	if (
-			// 		variant.color.includes(selectedColor) &&
-			// 		variant.size.includes(size)
-			// 	) {
-			// 		console.log(variant);
-			// 	}
-			// });
-			// console.log(radwan);
-
 			if (
 				item._id === AllProducts._id &&
 				item.selectedVariant._id === AllProducts.selectedVariant._id
@@ -563,12 +555,18 @@ const Catog = ({ item }) => {
 			(item) => item !== undefined && item.quantity !== undefined,
 		);
 		console.log(newQuantity);
+		const selectedvariantsNew2 = newQuantity.filter(
+			(item) =>
+				item.selectedVariant.color.includes(selectedColor) &&
+				item.selectedVariant.size.includes(size),
+		);
+		// console.log(selectedvariantsNew2[0].selectedVariant.quantity);
 
 		const lastQuantity = newQuantity.map((item) => item.quantity)[0];
 
 		console.log(lastQuantity);
 		// const newQuantity2 = newQuantity.map((item) => item.quantity);
-		if (lastQuantity > 5) {
+		if (lastQuantity > 3) {
 			return false;
 		}
 
@@ -700,6 +698,15 @@ const Catog = ({ item }) => {
 			}, []);
 
 			dispatch(addProduct(newItem));
+
+			const filterSizeCatog = document.querySelector('.FilterSizeCatog');
+			console.log('filterSizeCatog', filterSizeCatog);
+			// iwant get  if the size is selected
+			const selectedSizeNew = filterSizeCatog.options[
+				filterSizeCatog.length - 1
+			].setAttribute('quantity', selectedvariantsNew.quantity - quantity);
+
+			console.log(selectedSizeNew);
 
 			console.log(cartProducts);
 			// cartProducts = cartProducts.map((item) => {
