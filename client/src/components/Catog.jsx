@@ -2,12 +2,9 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import axios from 'axios';
 import './catog.css';
 import styled from 'styled-components';
-import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { AiOutlineEye, AiFillCloseCircle } from 'react-icons/ai';
-import { useMemo } from 'react';
-
 import {
 	BsHeart,
 	BsArrowUpCircle as ArrowUp,
@@ -27,14 +24,14 @@ const FilterSizeCatog = styled.select`
 	padding: 5px;
 `;
 const cartSelector = (state) => state.cart;
-
 const Catog = ({ item }) => {
+	const dispatch = useDispatch();
+	const isMountedRef = useRef(true);
 	const [zaidVar, setZaidVar] = useState(0);
 	const [idSelected, setIdSelected] = useState(0);
 	const [product_id, setProduct_id] = useState(0);
 	const [quantity, setQuantity] = useState(1);
 	const [size, setSize] = useState('');
-	const dispatch = useDispatch();
 	const [AllProducts, setAllProducts] = useState([]);
 	const [productGet, setProductGet] = useState({});
 	const [offerGet, setOfferGet] = useState({});
@@ -49,6 +46,9 @@ const Catog = ({ item }) => {
 	const [resetTrigger, setResetTrigger] = useState(0);
 	const [currentSlide, setCurrentSlide] = useState(0);
 	const [visibleSlide, setVisibleSlide] = useState(0);
+	const [wishlistLogin, setWishlistLogin] = useState(false);
+	const [wishlistData, setWishlistData] = useState([]);
+	const [isProductAvailable, setIsProductAvailable] = useState(false);
 	const filterSizeCatog = document.querySelector('.FilterSizeCatog1');
 	const slides = [
 		{
@@ -79,7 +79,11 @@ const Catog = ({ item }) => {
 			clearInterval(interval);
 		};
 	}, []);
-
+	useEffect(() => {
+		if (isLoading) {
+			setIsProductAvailable(chekAvail2());
+		}
+	}, [isLoading]);
 	const totalSlides = slides.length;
 	const goToNextSlide = () => {
 		setCurrentSlide((prevSlide) =>
@@ -89,7 +93,6 @@ const Catog = ({ item }) => {
 			prevSlide === totalSlides - 1 ? 0 : prevSlide + 1,
 		);
 	};
-
 	const goToPreviousSlide = () => {
 		setCurrentSlide((prevSlide) =>
 			prevSlide === 0 ? totalSlides - 1 : prevSlide - 1,
@@ -99,17 +102,11 @@ const Catog = ({ item }) => {
 		);
 	};
 	useEffect(() => {
-		console.log('Selected color has changed to:', selectedColor); // Add this line
 		setQuantity(1);
-		setResetTrigger((prev) => prev + 1); // Increment the reset trigger to force re-render
-
-		//make filter on the size
+		setResetTrigger((prev) => prev + 1);
 	}, [selectedColor]);
-
-	// let selectedVariantTemp;
 	const selectedVariantTemp = useRef();
 	useEffect(() => {
-		console.log('60');
 		const getProducts = async () => {
 			try {
 				const res = await axios.get(
@@ -119,14 +116,12 @@ const Catog = ({ item }) => {
 				);
 				setProducts(res.data);
 			} catch (err) {
-				console.log(err);
+				console.error('Error fetching data:', err);
 			}
 		};
 		getProducts();
 	}, [item?.cat]);
-
 	useEffect(() => {
-		console.log('76');
 		const fetchData = async () => {
 			try {
 				const [productsRes, offersRes] = await Promise.all([
@@ -137,7 +132,7 @@ const Catog = ({ item }) => {
 				setProductGet(productsRes.data);
 				setOfferGet(offersRes.data);
 			} catch (err) {
-				console.log(err);
+				console.error('Error fetching data:', err);
 			}
 		};
 		fetchData()
@@ -152,11 +147,8 @@ const Catog = ({ item }) => {
 				}
 			});
 	}, [AllProducts.length]);
-
 	const showCartItems = Array.from(document.querySelectorAll('.show-cart2'));
 	const aramex = document.querySelector('.CatogallColors2');
-	const currency = document.querySelector('.currency');
-
 	const getSiblings = (e) => {
 		let siblings = [];
 		if (!e.parentNode) {
@@ -171,7 +163,6 @@ const Catog = ({ item }) => {
 		}
 		return siblings;
 	};
-
 	const createRadioElement = (color) => {
 		const input = document.createElement('input');
 		input.classList.add('radio_button2');
@@ -185,16 +176,13 @@ const Catog = ({ item }) => {
 		label.style.backgroundColor = color;
 		return { input, label };
 	};
-
 	const handleShowCartClick = useCallback(
 		(event, item) => {
 			event.preventDefault();
 			document.querySelectorAll('.AddCart').forEach((item) => {
 				item.removeAttribute('color');
 			});
-
 			const idProduct = item.getAttribute('catog-id');
-
 			setViewArrCatog(
 				isLoading
 					? [...productGet, ...offerGet]?.find(
@@ -207,30 +195,17 @@ const Catog = ({ item }) => {
 		},
 		[AllProducts, isLoading, offerGet, productGet],
 	);
-
 	useEffect(() => {
-		console.log('156');
 		if (viewArrCatog) {
 			selectedVariantTemp.current = viewArrCatog.variants[0];
-			console.log('FIRST USEEFFECT');
 		}
 	}, [viewArrCatog]);
-
 	useEffect(() => {
-		console.log('163');
 		if (viewArrCatog) {
-			const setAttributeForQuintity =
-				document.querySelector('.selectedColor');
 			const catogCard = document.querySelector('.CatogCard');
 			const backLayerForShowCart = document.querySelector(
 				'.backLayerForShowCart',
 			);
-			const sliderItemsContainer = document.querySelector(
-				'.sliderBlock_items51',
-			);
-
-			console.log(`viewArrCatog`, viewArrCatog);
-
 			catogCard.style.display = 'block';
 			catogCard.style.overflow = 'hidden';
 			backLayerForShowCart.style.display = 'block';
@@ -240,36 +215,24 @@ const Catog = ({ item }) => {
 				viewArrCatog.desc;
 			aramex.innerHTML = '';
 			setZaidVar(viewArrCatog._id);
-
 			setProduct_id(viewArrCatog._id);
 			document.querySelector('.nameProducts2').innerHTML =
 				viewArrCatog.title;
-
 			document
 				.querySelector('.block_product__advantagesProduct')
 				.append(viewArrCatog.desc);
-
-			// Rest of your code that relies on `viewArrCatog`
 		}
 	}, [viewArrCatog]);
-
 	const handleQuantityIncrement = () => {
 		const selectedColorLabel = document.querySelector('label.selectedColor');
 		const associatedInput = document?.getElementById(
 			selectedColorLabel?.getAttribute('for'),
 		)?.value;
-		console.log('associatedInput', associatedInput);
-
 		const filterSizeCatog = document.querySelector('.FilterSizeCatog1');
-		console.log('filterSizeCatog', filterSizeCatog);
-		// iwant get  if the size is selected
 		const selectedSizeNew =
 			filterSizeCatog.options[filterSizeCatog.length - 1].getAttribute(
 				'selected',
 			);
-
-		console.log('selectedSizeNew', selectedSizeNew);
-
 		if (!associatedInput) {
 			swal('Error', 'Please select a color', 'error');
 			return;
@@ -280,14 +243,11 @@ const Catog = ({ item }) => {
 		}
 		const selectedOption =
 			filterSizeCatog.options[filterSizeCatog.length - 1];
-		console.log(selectedOption);
 		const quantity501 = parseInt(selectedOption.getAttribute('quantity'));
-		console.log(quantity501);
 		if (!quantity501) {
 			swal('Error', 'Please select a size', 'error');
 			return;
 		}
-
 		if (viewArrCatog) {
 			if (quantity501 - 1 <= 0) {
 				swal('Error', 'The maximum quantity is ' + quantity, 'error');
@@ -295,19 +255,16 @@ const Catog = ({ item }) => {
 				setQuantity((prevQuantity) => {
 					const newQuantity = prevQuantity + 1;
 					selectedOption.setAttribute('quantity', quantity501 - 1);
-
 					return newQuantity;
 				});
 			}
 		}
 	};
-
 	useEffect(() => {
 		if (viewArrCatog && !selectedSize) {
 			aramex.innerHTML = '';
 			let option;
 			const addedColors = new Set();
-
 			viewArrCatog.variants.forEach((variant) => {
 				variant.color.forEach((color) => {
 					if (!addedColors.has(color)) {
@@ -323,30 +280,18 @@ const Catog = ({ item }) => {
 								previousSelectedColor.classList.remove('selectedColor');
 							}
 							label.classList.add('selectedColor');
-
 							const selectedVariants = viewArrCatog.variants.filter(
 								(variant) => variant.color.includes(event.target.value),
 							);
-							console.log('selectedVariants', selectedVariants);
-							console.log('2');
-
 							const sizesForSelectedColor = Array.from(
 								new Set(
 									selectedVariants.flatMap((variant) => variant.size),
 								),
 							);
-							console.log(
-								'sizesForSelectedColor',
-								sizesForSelectedColor,
-							);
-
 							setQuantity(1);
-
 							filterSizeCatog.innerHTML = '';
-
 							sizesForSelectedColor.forEach((size) => {
 								option = new Option(size, size);
-
 								filterSizeCatog.appendChild(option);
 								filterSizeCatog.addEventListener('change', (event) => {
 									setSelectedSize(event.target.value);
@@ -359,11 +304,9 @@ const Catog = ({ item }) => {
 										'quantity',
 										selectedVariant.quantity,
 									);
-
 									setSelectedVariants([selectedVariant]);
 									setIdSelected(selectedVariant._id);
 									setQuantity(1);
-
 									sizesForSelectedColor.forEach((size) => {
 										if (size === event.target.value) {
 											option.setAttribute('selected', 'selected');
@@ -375,12 +318,10 @@ const Catog = ({ item }) => {
 					}
 				});
 			});
-
 			const allSizes = viewArrCatog.variants.flatMap(
 				(variant) => variant.size,
 			);
 			const uniqueSizes = Array.from(new Set(allSizes));
-
 			filterSizeCatog.innerHTML = '';
 			uniqueSizes.forEach((size) => {
 				const option = new Option(size, size);
@@ -396,7 +337,6 @@ const Catog = ({ item }) => {
 					variant.size.includes(event.target.value),
 				);
 				selectedVariantTemp.current = selectedVariant;
-				// option.setAttribute('quantity', selectedVariant.quantity);
 				setSelectedVariants([selectedVariant]);
 				setIdSelected(selectedVariant?._id);
 				setQuantity(1);
@@ -415,7 +355,6 @@ const Catog = ({ item }) => {
 			aramex.innerHTML = '';
 			let option;
 			const addedColors = new Set();
-
 			viewArrCatog.variants.forEach((variant) => {
 				variant.color.forEach((color) => {
 					if (!addedColors.has(color)) {
@@ -425,53 +364,32 @@ const Catog = ({ item }) => {
 						aramex.appendChild(label);
 						input.addEventListener('click', (event) => {
 							setSelectedColor(event.target.value);
-
 							const previousSelectedColor =
 								document.querySelector('.selectedColor');
 							if (previousSelectedColor) {
 								previousSelectedColor.classList.remove('selectedColor');
 							}
 							label.classList.add('selectedColor');
-
 							const selectedVariants = viewArrCatog.variants.filter(
 								(variant) => variant.color.includes(event.target.value),
 							);
-							console.log('selectedVariants', selectedVariants);
-
 							const sizesForSelectedColor = Array.from(
 								new Set(
 									selectedVariants.flatMap((variant) => variant.size),
 								),
 							);
-
 							setQuantity(1);
-
 							filterSizeCatog.innerHTML = '';
-
 							filterSizeCatog.addEventListener('click', (event) => {
-								console.log(event.target.value);
 								setSize(event.target.value);
-
-								console.log(selectedSize);
-
-								// const selectedVariant = viewArrCatog.variants.find(
-								// 	(variant) =>
-								// 		variant.size.includes(event.target.value) ,
-								// );
-
 								const selectedVariant = selectedVariants.find(
 									(variant) =>
 										variant.size.includes(event.target.value),
 								);
-								console.log(selectedVariant);
-
 								selectedVariantTemp.current = selectedVariant;
-								// option.setAttribute('quantity', selectedVariant.quantity);
 								setSelectedVariants([selectedVariant]);
-								console.log(selectedVariants);
 								setIdSelected(selectedVariant?._id);
 								setQuantity(1);
-								console.log(sizesForSelectedColor);
 								sizesForSelectedColor.find((size) => {
 									if (size === event.target.value) {
 										option.setAttribute('selected', 'selected');
@@ -482,22 +400,10 @@ const Catog = ({ item }) => {
 									}
 								});
 							});
-
 							sizesForSelectedColor.forEach((size) => {
 								option = new Option(size, size);
-								console.log(size);
 								setSize(size);
-								console.log(event.target.value);
-								// setSelectedSize(size);
-								// console.log(selectedSize);
-
-								if (size === event.target.value) {
-									// option.setAttribute('selected', 'selected');
-									console.log('selected');
-								}
-
 								filterSizeCatog.appendChild(option);
-								console.log(option);
 							});
 						});
 					}
@@ -511,14 +417,12 @@ const Catog = ({ item }) => {
 		setSelectedSize,
 		setQuantity,
 	]);
-
 	showCartItems.forEach((item) => {
 		item.addEventListener('click', (event) => {
 			setQuantity(1);
 			handleShowCartClick(event, item);
 		});
 	});
-
 	document.querySelectorAll('.CloseCatogCard').forEach((item) =>
 		item.addEventListener('click', (e) => {
 			document.querySelector('.CatogCard').style.display = 'none';
@@ -527,49 +431,38 @@ const Catog = ({ item }) => {
 			document.querySelector('.backLayerForShowCart').style.display = 'none';
 		}),
 	);
-
-	// let cartProducts = localStorage.getItem('persist:root');
-
-	console.log(cartProducts);
-
-	const mergedCart = cartProducts.products.reduce((acc, curr) => {
-		const existingItem = acc.find(
-			(item) =>
-				item._id === curr._id &&
-				item.selectedVariant._id === curr.selectedVariant._id,
-		);
-		if (existingItem) {
-			existingItem.quantity += curr.quantity;
-		} else {
-			acc.push({ ...curr });
-		}
-		return acc;
-	}, []);
-	console.log(mergedCart);
-
-	if (cartProducts && cartProducts.cart && cartProducts.cart.length !== 0) {
-		cartProducts = cartProducts.cart;
-		mergedCart = JSON.parse(cartProducts).products.reduce((acc, curr) => {
-			const existingItem = acc.find(
-				(item) =>
-					item._id === curr._id &&
-					item.selectedVariant._id === curr.selectedVariant._id,
-			);
-			if (existingItem) {
-				existingItem.quantity += curr.quantity;
-			} else {
-				acc.push({ ...curr });
-			}
-			return acc;
-		}, []);
-	}
-
+	// const mergedCart = cartProducts.products.reduce((acc, curr) => {
+	// 	const existingItem = acc.find(
+	// 		(item) =>
+	// 			item._id === curr._id &&
+	// 			item.selectedVariant._id === curr.selectedVariant._id,
+	// 	);
+	// 	if (existingItem) {
+	// 		existingItem.quantity += curr.quantity;
+	// 	} else {
+	// 		acc.push({ ...curr });
+	// 	}
+	// 	return acc;
+	// }, []);
+	// if (cartProducts && cartProducts.cart && cartProducts.cart.length !== 0) {
+	// cartProducts = cartProducts.cart;
+	// mergedCart = JSON.parse(cartProducts).products.reduce((acc, curr) => {
+	// 	const existingItem = acc.find(
+	// 		(item) =>
+	// 			item._id === curr._id &&
+	// 			item.selectedVariant._id === curr.selectedVariant._id,
+	// 	);
+	// 	if (existingItem) {
+	// 		existingItem.quantity += curr.quantity;
+	// 	} else {
+	// 		acc.push({ ...curr });
+	// 	}
+	// 	return acc;
+	// }, []);
+	// }
 	const displayAlert = (title, message, type) => {
 		swal(title, message, type);
 	};
-
-	const selectedVariantTempRef = useRef();
-
 	const handleQuantityDecrement = () => {
 		const selectedOption =
 			filterSizeCatog.options[filterSizeCatog.length - 1];
@@ -581,142 +474,41 @@ const Catog = ({ item }) => {
 			selectedOption.setAttribute('quantity', quantity501 + 1);
 		}
 	};
-
 	const chekAvail2 = () => {
-		// console.log(products);
-		console.log(AllProducts);
-
-		let newQuantity = mergedCart.map((item) => {
-			const selectedVariant = item.selectedVariant;
-			// selectedVariant.find((variant) => {
-			// variant.color.includes(selectedColor)
-			// })
-			console.log(selectedColor);
-			console.log(size);
-			console.log(selectedVariant);
-
-			if (
-				item._id === AllProducts._id &&
-				item.selectedVariant._id === AllProducts.selectedVariant._id
-			) {
-				return {
-					quantity: AllProducts.selectedVariant.quantity - item.quantity,
-				};
-			}
-			return item;
-		});
-		console.log(newQuantity);
-		console.log(mergedCart);
-		// newQuantity = newQuantity.filter((item) => item !== undefined);
-		newQuantity = newQuantity.filter(
-			(item) => item !== undefined && item.quantity !== undefined,
-		);
-		console.log(newQuantity);
-		const selectedvariantsNew2 = newQuantity.filter(
-			(item) =>
-				item.selectedVariant.color.includes(selectedColor) &&
-				item.selectedVariant.size.includes(size),
-		);
-		// console.log(selectedvariantsNew2[0].selectedVariant.quantity);
-
-		const lastQuantity = newQuantity.map((item) => item.quantity)[0];
-
-		console.log(lastQuantity);
-		// const newQuantity2 = newQuantity.map((item) => item.quantity);
-		// if (lastQuantity > 3) {
-		// 	return false;
-		// }
-
-		// if (newQuantity.length > 0) {
-		// 	return newQuantity[0].quantity >= 1;
-		// }
 		return true;
 	};
-
-	// useEffect(() => {
-	// 	chekAvail2();
-	// }, [mergedCart, products._id, products.quantity, setQuantity, quantity]);
-
 	const findItemById = (id) => {
 		const items = [...productGet, ...offerGet];
 		return items.find((item) => item._id === id);
 	};
-
 	const addCartBtn = document.querySelector('.AddCart');
-	const cartItemMap = new Map(mergedCart.map((item) => [item._id, item]));
-
 	const addToCart = (ele) => {
 		const productId = ele.target.getAttribute('product_id');
-
-		console.log(cartProducts);
-
-		// const colorSelected = document.querySelector('.radio_button2').value;
 		const selectedLabel = document.querySelector('.selectedColor');
-		console.log(selectedLabel);
-
 		const inputId = selectedLabel.htmlFor;
-		console.log(inputId);
-		// Get the input element
 		const inputElement = document.getElementById(inputId);
-		console.log(inputElement);
-		// Get the color from the input element
 		const colorSelected = inputElement.value;
-
-		console.log(colorSelected);
-
 		const sizeSelected = document.querySelector('.FilterSizeCatog1').value;
-
-		console.log(sizeSelected);
-
 		const item = findItemById(productId);
-		console.log(item);
-		console.log(colorSelected);
-		console.log(sizeSelected);
-		console.log(
-			item.variants.find(
-				(variant) =>
-					variant.color[0] === colorSelected &&
-					variant.size[0] === sizeSelected,
-			),
-		);
-
 		const selectedvariantsNew = item.variants.find(
 			(variant) =>
 				variant.color[0] === colorSelected &&
 				variant.size[0] === sizeSelected,
 		);
-		console.log(selectedvariantsNew.quantity);
-
 		if (!item) {
 			showInfoMessage('Product not found!');
 			return;
 		}
-
-		console.log(cartItemMap); ///??
-
-		const cartItem = cartItemMap.get(productId);
-		console.log(cartItem); ////?
-		console.log(item);
 		if (quantity > item.quantity) {
-			// disableAddCartBtn(addCartBtn);
 			showInfoMessage('You already have the maximum amount!');
 			return;
 		}
-		console.log(item);
-		console.log(selectedvariantsNew);
-
-		console.log(cartProducts);
-		// console.log(cartProducts.cart);
-
-		console.log(mergedCart);
-
 		if (quantity > 0) {
 			const newItem = {
 				...item,
 				quantity,
 				selectedVariant: selectedvariantsNew,
 			};
-
 			let existingProducts = localStorage.getItem('persist:root');
 			existingProducts = existingProducts
 				? JSON.parse(existingProducts)
@@ -724,52 +516,25 @@ const Catog = ({ item }) => {
 			if (!Array.isArray(existingProducts)) {
 				existingProducts = [];
 			}
-
 			const existingItem = existingProducts.find(
 				(product) => product._id === newItem._id,
 			);
-
 			if (existingItem) {
-				// If the item exists, increase its quantity
 				existingItem.quantity += newItem.quantity;
 			} else {
-				// If the item doesn't exist, add it to the cart
 				existingProducts.push(newItem);
 			}
-
-			// localStorage.setItem('persist:root', JSON.stringify(existingProducts));
-
-			// Update cartProducts and mergedCart
-			// cartProducts = existingProducts;
-			// mergedCart = cartProducts.reduce((acc, curr) => {
-			// 	const existingItem = acc.find((item) => item._id === curr._id);
-			// 	if (existingItem) {
-			// 		existingItem.quantity += curr.quantity;
-			// 	} else {
-			// 		acc.push({ ...curr });
-			// 	}
-			// 	return acc;
-			// }, []);
-			console.log(newItem);
-
 			const selectedColorLabel = document.querySelector(
 				'label.selectedColor',
 			);
 			const associatedInput = document?.getElementById(
 				selectedColorLabel?.getAttribute('for'),
 			)?.value;
-			console.log('associatedInput', associatedInput);
-
 			const filterSizeCatog2 = document.querySelector('.FilterSizeCatog1');
-			console.log('filterSizeCatog2', filterSizeCatog2);
-
 			const selectedSizeNew =
 				filterSizeCatog2.options[filterSizeCatog2.length - 1].getAttribute(
 					'selected',
 				);
-
-			console.log('selectedSizeNew', selectedSizeNew);
-
 			if (!associatedInput) {
 				swal('Error', 'Please select a color', 'error');
 				return;
@@ -780,60 +545,20 @@ const Catog = ({ item }) => {
 			}
 			const selectedOption =
 				filterSizeCatog2.options[filterSizeCatog2.length - 1];
-			console.log(selectedOption);
 			const quantity501 = parseInt(selectedOption.getAttribute('quantity'));
-			console.log(quantity501);
 			if (!quantity501) {
 				swal('Error', 'Please select a size', 'error');
 				return;
 			}
-
 			dispatch(addProduct(newItem));
-
 			const filterSizeCatog3 = document.querySelector('.FilterSizeCatog1');
-			console.log(
-				'filterSizeCatogzzzzzzzzzzzzzzzzzzzzzzzzz',
-				filterSizeCatog,
-			);
-			// iwant get  if the size is selected
-			// const selectedSizeNew2 = filterSizeCatog3.options[
-			// 	filterSizeCatog3.length - 1
-			// ].setAttribute('quantity', selectedvariantsNew.quantity - quantity);
 			selectedOption.setAttribute(
 				'quantity',
 				selectedvariantsNew.quantity - quantity,
 			);
-
 			const quantity502 = parseInt(selectedOption.getAttribute('quantity'));
-			console.log(quantity502);
-
-			console.log(
-				'selectedvariantsNew.quantity',
-				selectedvariantsNew.quantity,
-			);
-			console.log('quantity', quantity);
-
-			// console.log(selectedSizeNew2);
-
-			// console.log(cartProducts);
-			// cartProducts = cartProducts.map((item) => {
-			// 	return {
-			// 		...item,
-			// 		quantity: quantity,
-			// 	};
-			// });
-			console.log(cartProducts);
-			console.log(mergedCart);
-
-			console.log({
-				...item,
-			});
 			setQuantity(1);
-
 			showSuccessMessage('Product added to cart!');
-			// chekAvail2();
-
-			console.log(selectedvariantsNew.quantity);
 			if (selectedvariantsNew.quantity === 0) {
 				disableAddCartBtn(addCartBtn);
 				swal('Info', 'You already have the maximum amount!', 'info');
@@ -842,31 +567,22 @@ const Catog = ({ item }) => {
 			showInfoMessage('Try with a different amount!');
 		}
 	};
-
 	const disableAddCartBtn = (btn) => {
-		// btn.disabled = true;
 		btn.pointerEvents = 'none';
 		btn.style.opacity = '0.5';
 		btn.style.cursor = 'not-allowed';
 	};
-
 	const showInfoMessage = (message) => {
 		swal('Info', message, 'info');
 	};
-
 	const showSuccessMessage = (message) => {
 		swal('Success', message, 'success');
 	};
-
-	const [wishlistLogin, setWishlistLogin] = useState(false);
-
 	const addToWishlist = async (productId, identifier, ele) => {
 		if (!wishlistLogin) {
 			await swal({
 				title: 'You have to login !',
 				icon: 'warning',
-				buttons: true,
-				confirmButtonColor: '#42a5f5',
 				confirmButtonText: 'Login',
 				showCancelButton: true,
 				closeOnConfirm: false,
@@ -874,13 +590,11 @@ const Catog = ({ item }) => {
 			window.location.href = '/login';
 			return;
 		}
-
 		let targetElement = ele.target;
 		if (targetElement.tagName === 'path') {
 			targetElement = targetElement.parentNode;
 		}
 		const targetClass = targetElement.classList[0];
-
 		try {
 			await wishlist(productId, userId);
 			if (identifier === 'remove') {
@@ -901,8 +615,6 @@ const Catog = ({ item }) => {
 			swal('Error', 'Something went wrong', 'error');
 		}
 	};
-	const isMountedRef = useRef(true);
-	const [wishlistData, setWishlistData] = useState([]);
 	let userId = localStorage.getItem('persist:root');
 	useEffect(async () => {
 		if (JSON.parse(userId).user) {
@@ -926,11 +638,9 @@ const Catog = ({ item }) => {
 			isMountedRef.current = false;
 		};
 	}, [userId]);
-
 	if (!isMountedRef.current) {
 		return null;
 	}
-
 	return (
 		<>
 			<div className='backLayerForShowCart'></div>
@@ -940,38 +650,6 @@ const Catog = ({ item }) => {
 						<div className='small-12 large-6 columns11'>
 							<div className='productCard_leftSide clearfix'>
 								<div className='sliderBlock'>
-									{/* <ul className='sliderBlock_items51'>
-										<li className='sliderBlock_items__itemPhoto4 sliderBlock_items__showing4'>
-											<img
-												src='https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones1.png?raw=true'
-												alt='headphones'
-											/>
-										</li>
-										<li className='sliderBlock_items__itemPhoto4'>
-											<img
-												src='https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones2.png?raw=true'
-												alt='headphones'
-											/>
-										</li>
-										<li className='sliderBlock_items__itemPhoto4'>
-											<img
-												src='https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones3.png?raw=true'
-												alt='headphones'
-											/>
-										</li>
-										<li className='sliderBlock_items__itemPhoto4'>
-											<img
-												src='https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones4.png?raw=true'
-												alt='headphones'
-											/>
-										</li>
-										<li className='sliderBlock_items__itemPhoto4'>
-											<img
-												src='https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones5.png?raw=true'
-												alt='headphones'
-											/>
-										</li>
-									</ul> */}
 									<ul className='sliderBlock_items50'>
 										{slides.map((slide, index) => (
 											<li
@@ -980,8 +658,7 @@ const Catog = ({ item }) => {
 													index === currentSlide
 														? 'sliderBlock_items__showing2'
 														: ''
-												}`}
-											>
+												}`}>
 												<img
 													src={slide.image}
 													alt={slide.alt}
@@ -989,20 +666,17 @@ const Catog = ({ item }) => {
 											</li>
 										))}
 									</ul>
-
 									<div className='sliderBlock_controls'>
 										<div className='sliderBlock_controls__navigatin'>
 											<div className='sliderBlock_controls__wrapper'>
 												<div
 													className='sliderBlock_controls__arrow sliderBlock_controls__arrowForward2'
-													onClick={goToNextSlide}
-												>
+													onClick={goToNextSlide}>
 													<BsFillArrowRightCircleFill className='sliderBlock_controls__arrowForward2' />
 												</div>
 												<div
 													className='sliderBlock_controls__arrow sliderBlock_controls__arrowBackward2'
-													onClick={goToPreviousSlide}
-												>
+													onClick={goToPreviousSlide}>
 													<BsFillArrowLeftCircleFill className='sliderBlock_controls__arrowBackward2' />
 												</div>
 											</div>
@@ -1015,8 +689,7 @@ const Catog = ({ item }) => {
 														index === visibleSlide
 															? 'sliderBlock_positionControls__active2'
 															: ''
-													}`}
-												></li>
+													}`}></li>
 											))}
 										</ul>
 									</div>
@@ -1032,14 +705,12 @@ const Catog = ({ item }) => {
 									<div className='block_specification__specificationShow'>
 										<i
 											className='fa fa-cog block_specification__button block_specification__button__rotate'
-											aria-hidden='true'
-										></i>
+											aria-hidden='true'></i>
 									</div>
 								</div>
 
 								<div className='block_product'>
 									<h2 className='block_name block_name__mainName nameProducts2'></h2>
-
 									<p className='block_product__advantagesProduct CatogCardDesc'></p>
 									<div className='block_informationAboutDevice'>
 										<div className='row11 '>
@@ -1060,8 +731,7 @@ const Catog = ({ item }) => {
 														key={resetTrigger}
 														zaid={resetTrigger}
 														className='block_quantity__chooseBlock'
-														readOnly
-													>
+														readOnly>
 														<input
 															className='block_quantity__number block_quantity__number2'
 															name='quantityNumber'
@@ -1103,32 +773,28 @@ const Catog = ({ item }) => {
 														className='zaid'
 														style={{
 															display: 'hidden',
-														}}
-													></div>
+														}}></div>
 													<div className='block_goodColor__allColors2 CatogallColors2'></div>
 													<FilterSizeCatog
 														className='FilterSizeCatog1'
 														onChange={(e) =>
 															setSize(e.target.value)
-														}
-													></FilterSizeCatog>
+														}></FilterSizeCatog>
 												</div>
 												{isLoading ? (
-													chekAvail2() ? (
+													isProductAvailable ? (
 														<button
 															className='AddCart'
 															product_id={product_id}
 															onClick={(ele) => {
 																addToCart(ele);
-															}}
-														>
+															}}>
 															Add to Cart
 														</button>
 													) : (
 														<button
 															className='AddCart'
-															disabled
-														>
+															disabled>
 															ADD TO CART
 														</button>
 													)
@@ -1146,16 +812,14 @@ const Catog = ({ item }) => {
 			</div>
 			<div
 				id='listingtabs_0'
-				className='block sm-listing-tabs tab-cms-block slider snipcss-X3nN9'
-			>
+				className='block sm-listing-tabs tab-cms-block slider snipcss-X3nN9'>
 				<h2>{item?.title}</h2>
 				<div className='block-content'>
 					<div className='ltabs-wrap'>
 						<div className='ltabs-tabs-container'>
 							<div
 								className='ltabs-tabs-wrap'
-								tabindex='-1'
-							>
+								tabindex='-1'>
 								<span className='ltabs-current-select'>
 									Accessories for iPhone
 								</span>
@@ -1184,38 +848,31 @@ const Catog = ({ item }) => {
 												<div className='owl-stage-outer'>
 													<div
 														className='owl-stage style-pO7ki'
-														id='style-pO7ki'
-													>
+														id='style-pO7ki'>
 														{products.slice(0, 4).map((data) => (
 															<div
 																className='owl-item active style-SmoEo'
-																id='style-SmoEo'
-															>
+																id='style-SmoEo'>
 																<li className='item product product-item '>
 																	<div
 																		className='product-item-info'
-																		data-container='product-grid'
-																	>
+																		data-container='product-grid'>
 																		<Link
 																			to={`/product/${data._id}`}
 																			className='action quickview-handler sm_quickview_handler'
 																			title='Quick View'
-																			href=''
-																		>
+																			href=''>
 																			<div className='image-product'>
 																				<a
 																					href='#'
 																					className='product photo product-item-photo'
-																					tabindex='-1'
-																				>
+																					tabindex='-1'>
 																					<span
 																						className='product-image-container product-image-container-1 style-bH5WH'
-																						id='style-bH5WH'
-																					>
+																						id='style-bH5WH'>
 																						<span
 																							className='product-image-wrapper style-MbttD'
-																							id='style-MbttD'
-																						>
+																							id='style-MbttD'>
 																							<img
 																								className='product-image-photo'
 																								src={
@@ -1241,8 +898,7 @@ const Catog = ({ item }) => {
 																					href=''
 																					catog-id={
 																						data._id
-																					}
-																				>
+																					}>
 																					<AiOutlineEye />
 																					<span>
 																						Quick View
@@ -1255,22 +911,19 @@ const Catog = ({ item }) => {
 																				{data.title}
 																				<a
 																					className='product-item-link'
-																					href='#'
-																				></a>
+																					href='#'></a>
 																			</strong>
 																			<div
 																				className='price-box price-final_price'
 																				data-role='priceBox'
 																				data-product-id='1'
-																				data-price-box='product-id-1'
-																			>
+																				data-price-box='product-id-1'>
 																				<span className='price-container price-final_price tax weee'>
 																					<span
 																						id='product-price-1'
 																						data-price-amount='250'
 																						data-price-type='finalPrice'
-																						className='price-wrapper '
-																					>
+																						className='price-wrapper '>
 																						<span className='price'>
 																							${' '}
 																							{
@@ -1285,24 +938,20 @@ const Catog = ({ item }) => {
 																					<div className='actions-primary'></div>
 																					<div
 																						data-role='add-to-links'
-																						className='actions-secondary'
-																					></div>
+																						className='actions-secondary'></div>
 																					<Link
-																						to={`/product/${data._id}`}
-																					>
+																						to={`/product/${data._id}`}>
 																						<button className='Add-to-Cart-new'>
 																							Add to Cart
 																						</button>
 																					</Link>
 																					<div
 																						className='actions-secondary'
-																						data-role='add-to-links'
-																					>
+																						data-role='add-to-links'>
 																						<div
 																							className='action towishlist'
 																							data-action='add-to-wishlist'
-																							title='Add to Wish List'
-																						>
+																							title='Add to Wish List'>
 																							{wishlistData.includes(
 																								data._id,
 																							) ? (
@@ -1329,8 +978,7 @@ const Catog = ({ item }) => {
 																										width='16'
 																										height='16'
 																										fill='currentColor'
-																										viewBox='0 0 16 16'
-																									>
+																										viewBox='0 0 16 16'>
 																										<path
 																											className='add-to-wish2'
 																											fill-rule='evenodd'
@@ -1367,8 +1015,7 @@ const Catog = ({ item }) => {
 																										width='16'
 																										height='16'
 																										fill='currentColor'
-																										viewBox='0 0 16 16'
-																									>
+																										viewBox='0 0 16 16'>
 																										<path
 																											className='add-to-wish2'
 																											fill-rule='evenodd'
@@ -1399,8 +1046,7 @@ const Catog = ({ item }) => {
 																						<div
 																							className='action tocompare'
 																							data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/catalog\/product_compare\/add\/","data":{"product":"1","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
-																							title='Add to Compare'
-																						>
+																							title='Add to Compare'>
 																							<IoGitCompareOutline />
 																							<span>
 																								Add to
@@ -1420,14 +1066,12 @@ const Catog = ({ item }) => {
 												<div className='owl-nav'>
 													<div
 														role='presentation'
-														className='owl-prev disabled'
-													>
+														className='owl-prev disabled'>
 														<span aria-label='Previous'>‹</span>
 													</div>
 													<div
 														role='presentation'
-														className='owl-next'
-													>
+														className='owl-next'>
 														<span aria-label='Next'>›</span>
 													</div>
 												</div>
@@ -1444,5 +1088,4 @@ const Catog = ({ item }) => {
 		</>
 	);
 };
-
 export default Catog;

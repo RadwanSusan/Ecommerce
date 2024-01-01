@@ -99,7 +99,6 @@ const Offer = () => {
 			prevSlide === totalSlides - 1 ? 0 : prevSlide + 1,
 		);
 	};
-
 	const goToPreviousSlide = () => {
 		setCurrentSlide((prevSlide) =>
 			prevSlide === 0 ? totalSlides - 1 : prevSlide - 1,
@@ -108,86 +107,7 @@ const Offer = () => {
 			prevSlide === 0 ? totalSlides - 1 : prevSlide - 1,
 		);
 	};
-
-	// 	let currentSlide = 4;
-	// 	const slides = document.querySelectorAll(
-	// 		'.sliderBlock_items__itemPhoto2',
-	// 	);
-	// 	const totalSlides = slides.length;
-	// 	const nextButton = document.querySelector(
-	// 		'.sliderBlock_controls__arrowForward2',
-	// 	);
-	// 	const prevButton = document.querySelector(
-	// 		'.sliderBlock_controls__arrowBackward2',
-	// 	);
-	// 	const paginatorItems = document.querySelectorAll(
-	// 		'.sliderBlock_positionControls__paginatorItem2',
-	// 	);
-	// 	setInterval(() => {
-	// 		goToSlide(currentSlide + 1);
-	// 	}, 3000);
-	// 	if (nextButton !== null) {
-	// 		nextButton.addEventListener('click', function () {
-	// 			goToSlide(currentSlide + 1);
-	// 		});
-	// 	}
-	// 	if (prevButton !== null) {
-	// 		prevButton.addEventListener('click', function () {
-	// 			goToSlide(currentSlide - 1);
-	// 		});
-	// 	}
-	// 	goToSlide(currentSlide);
-	// 	function goToSlide(n) {
-	// 		if (n > totalSlides - 1) {
-	// 			currentSlide = totalSlides - 1;
-	// 		} else if (n < 5) {
-	// 			currentSlide = 5;
-	// 		} else if (n > 9) {
-	// 			currentSlide = 5;
-	// 		} else {
-	// 			currentSlide = n;
-	// 		}
-
-	// 		slides.forEach((slide, index) => {
-	// 			if (index === currentSlide) {
-	// 				console.log('slide Added');
-	// 				slide.classList.add('sliderBlock_items__showing2');
-	// 				paginatorItems[index].classList.add(
-	// 					'sliderBlock_positionControls__active2',
-	// 				);
-	// 			} else {
-	// 				console.log('slide Removed');
-	// 				slide.classList.remove('sliderBlock_items__showing2');
-	// 				paginatorItems[index].classList.remove(
-	// 					'sliderBlock_positionControls__active2',
-	// 				);
-	// 			}
-	// 		});
-	// 	}
-	// });
 	const chekAvail2 = () => {
-		let newQuantity = mergedCart.map((item) => {
-			const selectedVariant = item.selectedVariant;
-			if (
-				item._id === AllProducts._id &&
-				item.selectedVariant._id === AllProducts.selectedVariant._id
-			) {
-				return {
-					quantity: AllProducts.selectedVariant.quantity - item.quantity,
-				};
-			}
-			return item;
-		});
-		newQuantity = newQuantity.filter(
-			(item) => item !== undefined && item.quantity !== undefined,
-		);
-		const lastQuantity = newQuantity.map((item) => item.quantity)[0];
-		if (lastQuantity > 5) {
-			return false;
-		}
-		if (newQuantity.length > 0) {
-			return newQuantity[0].quantity >= 1;
-		}
 		return true;
 	};
 	useEffect(() => {
@@ -206,7 +126,7 @@ const Offer = () => {
 				setProductGet(productsRes.data);
 				setOfferGet(offersRes.data);
 			} catch (err) {
-				console.log(err);
+				console.error('Error fetching data:', err);
 			}
 		};
 		fetchData()
@@ -239,7 +159,6 @@ const Offer = () => {
 	};
 	const handleShowCartClick = useCallback(
 		(event, item) => {
-			console.log('clicked');
 			event.preventDefault();
 			document.querySelectorAll('.AddCart2').forEach((item) => {
 				item.removeAttribute('color');
@@ -263,9 +182,7 @@ const Offer = () => {
 		}
 	}, [viewArrCatog]);
 	useEffect(() => {
-		console.log('clicking');
 		if (viewArrCatog) {
-			console.log('clicking');
 			const setAttributeForQuintity =
 				document.querySelector('.selectedColor');
 			const catogCard = document.querySelector('.CatogCard2');
@@ -577,7 +494,6 @@ const Offer = () => {
 		chekAvail2();
 		showSuccessMessage('Product added to cart!');
 		if (quantityCart >= selectedvariantsNew.quantity) {
-			console.log('clicking');
 			disableAddCartBtn(addCartBtn);
 			swal('Info', 'You already have the maximum amount!', 'info');
 		}
@@ -868,7 +784,6 @@ const Offer = () => {
 							<div
 								id='filterproducts_1'
 								className='product-deal-list'>
-								{/* <Link to={`/offer/${categoriesOffer[0].cat}`}> */}
 								<Link to={`/`}>
 									<div className='deal-left'>
 										<div className='deal-description'>
