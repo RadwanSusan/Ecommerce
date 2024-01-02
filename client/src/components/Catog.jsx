@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, {
+	useEffect,
+	useState,
+	useRef,
+	useCallback,
+	useMemo,
+} from 'react';
 import axios from 'axios';
 import './catog.css';
 import styled from 'styled-components';
@@ -39,7 +45,6 @@ const Catog = ({ item }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [selectedColor, setSelectedColor] = useState('');
 	const [selectedSize, setSelectedSize] = useState(null);
-	const [selectedColorElement, setSelectedColorElement] = useState(null);
 	const cartProducts = useSelector(cartSelector);
 	const [selectedVariants, setSelectedVariants] = useState([]);
 	const [viewArrCatog, setViewArrCatog] = useState(null);
@@ -49,7 +54,11 @@ const Catog = ({ item }) => {
 	const [wishlistLogin, setWishlistLogin] = useState(false);
 	const [wishlistData, setWishlistData] = useState([]);
 	const [isProductAvailable, setIsProductAvailable] = useState(false);
+	const [cartQuantityValue, setCartQuantity] = useState(0);
 	const filterSizeCatog = document.querySelector('.FilterSizeCatog1');
+	const showCartItems = Array.from(document.querySelectorAll('.show-cart2'));
+	const aramex = document.querySelector('.CatogallColors2');
+	const selectedVariantTemp = useRef();
 	const slides = [
 		{
 			image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones1.png?raw=true',
@@ -72,9 +81,13 @@ const Catog = ({ item }) => {
 			alt: 'headphones',
 		},
 	];
+
+	useEffect(() => {
+		console.log(cartQuantityValue);
+	}, [cartQuantityValue]);
+
 	useEffect(() => {
 		const interval = setInterval(goToNextSlide, 3000);
-
 		return () => {
 			clearInterval(interval);
 		};
@@ -105,7 +118,6 @@ const Catog = ({ item }) => {
 		setQuantity(1);
 		setResetTrigger((prev) => prev + 1);
 	}, [selectedColor]);
-	const selectedVariantTemp = useRef();
 	useEffect(() => {
 		const getProducts = async () => {
 			try {
@@ -147,8 +159,6 @@ const Catog = ({ item }) => {
 				}
 			});
 	}, [AllProducts.length]);
-	const showCartItems = Array.from(document.querySelectorAll('.show-cart2'));
-	const aramex = document.querySelector('.CatogallColors2');
 	const getSiblings = (e) => {
 		let siblings = [];
 		if (!e.parentNode) {
@@ -255,100 +265,70 @@ const Catog = ({ item }) => {
 				setQuantity((prevQuantity) => {
 					const newQuantity = prevQuantity + 1;
 					selectedOption.setAttribute('quantity', quantity501 - 1);
+					console.log(selectedOption.getAttribute('quantity'));
 					return newQuantity;
 				});
 			}
 		}
 	};
 	useEffect(() => {
-		if (viewArrCatog && !selectedSize) {
-			aramex.innerHTML = '';
-			let option;
-			const addedColors = new Set();
-			viewArrCatog.variants.forEach((variant) => {
-				variant.color.forEach((color) => {
-					if (!addedColors.has(color)) {
-						addedColors.add(color);
-						const { input, label } = createRadioElement(color);
-						aramex.appendChild(input);
-						aramex.appendChild(label);
-						input.addEventListener('click', (event) => {
-							setSelectedColor(event.target.value);
-							const previousSelectedColor =
-								document.querySelector('.selectedColor');
-							if (previousSelectedColor) {
-								previousSelectedColor.classList.remove('selectedColor');
-							}
-							label.classList.add('selectedColor');
-							const selectedVariants = viewArrCatog.variants.filter(
-								(variant) => variant.color.includes(event.target.value),
-							);
-							const sizesForSelectedColor = Array.from(
-								new Set(
-									selectedVariants.flatMap((variant) => variant.size),
-								),
-							);
-							setQuantity(1);
-							filterSizeCatog.innerHTML = '';
-							sizesForSelectedColor.forEach((size) => {
-								option = new Option(size, size);
-								filterSizeCatog.appendChild(option);
-								filterSizeCatog.addEventListener('change', (event) => {
-									setSelectedSize(event.target.value);
-									const selectedVariant = viewArrCatog.variants.find(
-										(variant) =>
-											variant.size.includes(event.target.value),
-									);
-									selectedVariantTemp.current = selectedVariant;
-									// const quantityInCart = mergedCart.find(
-									// 	(item) => item._id === selectedVariant._id,
-									// ).quantity;
-									// console.log(
-									// 	'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
-									// 	quantityInCart,
-									// );
-									option.setAttribute(
-										'quantity',
-										selectedVariant.quantity,
-									);
-									setSelectedVariants([selectedVariant]);
-									setIdSelected(selectedVariant._id);
-									setQuantity(1);
-									sizesForSelectedColor.forEach((size) => {
-										if (size === event.target.value) {
-											option.setAttribute('selected', 'selected');
-										}
-									});
-								});
-							});
-						});
-					}
-				});
-			});
-			const allSizes = viewArrCatog.variants.flatMap(
-				(variant) => variant.size,
+		if (!viewArrCatog || selectedSize) return;
+		aramex.innerHTML = '';
+		filterSizeCatog.innerHTML = '';
+		let option;
+		const addedColors = new Set();
+		const allSizes = new Set();
+		const handleColorClick = (color) => (event) => {
+			setSelectedColor(event.target.value);
+			document
+				.querySelector('.selectedColor')
+				?.classList.remove('selectedColor');
+			event.target.nextSibling.classList.add('selectedColor');
+			const selectedVariants = viewArrCatog.variants.filter((variant) =>
+				variant.color.includes(event.target.value),
 			);
-			const uniqueSizes = Array.from(new Set(allSizes));
+			const sizesForSelectedColor = Array.from(
+				new Set(selectedVariants.flatMap((variant) => variant.size)),
+			);
+			setQuantity(1);
 			filterSizeCatog.innerHTML = '';
-			uniqueSizes.forEach((size) => {
-				const option = new Option(size, size);
+			sizesForSelectedColor.forEach((size) => {
+				option = new Option(size, size);
 				filterSizeCatog.appendChild(option);
-				if (size === uniqueSizes[0]) {
-					option.selected = true;
-					setSize(size);
+			});
+		};
+		viewArrCatog.variants.forEach((variant) => {
+			variant.color.forEach((color) => {
+				if (!addedColors.has(color)) {
+					addedColors.add(color);
+					allSizes.add(...variant.size);
+					const { input, label } = createRadioElement(color);
+					aramex.appendChild(input);
+					aramex.appendChild(label);
+					input.addEventListener('click', handleColorClick(color));
 				}
 			});
-			filterSizeCatog.addEventListener('change', (event) => {
-				setSelectedSize(event.target.value);
-				const selectedVariant = viewArrCatog.variants.find((variant) =>
-					variant.size.includes(event.target.value),
-				);
-				selectedVariantTemp.current = selectedVariant;
-				setSelectedVariants([selectedVariant]);
-				setIdSelected(selectedVariant?._id);
-				setQuantity(1);
-			});
-		}
+		});
+		const uniqueSizes = Array.from(allSizes);
+		uniqueSizes.forEach((size) => {
+			const option = new Option(size, size);
+			filterSizeCatog.appendChild(option);
+			if (size === uniqueSizes[0]) {
+				option.selected = true;
+				setSize(size);
+			}
+		});
+		const handleSizeChange = (event) => {
+			setSelectedSize(event.target.value);
+			const selectedVariant = viewArrCatog.variants.find((variant) =>
+				variant.size.includes(event.target.value),
+			);
+			selectedVariantTemp.current = selectedVariant;
+			setSelectedVariants([selectedVariant]);
+			setIdSelected(selectedVariant?._id);
+			setQuantity(1);
+		};
+		filterSizeCatog.addEventListener('change', handleSizeChange);
 	}, [
 		viewArrCatog,
 		selectedVariantTemp,
@@ -357,20 +337,23 @@ const Catog = ({ item }) => {
 		setSelectedSize,
 		setQuantity,
 	]);
-	const mergedCart = cartProducts.products.reduce((acc, curr) => {
-		const existingItem = acc.find(
-			(item) =>
-				item._id === curr._id &&
-				item.selectedVariant._id === curr.selectedVariant._id,
-		);
-		if (existingItem) {
-			existingItem.quantity += curr.quantity;
-		} else {
-			acc.push({ ...curr });
-		}
-		return acc;
-	}, []);
-	console.log(`🚀  file: Catog.jsx:454  mergedCart =>`, mergedCart);
+	const mergedCart = useMemo(() => {
+		return cartProducts.products.reduce((acc, curr) => {
+			const existingItem = acc.find(
+				(item) =>
+					item._id === curr._id &&
+					item.selectedVariant._id === curr.selectedVariant._id,
+			);
+			if (existingItem) {
+				existingItem.quantity += curr.quantity;
+			} else {
+				acc.push({ ...curr });
+			}
+			return acc;
+		}, []);
+	}, [cartProducts]);
+	const addCartBtn = document.querySelector('.AddCart');
+
 	useEffect(() => {
 		if (viewArrCatog && !selectedSize) {
 			aramex.innerHTML = '';
@@ -414,31 +397,37 @@ const Catog = ({ item }) => {
 								sizesForSelectedColor.find((size) => {
 									if (size === event.target.value) {
 										option.setAttribute('selected', 'selected');
-										console.log('selectedVariant', selectedVariant);
 										const cartItem = mergedCart.find(
 											(item) =>
 												item.selectedVariant._id ===
 												selectedVariant._id,
 										);
-										console.log('mergedCart', mergedCart);
-										console.log('cartItem', cartItem);
-										const cartQuantity = cartItem
-											? cartItem.quantity
-											: 0;
-
+										const cartQuantity =
+											cartItem && cartItem.quantity
+												? cartItem.quantity
+												: cartQuantityValue;
 										option.setAttribute(
 											'quantity',
 											selectedVariant.quantity - cartQuantity,
 										);
+										console.log(option.getAttribute('quantity'));
+										if (option.getAttribute('quantity') === '0') {
+											disableAddCartBtn(addCartBtn);
+										}
+										console.log(
+											'selectedVariant.quantity:',
+											selectedVariant.quantity,
+										);
+										console.log('cartQuantity:', cartQuantity);
 									}
 								});
 							});
-
 							sizesForSelectedColor.forEach((size) => {
 								option = new Option(size, size);
 								setSize(size);
 								filterSizeCatog.appendChild(option);
 							});
+							enableAddCartBtn(addCartBtn);
 						});
 					}
 				});
@@ -450,6 +439,7 @@ const Catog = ({ item }) => {
 		setSelectedColor,
 		setSelectedSize,
 		setQuantity,
+		cartQuantityValue,
 	]);
 	showCartItems.forEach((item) => {
 		item.addEventListener('click', (event) => {
@@ -465,23 +455,6 @@ const Catog = ({ item }) => {
 			document.querySelector('.backLayerForShowCart').style.display = 'none';
 		}),
 	);
-
-	// if (cartProducts && cartProducts.cart && cartProducts.cart.length !== 0) {
-	// cartProducts = cartProducts.cart;
-	// mergedCart = JSON.parse(cartProducts).products.reduce((acc, curr) => {
-	// 	const existingItem = acc.find(
-	// 		(item) =>
-	// 			item._id === curr._id &&
-	// 			item.selectedVariant._id === curr.selectedVariant._id,
-	// 	);
-	// 	if (existingItem) {
-	// 		existingItem.quantity += curr.quantity;
-	// 	} else {
-	// 		acc.push({ ...curr });
-	// 	}
-	// 	return acc;
-	// }, []);
-	// }
 	const displayAlert = (title, message, type) => {
 		swal(title, message, type);
 	};
@@ -494,6 +467,7 @@ const Catog = ({ item }) => {
 		} else {
 			setQuantity(quantity - 1);
 			selectedOption.setAttribute('quantity', quantity501 + 1);
+			console.log(selectedOption.getAttribute('quantity'));
 		}
 	};
 	const chekAvail2 = () => {
@@ -503,7 +477,6 @@ const Catog = ({ item }) => {
 		const items = [...productGet, ...offerGet];
 		return items.find((item) => item._id === id);
 	};
-	const addCartBtn = document.querySelector('.AddCart');
 	const addToCart = (ele) => {
 		const productId = ele.target.getAttribute('product_id');
 		const selectedLabel = document.querySelector('.selectedColor');
@@ -573,15 +546,15 @@ const Catog = ({ item }) => {
 				return;
 			}
 			dispatch(addProduct(newItem));
-			const filterSizeCatog3 = document.querySelector('.FilterSizeCatog1');
 			selectedOption.setAttribute(
 				'quantity',
 				selectedvariantsNew.quantity - quantity,
 			);
-			const quantity502 = parseInt(selectedOption.getAttribute('quantity'));
+			console.log(selectedOption.getAttribute('quantity'));
+			setCartQuantity(selectedvariantsNew.quantity - quantity);
 			setQuantity(1);
 			showSuccessMessage('Product added to cart!');
-			if (selectedvariantsNew.quantity === 0) {
+			if (selectedOption.getAttribute('quantity') === 0) {
 				disableAddCartBtn(addCartBtn);
 				swal('Info', 'You already have the maximum amount!', 'info');
 			}
@@ -594,6 +567,11 @@ const Catog = ({ item }) => {
 		btn.style.opacity = '0.5';
 		btn.style.cursor = 'not-allowed';
 	};
+	const enableAddCartBtn = (btn) => {
+		btn.pointerEvents = 'auto';
+		btn.style.opacity = '1';
+		btn.style.cursor = 'pointer';
+	};
 	const showInfoMessage = (message) => {
 		swal('Info', message, 'info');
 	};
@@ -605,9 +583,6 @@ const Catog = ({ item }) => {
 			await swal({
 				title: 'You have to login !',
 				icon: 'warning',
-				confirmButtonText: 'Login',
-				showCancelButton: true,
-				closeOnConfirm: false,
 			});
 			window.location.href = '/login';
 			return;
@@ -735,7 +710,6 @@ const Catog = ({ item }) => {
 										></i>
 									</div>
 								</div>
-
 								<div className='block_product'>
 									<h2 className='block_name block_name__mainName nameProducts2'></h2>
 									<p className='block_product__advantagesProduct CatogCardDesc'></p>
