@@ -324,10 +324,22 @@ const Catog = ({ item }) => {
 				variant.size.includes(event.target.value),
 			);
 			selectedVariantTemp.current = selectedVariant;
-			setSelectedVariants([selectedVariant]);
-			setIdSelected(selectedVariant?._id);
-			setQuantity(1);
+
+			if (selectedVariant) {
+				// Check if selectedVariant is not undefined
+				setSelectedVariants([selectedVariant]);
+				setIdSelected(selectedVariant?._id);
+				setQuantity(1);
+
+				// Check if the selected size has quantity available
+				if (selectedVariant.quantity > 0) {
+					enableAddCartBtn(addCartBtn);
+				} else {
+					disableAddCartBtn(addCartBtn);
+				}
+			}
 		};
+
 		filterSizeCatog.addEventListener('change', handleSizeChange);
 	}, [
 		viewArrCatog,
