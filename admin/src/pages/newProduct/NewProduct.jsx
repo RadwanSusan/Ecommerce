@@ -18,6 +18,8 @@ export default function NewProduct() {
 	const [inputs, setInputs] = useState({
 		title: '',
 		desc: '',
+		title_ar: '', // Arabic title
+		desc_ar: '', // Arabic description
 		price: '',
 		originalPrice: '',
 		// img: [],
@@ -216,7 +218,6 @@ export default function NewProduct() {
 				try {
 					await uploadTask;
 					const url = await getDownloadURL(uploadTask.snapshot.ref);
-					
 
 					return {
 						img: [url],
@@ -442,6 +443,29 @@ export default function NewProduct() {
 										/>
 									</div>
 								)}
+								{index < 1 && (
+									<div className='addProductItem'>
+										<label>Title (Arabic)</label>
+										<input
+											name='title_ar'
+											type='text'
+											placeholder='Title in Arabic'
+											onChange={handleChange}
+										/>
+									</div>
+								)}
+								{index < 1 && (
+									<div className='addProductItem'>
+										<label>Description (Arabic)</label>
+										<input
+											name='desc_ar'
+											type='text'
+											placeholder='Description in Arabic'
+											onChange={handleChange}
+										/>
+									</div>
+								)}
+
 								<div className='addProductItem'>
 									<fieldset>
 										<legend>Size</legend>

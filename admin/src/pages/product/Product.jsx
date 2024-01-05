@@ -88,7 +88,9 @@ export default function Product() {
 	// productUpdateData object model
 	const [productUpdateData, setProductUpdateData] = useState({
 		title: product.title,
+		title_ar: product.title_ar,
 		desc: product.desc,
+		desc_ar: product.desc_ar,
 		price: product.price,
 		inStock: product.inStock,
 		categories: product.categories,
@@ -144,8 +146,6 @@ export default function Product() {
 			}));
 		}
 	};
-
-
 
 	const handleSubmit = async (e, index) => {
 		e.preventDefault();
@@ -225,7 +225,6 @@ export default function Product() {
 				}),
 			),
 		};
-
 
 		updateProduct(productId, newProduct, dispatch);
 
@@ -383,7 +382,6 @@ export default function Product() {
 				img: imageArray[index],
 			})),
 		};
-
 
 		setProductUpdateData((prev) => ({
 			...prev,
@@ -554,6 +552,20 @@ export default function Product() {
 											placeholder={product.desc}
 											onChange={handleUpdate}
 										/>
+										<label>Product Name (Arabic)</label>
+										<input
+											type='text'
+											name='title_ar'
+											placeholder={product.title_ar}
+											onChange={handleUpdate}
+										/>
+										<label>Product Description (Arabic)</label>
+										<textarea
+											name='desc_ar'
+											placeholder={product.desc_ar}
+											onChange={handleUpdate}
+										/>
+
 										<label>Price</label>
 										<input
 											type='number'

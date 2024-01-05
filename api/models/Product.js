@@ -28,7 +28,9 @@ const ProductVariantSchema = new mongoose.Schema({
 const ProductSchema = new mongoose.Schema(
 	{
 		title: { type: String, required: true },
+		title_ar: { type: String, required: true }, // Arabic title
 		desc: { type: String, required: true },
+		desc_ar: { type: String, required: true }, // Arabic description
 		variants: { type: [ProductVariantSchema], required: true },
 		categories: { type: Array },
 		price: { type: Number, required: true },
