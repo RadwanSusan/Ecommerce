@@ -7,13 +7,14 @@ import Newsletter from '../components/Newsletter';
 import { mobile } from '../responsive';
 import FooterNew from '../components/FooterNew';
 import { useLocation } from 'react-router-dom';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useContext } from 'react';
 import { publicRequest, userRequest } from '../requestMethods';
 import { addProduct, getAllProduct } from '../redux/cartRedux';
 import { useDispatch, useSelector } from 'react-redux';
 import swal from 'sweetalert';
 import { selectCurrentUserId } from '../redux/userRedux';
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
+import { LanguageContext } from '../components/LanguageContext';
 
 const Container = styled.div`
 	user-select: none;
@@ -162,6 +163,10 @@ const Product = () => {
 	const [selectedVariant, setSelectedVariant] = useState(null);
 	const [availableQuantityAfterUpdate, setavailableQuantityAfterUpdate] =
 		useState(selectedVariant?.quantity);
+
+	const { language } = useContext(LanguageContext);
+
+	const { dictionary } = useContext(LanguageContext);
 
 	// const [imageSrc, setImageSrc] = useState(product?.variants?.[0]?.img);
 	const [imageSrc, setImageSrc] = useState(null);
@@ -528,14 +533,16 @@ const Product = () => {
 				</ImgContainer>
 
 				<InfoContainer>
-					<Title>{product.title}</Title>
-					<Desc>{product.desc}</Desc>
+					<Title>
+						{language === 'ar' ? product.title_ar : product.title}
+					</Title>
+					<Desc>{language === 'ar' ? product.desc_ar : product.desc}</Desc>
 					{product.offerPrice !== undefined &&
 					product.offerPrice !== null &&
 					product.offerPrice !== '' ? (
 						<>
 							<Price className='price55'>$ {product.price}</Price>
-							<Price>$ {product.offerPrice}</Price>
+							{/* <Price>$ {product.offerPrice}</Price> */}
 						</>
 					) : (
 						<Price>$ {product.price}</Price>
@@ -553,10 +560,12 @@ const Product = () => {
 							))}
 						</Filter>
 						<Filter>
-							<FilterTitle>Size : </FilterTitle>
+							<FilterTitle>{dictionary.size}</FilterTitle>
 							<FilterSize onChange={(e) => setSize2(e.target.value)}>
 								{availableSizes.map((s) => (
-									<FilterSizeOption key={s}>{s}</FilterSizeOption>
+									<FilterSizeOption key={s}>
+										{dictionary.sizes.S}
+									</FilterSizeOption>
 								))}
 							</FilterSize>
 						</Filter>
@@ -572,7 +581,7 @@ const Product = () => {
 							onClick={handleClick}
 							disabled={isButtonDisabled}
 						>
-							ADD TO CART
+							{dictionary.addToCart}
 						</Button>
 					</AddContainer>
 				</InfoContainer>

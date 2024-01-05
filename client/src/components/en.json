@@ -1,0 +1,15 @@
+{
+	"welcome": "Welcome to Venus Store",
+
+	"addToCart": "Add to Cart",
+	"size": "Size",
+   "price": "Price",
+
+	"sizes": {
+		"S": "S",
+		"M": "M",
+		"L": "L",
+		"XL": "XL",
+		"XXL": "XXL"
+	}
+}
