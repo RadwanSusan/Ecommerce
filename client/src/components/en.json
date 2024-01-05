@@ -3,7 +3,7 @@
 
 	"addToCart": "Add to Cart",
 	"size": "Size",
-   "price": "Price",
+	"color": "Color",
 
 	"sizes": {
 		"S": "S",

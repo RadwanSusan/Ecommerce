@@ -549,7 +549,7 @@ const Product = () => {
 					)}
 					<FilterContainer>
 						<Filter>
-							<FilterTitle>Color : </FilterTitle>
+							<FilterTitle>{dictionary.color} </FilterTitle>
 							{availableColors.map((c) => (
 								<FilterColor
 									className='Color'
