@@ -71,6 +71,8 @@ const FilterContainer = styled.div`
 const Filter = styled.div`
 	display: flex;
 	align-items: center;
+	flex-direction: ${(props) =>
+		props.language === 'ar' ? 'row-reverse' : 'row'};
 `;
 
 const FilterTitle = styled.span`
@@ -548,7 +550,7 @@ const Product = () => {
 						<Price>$ {product.price}</Price>
 					)}
 					<FilterContainer>
-						<Filter>
+						<Filter language={language}>
 							<FilterTitle>{dictionary.color} </FilterTitle>
 							{availableColors.map((c) => (
 								<FilterColor
@@ -559,7 +561,7 @@ const Product = () => {
 								/>
 							))}
 						</Filter>
-						<Filter>
+						<Filter language={language}>
 							<FilterTitle>{dictionary.size}</FilterTitle>
 							<FilterSize onChange={(e) => setSize2(e.target.value)}>
 								{availableSizes.map((s) => (
