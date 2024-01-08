@@ -24,6 +24,7 @@ const Wrapper = styled.div`
 	padding: 50px;
 	display: flex;
 	${mobile({ padding: '10px', flexDirection: 'column' })}
+	${(props) => props.language === 'ar' && 'flex-direction: row-reverse'}
 `;
 
 const ImgContainer = styled.div`
@@ -44,7 +45,14 @@ const Image2 = styled.img`
 const InfoContainer = styled.div`
 	flex: 1;
 	padding: 0px 50px;
+
 	${mobile({ padding: '10px' })}
+	${(props) =>
+		props.language === 'ar' &&
+		`
+    text-align: -webkit-right;
+
+  `}
 `;
 
 const Title = styled.h1`
@@ -431,6 +439,13 @@ const Product = () => {
 		checkAvailability();
 	};
 
+	function formatPrice(price, language) {
+		return new Intl.NumberFormat(language === 'ar' ? 'ar-EG' : 'en-US', {
+			style: 'currency',
+			currency: 'USD',
+		}).format(price);
+	}
+
 	const handleClick = () => {
 		if (!selectedVariant) {
 			swal('Please select a variant');
@@ -512,7 +527,7 @@ const Product = () => {
 			<Announcement />
 			<Navbar />
 			<NavbarBottom />
-			<Wrapper>
+			<Wrapper language={language}>
 				<ImgContainer>
 					{Product ? (
 						<>
@@ -534,7 +549,7 @@ const Product = () => {
 					)}
 				</ImgContainer>
 
-				<InfoContainer>
+				<InfoContainer language={language}>
 					<Title>
 						{language === 'ar' ? product.title_ar : product.title}
 					</Title>
@@ -547,7 +562,7 @@ const Product = () => {
 							{/* <Price>$ {product.offerPrice}</Price> */}
 						</>
 					) : (
-						<Price>$ {product.price}</Price>
+						<Price> {formatPrice(product.price, language)}</Price>
 					)}
 					<FilterContainer>
 						<Filter language={language}>
