@@ -554,6 +554,9 @@ const Catog = ({ item }) => {
 	if (!isMountedRef.current) {
 		return null;
 	}
+
+	// Extract the discount and current date information
+
 	return (
 		<>
 			<div className='backLayerForShowCart'></div>
@@ -574,7 +577,8 @@ const Catog = ({ item }) => {
 									<div className='block_specification__specificationShow'>
 										<i
 											className='fa fa-cog block_specification__button block_specification__button__rotate'
-											aria-hidden='true'></i>
+											aria-hidden='true'
+										></i>
 									</div>
 								</div>
 								<div className='block_product'>
@@ -597,7 +601,8 @@ const Catog = ({ item }) => {
 													</span>
 													<div
 														className='block_quantity__chooseBlock'
-														readOnly>
+														readOnly
+													>
 														<input
 															className='block_quantity__number block_quantity__number2'
 															name='quantityNumber'
@@ -639,13 +644,15 @@ const Catog = ({ item }) => {
 														className='zaid'
 														style={{
 															display: 'hidden',
-														}}></div>
+														}}
+													></div>
 													<div className='block_goodColor__allColors2 CatogallColors2'></div>
 													<FilterSizeCatog
 														className='FilterSizeCatog1'
 														onClick={(e) =>
 															setSize(e.target.value)
-														}></FilterSizeCatog>
+														}
+													></FilterSizeCatog>
 												</div>
 												{isLoading ? (
 													isProductAvailable ? (
@@ -654,13 +661,15 @@ const Catog = ({ item }) => {
 															product_id={product_id}
 															onClick={(ele) => {
 																addToCart(ele);
-															}}>
+															}}
+														>
 															Add to Cart
 														</button>
 													) : (
 														<button
 															className='AddCart'
-															disabled>
+															disabled
+														>
 															ADD TO CART
 														</button>
 													)
@@ -678,14 +687,16 @@ const Catog = ({ item }) => {
 			</div>
 			<div
 				id='listingtabs_0'
-				className='block sm-listing-tabs tab-cms-block slider snipcss-X3nN9'>
+				className='block sm-listing-tabs tab-cms-block slider snipcss-X3nN9'
+			>
 				<h2>{item?.title}</h2>
 				<div className='block-content'>
 					<div className='ltabs-wrap'>
 						<div className='ltabs-tabs-container'>
 							<div
 								className='ltabs-tabs-wrap'
-								tabindex='-1'>
+								tabindex='-1'
+							>
 								<span className='ltabs-current-select'>
 									Accessories for iPhone
 								</span>
@@ -714,31 +725,38 @@ const Catog = ({ item }) => {
 												<div className='owl-stage-outer'>
 													<div
 														className='owl-stage style-pO7ki'
-														id='style-pO7ki'>
+														id='style-pO7ki'
+													>
 														{products.slice(0, 4).map((data) => (
 															<div
 																className='owl-item active style-SmoEo'
-																id='style-SmoEo'>
+																id='style-SmoEo'
+															>
 																<li className='item product product-item '>
 																	<div
 																		className='product-item-info'
-																		data-container='product-grid'>
+																		data-container='product-grid'
+																	>
 																		<Link
 																			to={`/product/${data._id}`}
 																			className='action quickview-handler sm_quickview_handler'
 																			title='Quick View'
-																			href=''>
+																			href=''
+																		>
 																			<div className='image-product'>
 																				<a
 																					href='#'
 																					className='product photo product-item-photo'
-																					tabindex='-1'>
+																					tabindex='-1'
+																				>
 																					<span
 																						className='product-image-container product-image-container-1 style-bH5WH'
-																						id='style-bH5WH'>
+																						id='style-bH5WH'
+																					>
 																						<span
 																							className='product-image-wrapper style-MbttD'
-																							id='style-MbttD'>
+																							id='style-MbttD'
+																						>
 																							<img
 																								className='product-image-photo'
 																								src={
@@ -764,7 +782,8 @@ const Catog = ({ item }) => {
 																					href=''
 																					catog-id={
 																						data._id
-																					}>
+																					}
+																				>
 																					<AiOutlineEye />
 																					<span>
 																						Quick View
@@ -777,23 +796,30 @@ const Catog = ({ item }) => {
 																				{data.title}
 																				<a
 																					className='product-item-link'
-																					href='#'></a>
+																					href='#'
+																				></a>
 																			</strong>
 																			<div
 																				className='price-box price-final_price'
 																				data-role='priceBox'
 																				data-product-id='1'
-																				data-price-box='product-id-1'>
+																				data-price-box='product-id-1'
+																			>
 																				<span className='price-container price-final_price tax weee'>
 																					<span
 																						id='product-price-1'
 																						data-price-amount='250'
 																						data-price-type='finalPrice'
-																						className='price-wrapper '>
+																						className='price-wrapper '
+																					>
 																						<span className='price'>
 																							${' '}
 																							{
 																								data.price
+																							}
+																							{'   '}
+																							{
+																								data?.originalPrice
 																							}
 																						</span>
 																					</span>
@@ -804,20 +830,24 @@ const Catog = ({ item }) => {
 																					<div className='actions-primary'></div>
 																					<div
 																						data-role='add-to-links'
-																						className='actions-secondary'></div>
+																						className='actions-secondary'
+																					></div>
 																					<Link
-																						to={`/product/${data._id}`}>
+																						to={`/product/${data._id}`}
+																					>
 																						<button className='Add-to-Cart-new'>
 																							Add to Cart
 																						</button>
 																					</Link>
 																					<div
 																						className='actions-secondary'
-																						data-role='add-to-links'>
+																						data-role='add-to-links'
+																					>
 																						<div
 																							className='action towishlist'
 																							data-action='add-to-wishlist'
-																							title='Add to Wish List'>
+																							title='Add to Wish List'
+																						>
 																							{wishlistData.includes(
 																								data._id,
 																							) ? (
@@ -844,7 +874,8 @@ const Catog = ({ item }) => {
 																										width='16'
 																										height='16'
 																										fill='currentColor'
-																										viewBox='0 0 16 16'>
+																										viewBox='0 0 16 16'
+																									>
 																										<path
 																											className='add-to-wish2'
 																											fill-rule='evenodd'
@@ -881,7 +912,8 @@ const Catog = ({ item }) => {
 																										width='16'
 																										height='16'
 																										fill='currentColor'
-																										viewBox='0 0 16 16'>
+																										viewBox='0 0 16 16'
+																									>
 																										<path
 																											className='add-to-wish2'
 																											fill-rule='evenodd'
@@ -912,7 +944,8 @@ const Catog = ({ item }) => {
 																						<div
 																							className='action tocompare'
 																							data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/catalog\/product_compare\/add\/","data":{"product":"1","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
-																							title='Add to Compare'>
+																							title='Add to Compare'
+																						>
 																							<IoGitCompareOutline />
 																							<span>
 																								Add to
@@ -932,12 +965,14 @@ const Catog = ({ item }) => {
 												<div className='owl-nav'>
 													<div
 														role='presentation'
-														className='owl-prev disabled'>
+														className='owl-prev disabled'
+													>
 														<span aria-label='Previous'>‹</span>
 													</div>
 													<div
 														role='presentation'
-														className='owl-next'>
+														className='owl-next'
+													>
 														<span aria-label='Next'>›</span>
 													</div>
 												</div>
