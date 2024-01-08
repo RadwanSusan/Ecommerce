@@ -103,11 +103,23 @@ const FilterColor = styled.div`
 			outline: 3px solid #292931;
 		}
 	}
+	${(props) =>
+		props.language === 'ar' &&
+		`
+    margin-right: 10px; /* margin for RTL */
+    margin-left: 0; /* reset default margin for RTL */
+  `}
 `;
 
 const FilterSize = styled.select`
 	margin-left: 10px;
 	padding: 5px;
+	${(props) =>
+		props.language === 'ar' &&
+		`
+	margin-right: 10px;
+	margin-left: 0;
+ `}
 `;
 
 const FilterSizeOption = styled.option``;
@@ -441,8 +453,11 @@ const Product = () => {
 
 	function formatPrice(price, language) {
 		return new Intl.NumberFormat(language === 'ar' ? 'ar-EG' : 'en-US', {
-			style: 'currency',
-			currency: 'USD',
+			style: 'decimal',
+			// currency: 'USD',
+
+			minimumFractionDigits: 0,
+			maximumFractionDigits: 0,
 		}).format(price);
 	}
 
@@ -509,6 +524,9 @@ const Product = () => {
 			setSelectedVariant(selectedVariant2);
 		}
 	};
+	function formatNumberToArabic(number) {
+		return new Intl.NumberFormat('ar-EG').format(number);
+	}
 
 	useEffect(() => {
 		findSelectedVariant();
@@ -558,30 +576,43 @@ const Product = () => {
 					product.offerPrice !== null &&
 					product.offerPrice !== '' ? (
 						<>
-							<Price className='price55'>$ {product.price}</Price>
+							<Price className='price55'> {product.price}</Price>
 							{/* <Price>$ {product.offerPrice}</Price> */}
 						</>
 					) : (
-						<Price> {formatPrice(product.price, language)}</Price>
+						<Price>
+							{language === 'ar'
+								? `${formatPrice(product.price, language)} $`
+								: `$ ${formatPrice(product.price, language)}`}
+						</Price>
 					)}
 					<FilterContainer>
 						<Filter language={language}>
-							<FilterTitle>{dictionary.color} </FilterTitle>
+							<FilterTitle language={language}>
+								{dictionary.color}{' '}
+							</FilterTitle>
 							{availableColors.map((c) => (
 								<FilterColor
 									className='Color'
 									color={c}
 									key={c}
+									language={language}
 									onClick={() => setColor2(c)}
 								/>
 							))}
 						</Filter>
 						<Filter language={language}>
-							<FilterTitle>{dictionary.size}</FilterTitle>
-							<FilterSize onChange={(e) => setSize2(e.target.value)}>
+							<FilterTitle language={language}>
+								{dictionary.size}
+							</FilterTitle>
+
+							<FilterSize
+								language={language}
+								onChange={(e) => setSize2(e.target.value)}
+							>
 								{availableSizes.map((s) => (
 									<FilterSizeOption key={s}>
-										{dictionary.sizes.S}
+										{dictionary.sizes[s] || s}
 									</FilterSizeOption>
 								))}
 							</FilterSize>
@@ -590,7 +621,11 @@ const Product = () => {
 					<AddContainer>
 						<AmountContainer>
 							<Remove onClick={() => handleQuantity('dec')} />
-							<Amount>{quantity}</Amount>
+							<Amount>
+								{language === 'ar'
+									? formatNumberToArabic(quantity)
+									: quantity}
+							</Amount>
 							<Add onClick={() => handleQuantity('inc')} />
 						</AmountContainer>
 						<Button
