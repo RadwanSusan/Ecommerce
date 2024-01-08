@@ -29,7 +29,8 @@ header {
 	}
 }
 
-@media (min-width: 769px), print {
+@media (min-width: 769px),
+print {
 	.page-header {
 		border: 0px;
 		margin-bottom: 0px;
@@ -45,7 +46,8 @@ header {
 	background: none;
 }
 
-@media (min-width: 769px), print {
+@media (min-width: 769px),
+print {
 	.page-header {
 		border: 0;
 		margin-bottom: 0;
@@ -144,6 +146,7 @@ html {
 }
 
 @media all {
+
 	*,
 	:before,
 	:after {
@@ -290,7 +293,8 @@ body:not(.layout-boxed) .container {
 	}
 }
 
-@media (min-width: 769px), print {
+@media (min-width: 769px),
+print {
 	h1 {
 		font-size: 40px;
 		margin-bottom: 46px;
@@ -364,7 +368,8 @@ a {
 	}
 }
 
-@media (min-width: 769px), print {
+@media (min-width: 769px),
+print {
 	.logo {
 		margin: 0px auto 25px 0px;
 	}
@@ -379,7 +384,8 @@ a {
 	padding: 0;
 }
 
-@media (min-width: 769px), print {
+@media (min-width: 769px),
+print {
 	.logo {
 		margin: 0 auto 25px 0;
 	}
@@ -435,7 +441,8 @@ a:hover {
 	}
 }
 
-@media (min-width: 769px), print {
+@media (min-width: 769px),
+print {
 	.block-search {
 		float: right;
 		padding-left: 15px;
@@ -498,7 +505,8 @@ img {
 	}
 }
 
-@media (min-width: 769px), print {
+@media (min-width: 769px),
+print {
 	.logo img {
 		max-height: inherit;
 	}
@@ -526,7 +534,8 @@ img {
 	}
 }
 
-@media (min-width: 769px), print {
+@media (min-width: 769px),
+print {
 	.minicart-wrapper {
 		margin-left: 13px;
 	}
@@ -552,6 +561,7 @@ img {
 }
 
 @media all {
+
 	.minicart-wrapper:before,
 	.minicart-wrapper:after {
 		content: "";
@@ -835,16 +845,6 @@ form {
 }
 
 @media all {
-	.minicart-wrapper .action.showcart .text:after {
-		content: ":";
-	}
-}
-
-.minicart-wrapper .action.showcart .text:after {
-	content: ":";
-}
-
-@media all {
 	.minicart-wrapper .action.showcart .counter.qty {
 		background: rgb(255, 85, 1);
 		color: rgb(255, 255, 255);
@@ -961,7 +961,8 @@ form {
 	}
 }
 
-@media (min-width: 769px), print {
+@media (min-width: 769px),
+print {
 	.minicart-wrapper .block-minicart {
 		right: -15px;
 		width: 390px;
@@ -1000,6 +1001,7 @@ form {
 }
 
 @media all {
+
 	.minicart-wrapper .block-minicart:before,
 	.minicart-wrapper .block-minicart:after {
 		border-bottom-style: solid;
@@ -1082,7 +1084,8 @@ form {
 	}
 }
 
-@media (min-width: 769px), print {
+@media (min-width: 769px),
+print {
 	.block-search .control {
 		border-top: 0px;
 		margin: 0px;
@@ -1097,7 +1100,8 @@ form {
 	padding: 0 15px;
 }
 
-@media (min-width: 769px), print {
+@media (min-width: 769px),
+print {
 	.block-search .control {
 		border-top: 0;
 		margin: 0;
@@ -1173,6 +1177,7 @@ button {
 }
 
 @media all {
+
 	button,
 	[type="submit"] {
 		appearance: button;
@@ -1242,6 +1247,7 @@ button[disabled] {
 }
 
 @media all {
+
 	.block-search .form.minisearch .actions button:before,
 	.block-search .form.minisearch .actions button span {
 		display: none;
@@ -1360,7 +1366,8 @@ input {
 	}
 }
 
-@media (min-width: 769px), print {
+@media (min-width: 769px),
+print {
 	.block-search input {
 		margin: 0px;
 		padding-right: 35px;
@@ -1397,7 +1404,8 @@ input[type="text"] {
 	-webkit-border-radius: 4px;
 }
 
-@media (min-width: 769px), print {
+@media (min-width: 769px),
+print {
 	.block-search input {
 		margin: 0;
 		padding-right: 35px;
@@ -1460,7 +1468,8 @@ input[type="text"] {
 	}
 }
 
-@media (min-width: 769px), print {
+@media (min-width: 769px),
+print {
 	.search-autocomplete {
 		margin-top: 0px;
 	}
@@ -1475,7 +1484,8 @@ input[type="text"] {
 	z-index: 3;
 }
 
-@media (min-width: 769px), print {
+@media (min-width: 769px),
+print {
 	.search-autocomplete {
 		margin-top: 0;
 	}
@@ -1524,6 +1534,7 @@ input[type="text"] {
 }
 
 @media all {
+
 	button,
 	[type="button"] {
 		appearance: button;
