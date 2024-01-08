@@ -15,8 +15,6 @@ import {
 	BsHeart,
 	BsArrowUpCircle as ArrowUp,
 	BsArrowDownCircle as ArrowDown,
-	BsFillArrowRightCircleFill,
-	BsFillArrowLeftCircleFill,
 } from 'react-icons/bs';
 import { IoGitCompareOutline } from 'react-icons/io5';
 import { userRequest } from '../requestMethods';
@@ -25,6 +23,7 @@ import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import { addProduct } from '../redux/cartRedux';
 import { useDispatch, useSelector } from 'react-redux';
+import ImageSlider from './ImageSlider';
 const FilterSizeCatog = styled.select`
 	margin-left: 10px;
 	padding: 5px;
@@ -46,9 +45,6 @@ const Catog = ({ item }) => {
 	const cartProducts = useSelector(cartSelector);
 	const [selectedVariants, setSelectedVariants] = useState([]);
 	const [viewArrCatog, setViewArrCatog] = useState(null);
-	const [resetTrigger, setResetTrigger] = useState(0);
-	const [currentSlide, setCurrentSlide] = useState(0);
-	const [visibleSlide, setVisibleSlide] = useState(0);
 	const [wishlistLogin, setWishlistLogin] = useState(false);
 	const [wishlistData, setWishlistData] = useState([]);
 	const [isProductAvailable, setIsProductAvailable] = useState(false);
@@ -59,56 +55,11 @@ const Catog = ({ item }) => {
 	const filterSizeCatog = document.querySelector('.FilterSizeCatog1');
 	const showCartItems = Array.from(document.querySelectorAll('.show-cart2'));
 	const aramex = document.querySelector('.CatogallColors2');
-	const slides = [
-		{
-			image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones1.png?raw=true',
-			alt: 'headphones',
-		},
-		{
-			image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones2.png?raw=true',
-			alt: 'headphones',
-		},
-		{
-			image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones3.png?raw=true',
-			alt: 'headphones',
-		},
-		{
-			image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones4.png?raw=true',
-			alt: 'headphones',
-		},
-		{
-			image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones5.png?raw=true',
-			alt: 'headphones',
-		},
-	];
-	useEffect(() => {
-		const interval = setInterval(goToNextSlide, 3000);
-		return () => {
-			clearInterval(interval);
-		};
-	}, []);
 	useEffect(() => {
 		if (isLoading) {
 			setIsProductAvailable(chekAvail2());
 		}
 	}, [isLoading]);
-	const totalSlides = slides.length;
-	const goToNextSlide = () => {
-		setCurrentSlide((prevSlide) =>
-			prevSlide === totalSlides - 1 ? 0 : prevSlide + 1,
-		);
-		setVisibleSlide((prevSlide) =>
-			prevSlide === totalSlides - 1 ? 0 : prevSlide + 1,
-		);
-	};
-	const goToPreviousSlide = () => {
-		setCurrentSlide((prevSlide) =>
-			prevSlide === 0 ? totalSlides - 1 : prevSlide - 1,
-		);
-		setVisibleSlide((prevSlide) =>
-			prevSlide === 0 ? totalSlides - 1 : prevSlide - 1,
-		);
-	};
 	useEffect(() => {
 		const getProducts = async () => {
 			try {
@@ -150,20 +101,6 @@ const Catog = ({ item }) => {
 				}
 			});
 	}, [AllProducts.length]);
-	const getSiblings = (e) => {
-		let siblings = [];
-		if (!e.parentNode) {
-			return siblings;
-		}
-		let sibling = e.parentNode.firstChild;
-		while (sibling) {
-			if (sibling.nodeType === 1 && sibling !== e) {
-				siblings.push(sibling);
-			}
-			sibling = sibling.nextSibling;
-		}
-		return siblings;
-	};
 	const createRadioElement = (color) => {
 		const input = document.createElement('input');
 		input.classList.add('radio_button2');
@@ -329,7 +266,6 @@ const Catog = ({ item }) => {
 		}, []);
 	}, [cartProducts]);
 	const addCartBtn = document.querySelector('.AddCart');
-
 	useEffect(() => {
 		if (viewArrCatog && !selectedSize) {
 			aramex.innerHTML = '';
@@ -364,9 +300,6 @@ const Catog = ({ item }) => {
 									input.value = 1;
 								});
 							setQuantity(1);
-							setResetTrigger(
-								(prevResetTrigger) => prevResetTrigger + 1,
-							);
 							filterSizeCatog.innerHTML = '';
 							filterSizeCatog.addEventListener('click', (event) => {
 								setSize(event.target.value);
@@ -542,10 +475,6 @@ const Catog = ({ item }) => {
 			showInfoMessage('Try with a different amount!');
 		}
 	};
-	useEffect(() => {
-		setQuantity(1);
-		setResetTrigger((prev) => prev + 1);
-	}, [selectedColor, selectedSize]);
 	const disableAddCartBtn = (btn) => {
 		btn.pointerEvents = 'none';
 		btn.style.opacity = '0.5';
@@ -619,6 +548,9 @@ const Catog = ({ item }) => {
 			isMountedRef.current = false;
 		};
 	}, [userId]);
+	useEffect(() => {
+		setQuantity(1);
+	}, [selectedColor, selectedSize]);
 	if (!isMountedRef.current) {
 		return null;
 	}
@@ -630,51 +562,7 @@ const Catog = ({ item }) => {
 					<div className='row11'>
 						<div className='small-12 large-6 columns11'>
 							<div className='productCard_leftSide clearfix'>
-								<div className='sliderBlock'>
-									<ul className='sliderBlock_items50'>
-										{slides.map((slide, index) => (
-											<li
-												key={index}
-												className={`sliderBlock_items__itemPhoto2 ${
-													index === currentSlide
-														? 'sliderBlock_items__showing2'
-														: ''
-												}`}>
-												<img
-													src={slide.image}
-													alt={slide.alt}
-												/>
-											</li>
-										))}
-									</ul>
-									<div className='sliderBlock_controls'>
-										<div className='sliderBlock_controls__navigatin'>
-											<div className='sliderBlock_controls__wrapper'>
-												<div
-													className='sliderBlock_controls__arrow sliderBlock_controls__arrowForward2'
-													onClick={goToNextSlide}>
-													<BsFillArrowRightCircleFill className='sliderBlock_controls__arrowForward2' />
-												</div>
-												<div
-													className='sliderBlock_controls__arrow sliderBlock_controls__arrowBackward2'
-													onClick={goToPreviousSlide}>
-													<BsFillArrowLeftCircleFill className='sliderBlock_controls__arrowBackward2' />
-												</div>
-											</div>
-										</div>
-										<ul className='sliderBlock_positionControls'>
-											{slides.map((_, index) => (
-												<li
-													key={index}
-													className={`sliderBlock_positionControls__paginatorItem2 ${
-														index === visibleSlide
-															? 'sliderBlock_positionControls__active2'
-															: ''
-													}`}></li>
-											))}
-										</ul>
-									</div>
-								</div>
+								<ImageSlider />
 							</div>
 						</div>
 						<div className='small-12 large-6 columns11'>
@@ -708,8 +596,6 @@ const Catog = ({ item }) => {
 														Quantity
 													</span>
 													<div
-														key={resetTrigger}
-														zaid={resetTrigger}
 														className='block_quantity__chooseBlock'
 														readOnly>
 														<input
@@ -718,8 +604,6 @@ const Catog = ({ item }) => {
 															type='text'
 															min='1'
 															value={quantity}
-															key={resetTrigger}
-															zaid={resetTrigger}
 															readOnly
 														/>
 														<button className='block_quantity__button block_quantity__up'>
