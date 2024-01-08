@@ -11,5 +11,16 @@
 		"L": "L",
 		"XL": "XL",
 		"XXL": "XXL"
+	},
+	"navbar": {
+		"venus": "Venus - Powerful Responsive Magento 2 Theme",
+		"All Categories": "All Categories",
+		"- Jeans": "- Jeans",
+		"- Coats": "- Coats",
+		"- Women": "- Women",
+		"Enter keywords to search...": "Enter keywords to search...",
+		"Search": "Search",
+		"My Cart": "My Cart",
+		"Login": "Login"
 	}
 }

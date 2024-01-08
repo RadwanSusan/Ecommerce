@@ -1,68 +1,53 @@
-import React from 'react';
-import { FaShoppingCart } from 'react-icons/fa';
-import { FaSearch } from 'react-icons/fa';
-import { BiLogIn } from 'react-icons/bi';
-
-import LogoImg from '../Media/Img/SvgLogo.svg';
-import { useState, useEffect } from 'react';
+import React, {
+	useState,
+	useEffect,
+	useCallback,
+	useRef,
+	useContext,
+	useMemo,
+} from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { FaShoppingCart, FaSearch } from 'react-icons/fa';
+import { BiLogIn } from 'react-icons/bi';
+import LogoImg from '../Media/Img/SvgLogo.svg';
 import './navbar.css';
 import Table from './Table';
 import axios from 'axios';
-
+import debounce from 'lodash.debounce';
+import { LanguageContext } from '../components/LanguageContext';
 const Navbar = () => {
-	const quantity = useSelector((state) => state.cart.quantity);
-	const cart = useSelector((state) => state.cart);
-	let newQuantity = 0;
-	cart.products.reduce((acc, curr) => {
-		const existingItem = acc.find((item) => item._id === curr._id);
-		if (existingItem) {
-			existingItem.quantity += curr.quantity;
-		} else {
-			acc.push({ ...curr });
-			++newQuantity;
-		}
-		return acc;
-	}, []);
-	const total = useSelector((state) => state.cart.total);
+	const { products, total } = useSelector((state) => state.cart);
 	const [queryName, setQueryName] = useState('');
 	const [dataAll, setDataAll] = useState([]);
 	const [catogName, setCatogName] = useState('');
-	document.addEventListener('DOMContentLoaded', () => {
-		const selectElement = document.querySelector('.cat');
-		if (selectElement !== null) {
-			selectElement.addEventListener('change', () => {
-				updateSelectedCategory();
-			});
-			function updateSelectedCategory() {
-				const selectedOption =
-					selectElement.options[selectElement.selectedIndex];
-				const selectedValue = selectedOption.value;
-				setCatogName(selectedValue);
-				setQueryName('');
-			}
-			updateSelectedCategory();
-		}
-	});
-	useEffect(() => {
-		const fetchData = async () => {
-			if (queryName === '') {
-				setDataAll([]);
-				return;
-			}
+	const newQuantity = useMemo(() => {
+		return products.reduce((acc, curr) => acc + curr.quantity, 0);
+	}, [products]);
+	const [showResults, setShowResults] = useState(false);
+	const searchRef = useRef(null);
+	const { language } = useContext(LanguageContext);
+	const { dictionary } = useContext(LanguageContext);
+	const [tokenState, setToken] = useState();
+	// const currentUser = useSelector((state) => state.user.currentUser);
+	// console.log(`🚀  file: Navbar.jsx:33  currentUser =>`, currentUser);
+	const fetchData = useCallback(async (query, category) => {
+		try {
 			const res = await axios.get(
-				`http://localhost:4000/api/products/search/${queryName}?category=${catogName}`,
+				`http://localhost:4000/api/products/search/${query}?category=${category}`,
 			);
 			setDataAll(res.data);
+		} catch (error) {
+			console.error(error);
+		}
+	}, []);
+	const debouncedFetchData = useRef(debounce(fetchData, 350));
+	useEffect(() => {
+		debouncedFetchData.current = debounce(fetchData, 350);
+		return () => {
+			debouncedFetchData.current.cancel();
 		};
-		if (queryName.length === 0 || queryName.length >= 1) fetchData();
-	}, [queryName]);
-	const onSearch = (queryName) => {
-		console.log(queryName);
-	};
-	const [tokenState, setToken] = useState();
-	const [tokenLoaded, setTokenLoaded] = useState(false);
+	}, [fetchData]);
 	const getToken = async () => {
 		try {
 			const token = await localStorage.getItem('persist:root');
@@ -70,148 +55,162 @@ const Navbar = () => {
 				(token !== null &&
 					token !== undefined &&
 					token !== '' &&
-					JSON.parse(JSON.parse(token)?.user)?.currentUser !==
-						undefined &&
+					JSON.parse(JSON.parse(token)?.user)?.currentUser !== undefined &&
 					JSON.parse(JSON.parse(token)?.user)?.currentUser !== null &&
-					JSON.parse(JSON.parse(token)?.user)?.username !==
-						undefined &&
+					JSON.parse(JSON.parse(token)?.user)?.username !== undefined &&
 					JSON.parse(JSON.parse(token)?.user)?.username !== null &&
-					JSON.parse(JSON.parse(token)?.user)?.username !==
-						undefined) ||
+					JSON.parse(JSON.parse(token)?.user)?.username !== undefined) ||
 				JSON.parse(JSON.parse(token)?.user)?.username !== ''
 			) {
 				setToken(token);
 			}
 		} catch (error) {
 			console.error(error);
-		} finally {
-			setTokenLoaded(true);
 		}
 	};
 	useEffect(() => {
 		getToken();
 	}, []);
+	// useEffect(() => {
+	// 	const token = localStorage.getItem('persist:root');
+	// 	if (token) {
+	// 		const parsedToken = JSON.parse(JSON.parse(token)?.user);
+	// 		if (parsedToken?.currentUser || parsedToken?.username) {
+	// 			setToken(parsedToken);
+	// 			console.log(parsedToken);
+	// 		} else {
+	// 			console.log(parsedToken);
+	// 		}
+	// 	}
+	// }, []);
+	const handleCategoryChange = (event) => {
+		setCatogName(event.target.value);
+		setQueryName('');
+	};
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (searchRef.current && !searchRef.current.contains(event.target)) {
+				setShowResults(false);
+			}
+		};
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, []);
+	const handleSearchChange = (event) => {
+		const value = event.target.value.toLowerCase();
+		setQueryName(value);
+		if (value === '') {
+			setShowResults(false);
+		} else {
+			setShowResults(true);
+		}
+	};
+	const handleFocus = () => {
+		if (queryName) {
+			setShowResults(true);
+		}
+	};
+	const handleBlur = () => {
+		setTimeout(() => {
+			if (document.activeElement !== searchRef.current) {
+				setShowResults(false);
+			}
+		}, 150);
+	};
 	return (
 		<div className='header-middle snipcss-LbbnX'>
 			<div className='container'>
 				<div className='middle-content'>
 					<div className='logo-container'>
 						<h1 className='logo-content'>
-							<strong>
-								Venus - Powerful Responsive Magento 2 Theme
-							</strong>
-							<a
+							<strong>{dictionary.navbar.venus}</strong>
+							<Link
+								to='/'
 								className='logo'
-								href=''
-								title='Venus - Powerful Responsive Magento 2 Theme'
-							>
-								<Link to='/'>
-									<img
-										src={LogoImg}
-										alt='ZAID'
-										width='157'
-										height='35'
-									/>
-								</Link>
-							</a>
+								title={dictionary.navbar.venus}>
+								<img
+									src={LogoImg}
+									alt='Logo'
+									width='157'
+									height='35'
+								/>
+							</Link>
 						</h1>
 					</div>
 					<div className='right-container'>
 						<div className='right-content'>
 							<div
 								id='sm_searchbox14558078331679218424'
-								className='block block-search search-pro'
-							>
+								className='block block-search search-pro'>
 								<div className='block block-content'>
 									<div
 										className='form minisearch active'
-										id='searchbox_mini_form'
-									>
+										id='searchbox_mini_form'>
 										<div className='field search'>
 											<div className='control'>
 												<select
 													className='cat searchbox-cat'
 													name='cat'
-												>
+													value={catogName}
+													onChange={handleCategoryChange}>
 													<option value=''>
-														All Categories
+														{dictionary.navbar['All Categories']}
 													</option>
 													<option value='jeans'>
-														- Jeans
+														{dictionary.navbar['- Jeans']}
 													</option>
 													<option value='coat'>
-														- Coat
+														{dictionary.navbar['- Coats']}
 													</option>
 													<option value='women'>
-														- Women
+														{dictionary.navbar['- Women']}
 													</option>
 												</select>
 												<input
 													id='searchbox'
 													type='text'
-													name='q'
-													placeholder='Enter keywords to search...'
-													className='input-text input-searchbox'
-													maxlength='128'
-													role='combobox'
-													aria-haspopup='false'
-													aria-expanded='true'
-													aria-autocomplete='both'
-													autocomplete='off'
-													value={queryName}
-													onChange={(e) =>
-														setQueryName(
-															e.target.value.toLowerCase(),
-														)
+													placeholder={
+														dictionary.navbar[
+															'Enter keywords to search...'
+														]
 													}
+													className='input-text input-searchbox'
+													maxLength={128}
+													autoComplete='off'
+													value={queryName}
+													onChange={handleSearchChange}
+													onFocus={handleFocus}
+													onBlur={handleBlur}
+													ref={searchRef}
 												/>
-												{<Table data={dataAll} />}
-												<div
-													id='searchbox_autocomplete'
-													className='search-autocomplete'
-												></div>
+												{showResults && <Table data={dataAll} />}
 											</div>
 										</div>
 										<div className='actions'>
-											<button
-												// type="submit"
-												title='Search'
-												// className="btn-searchbox"
-												// disabled=""
-												onClick={() =>
-													onSearch(queryName)
-												}
-											>
+											<button title='Search'>
 												<FaSearch />
-												<span>Search</span>
+												<span>{dictionary.navbar.Search}</span>
 											</button>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div
-								className='minicart-header'
-								data-move='minicart-mobile'
-							>
-								<div
-									data-block='minicart'
-									className='minicart-wrapper'
-								>
+							<div className='minicart-header'>
+								<div className='minicart-wrapper'>
 									{tokenState ? (
 										<Link
 											to='/cart'
-											className='action showcart'
-											href='#'
-										>
+											className='action showcart'>
 											<FaShoppingCart />
 											<span className='text'>
-												My Cart
+												{dictionary.navbar['My Cart']}
 											</span>
 											<span className='counter qty empty'>
 												<span className='counter-number'>
 													{newQuantity}
 												</span>
-												<span className='counter-label'></span>
 											</span>
 											<span className='price-minicart'>
 												<div className='subtotal'>
@@ -228,53 +227,13 @@ const Navbar = () => {
 									) : (
 										<Link
 											to='/login'
-											className='action showcart'
-										>
+											className='action showcart'>
 											<BiLogIn />
-											<span className='text'>Login</span>
+											<span className='text'>
+												{dictionary.navbar.Login}
+											</span>
 										</Link>
 									)}
-									<div
-										tabindex='-1'
-										className='ui-dialog ui-corner-all ui-widget ui-widget-content ui-front mage-dropdown-dialog style-PDTJ9'
-										id='style-PDTJ9'
-									>
-										<div className='block block-minicart ui-dialog-content ui-widget-content style-PjXZg'>
-											<div id='minicart-content-wrapper'>
-												<div className='block-title'>
-													<strong>
-														<span className='text'>
-															My Cart
-														</span>
-														<span
-															className='qty empty'
-															title='Items in Cart'
-														></span>
-													</strong>
-												</div>
-												<div className='block-content'>
-													<button
-														type='button'
-														id='btn-minicart-close'
-														className='action close'
-														data-action='close'
-														title='Close'
-													>
-														<span>Close</span>
-													</button>
-													<strong className='subtitle empty'>
-														{' '}
-														You have no items in
-														your shopping cart.{' '}
-													</strong>
-													<div
-														id='minicart-widgets'
-														className='minicart-widgets'
-													></div>
-												</div>
-											</div>
-										</div>
-									</div>
 								</div>
 							</div>
 						</div>
@@ -284,5 +243,4 @@ const Navbar = () => {
 		</div>
 	);
 };
-
-export default Navbar;
+export default React.memo(Navbar);
