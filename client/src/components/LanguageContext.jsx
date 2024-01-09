@@ -16,12 +16,12 @@ export const LanguageProvider = ({ children }) => {
 
 	const changeLanguage = (lang) => {
 		setLanguage(lang);
+		document.documentElement.lang = lang;
 	};
 
 	return (
 		<LanguageContext.Provider
-			value={{ language, dictionary, changeLanguage }}
-		>
+			value={{ language, dictionary, changeLanguage }}>
 			{children}
 		</LanguageContext.Provider>
 	);

@@ -1,10 +1,8 @@
 {
 	"welcome": "Welcome to Venus Store",
-
 	"addToCart": "Add to Cart",
 	"size": "Size",
 	"color": "Color",
-
 	"sizes": {
 		"S": "S",
 		"M": "M",
@@ -18,9 +16,18 @@
 		"- Jeans": "- Jeans",
 		"- Coats": "- Coats",
 		"- Women": "- Women",
+		"Jeans": "Jeans",
+		"Coats": "Coats",
+		"Women": "Women",
 		"Enter keywords to search...": "Enter keywords to search...",
 		"Search": "Search",
 		"My Cart": "My Cart",
-		"Login": "Login"
+		"Login": "Login",
+		"Home": "Home",
+		"Shop": "Shop",
+		"Blog": "Blog",
+		"About Us": "About Us",
+		"Contact Us": "Contact Us",
+		"Black Friday!": "Black Friday!"
 	}
 }
