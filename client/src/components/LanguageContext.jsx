@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ar from '../components/ar.json';
-import en from '../components/en.json';
+import ar from './ar.json';
+import en from './en.json';
 
 export const LanguageContext = React.createContext();
 
