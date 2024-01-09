@@ -26,28 +26,8 @@ const Navbar = () => {
 	}, [products]);
 	const [showResults, setShowResults] = useState(false);
 	const searchRef = useRef(null);
-	const { language } = useContext(LanguageContext);
 	const { dictionary } = useContext(LanguageContext);
 	const [tokenState, setToken] = useState();
-	// const currentUser = useSelector((state) => state.user.currentUser);
-	// console.log(`🚀  file: Navbar.jsx:33  currentUser =>`, currentUser);
-	const fetchData = useCallback(async (query, category) => {
-		try {
-			const res = await axios.get(
-				`http://localhost:4000/api/products/search/${query}?category=${category}`,
-			);
-			setDataAll(res.data);
-		} catch (error) {
-			console.error(error);
-		}
-	}, []);
-	const debouncedFetchData = useRef(debounce(fetchData, 350));
-	useEffect(() => {
-		debouncedFetchData.current = debounce(fetchData, 350);
-		return () => {
-			debouncedFetchData.current.cancel();
-		};
-	}, [fetchData]);
 	const getToken = async () => {
 		try {
 			const token = await localStorage.getItem('persist:root');
@@ -71,18 +51,23 @@ const Navbar = () => {
 	useEffect(() => {
 		getToken();
 	}, []);
-	// useEffect(() => {
-	// 	const token = localStorage.getItem('persist:root');
-	// 	if (token) {
-	// 		const parsedToken = JSON.parse(JSON.parse(token)?.user);
-	// 		if (parsedToken?.currentUser || parsedToken?.username) {
-	// 			setToken(parsedToken);
-	// 			console.log(parsedToken);
-	// 		} else {
-	// 			console.log(parsedToken);
-	// 		}
-	// 	}
-	// }, []);
+	const fetchData = useCallback(async (query, category) => {
+		try {
+			const res = await axios.get(
+				`http://localhost:4000/api/products/search/${query}?category=${category}`,
+			);
+			setDataAll(res.data);
+		} catch (error) {
+			console.error(error);
+		}
+	}, []);
+	const debouncedFetchData = useRef(debounce(fetchData, 350));
+	useEffect(() => {
+		debouncedFetchData.current = debounce(fetchData, 350);
+		return () => {
+			debouncedFetchData.current.cancel();
+		};
+	}, [fetchData]);
 	const handleCategoryChange = (event) => {
 		setCatogName(event.target.value);
 		setQueryName('');
@@ -105,6 +90,7 @@ const Navbar = () => {
 			setShowResults(false);
 		} else {
 			setShowResults(true);
+			debouncedFetchData.current(value, catogName);
 		}
 	};
 	const handleFocus = () => {
