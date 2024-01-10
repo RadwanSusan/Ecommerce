@@ -19,12 +19,19 @@ import * as timeago from 'timeago.js';
 import swal from 'sweetalert';
 import { addProduct } from '../redux/cartRedux';
 import { useDispatch } from 'react-redux';
+import { useContext } from 'react';
+import { LanguageContext } from './LanguageContext';
+
 const Wrapper1 = styled.div`
 	height: 100%;
 	display: flex;
-	transition: all 0.75s ease;
-	transform: translateX(${(props) => props.slideIndex * -40}vw);
+	transition: all 2s ease;
+	transform: translateX(
+		${(props) =>
+			props.slideIndex * (props.language === 'ar' ? -1 : 1) * -30}vw
+	);
 `;
+
 const FilterSizeCatog = styled.select`
 	margin-left: 10px;
 	padding: 5px;
@@ -52,7 +59,11 @@ const Offer = () => {
 	const [visibleSlide, setVisibleSlide] = useState(0);
 	const [currentSlide, setCurrentSlide] = useState(0);
 	const filterSizeCatog = document.querySelector('.FilterSizeCatog2');
+	const [isHovered, setIsHovered] = useState(false);
+
 	let mergedCart = [];
+	const { language } = useContext(LanguageContext);
+
 	const slides = [
 		{
 			image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones1.png?raw=true',
@@ -498,13 +509,41 @@ const Offer = () => {
 			swal('Info', 'You already have the maximum amount!', 'info');
 		}
 	};
+	const intervalIdRef = useRef(null);
 	const handleClick = (direction) => {
-		if (direction === 'left') {
-			setSlideIndex(slideIndex > 0 ? slideIndex - 1 : 2);
-		} else {
-			setSlideIndex(slideIndex < 3 ? slideIndex + 1 : 0);
+		if (intervalIdRef.current) {
+			clearInterval(intervalIdRef.current);
+			intervalIdRef.current = null;
 		}
+		if (language === 'ar') {
+			if (direction === 'left') {
+				setSlideIndex(slideIndex > 0 ? slideIndex - 1 : 2);
+			} else {
+				setSlideIndex(slideIndex < 2 ? slideIndex + 1 : 0);
+			}
+		} else {
+			if (direction === 'left') {
+				setSlideIndex(slideIndex < 2 ? slideIndex + 1 : 0);
+			} else {
+				setSlideIndex(slideIndex > 0 ? slideIndex - 1 : 2);
+			}
+		}
+
+		intervalIdRef.current = setInterval(updateSlideIndex, 5000);
 	};
+
+	const updateSlideIndex = () => {
+		setSlideIndex((prevSlideIndex) =>
+			prevSlideIndex < 2 ? prevSlideIndex + 1 : 0,
+		);
+	};
+	useEffect(() => {
+		const intervalId = setInterval(updateSlideIndex, 5000);
+
+		// Clear the interval when the component unmounts
+		return () => clearInterval(intervalId);
+	}, []);
+
 	useEffect(() => {
 		const getProducts = async () => {
 			try {
@@ -601,6 +640,13 @@ const Offer = () => {
 	if (!isMountedRef.current) {
 		return null;
 	}
+
+	useEffect(() => {
+		if (!isHovered) {
+			clearInterval(intervalIdRef.current);
+		}
+	}, [isHovered]);
+
 	return (
 		<>
 			<div className='backLayerForShowCart2'></div>
@@ -618,7 +664,8 @@ const Offer = () => {
 													index === currentSlide
 														? 'sliderBlock_items__showing2'
 														: ''
-												}`}>
+												}`}
+											>
 												<img
 													src={slide.image}
 													alt={slide.alt}
@@ -632,12 +679,14 @@ const Offer = () => {
 											<div className='sliderBlock_controls__wrapper'>
 												<div
 													className='sliderBlock_controls__arrow sliderBlock_controls__arrowForward2'
-													onClick={goToNextSlide}>
+													onClick={goToNextSlide}
+												>
 													<BsFillArrowRightCircleFill className='sliderBlock_controls__arrowForward2' />
 												</div>
 												<div
 													className='sliderBlock_controls__arrow sliderBlock_controls__arrowBackward2'
-													onClick={goToPreviousSlide}>
+													onClick={goToPreviousSlide}
+												>
 													<BsFillArrowLeftCircleFill className='sliderBlock_controls__arrowBackward2' />
 												</div>
 											</div>
@@ -650,7 +699,8 @@ const Offer = () => {
 														index === visibleSlide
 															? 'sliderBlock_positionControls__active2'
 															: ''
-													}`}></li>
+													}`}
+												></li>
 											))}
 										</ul>
 									</div>
@@ -666,7 +716,8 @@ const Offer = () => {
 									<div className='block_specification__specificationShow'>
 										<i
 											className='fa fa-cog block_specification__button block_specification__button__rotate'
-											aria-hidden='true'></i>
+											aria-hidden='true'
+										></i>
 									</div>
 								</div>
 
@@ -693,7 +744,8 @@ const Offer = () => {
 														key={resetTrigger}
 														zaid={resetTrigger}
 														className='block_quantity__chooseBlock'
-														readOnly>
+														readOnly
+													>
 														<input
 															className='block_quantity__number block_quantity__number2'
 															name='quantityNumber'
@@ -735,13 +787,15 @@ const Offer = () => {
 														className='zaid'
 														style={{
 															display: 'hidden',
-														}}></div>
+														}}
+													></div>
 													<div className='block_goodColor__allColors CatogallColors'></div>
 													<FilterSizeCatog
 														className='FilterSizeCatog2'
 														onChange={(e) =>
 															setSize(e.target.value)
-														}></FilterSizeCatog>
+														}
+													></FilterSizeCatog>
 												</div>
 												{isLoading ? (
 													chekAvail2() ? (
@@ -750,13 +804,15 @@ const Offer = () => {
 															product_id={product_id}
 															onClick={(ele) => {
 																addToCart(ele);
-															}}>
+															}}
+														>
 															Add to Cart
 														</button>
 													) : (
 														<button
 															className='AddCart2'
-															disabled>
+															disabled
+														>
 															ADD TO CART
 														</button>
 													)
@@ -774,7 +830,8 @@ const Offer = () => {
 			</div>
 			<div
 				className='group-deal-1 hidden-title-block nav-style-1 hover-to-show absolute-nav snipcss-s72N8 style-sCNUC'
-				id='style-sCNUC'>
+				id='style-sCNUC'
+			>
 				<div>
 					<div className='block block-list-products'>
 						<div className='block-title'>
@@ -783,7 +840,10 @@ const Offer = () => {
 						<div className='block-content'>
 							<div
 								id='filterproducts_1'
-								className='product-deal-list'>
+								className={`product-deal-list ${
+									language === 'ar' ? 'product-deal-list-ar' : ''
+								}`}
+							>
 								<Link to={`/`}>
 									<div className='deal-left'>
 										<div className='deal-description'>
@@ -793,7 +853,8 @@ const Offer = () => {
 												up to
 												<span
 													id='style-Leion'
-													className='style-Leion'>
+													className='style-Leion'
+												>
 													50%
 												</span>
 												Off
@@ -812,31 +873,49 @@ const Offer = () => {
 											<Wrapper1
 												className='owl-stage style-FUF77'
 												id='style-FUF77'
-												slideIndex={slideIndex}>
+												slideIndex={slideIndex}
+												language={language}
+											>
 												{offer.map((data) => (
 													<div
 														className='owl-item active style-Ke3kW'
-														id='style-Ke3kW'>
+														id='style-Ke3kW'
+														onMouseEnter={() =>
+															setIsHovered(true)
+														}
+														onMouseLeave={() =>
+															setIsHovered(false)
+														}
+													>
 														<div className='item product product-item'>
 															<div
-																className='product-item-info'
-																data-container='product-grid'>
+																className={`product-item-info ${
+																	language === 'ar'
+																		? 'product-item-info-ar'
+																		: ''
+																} `}
+																data-container='product-grid'
+															>
 																<Link
 																	to={`/product/${data._id}`}
 																	className='action quickview-handler
 																	sm_quickview_handler'
 																	title='Quick View'
-																	href=''>
+																	href=''
+																>
 																	<div className='image-product'>
 																		<div
 																			className='product photo product-item-photo'
-																			tabindex='-1'>
+																			tabindex='-1'
+																		>
 																			<span
 																				className='product-image-container product-image-container-13 style-j6oeg'
-																				id='style-j6oeg'>
+																				id='style-j6oeg'
+																			>
 																				<span
 																					className='product-image-wrapper style-gKGpW'
-																					id='style-gKGpW'>
+																					id='style-gKGpW'
+																				>
 																					<img
 																						className='product-image-photo'
 																						src={
@@ -860,7 +939,8 @@ const Offer = () => {
 																			className='action quickview-handler
 																	sm_quickview_handler show-cart3'
 																			title='Quick View'
-																			catog-id={data._id}>
+																			catog-id={data._id}
+																		>
 																			<AiOutlineEye />
 																			<span>Quick View</span>
 																		</Link>
@@ -876,13 +956,15 @@ const Offer = () => {
 																		className='price-box price-final_price'
 																		data-role='priceBox'
 																		data-product-id='13'
-																		data-price-box='product-id-13'>
+																		data-price-box='product-id-13'
+																	>
 																		<span className='price-container price-final_price tax weee'>
 																			<span
 																				id='product-price-13'
 																				data-price-amount='250'
 																				data-price-type='finalPrice'
-																				className='price-wrapper '>
+																				className='price-wrapper '
+																			>
 																				<span className='price55'>
 																					$ {data.price}
 																				</span>
@@ -917,19 +999,22 @@ const Offer = () => {
 																			<div className='time-ranger'>
 																				<div
 																					className='time-pass style-Tx4nd'
-																					id='style-Tx4nd'></div>
+																					id='style-Tx4nd'
+																				></div>
 																			</div>
 																		</div>
 																	</div>
 																	<div className='product-item-actions'>
 																		<div className='actions-primary'>
 																			<Link
-																				to={`/product/${data._id}`}>
+																				to={`/product/${data._id}`}
+																			>
 																				<button
 																					className='action tocart primary'
 																					data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/checkout\/cart\/add\/uenc\/aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo\/product\/13\/","data":{"product":"13","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
 																					type='button'
-																					title='Add to Cart'>
+																					title='Add to Cart'
+																				>
 																					<span>
 																						Add to Cart
 																					</span>
@@ -938,7 +1023,8 @@ const Offer = () => {
 																		</div>
 																		<div
 																			className='actions-secondary'
-																			data-role='add-to-links'>
+																			data-role='add-to-links'
+																		>
 																			<div className='action towishlist'>
 																				{wishlistData.includes(
 																					data._id,
@@ -981,7 +1067,8 @@ const Offer = () => {
 																									data._id,
 																									'add',
 																								);
-																							}}>
+																							}}
+																						>
 																							<path
 																								className='add-to-wish2'
 																								fill-rule='evenodd'
@@ -1028,7 +1115,8 @@ const Offer = () => {
 																							style={{
 																								display:
 																									'none',
-																							}}>
+																							}}
+																						>
 																							<path
 																								className='add-to-wish2'
 																								fill-rule='evenodd'
@@ -1044,7 +1132,8 @@ const Offer = () => {
 																			<div
 																				href='#'
 																				className='action tocompare'
-																				title='Add to Compare'>
+																				title='Add to Compare'
+																			>
 																				<IoGitCompareOutline />
 																				<span>
 																					Add to Compare
@@ -1063,13 +1152,15 @@ const Offer = () => {
 											<div
 												role='presentation'
 												className='owl-prev disabled'
-												onClick={() => handleClick('left')}>
+												onClick={() => handleClick('left')}
+											>
 												<BiChevronLeft />
 											</div>
 											<div
 												role='presentation'
 												className='owl-next'
-												onClick={() => handleClick('right')}>
+												onClick={() => handleClick('right')}
+											>
 												<BiChevronRight />
 											</div>
 										</div>

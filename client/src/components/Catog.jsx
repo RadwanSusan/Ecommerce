@@ -557,6 +557,20 @@ const Catog = ({ item }) => {
 
 	// Extract the discount and current date information
 
+	const getDiscountedPrice = (product) => {
+		const now = new Date();
+		const startDate = new Date(product.discount.startDate);
+		const endDate = new Date(product.discount.endDate);
+
+		if (now >= startDate && now <= endDate) {
+			// The discount is active, so calculate the discounted price
+			return `$ ${(product.price * product.discount.discount) / 100}  `;
+		} else {
+			// The discount is not active, so return the original price
+			return `$ ${product.price}`;
+		}
+	};
+
 	return (
 		<>
 			<div className='backLayerForShowCart'></div>
@@ -813,14 +827,9 @@ const Catog = ({ item }) => {
 																						className='price-wrapper '
 																					>
 																						<span className='price'>
-																							${' '}
-																							{
-																								data.price
-																							}
-																							{'   '}
-																							{
-																								data?.originalPrice
-																							}
+																							{getDiscountedPrice(
+																								data,
+																							)}
 																						</span>
 																					</span>
 																				</span>

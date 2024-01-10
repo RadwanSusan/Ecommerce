@@ -1,10 +1,11 @@
-import { ArrowLeftOutlined, ArrowRightOutlined } from "@material-ui/icons";
-import { useState } from "react";
-import styled from "styled-components";
-import { sliderItems } from "../data";
-import { mobile } from "../responsive";
-import "./slider.css";
-
+import { ArrowLeftOutlined, ArrowRightOutlined } from '@material-ui/icons';
+import { useState } from 'react';
+import styled from 'styled-components';
+import { sliderItems, sliderItemsArabic } from '../data';
+import { useContext, useEffect } from 'react';
+import { mobile } from '../responsive';
+import { LanguageContext } from '../components/LanguageContext';
+import './slider.css';
 
 const Container = styled.div`
 	width: 100%;
@@ -12,7 +13,6 @@ const Container = styled.div`
 	display: flex;
 	position: relative;
 	overflow: hidden;
-	
 `;
 
 const Arrow = styled.div`
@@ -26,8 +26,8 @@ const Arrow = styled.div`
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	left: ${(props) => props.direction === "left" && "10px"};
-	right: ${(props) => props.direction === "right" && "10px"};
+	left: ${(props) => props.direction === 'left' && '10px'};
+	right: ${(props) => props.direction === 'right' && '10px'};
 	margin: auto;
 	cursor: pointer;
 	opacity: 0.4;
@@ -37,7 +37,8 @@ const Arrow = styled.div`
 const Wrapper = styled.div`
 	height: 100%;
 	display: flex;
-	transition: all 1.5s ease;
+	transition: all 2s ease;
+
 	transform: translateX(${(props) => props.slideIndex * -100}vw);
 `;
 
@@ -52,8 +53,7 @@ const Slide = styled.div`
 const ImgContainer = styled.div`
 	height: 100%;
 	flex: 1;
-	${mobile({ display: "none" })}
-
+	${mobile({ display: 'none' })}
 `;
 
 const Image = styled.img`
@@ -87,37 +87,58 @@ const Button = styled.button`
 
 const Slider = () => {
 	const [slideIndex, setSlideIndex] = useState(0);
+	const { language } = useContext(LanguageContext); // Use the language from your
+	const isArabic = language === 'ar';
+	const currentSliderItems =
+		language === 'ar' ? sliderItemsArabic : sliderItems; // Choose the slider items based on the current language
+	useEffect(() => {
+		const slideInterval = setInterval(() => {
+			setSlideIndex(
+				(prevIndex) => (prevIndex + 1) % currentSliderItems.length,
+			);
+		}, 5000); // Change the interval to 2 seconds
+
+		return () => clearInterval(slideInterval);
+	}, [currentSliderItems.length]);
+
 	const handleClick = (direction) => {
-		if (direction === "left") {
+		if (direction === 'left') {
 			setSlideIndex(slideIndex > 0 ? slideIndex - 1 : 2);
 		} else {
 			setSlideIndex(slideIndex < 2 ? slideIndex + 1 : 0);
 		}
 	};
-	
 
 	return (
 		<Container>
-			<Arrow direction="left" onClick={() => handleClick("left")}>
-				<ArrowLeftOutlined style={{ fontSize: "2em" }} />
+			<Arrow
+				direction='left'
+				onClick={() => handleClick('left')}
+			>
+				<ArrowLeftOutlined style={{ fontSize: '2em' }} />
 			</Arrow>
 			<Wrapper slideIndex={slideIndex}>
-				{sliderItems.map((item) => (
-					<Slide bg={item.bg} key={item.id}>
-						<ImgContainer className="slideImag">
-							<Image  src={item.img} />
-							{/* <Image src={"https://images.pexels.com/photos/15436335/pexels-photo-15436335.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1&fbclid=IwAR0zsSOLR8Rr6qk1JfnpyLxq65qil9fOZtLG99RldVesF9m-4fS_vNBr2l0"} /> */}
+				{currentSliderItems.map((item) => (
+					<Slide
+						bg={item.bg}
+						key={item.id}
+					>
+						<ImgContainer className='slideImag'>
+							<Image src={item.img} />
 						</ImgContainer>
 						<InfoContainer>
 							<Title>{item.title}</Title>
 							<Desc>{item.desc}</Desc>
-							<Button>SHOW NOW</Button>
+							<Button>{isArabic ? 'مشاهدة' : 'Watch Now'}</Button>
 						</InfoContainer>
 					</Slide>
 				))}
 			</Wrapper>
-			<Arrow direction="right" onClick={() => handleClick("right")}>
-				<ArrowRightOutlined style={{ fontSize: "2em" }} />
+			<Arrow
+				direction='right'
+				onClick={() => handleClick('right')}
+			>
+				<ArrowRightOutlined style={{ fontSize: '2em' }} />
 			</Arrow>
 		</Container>
 	);
