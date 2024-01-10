@@ -955,6 +955,10 @@ print {
 		margin: 5px 0 15px;
 	}
 
+	html[lang="ar"].products-grid .product-item-info .product-item-details .price-box {
+		text-align: right;
+	}
+
 	.product-item-actions {
 		font-size: 0;
 	}

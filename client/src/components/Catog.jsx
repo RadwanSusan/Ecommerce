@@ -4,6 +4,7 @@ import React, {
 	useRef,
 	useCallback,
 	useMemo,
+	useContext,
 } from 'react';
 import axios from 'axios';
 import './catog.css';
@@ -24,12 +25,14 @@ import swal from 'sweetalert';
 import { addProduct } from '../redux/cartRedux';
 import { useDispatch, useSelector } from 'react-redux';
 import ImageSlider from './ImageSlider';
+import { LanguageContext } from './LanguageContext';
 const FilterSizeCatog = styled.select`
 	margin-left: 10px;
 	padding: 5px;
 `;
 const cartSelector = (state) => state.cart;
 const Catog = ({ item }) => {
+	console.log(`🚀  item =>`, item);
 	const [zaidVar, setZaidVar] = useState(0);
 	const [idSelected, setIdSelected] = useState(0);
 	const [product_id, setProduct_id] = useState(0);
@@ -49,12 +52,13 @@ const Catog = ({ item }) => {
 	const [wishlistData, setWishlistData] = useState([]);
 	const [isProductAvailable, setIsProductAvailable] = useState(false);
 	const [cartQuantityValue, setCartQuantity] = useState(0);
-	const dispatch = useDispatch();
-	const isMountedRef = useRef(true);
-	const selectedVariantTemp = useRef();
 	const filterSizeCatog = document.querySelector('.FilterSizeCatog1');
 	const showCartItems = Array.from(document.querySelectorAll('.show-cart2'));
 	const aramex = document.querySelector('.CatogallColors2');
+	const selectedVariantTemp = useRef();
+	const isMountedRef = useRef(true);
+	const { language } = useContext(LanguageContext);
+	const dispatch = useDispatch();
 	useEffect(() => {
 		if (isLoading) {
 			setIsProductAvailable(chekAvail2());
@@ -150,15 +154,17 @@ const Catog = ({ item }) => {
 			backLayerForShowCart.style.overflow = 'hidden';
 			document.body.style.overflow = 'hidden';
 			document.querySelector('.CatogCardDesc').textContent =
-				viewArrCatog.desc;
+				language === 'en' ? viewArrCatog.desc : viewArrCatog.desc_ar;
 			aramex.innerHTML = '';
 			setZaidVar(viewArrCatog._id);
 			setProduct_id(viewArrCatog._id);
 			document.querySelector('.nameProducts2').innerHTML =
-				viewArrCatog.title;
+				language === 'en' ? viewArrCatog.title : viewArrCatog.title_ar;
 			document
 				.querySelector('.block_product__advantagesProduct')
-				.append(viewArrCatog.desc);
+				.append(
+					language === 'en' ? viewArrCatog.desc : viewArrCatog.desc_ar,
+				);
 		}
 	}, [viewArrCatog]);
 	const handleQuantityIncrement = () => {
@@ -172,23 +178,42 @@ const Catog = ({ item }) => {
 				'selected',
 			);
 		if (!associatedInput) {
-			swal('Error', 'Please select a color', 'error');
+			swal(
+				'Error',
+				language === 'en' ? 'Please select a color' : 'يرجى تحديد اللون',
+				'error',
+			);
 			return;
 		}
 		if (!selectedSize && !selectedSizeNew) {
-			swal('Error', 'Please select a size', 'error');
+			swal(
+				'Error',
+				language === 'en' ? 'Please select a size' : 'يرجى تحديد الحجم',
+				'error',
+			);
+
 			return;
 		}
 		const selectedOption =
 			filterSizeCatog.options[filterSizeCatog.length - 1];
 		const quantity501 = parseInt(selectedOption.getAttribute('quantity'));
 		if (!quantity501) {
-			swal('Error', 'Please select a size', 'error');
+			swal(
+				'Error',
+				language === 'en' ? 'Please select a size' : 'يرجى تحديد الحجم',
+				'error',
+			);
 			return;
 		}
 		if (viewArrCatog) {
 			if (quantity501 - 1 <= 0) {
-				swal('Error', 'The maximum quantity is ' + quantity, 'error');
+				swal(
+					'Error',
+					language === 'en'
+						? 'The maximum quantity is ' + quantity
+						: 'The maximum quantity is ' + quantity,
+					'error',
+				);
 			} else {
 				setQuantity((prevQuantity) => {
 					const newQuantity = prevQuantity + 1;
@@ -374,7 +399,13 @@ const Catog = ({ item }) => {
 			filterSizeCatog.options[filterSizeCatog.length - 1];
 		const quantity501 = parseInt(selectedOption.getAttribute('quantity'));
 		if (quantity <= 1) {
-			displayAlert('Info', 'The minimum quantity is 1', 'info');
+			displayAlert(
+				'Info',
+				language === 'en'
+					? 'The minimum quantity is 1'
+					: 'الحد الادنى للكمية هو 1',
+				'info',
+			);
 		} else {
 			setQuantity(quantity - 1);
 			selectedOption.setAttribute('quantity', quantity501 + 1);
@@ -401,7 +432,10 @@ const Catog = ({ item }) => {
 				variant.size[0] === sizeSelected,
 		);
 		if (!item) {
-			showInfoMessage('Product not found!');
+			showInfoMessage(
+				language === 'en' ? 'Product not found!' : 'المنتج غير موجود!',
+				s,
+			);
 			return;
 		}
 		const cartItem = mergedCart.find(
@@ -446,18 +480,30 @@ const Catog = ({ item }) => {
 					'selected',
 				);
 			if (!associatedInput) {
-				swal('Error', 'Please select a color', 'error');
+				swal(
+					'Error',
+					language === 'en' ? 'Please select a color' : 'يرجى تحديد لون',
+					'error',
+				);
 				return;
 			}
 			if (!selectedSize && !selectedSizeNew) {
-				swal('Error', 'Please select a size', 'error');
+				swal(
+					'Error',
+					language === 'en' ? 'Please select a size' : 'يرجى تحديد حجم',
+					'error',
+				);
 				return;
 			}
 			const selectedOption =
 				filterSizeCatog2.options[filterSizeCatog2.length - 1];
 			const quantity501 = parseInt(selectedOption.getAttribute('quantity'));
 			if (!quantity501) {
-				swal('Error', 'Please select a size', 'error');
+				swal(
+					'Error',
+					language === 'en' ? 'Please select a size' : 'يرجى تحديد حجم',
+					'error',
+				);
 				return;
 			}
 			dispatch(addProduct(newItem));
@@ -467,12 +513,20 @@ const Catog = ({ item }) => {
 			);
 			setCartQuantity(selectedvariantsNew.quantity - quantity);
 			setQuantity(1);
-			showSuccessMessage('Product added to cart!');
+			showSuccessMessage(
+				language === 'en'
+					? 'Product added to cart!'
+					: 'تمت اضافة المنتج للعربة!',
+			);
 			if (selectedOption.getAttribute('quantity') === '0') {
 				disableAddCartBtn(addCartBtn);
 			}
 		} else {
-			showInfoMessage('Try with a different amount!');
+			showInfoMessage(
+				language === 'en'
+					? 'Try with a different amount!'
+					: 'يرجى تحديد مبلغ مختلف',
+			);
 		}
 	};
 	const disableAddCartBtn = (btn) => {
@@ -494,7 +548,8 @@ const Catog = ({ item }) => {
 	const addToWishlist = async (productId, identifier, ele) => {
 		if (!wishlistLogin) {
 			await swal({
-				title: 'You have to login !',
+				title:
+					language === 'en' ? 'You have to login !' : 'يجب تسجيل الدخول',
 				icon: 'warning',
 			});
 			window.location.href = '/login';
@@ -512,17 +567,33 @@ const Catog = ({ item }) => {
 					targetElement.style.display = 'none';
 					targetElement.previousSibling.style.display = 'block';
 				}
-				swal('Success', 'Product removed from wishlist!', 'success');
+				swal(
+					'Success',
+					language === 'en'
+						? 'Product removed from wishlist!'
+						: 'تمت ازالة المنتج من قائمة الرغبات',
+					'success',
+				);
 			} else if (identifier === 'addCatog') {
 				if (targetClass === 'add-to-wish') {
 					targetElement.style.display = 'none';
 					targetElement.nextSibling.children[0].style.display = 'block';
 					targetElement.nextSibling.style.display = 'block';
 				}
-				swal('Success', 'Product added to wishlist!', 'success');
+				swal(
+					'Success',
+					language === 'en'
+						? 'Product added to wishlist!'
+						: 'تمت اضافة المنتج الى قائمة الرغبات',
+					'success',
+				);
 			}
 		} catch (error) {
-			swal('Error', 'Something went wrong', 'error');
+			swal(
+				'Error',
+				language === 'en' ? 'Something went wrong!' : 'حدث خطأ',
+				'error',
+			);
 		}
 	};
 	let userId = localStorage.getItem('persist:root');
@@ -554,23 +625,16 @@ const Catog = ({ item }) => {
 	if (!isMountedRef.current) {
 		return null;
 	}
-
-	// Extract the discount and current date information
-
 	const getDiscountedPrice = (product) => {
 		const now = new Date();
 		const startDate = new Date(product.discount.startDate);
 		const endDate = new Date(product.discount.endDate);
-
 		if (now >= startDate && now <= endDate) {
-			// The discount is active, so calculate the discounted price
 			return `$ ${(product.price * product.discount.discount) / 100}  `;
 		} else {
-			// The discount is not active, so return the original price
 			return `$ ${product.price}`;
 		}
 	};
-
 	return (
 		<>
 			<div className='backLayerForShowCart'></div>
@@ -591,8 +655,7 @@ const Catog = ({ item }) => {
 									<div className='block_specification__specificationShow'>
 										<i
 											className='fa fa-cog block_specification__button block_specification__button__rotate'
-											aria-hidden='true'
-										></i>
+											aria-hidden='true'></i>
 									</div>
 								</div>
 								<div className='block_product'>
@@ -606,17 +669,20 @@ const Catog = ({ item }) => {
 														$ {viewArrCatog?.price}
 													</p>
 													<p className='block_price__shipping'>
-														Shipping and taxes extra
+														{language === 'en'
+															? 'Shipping and taxes extra'
+															: 'الشحن والضريبة'}
 													</p>
 												</div>
 												<div className='block_quantity clearfix'>
 													<span className='text_specification'>
-														Quantity
+														{language === 'en'
+															? 'Quantity'
+															: 'الكمية:'}
 													</span>
 													<div
 														className='block_quantity__chooseBlock'
-														readOnly
-													>
+														readOnly>
 														<input
 															className='block_quantity__number block_quantity__number2'
 															name='quantityNumber'
@@ -652,21 +718,21 @@ const Catog = ({ item }) => {
 											<div className='large-6 small-12 column end'>
 												<div className='block_goodColor'>
 													<span className='text_specification'>
-														Choose your colors:
+														{language === 'en'
+															? 'Choose your colors:'
+															: 'اختر الالوان:'}
 													</span>
 													<div
 														className='zaid'
 														style={{
 															display: 'hidden',
-														}}
-													></div>
+														}}></div>
 													<div className='block_goodColor__allColors2 CatogallColors2'></div>
 													<FilterSizeCatog
 														className='FilterSizeCatog1'
 														onClick={(e) =>
 															setSize(e.target.value)
-														}
-													></FilterSizeCatog>
+														}></FilterSizeCatog>
 												</div>
 												{isLoading ? (
 													isProductAvailable ? (
@@ -675,20 +741,26 @@ const Catog = ({ item }) => {
 															product_id={product_id}
 															onClick={(ele) => {
 																addToCart(ele);
-															}}
-														>
-															Add to Cart
+															}}>
+															{language === 'en'
+																? 'Add to cart'
+																: 'اضف الى السلة'}
 														</button>
 													) : (
 														<button
 															className='AddCart'
-															disabled
-														>
-															ADD TO CART
+															disabled>
+															{language === 'en'
+																? 'Out of stock'
+																: 'غير متوفر'}
 														</button>
 													)
 												) : (
-													<p>loading</p>
+													<p>
+														{language === 'en'
+															? 'Loading'
+															: 'جاري التحميل'}
+													</p>
 												)}
 											</div>
 										</div>
@@ -701,18 +773,18 @@ const Catog = ({ item }) => {
 			</div>
 			<div
 				id='listingtabs_0'
-				className='block sm-listing-tabs tab-cms-block slider snipcss-X3nN9'
-			>
-				<h2>{item?.title}</h2>
+				className='block sm-listing-tabs tab-cms-block slider snipcss-X3nN9'>
+				<h2>{language === 'en' ? item?.title : item?.title_ar}</h2>
 				<div className='block-content'>
 					<div className='ltabs-wrap'>
 						<div className='ltabs-tabs-container'>
 							<div
 								className='ltabs-tabs-wrap'
-								tabindex='-1'
-							>
+								tabindex='-1'>
 								<span className='ltabs-current-select'>
-									Accessories for iPhone
+									{language === 'en'
+										? 'Accessories for iPhone'
+										: 'إكسسوارات للايفون'}
 								</span>
 							</div>
 						</div>
@@ -731,7 +803,7 @@ const Catog = ({ item }) => {
 									</Link>
 								</div>
 							</div>
-							<div className='ltabs-items-container '>
+							<div className='ltabs-items-container'>
 								<div className='ltabs-items  ltabs-items-selected ltabs-items-loaded  ltabs-items-15'>
 									<div className='ltabs-items-inner'>
 										<div className='products wrapper grid products-grid'>
@@ -739,38 +811,31 @@ const Catog = ({ item }) => {
 												<div className='owl-stage-outer'>
 													<div
 														className='owl-stage style-pO7ki'
-														id='style-pO7ki'
-													>
+														id='style-pO7ki'>
 														{products.slice(0, 4).map((data) => (
 															<div
 																className='owl-item active style-SmoEo'
-																id='style-SmoEo'
-															>
-																<li className='item product product-item '>
+																id='style-SmoEo'>
+																<li className='item product product-item'>
 																	<div
 																		className='product-item-info'
-																		data-container='product-grid'
-																	>
+																		data-container='product-grid'>
 																		<Link
 																			to={`/product/${data._id}`}
 																			className='action quickview-handler sm_quickview_handler'
 																			title='Quick View'
-																			href=''
-																		>
+																			href=''>
 																			<div className='image-product'>
 																				<a
 																					href='#'
 																					className='product photo product-item-photo'
-																					tabindex='-1'
-																				>
+																					tabindex='-1'>
 																					<span
 																						className='product-image-container product-image-container-1 style-bH5WH'
-																						id='style-bH5WH'
-																					>
+																						id='style-bH5WH'>
 																						<span
 																							className='product-image-wrapper style-MbttD'
-																							id='style-MbttD'
-																						>
+																							id='style-MbttD'>
 																							<img
 																								className='product-image-photo'
 																								src={
@@ -783,7 +848,10 @@ const Catog = ({ item }) => {
 																								width='300'
 																								height='300'
 																								alt={
-																									data.title
+																									language ===
+																									'en'
+																										? data.title
+																										: data.title_ar
 																								}
 																							/>
 																						</span>
@@ -796,36 +864,37 @@ const Catog = ({ item }) => {
 																					href=''
 																					catog-id={
 																						data._id
-																					}
-																				>
+																					}>
 																					<AiOutlineEye />
 																					<span>
-																						Quick View
+																						{language ===
+																						'en'
+																							? 'Quick View'
+																							: 'مشاهدة سريعة'}
 																					</span>
 																				</Link>
 																			</div>
 																		</Link>
 																		<div className='product details product-item-details'>
 																			<strong className='product name product-item-name'>
-																				{data.title}
+																				{language === 'en'
+																					? data.title
+																					: data.title_ar}
 																				<a
 																					className='product-item-link'
-																					href='#'
-																				></a>
+																					href='#'></a>
 																			</strong>
 																			<div
 																				className='price-box price-final_price'
 																				data-role='priceBox'
 																				data-product-id='1'
-																				data-price-box='product-id-1'
-																			>
+																				data-price-box='product-id-1'>
 																				<span className='price-container price-final_price tax weee'>
 																					<span
 																						id='product-price-1'
 																						data-price-amount='250'
 																						data-price-type='finalPrice'
-																						className='price-wrapper '
-																					>
+																						className='price-wrapper'>
 																						<span className='price'>
 																							{getDiscountedPrice(
 																								data,
@@ -839,24 +908,23 @@ const Catog = ({ item }) => {
 																					<div className='actions-primary'></div>
 																					<div
 																						data-role='add-to-links'
-																						className='actions-secondary'
-																					></div>
+																						className='actions-secondary'></div>
 																					<Link
-																						to={`/product/${data._id}`}
-																					>
+																						to={`/product/${data._id}`}>
 																						<button className='Add-to-Cart-new'>
-																							Add to Cart
+																							{language ===
+																							'en'
+																								? 'Add to Cart'
+																								: 'اضف الى السلة'}
 																						</button>
 																					</Link>
 																					<div
 																						className='actions-secondary'
-																						data-role='add-to-links'
-																					>
+																						data-role='add-to-links'>
 																						<div
 																							className='action towishlist'
 																							data-action='add-to-wishlist'
-																							title='Add to Wish List'
-																						>
+																							title='Add to Wish List'>
 																							{wishlistData.includes(
 																								data._id,
 																							) ? (
@@ -883,8 +951,7 @@ const Catog = ({ item }) => {
 																										width='16'
 																										height='16'
 																										fill='currentColor'
-																										viewBox='0 0 16 16'
-																									>
+																										viewBox='0 0 16 16'>
 																										<path
 																											className='add-to-wish2'
 																											fill-rule='evenodd'
@@ -921,8 +988,7 @@ const Catog = ({ item }) => {
 																										width='16'
 																										height='16'
 																										fill='currentColor'
-																										viewBox='0 0 16 16'
-																									>
+																										viewBox='0 0 16 16'>
 																										<path
 																											className='add-to-wish2'
 																											fill-rule='evenodd'
@@ -945,20 +1011,22 @@ const Catog = ({ item }) => {
 																								</>
 																							)}
 																							<span>
-																								Add to
-																								Wish
-																								List
+																								{language ===
+																								'en'
+																									? 'Add to Wish List'
+																									: 'اضف الى القائمة المفضلة'}
 																							</span>
 																						</div>
 																						<div
 																							className='action tocompare'
 																							data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/catalog\/product_compare\/add\/","data":{"product":"1","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
-																							title='Add to Compare'
-																						>
+																							title='Add to Compare'>
 																							<IoGitCompareOutline />
 																							<span>
-																								Add to
-																								Compare
+																								{language ===
+																								'en'
+																									? 'Add to Compare'
+																									: 'اضف للمقارنة'}
 																							</span>
 																						</div>
 																					</div>
@@ -974,14 +1042,12 @@ const Catog = ({ item }) => {
 												<div className='owl-nav'>
 													<div
 														role='presentation'
-														className='owl-prev disabled'
-													>
+														className='owl-prev disabled'>
 														<span aria-label='Previous'>‹</span>
 													</div>
 													<div
 														role='presentation'
-														className='owl-next'
-													>
+														className='owl-next'>
 														<span aria-label='Next'>›</span>
 													</div>
 												</div>
