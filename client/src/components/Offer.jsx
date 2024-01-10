@@ -848,26 +848,36 @@ const Offer = () => {
 									<div className='deal-left'>
 										<div className='deal-description'>
 											<div>
-												Special Offer!
+												{language === 'ar'
+													? 'عرض خاص'
+													: 'Special Offer!'}
 												<br />
-												up to
+												{language === 'ar' ? ' أعلى من' : 'up to'}
 												<span
 													id='style-Leion'
 													className='style-Leion'
 												>
 													50%
 												</span>
-												Off
+												{language === 'ar' ? ' خصم' : ' off'}
 											</div>
 										</div>
 										<div className='timer-content'>
 											<div className='timer-title'>
-												Hurry Up! Click here to show All Offer
+												{language === 'ar'
+													? ' أسرع - بسرعة! انقر هنا لإظهار كافة العروض'
+													: 'Hurry Up! Click here to show All Offer'}
 											</div>
 										</div>
 									</div>
 								</Link>
-								<div className='deal-content'>
+								<div
+									className={
+										language === 'ar'
+											? 'deal-contentAr'
+											: 'deal-content'
+									}
+								>
 									<div className='owl-carousel owl-theme list items product-items filterproducts owl-loaded owl-drag'>
 										<div className='owl-stage-outer'>
 											<Wrapper1
@@ -949,7 +959,9 @@ const Offer = () => {
 																<div className='product details product-item-details'>
 																	<strong className='product name product-item-name'>
 																		<div className='product-item-link'>
-																			{data.title}
+																			{language === 'ar'
+																				? data.title_ar
+																				: data.title}
 																		</div>
 																	</strong>
 																	<div

@@ -258,6 +258,10 @@
 		float: right;
 		width: calc(100% - 380px);
 	}
+	.group-deal-1 .deal-contentAr {
+		float: right;
+		width: calc(100% + 380px);
+	}
 
 	.group-deal-1 .deal-description {
 		background-color: #343745;
