@@ -15,22 +15,18 @@ import swal from 'sweetalert';
 import { selectCurrentUserId } from '../redux/userRedux';
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 import { LanguageContext } from '../components/LanguageContext';
-
 const Container = styled.div`
 	user-select: none;
 `;
-
 const Wrapper = styled.div`
 	padding: 50px;
 	display: flex;
 	${mobile({ padding: '10px', flexDirection: 'column' })}
 	${(props) => props.language === 'ar' && 'flex-direction: row-reverse'}
 `;
-
 const ImgContainer = styled.div`
 	flex: 1;
 `;
-
 const Image = styled.img`
 	width: 90%;
 	height: 70vh;
@@ -41,11 +37,9 @@ const Image2 = styled.img`
 	height: 500px;
 	width: 900px;
 `;
-
 const InfoContainer = styled.div`
 	flex: 1;
 	padding: 0px 50px;
-
 	${mobile({ padding: '10px' })}
 	${(props) =>
 		props.language === 'ar' &&
@@ -54,20 +48,16 @@ const InfoContainer = styled.div`
 
   `}
 `;
-
 const Title = styled.h1`
 	font-weight: 200;
 `;
-
 const Desc = styled.p`
 	margin: 20px 0px;
 `;
-
 const Price = styled.span`
 	font-weight: 100;
 	font-size: 40px;
 `;
-
 const FilterContainer = styled.div`
 	width: 50%;
 	margin: 30px 0px;
@@ -75,19 +65,16 @@ const FilterContainer = styled.div`
 	justify-content: space-between;
 	${mobile({ width: '100%' })}
 `;
-
 const Filter = styled.div`
 	display: flex;
 	align-items: center;
 	flex-direction: ${(props) =>
 		props.language === 'ar' ? 'row-reverse' : 'row'};
 `;
-
 const FilterTitle = styled.span`
 	font-size: 20px;
 	font-weight: 200;
 `;
-
 const FilterColor = styled.div`
 	width: 20px;
 	height: 20px;
@@ -110,7 +97,6 @@ const FilterColor = styled.div`
     margin-left: 0; /* reset default margin for RTL */
   `}
 `;
-
 const FilterSize = styled.select`
 	margin-left: 10px;
 	padding: 5px;
@@ -121,9 +107,7 @@ const FilterSize = styled.select`
 	margin-left: 0;
  `}
 `;
-
 const FilterSizeOption = styled.option``;
-
 const AddContainer = styled.div`
 	width: 50%;
 	display: flex;
@@ -131,7 +115,6 @@ const AddContainer = styled.div`
 	justify-content: space-between;
 	${mobile({ width: '100%' })}
 `;
-
 const AmountContainer = styled.div`
 	display: flex;
 	align-items: center;
@@ -143,7 +126,6 @@ const CenterIcons = styled.div`
 	justify-content: center;
 	margin: 10px 0px;
 `;
-
 const Amount = styled.span`
 	width: 30px;
 	height: 30px;
@@ -154,7 +136,6 @@ const Amount = styled.span`
 	justify-content: center;
 	margin: 0px 5px;
 `;
-
 const Button = styled.button`
 	padding: 15px;
 	border: 2px solid teal;
@@ -165,7 +146,6 @@ const Button = styled.button`
 		background-color: #f8f4f4;
 	}
 `;
-
 const cartSelector = (state) => state.cart;
 const Product = () => {
 	const [product, setProduct] = useState({});
@@ -185,20 +165,14 @@ const Product = () => {
 	const [selectedVariant, setSelectedVariant] = useState(null);
 	const [availableQuantityAfterUpdate, setavailableQuantityAfterUpdate] =
 		useState(selectedVariant?.quantity);
-
 	const { language } = useContext(LanguageContext);
-
 	const { dictionary } = useContext(LanguageContext);
-
-	// const [imageSrc, setImageSrc] = useState(product?.variants?.[0]?.img);
 	const [imageSrc, setImageSrc] = useState(null);
-
 	useEffect(() => {
 		if (userId !== undefined) {
 			setWishlistLogin(true);
 		}
 	}, [userId]);
-
 	useEffect(() => {
 		const getProduct = async () => {
 			try {
@@ -218,10 +192,8 @@ const Product = () => {
 				setImageSrc(res.data.variants[0].img);
 			} catch {}
 		};
-
 		getProduct();
 	}, [id]);
-
 	document.querySelectorAll('.Color').forEach((item) =>
 		item.addEventListener('click', (e) => {
 			document.querySelectorAll('.Color').forEach((item2) => {
@@ -230,7 +202,6 @@ const Product = () => {
 			e.target.style.outline = '3px solid #292931';
 		}),
 	);
-
 	const handleQuantity = (type) => {
 		const cartProduct = mergedCart.find(
 			(item) =>
@@ -238,11 +209,9 @@ const Product = () => {
 				item.selectedVariant._id === selectedVariant._id,
 		);
 		const cartQuantity = cartProduct ? cartProduct.quantity : 0;
-
 		const availableQuantity = selectedVariant
 			? selectedVariant.quantity - cartQuantity
 			: 0;
-
 		if (type === 'dec') {
 			quantity > 1 && setQuantity(quantity - 1);
 		} else {
@@ -257,7 +226,6 @@ const Product = () => {
 			}
 		}
 	};
-
 	const mergedCart = cartProducts.products.reduce((acc, curr) => {
 		const existingItem = acc.find(
 			(item) =>
@@ -271,24 +239,14 @@ const Product = () => {
 		}
 		return acc;
 	}, []);
-
 	let totalAvailableQuantity = selectedVariant ? selectedVariant.quantity : 0;
-
 	const checkAvailability = useCallback(() => {
-		if (selectedVariant) {
-			console.log(
-				`🚀  file: Product.jsx:267  selectedVariant =>`,
-				selectedVariant._id,
-			);
-		}
-
 		if (selectedVariant && mergedCart) {
 			const cartProduct = mergedCart.find((item) =>
 				item.variants.find(
 					(variant) => variant._id === selectedVariant._id,
 				),
 			);
-
 			if (cartProduct) {
 				cartProducts.products.map((item) => {
 					if (
@@ -306,7 +264,6 @@ const Product = () => {
 				const zaid = item.variants.find(
 					(variant) => variant._id === selectedVariant._id,
 				);
-
 				if (zaid) {
 					return {
 						...item,
@@ -314,21 +271,12 @@ const Product = () => {
 							if (variant._id === selectedVariant._id) {
 								const zaid2 =
 									variant.quantity - availableQuantityAfterUpdate;
-
 								totalAvailableQuantity = totalAvailableQuantity - zaid2;
-
 								if (zaid2 <= 0) {
 									setIsButtonDisabled(true);
 								}
-
-								// return {
-								// 	...variant,
-								// 	quantity:
-								// 		cartProducts.quantity - selectedVariant.quantity,
-								// };
 							} else {
 								setIsButtonDisabled(false);
-
 								return variant;
 							}
 						}),
@@ -342,8 +290,6 @@ const Product = () => {
 		} else {
 			availableQuantity = totalAvailableQuantity;
 		}
-
-		// setIsButtonDisabled(availableQuantityAfterUpdate <= 0 && totalAvailableQuantity <= 0);
 		setIsButtonDisabled(availableQuantity <= 0);
 	}, [
 		mergedCart,
@@ -362,7 +308,6 @@ const Product = () => {
 		checkAvailability,
 		availableQuantityAfterUpdate,
 	]);
-
 	useEffect(() => {
 		const cartProduct = mergedCart.find(
 			(item) =>
@@ -379,33 +324,26 @@ const Product = () => {
 			);
 		}
 	}, [selectedVariant, mergedCart, product._id]);
-
 	const setColor2 = (color) => {
 		const variants = product.variants.filter((variant) =>
 			variant.color.includes(color),
 		);
 		const sizes = variants.flatMap((variant) => variant.size);
 		setAvailableSizes(sizes);
-
 		const newSelectedVariant = variants[0];
 		setSelectedVariant(newSelectedVariant);
-
 		setQuantity(1);
 		setColor(color);
 		const defaultSize = sizes[0];
 		setSize(defaultSize);
-
-		// Filter the variants based on the selected color and the default size
 		const selectedVariant = variants.find((variant) =>
 			variant.size.includes(defaultSize),
 		);
-
 		const cartProduct = mergedCart.find(
 			(item) =>
 				item._id === product._id &&
 				item.selectedVariant._id === newSelectedVariant._id,
 		);
-
 		if (cartProduct) {
 			setavailableQuantityAfterUpdate(
 				newSelectedVariant.quantity - cartProduct.quantity,
@@ -415,12 +353,9 @@ const Product = () => {
 				newSelectedVariant ? newSelectedVariant.quantity : 0,
 			);
 		}
-
 		setImageSrc(newSelectedVariant.img);
-
 		checkAvailability();
 	};
-
 	const setSize2 = (size) => {
 		const variants = product.variants.filter((variant) =>
 			variant.size.includes(size),
@@ -437,7 +372,6 @@ const Product = () => {
 				item._id === product._id &&
 				item.selectedVariant._id === newSelectedVariant._id,
 		);
-
 		if (cartProduct) {
 			setavailableQuantityAfterUpdate(
 				newSelectedVariant.quantity - cartProduct.quantity,
@@ -447,35 +381,27 @@ const Product = () => {
 				newSelectedVariant ? newSelectedVariant.quantity : 0,
 			);
 		}
-
 		checkAvailability();
 	};
-
 	function formatPrice(price, language) {
 		return new Intl.NumberFormat(language === 'ar' ? 'ar-EG' : 'en-US', {
 			style: 'decimal',
-			// currency: 'USD',
-
 			minimumFractionDigits: 0,
 			maximumFractionDigits: 0,
 		}).format(price);
 	}
-
 	const handleClick = () => {
 		if (!selectedVariant) {
 			swal('Please select a variant');
 			return;
 		}
-
 		if (wishlistLogin === false) {
 			swal({
 				title: 'You have to login !',
 				icon: 'warning',
-				buttons: true,
 				confirmButtonColor: '#42A5F5',
 				confirmButtonText: 'Login',
 				showCancelButton: true,
-
 				closeOnConfirm: false,
 			}).then((e) => {
 				if (e) {
@@ -493,14 +419,12 @@ const Product = () => {
 					selectedVariant,
 				}),
 			);
-
 			setQuantity(1);
 			setavailableQuantityAfterUpdate(selectedVariant.quantity - quantity);
 			swal('Success', 'Product added to cart!', 'success');
 			checkAvailability();
 		}
 	};
-
 	const findSelectedVariant = () => {
 		if (
 			product &&
@@ -508,7 +432,6 @@ const Product = () => {
 			availableSizes.length === 1 &&
 			availableColors.length === 1
 		) {
-			// When there is only one available size and color, find the variant that matches both.
 			const selectedVariant2 = product.variants.find(
 				(variant) =>
 					variant.size.includes(availableSizes[0]) &&
@@ -516,7 +439,6 @@ const Product = () => {
 			);
 			setSelectedVariant(selectedVariant2);
 		} else if (product && product.variants) {
-			// When there is more than one available size or color, find the variant that matches the currently selected size and color.
 			const selectedVariant2 = product.variants.find(
 				(variant) =>
 					variant.size.includes(size) && variant.color.includes(color),
@@ -527,7 +449,6 @@ const Product = () => {
 	function formatNumberToArabic(number) {
 		return new Intl.NumberFormat('ar-EG').format(number);
 	}
-
 	useEffect(() => {
 		findSelectedVariant();
 	}, [
@@ -539,7 +460,6 @@ const Product = () => {
 		setColor,
 		setColor2,
 	]);
-
 	return (
 		<Container>
 			<Announcement />
@@ -577,7 +497,6 @@ const Product = () => {
 					product.offerPrice !== '' ? (
 						<>
 							<Price className='price55'> {product.price}</Price>
-							{/* <Price>$ {product.offerPrice}</Price> */}
 						</>
 					) : (
 						<Price>
@@ -605,11 +524,9 @@ const Product = () => {
 							<FilterTitle language={language}>
 								{dictionary.size}
 							</FilterTitle>
-
 							<FilterSize
 								language={language}
-								onChange={(e) => setSize2(e.target.value)}
-							>
+								onChange={(e) => setSize2(e.target.value)}>
 								{availableSizes.map((s) => (
 									<FilterSizeOption key={s}>
 										{dictionary.sizes[s] || s}
@@ -631,8 +548,7 @@ const Product = () => {
 						<Button
 							className='AddCart'
 							onClick={handleClick}
-							disabled={isButtonDisabled}
-						>
+							disabled={isButtonDisabled}>
 							{dictionary.addToCart}
 						</Button>
 					</AddContainer>
@@ -640,7 +556,6 @@ const Product = () => {
 			</Wrapper>
 			<Newsletter />
 			<FooterNew />
-			{/* <MobileMenu /> */}
 		</Container>
 	);
 };

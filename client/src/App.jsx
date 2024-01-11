@@ -6,11 +6,9 @@ import ProductList from './pages/ProductList';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Forgot from './pages/forgot/Forgot';
-
 import Cart from './pages/Cart';
 import OrderHave from './pages/HaveOrder';
 import Wishlist from './pages/Wishlist';
-
 import {
 	BrowserRouter as Router,
 	Switch,
@@ -42,11 +40,9 @@ const App = () => {
 						<Route path='/verifyEmail'>
 							<VerifyEmail />
 						</Route>
-
 						<Route
 							exact
-							path='/'
-						>
+							path='/'>
 							<Home />
 						</Route>
 						<Route path='/products/:category'>
@@ -82,5 +78,4 @@ const App = () => {
 		</div>
 	);
 };
-
 export default App;

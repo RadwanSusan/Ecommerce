@@ -21,7 +21,6 @@ import { addProduct } from '../redux/cartRedux';
 import { useDispatch } from 'react-redux';
 import { useContext } from 'react';
 import { LanguageContext } from './LanguageContext';
-
 const Wrapper1 = styled.div`
 	height: 100%;
 	display: flex;
@@ -31,7 +30,6 @@ const Wrapper1 = styled.div`
 			props.slideIndex * (props.language === 'ar' ? -1 : 1) * -30}vw
 	);
 `;
-
 const FilterSizeCatog = styled.select`
 	margin-left: 10px;
 	padding: 5px;
@@ -60,10 +58,8 @@ const Offer = () => {
 	const [currentSlide, setCurrentSlide] = useState(0);
 	const filterSizeCatog = document.querySelector('.FilterSizeCatog2');
 	const [isHovered, setIsHovered] = useState(false);
-
 	let mergedCart = [];
 	const { language } = useContext(LanguageContext);
-
 	const slides = [
 		{
 			image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones1.png?raw=true',
@@ -154,7 +150,6 @@ const Offer = () => {
 	}, [AllProducts.length]);
 	const showCartItems = Array.from(document.querySelectorAll('.show-cart3'));
 	const aramex = document.querySelector('.CatogallColors');
-	const currency = document.querySelector('.currency');
 	const createRadioElement = (color) => {
 		const input = document.createElement('input');
 		input.classList.add('radio_button');
@@ -194,17 +189,12 @@ const Offer = () => {
 	}, [viewArrCatog]);
 	useEffect(() => {
 		if (viewArrCatog) {
-			const setAttributeForQuintity =
-				document.querySelector('.selectedColor');
 			const catogCard = document.querySelector('.CatogCard2');
 			const productCard_block2 = document.querySelector(
 				'.productCard_block2',
 			);
 			const backLayerForShowCart = document.querySelector(
 				'.backLayerForShowCart2',
-			);
-			const sliderItemsContainer = document.querySelector(
-				'.sliderBlock_items50',
 			);
 			catogCard.style.display = 'block';
 			catogCard.style.overflow = 'hidden';
@@ -452,7 +442,6 @@ const Offer = () => {
 		return items.find((item) => item._id === id);
 	};
 	const addCartBtn = document.querySelector('.AddCart2');
-	const cartItemMap = new Map(mergedCart.map((item) => [item._id, item]));
 	const addToCart = (ele) => {
 		const productId = ele.target.getAttribute('product_id');
 		const quantityCart = mergedCart.map((item) => item.quantity)[0];
@@ -528,22 +517,7 @@ const Offer = () => {
 				setSlideIndex(slideIndex > 0 ? slideIndex - 1 : 2);
 			}
 		}
-
-		// intervalIdRef.current = setInterval(updateSlideIndex, 5000);
 	};
-
-	// const updateSlideIndex = () => {
-	// 	setSlideIndex((prevSlideIndex) =>
-	// 		prevSlideIndex < 2 ? prevSlideIndex + 1 : 0,
-	// 	);
-	// };
-	// useEffect(() => {
-	// 	const intervalId = setInterval(updateSlideIndex, 5000);
-
-	// 	// Clear the interval when the component unmounts
-	// 	return () => clearInterval(intervalId);
-	// }, []);
-
 	useEffect(() => {
 		const getProducts = async () => {
 			try {
@@ -553,7 +527,6 @@ const Offer = () => {
 					.filter((product) => {
 						const startDate = Date.parse(product.discount.startDate);
 						const endDate = Date.parse(product.discount.endDate);
-
 						return (
 							product.discount &&
 							startDate <= currentDate &&
@@ -569,7 +542,6 @@ const Offer = () => {
 		};
 		getProducts();
 	}, []);
-
 	let cartProducts = JSON.parse(localStorage.getItem('persist:root'));
 	if (
 		cartProducts === null ||
@@ -591,26 +563,6 @@ const Offer = () => {
 			ele.target.parentNode.style.display = 'none';
 			ele.target.parentNode.previousSibling.style.display = 'block';
 		}
-	};
-	const addToWishlist = (productId, identifier) => {
-		if (wishlistLogin === false) {
-			swal({
-				title: 'You have to login !',
-				icon: 'warning',
-			}).then((e) => {
-				if (e) {
-					window.location.href = '/login';
-				}
-			});
-			return;
-		}
-		if (identifier === 'remove' && wishlistLogin === true) {
-			swal('Success', 'Product removed from wishlist!', 'success');
-			wishlist(productId);
-			return;
-		}
-		swal('Success', 'Product added to wishlist!', 'success');
-		wishlist(productId);
 	};
 	const isMountedRef = useRef(true);
 	const [wishlistData, setWishlistData] = useState([]);
@@ -640,13 +592,62 @@ const Offer = () => {
 	if (!isMountedRef.current) {
 		return null;
 	}
-
 	useEffect(() => {
 		if (!isHovered) {
 			clearInterval(intervalIdRef.current);
 		}
 	}, [isHovered]);
-
+	const addToWishlist = async (productId, identifier, ele) => {
+		if (!wishlistLogin) {
+			await swal({
+				title:
+					language === 'en' ? 'You have to login !' : 'يجب تسجيل الدخول',
+				icon: 'warning',
+			});
+			window.location.href = '/login';
+			return;
+		}
+		let targetElement = ele.target;
+		if (targetElement.tagName === 'path') {
+			targetElement = targetElement.parentNode;
+		}
+		const targetClass = targetElement.classList[0];
+		try {
+			await wishlist(productId, userId);
+			if (identifier === 'remove') {
+				if (targetClass === 'add-to-wish2') {
+					targetElement.style.display = 'none';
+					targetElement.previousSibling.style.display = 'block';
+				}
+				swal(
+					'Success',
+					language === 'en'
+						? 'Product removed from wishlist!'
+						: 'تمت ازالة المنتج من قائمة الرغبات',
+					'success',
+				);
+			} else if (identifier === 'addCatog') {
+				if (targetClass === 'add-to-wish') {
+					targetElement.style.display = 'none';
+					targetElement.nextSibling.children[0].style.display = 'block';
+					targetElement.nextSibling.style.display = 'block';
+				}
+				swal(
+					'Success',
+					language === 'en'
+						? 'Product added to wishlist!'
+						: 'تمت اضافة المنتج الى قائمة الرغبات',
+					'success',
+				);
+			}
+		} catch (error) {
+			swal(
+				'Error',
+				language === 'en' ? 'Something went wrong!' : 'حدث خطأ',
+				'error',
+			);
+		}
+	};
 	return (
 		<>
 			<div className='backLayerForShowCart2'></div>
@@ -664,8 +665,7 @@ const Offer = () => {
 													index === currentSlide
 														? 'sliderBlock_items__showing2'
 														: ''
-												}`}
-											>
+												}`}>
 												<img
 													src={slide.image}
 													alt={slide.alt}
@@ -673,20 +673,17 @@ const Offer = () => {
 											</li>
 										))}
 									</ul>
-
 									<div className='sliderBlock_controls'>
 										<div className='sliderBlock_controls__navigatin'>
 											<div className='sliderBlock_controls__wrapper'>
 												<div
 													className='sliderBlock_controls__arrow sliderBlock_controls__arrowForward2'
-													onClick={goToNextSlide}
-												>
+													onClick={goToNextSlide}>
 													<BsFillArrowRightCircleFill className='sliderBlock_controls__arrowForward2' />
 												</div>
 												<div
 													className='sliderBlock_controls__arrow sliderBlock_controls__arrowBackward2'
-													onClick={goToPreviousSlide}
-												>
+													onClick={goToPreviousSlide}>
 													<BsFillArrowLeftCircleFill className='sliderBlock_controls__arrowBackward2' />
 												</div>
 											</div>
@@ -699,8 +696,7 @@ const Offer = () => {
 														index === visibleSlide
 															? 'sliderBlock_positionControls__active2'
 															: ''
-													}`}
-												></li>
+													}`}></li>
 											))}
 										</ul>
 									</div>
@@ -716,11 +712,9 @@ const Offer = () => {
 									<div className='block_specification__specificationShow'>
 										<i
 											className='fa fa-cog block_specification__button block_specification__button__rotate'
-											aria-hidden='true'
-										></i>
+											aria-hidden='true'></i>
 									</div>
 								</div>
-
 								<div className='block_product'>
 									<h2 className='block_name block_name__mainName nameProducts2'></h2>
 
@@ -742,10 +736,7 @@ const Offer = () => {
 													</span>
 													<div
 														key={resetTrigger}
-														zaid={resetTrigger}
-														className='block_quantity__chooseBlock'
-														readOnly
-													>
+														className='block_quantity__chooseBlock'>
 														<input
 															className='block_quantity__number block_quantity__number2'
 															name='quantityNumber'
@@ -757,9 +748,7 @@ const Offer = () => {
 														<button className='block_quantity__button block_quantity__up'>
 															<ArrowDown
 																onClick={() => {
-																	handleQuantityDecrement(
-																		zaidVar,
-																	);
+																	handleQuantityDecrement();
 																}}
 																className='AiOutlineArrowUpanddown down5'
 															/>
@@ -767,10 +756,7 @@ const Offer = () => {
 														<button className='block_quantity__button block_quantity__down'>
 															<ArrowUp
 																onClick={() => {
-																	handleQuantityIncrement(
-																		zaidVar,
-																		idSelected,
-																	);
+																	handleQuantityIncrement();
 																}}
 																className='AiOutlineArrowUpanddown up5'
 															/>
@@ -787,15 +773,13 @@ const Offer = () => {
 														className='zaid'
 														style={{
 															display: 'hidden',
-														}}
-													></div>
+														}}></div>
 													<div className='block_goodColor__allColors CatogallColors'></div>
 													<FilterSizeCatog
 														className='FilterSizeCatog2'
 														onChange={(e) =>
 															setSize(e.target.value)
-														}
-													></FilterSizeCatog>
+														}></FilterSizeCatog>
 												</div>
 												{isLoading ? (
 													chekAvail2() ? (
@@ -804,15 +788,13 @@ const Offer = () => {
 															product_id={product_id}
 															onClick={(ele) => {
 																addToCart(ele);
-															}}
-														>
+															}}>
 															Add to Cart
 														</button>
 													) : (
 														<button
 															className='AddCart2'
-															disabled
-														>
+															disabled>
 															ADD TO CART
 														</button>
 													)
@@ -830,8 +812,7 @@ const Offer = () => {
 			</div>
 			<div
 				className='group-deal-1 hidden-title-block nav-style-1 hover-to-show absolute-nav snipcss-s72N8 style-sCNUC'
-				id='style-sCNUC'
-			>
+				id='style-sCNUC'>
 				<div>
 					<div className='block block-list-products'>
 						<div className='block-title'>
@@ -842,8 +823,7 @@ const Offer = () => {
 								id='filterproducts_1'
 								className={`product-deal-list ${
 									language === 'ar' ? 'product-deal-list-ar' : ''
-								}`}
-							>
+								}`}>
 								<Link to={`/`}>
 									<div className='deal-left'>
 										<div className='deal-description'>
@@ -855,8 +835,7 @@ const Offer = () => {
 												{language === 'ar' ? ' أعلى من' : 'up to'}
 												<span
 													id='style-Leion'
-													className='style-Leion'
-												>
+													className='style-Leion'>
 													50%
 												</span>
 												{language === 'ar' ? ' خصم' : ' off'}
@@ -876,16 +855,14 @@ const Offer = () => {
 										language === 'ar'
 											? 'deal-contentAr'
 											: 'deal-content'
-									}
-								>
+									}>
 									<div className='owl-carousel owl-theme list items product-items filterproducts owl-loaded owl-drag'>
 										<div className='owl-stage-outer'>
 											<Wrapper1
 												className='owl-stage style-FUF77'
 												id='style-FUF77'
 												slideIndex={slideIndex}
-												language={language}
-											>
+												language={language}>
 												{offer.map((data) => (
 													<div
 														className='owl-item active style-Ke3kW'
@@ -895,8 +872,7 @@ const Offer = () => {
 														}
 														onMouseLeave={() =>
 															setIsHovered(false)
-														}
-													>
+														}>
 														<div className='item product product-item'>
 															<div
 																className={`product-item-info ${
@@ -904,28 +880,21 @@ const Offer = () => {
 																		? 'product-item-info-ar'
 																		: ''
 																} `}
-																data-container='product-grid'
-															>
+																data-container='product-grid'>
 																<Link
 																	to={`/product/${data._id}`}
 																	className='action quickview-handler
 																	sm_quickview_handler'
 																	title='Quick View'
-																	href=''
-																>
+																	href=''>
 																	<div className='image-product'>
-																		<div
-																			className='product photo product-item-photo'
-																			tabindex='-1'
-																		>
+																		<div className='product photo product-item-photo'>
 																			<span
 																				className='product-image-container product-image-container-13 style-j6oeg'
-																				id='style-j6oeg'
-																			>
+																				id='style-j6oeg'>
 																				<span
 																					className='product-image-wrapper style-gKGpW'
-																					id='style-gKGpW'
-																				>
+																					id='style-gKGpW'>
 																					<img
 																						className='product-image-photo'
 																						src={
@@ -949,8 +918,7 @@ const Offer = () => {
 																			className='action quickview-handler
 																	sm_quickview_handler show-cart3'
 																			title='Quick View'
-																			catog-id={data._id}
-																		>
+																			catog-id={data._id}>
 																			<AiOutlineEye />
 																			<span>Quick View</span>
 																		</Link>
@@ -968,15 +936,13 @@ const Offer = () => {
 																		className='price-box price-final_price'
 																		data-role='priceBox'
 																		data-product-id='13'
-																		data-price-box='product-id-13'
-																	>
+																		data-price-box='product-id-13'>
 																		<span className='price-container price-final_price tax weee'>
 																			<span
 																				id='product-price-13'
 																				data-price-amount='250'
 																				data-price-type='finalPrice'
-																				className='price-wrapper '
-																			>
+																				className='price-wrapper '>
 																				<span className='price55'>
 																					$ {data.price}
 																				</span>
@@ -1004,8 +970,7 @@ const Offer = () => {
 																						'ar'
 																							? 'time-leftAr'
 																							: 'time-left'
-																					}
-																				>
+																					}>
 																					{language ===
 																					'ar'
 																						? 'الوقت المتبقي:'
@@ -1022,8 +987,7 @@ const Offer = () => {
 																			<div className='time-ranger'>
 																				<div
 																					className='time-pass style-Tx4nd'
-																					id='style-Tx4nd'
-																				></div>
+																					id='style-Tx4nd'></div>
 																			</div>
 																		</div>
 																	</div>
@@ -1032,18 +996,15 @@ const Offer = () => {
 																			language === 'ar'
 																				? 'product-item-actions'
 																				: 'product-item-actions'
-																		}
-																	>
+																		}>
 																		<div className='actions-primary'>
 																			<Link
-																				to={`/product/${data._id}`}
-																			>
+																				to={`/product/${data._id}`}>
 																				<button
 																					className='action tocart primary'
 																					data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/checkout\/cart\/add\/uenc\/aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo\/product\/13\/","data":{"product":"13","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
 																					type='button'
-																					title='Add to Cart'
-																				>
+																					title='Add to Cart'>
 																					<span>
 																						Add to Cart
 																					</span>
@@ -1052,8 +1013,7 @@ const Offer = () => {
 																		</div>
 																		<div
 																			className='actions-secondary'
-																			data-role='add-to-links'
-																		>
+																			data-role='add-to-links'>
 																			<div className='action towishlist'>
 																				{wishlistData.includes(
 																					data._id,
@@ -1064,13 +1024,10 @@ const Offer = () => {
 																							onClick={(
 																								ele,
 																							) => {
-																								handleWichlist(
-																									data._id,
-																									ele,
-																								);
 																								addToWishlist(
 																									data._id,
-																									'remove',
+																									'addCatog',
+																									ele,
 																								);
 																							}}
 																							style={{
@@ -1084,24 +1041,20 @@ const Offer = () => {
 																							width='16'
 																							height='16'
 																							fill='currentColor'
-																							viewBox='0 0 16 16'
-																							onClick={(
-																								ele,
-																							) => {
-																								handleWichlist(
-																									data._id,
-																									ele,
-																								);
-																								addToWishlist(
-																									data._id,
-																									'add',
-																								);
-																							}}
-																						>
+																							viewBox='0 0 16 16'>
 																							<path
 																								className='add-to-wish2'
 																								fill-rule='evenodd'
 																								d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
+																								onClick={(
+																									ele,
+																								) => {
+																									addToWishlist(
+																										data._id,
+																										'remove',
+																										ele,
+																									);
+																								}}
 																							/>
 																						</svg>
 																					</>
@@ -1112,13 +1065,10 @@ const Offer = () => {
 																							onClick={(
 																								ele,
 																							) => {
-																								handleWichlist(
-																									data._id,
-																									ele,
-																								);
 																								addToWishlist(
 																									data._id,
-																									'add',
+																									'addCatog',
+																									ele,
 																								);
 																							}}
 																						/>
@@ -1128,28 +1078,24 @@ const Offer = () => {
 																							width='16'
 																							height='16'
 																							fill='currentColor'
-																							viewBox='0 0 16 16'
-																							onClick={(
-																								ele,
-																							) => {
-																								handleWichlist(
-																									data._id,
-																									ele,
-																								);
-																								addToWishlist(
-																									data._id,
-																									'remove',
-																								);
-																							}}
-																							style={{
-																								display:
-																									'none',
-																							}}
-																						>
+																							viewBox='0 0 16 16'>
 																							<path
 																								className='add-to-wish2'
 																								fill-rule='evenodd'
 																								d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
+																								onClick={(
+																									ele,
+																								) => {
+																									addToWishlist(
+																										data._id,
+																										'remove',
+																										ele,
+																									);
+																								}}
+																								style={{
+																									display:
+																										'none',
+																								}}
 																							/>
 																						</svg>
 																					</>
@@ -1159,10 +1105,8 @@ const Offer = () => {
 																				</span>
 																			</div>
 																			<div
-																				href='#'
 																				className='action tocompare'
-																				title='Add to Compare'
-																			>
+																				title='Add to Compare'>
 																				<IoGitCompareOutline />
 																				<span>
 																					Add to Compare
@@ -1181,15 +1125,13 @@ const Offer = () => {
 											<div
 												role='presentation'
 												className='owl-prev disabled'
-												onClick={() => handleClick('left')}
-											>
+												onClick={() => handleClick('left')}>
 												<BiChevronLeft />
 											</div>
 											<div
 												role='presentation'
 												className='owl-next'
-												onClick={() => handleClick('right')}
-											>
+												onClick={() => handleClick('right')}>
 												<BiChevronRight />
 											</div>
 										</div>

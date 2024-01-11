@@ -875,6 +875,14 @@ print {
 		text-align: right;
 	}
 
+	html[lang="ar"] .price-final_price {
+		text-align: right;
+	}
+
+	html[lang="ar"] .product-item-name {
+		text-align: right;
+	}
+
 	.product-image-container {
 		display: inline-block;
 		max-width: 100%;
