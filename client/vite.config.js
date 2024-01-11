@@ -5,6 +5,16 @@ import nodeGlobalsPolyfill from '@esbuild-plugins/node-globals-polyfill';
 export default defineConfig({
 	build: {
 		outDir: 'build',
+		chunkSizeWarningLimit: 1600, // Increase the limit to avoid the warning
+		rollupOptions: {
+			output: {
+				manualChunks(id) {
+					if (id.includes('node_modules')) {
+						return id.split('node_modules/')[1].split('/')[0];
+					}
+				},
+			},
+		},
 	},
 	plugins: [react(), nodeGlobalsPolyfill()],
 	optimizeDeps: {
