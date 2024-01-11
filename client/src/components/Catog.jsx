@@ -32,7 +32,6 @@ const FilterSizeCatog = styled.select`
 `;
 const cartSelector = (state) => state.cart;
 const Catog = ({ item }) => {
-	console.log(`🚀  item =>`, item);
 	const [zaidVar, setZaidVar] = useState(0);
 	const [idSelected, setIdSelected] = useState(0);
 	const [product_id, setProduct_id] = useState(0);
@@ -58,6 +57,8 @@ const Catog = ({ item }) => {
 	const selectedVariantTemp = useRef();
 	const isMountedRef = useRef(true);
 	const { language } = useContext(LanguageContext);
+	const { dictionary } = useContext(LanguageContext);
+	const sizesTranslation = dictionary['sizes'];
 	const dispatch = useDispatch();
 	useEffect(() => {
 		if (isLoading) {
@@ -242,12 +243,10 @@ const Catog = ({ item }) => {
 		});
 		const uniqueSizes = Array.from(allSizes);
 		uniqueSizes.forEach((size) => {
-			const option = new Option(size, size);
+			const translatedSize = sizesTranslation[size];
+			const option = new Option(translatedSize, size);
+			setSize(size);
 			filterSizeCatog.appendChild(option);
-			if (size === uniqueSizes[0]) {
-				option.selected = true;
-				setSize(size);
-			}
 		});
 		const handleSizeChange = (event) => {
 			setSelectedSize(event.target.value);
@@ -359,7 +358,8 @@ const Catog = ({ item }) => {
 								});
 							});
 							sizesForSelectedColor.forEach((size) => {
-								option = new Option(size, size);
+								const translatedSize = sizesTranslation[size];
+								option = new Option(translatedSize, size);
 								setSize(size);
 								filterSizeCatog.appendChild(option);
 							});
@@ -635,6 +635,26 @@ const Catog = ({ item }) => {
 			return `$ ${product.price}`;
 		}
 	};
+	const getDiscountedPrice2 = (product) => {
+		const now = new Date();
+		const startDate = new Date(product.discount.startDate);
+		const endDate = new Date(product.discount.endDate);
+		if (now >= startDate && now <= endDate) {
+			return (product.price * (100 - product.discount.discount)) / 100;
+		} else {
+			return product.price;
+		}
+	};
+	function formatNumberToArabic(number) {
+		return new Intl.NumberFormat('ar-EG').format(number);
+	}
+	function formatPrice(price, language) {
+		return new Intl.NumberFormat(language === 'ar' ? 'ar-EG' : 'en-US', {
+			style: 'decimal',
+			minimumFractionDigits: 0,
+			maximumFractionDigits: 0,
+		}).format(price);
+	}
 	return (
 		<>
 			<div className='backLayerForShowCart'></div>
@@ -666,7 +686,15 @@ const Catog = ({ item }) => {
 											<div className='large-6 small-12 column left-align'>
 												<div className='block_price'>
 													<p className='block_price__currency currency'>
-														$ {viewArrCatog?.price}
+														{language === 'ar'
+															? `${formatPrice(
+																	viewArrCatog?.price,
+																	language,
+															  )} $`
+															: `$ ${formatPrice(
+																	viewArrCatog?.price,
+																	language,
+															  )}`}
 													</p>
 													<p className='block_price__shipping'>
 														{language === 'en'
@@ -896,9 +924,20 @@ const Catog = ({ item }) => {
 																						data-price-type='finalPrice'
 																						className='price-wrapper'>
 																						<span className='price'>
-																							{getDiscountedPrice(
-																								data,
-																							)}
+																							{language ===
+																							'ar'
+																								? `${formatPrice(
+																										getDiscountedPrice2(
+																											data,
+																										),
+																										language,
+																								  )} $`
+																								: `$ ${formatPrice(
+																										getDiscountedPrice2(
+																											data,
+																										),
+																										language,
+																								  )}`}
 																						</span>
 																					</span>
 																				</span>
