@@ -529,20 +529,20 @@ const Offer = () => {
 			}
 		}
 
-		intervalIdRef.current = setInterval(updateSlideIndex, 5000);
+		// intervalIdRef.current = setInterval(updateSlideIndex, 5000);
 	};
 
-	const updateSlideIndex = () => {
-		setSlideIndex((prevSlideIndex) =>
-			prevSlideIndex < 2 ? prevSlideIndex + 1 : 0,
-		);
-	};
-	useEffect(() => {
-		const intervalId = setInterval(updateSlideIndex, 5000);
+	// const updateSlideIndex = () => {
+	// 	setSlideIndex((prevSlideIndex) =>
+	// 		prevSlideIndex < 2 ? prevSlideIndex + 1 : 0,
+	// 	);
+	// };
+	// useEffect(() => {
+	// 	const intervalId = setInterval(updateSlideIndex, 5000);
 
-		// Clear the interval when the component unmounts
-		return () => clearInterval(intervalId);
-	}, []);
+	// 	// Clear the interval when the component unmounts
+	// 	return () => clearInterval(intervalId);
+	// }, []);
 
 	useEffect(() => {
 		const getProducts = async () => {
@@ -997,8 +997,19 @@ const Offer = () => {
 																					Availability:
 																					<span>150</span>
 																				</div>
-																				<div className='time-left'>
-																					Time left:
+
+																				<div
+																					className={
+																						language ===
+																						'ar'
+																							? 'time-leftAr'
+																							: 'time-left'
+																					}
+																				>
+																					{language ===
+																					'ar'
+																						? 'الوقت المتبقي:'
+																						: 'Time left:'}
 																					<span>
 																						{timeago.format(
 																							data
@@ -1016,7 +1027,13 @@ const Offer = () => {
 																			</div>
 																		</div>
 																	</div>
-																	<div className='product-item-actions'>
+																	<div
+																		className={
+																			language === 'ar'
+																				? 'product-item-actionsAr'
+																				: 'product-item-actions'
+																		}
+																	>
 																		<div className='actions-primary'>
 																			<Link
 																				to={`/product/${data._id}`}

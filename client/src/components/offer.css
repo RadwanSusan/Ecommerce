@@ -262,6 +262,10 @@
 		float: right;
 		width: calc(100% + 380px);
 	}
+	.time-leftAr {
+		display: flex;
+		flex-direction: row-reverse;
+	}
 
 	.group-deal-1 .deal-description {
 		background-color: #343745;
@@ -662,6 +666,10 @@
 		font-size: 0;
 	}
 }
+/* .product-item-actionsAr {
+	display: flex;
+	flex-direction: row-reverse;
+} */
 
 @media (min-width: 640px) {
 	.product-item-actions {
