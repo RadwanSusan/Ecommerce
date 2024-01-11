@@ -1030,7 +1030,7 @@ const Offer = () => {
 																	<div
 																		className={
 																			language === 'ar'
-																				? 'product-item-actionsAr'
+																				? 'product-item-actions'
 																				: 'product-item-actions'
 																		}
 																	>
