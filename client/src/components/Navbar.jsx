@@ -115,7 +115,8 @@ const Navbar = () => {
 							<Link
 								to='/'
 								className='logo'
-								title={dictionary.navbar.venus}>
+								title={dictionary.navbar.venus}
+							>
 								<img
 									src={LogoImg}
 									alt='Logo'
@@ -129,18 +130,21 @@ const Navbar = () => {
 						<div className='right-content'>
 							<div
 								id='sm_searchbox14558078331679218424'
-								className='block block-search search-pro'>
+								className='block block-search search-pro'
+							>
 								<div className='block block-content'>
 									<div
 										className='form minisearch active'
-										id='searchbox_mini_form'>
+										id='searchbox_mini_form'
+									>
 										<div className='field search'>
 											<div className='control'>
 												<select
 													className='cat searchbox-cat'
 													name='cat'
 													value={catogName}
-													onChange={handleCategoryChange}>
+													onChange={handleCategoryChange}
+												>
 													<option value=''>
 														{dictionary.navbar['All Categories']}
 													</option>
@@ -188,7 +192,8 @@ const Navbar = () => {
 									{tokenState ? (
 										<Link
 											to='/cart'
-											className='action showcart'>
+											className='action showcart'
+										>
 											<FaShoppingCart />
 											<span className='text'>
 												{dictionary.navbar['My Cart']}
@@ -213,7 +218,8 @@ const Navbar = () => {
 									) : (
 										<Link
 											to='/login'
-											className='action showcart'>
+											className='action showcart'
+										>
 											<BiLogIn />
 											<span className='text'>
 												{dictionary.navbar.Login}

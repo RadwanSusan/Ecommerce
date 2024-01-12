@@ -29,5 +29,18 @@
 		"About Us": "About Us",
 		"Contact Us": "Contact Us",
 		"Black Friday!": "Black Friday!"
+	},
+	"blog": {
+		"Latest Blogs": "Latest Blogs",
+		"Read more": "Read more",
+		"title1": "Join millions of others",
+		"title2": "Choose the perfect design",
+		"title3": "What are some good electronic",
+		"title4": "Standard Blog Post Examples",
+
+		"post-short-description1": "Egestas mus a mus rhoncus adipiscing iaculis facilisis a eu nunc varius a per parturient vestibulum suspendisse aenean semper velit aliquam",
+		"post-short-description2": "Egestas mus a mus rhoncus adipiscing iaculis facilisis a eu nunc varius a per parturient vestibulum suspendisse aenean semper velit aliquam",
+		"post-short-description3": "Egestas mus a mus rhoncus adipiscing iaculis facilisis a eu nunc varius a per parturient vestibulum suspendisse aenean semper velit aliquam",
+		"post-short-description4": "Egestas mus a mus rhoncus adipiscing iaculis facilisis a eu nunc varius a per parturient vestibulum suspendisse aenean semper velit aliquam"
 	}
 }

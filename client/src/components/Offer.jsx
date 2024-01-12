@@ -665,7 +665,8 @@ const Offer = () => {
 													index === currentSlide
 														? 'sliderBlock_items__showing2'
 														: ''
-												}`}>
+												}`}
+											>
 												<img
 													src={slide.image}
 													alt={slide.alt}
@@ -678,12 +679,14 @@ const Offer = () => {
 											<div className='sliderBlock_controls__wrapper'>
 												<div
 													className='sliderBlock_controls__arrow sliderBlock_controls__arrowForward2'
-													onClick={goToNextSlide}>
+													onClick={goToNextSlide}
+												>
 													<BsFillArrowRightCircleFill className='sliderBlock_controls__arrowForward2' />
 												</div>
 												<div
 													className='sliderBlock_controls__arrow sliderBlock_controls__arrowBackward2'
-													onClick={goToPreviousSlide}>
+													onClick={goToPreviousSlide}
+												>
 													<BsFillArrowLeftCircleFill className='sliderBlock_controls__arrowBackward2' />
 												</div>
 											</div>
@@ -696,7 +699,8 @@ const Offer = () => {
 														index === visibleSlide
 															? 'sliderBlock_positionControls__active2'
 															: ''
-													}`}></li>
+													}`}
+												></li>
 											))}
 										</ul>
 									</div>
@@ -712,7 +716,8 @@ const Offer = () => {
 									<div className='block_specification__specificationShow'>
 										<i
 											className='fa fa-cog block_specification__button block_specification__button__rotate'
-											aria-hidden='true'></i>
+											aria-hidden='true'
+										></i>
 									</div>
 								</div>
 								<div className='block_product'>
@@ -736,7 +741,8 @@ const Offer = () => {
 													</span>
 													<div
 														key={resetTrigger}
-														className='block_quantity__chooseBlock'>
+														className='block_quantity__chooseBlock'
+													>
 														<input
 															className='block_quantity__number block_quantity__number2'
 															name='quantityNumber'
@@ -773,13 +779,15 @@ const Offer = () => {
 														className='zaid'
 														style={{
 															display: 'hidden',
-														}}></div>
+														}}
+													></div>
 													<div className='block_goodColor__allColors CatogallColors'></div>
 													<FilterSizeCatog
 														className='FilterSizeCatog2'
 														onChange={(e) =>
 															setSize(e.target.value)
-														}></FilterSizeCatog>
+														}
+													></FilterSizeCatog>
 												</div>
 												{isLoading ? (
 													chekAvail2() ? (
@@ -788,13 +796,15 @@ const Offer = () => {
 															product_id={product_id}
 															onClick={(ele) => {
 																addToCart(ele);
-															}}>
+															}}
+														>
 															Add to Cart
 														</button>
 													) : (
 														<button
 															className='AddCart2'
-															disabled>
+															disabled
+														>
 															ADD TO CART
 														</button>
 													)
@@ -812,7 +822,8 @@ const Offer = () => {
 			</div>
 			<div
 				className='group-deal-1 hidden-title-block nav-style-1 hover-to-show absolute-nav snipcss-s72N8 style-sCNUC'
-				id='style-sCNUC'>
+				id='style-sCNUC'
+			>
 				<div>
 					<div className='block block-list-products'>
 						<div className='block-title'>
@@ -823,7 +834,8 @@ const Offer = () => {
 								id='filterproducts_1'
 								className={`product-deal-list ${
 									language === 'ar' ? 'product-deal-list-ar' : ''
-								}`}>
+								}`}
+							>
 								<Link to={`/`}>
 									<div className='deal-left'>
 										<div className='deal-description'>
@@ -835,7 +847,8 @@ const Offer = () => {
 												{language === 'ar' ? ' أعلى من' : 'up to'}
 												<span
 													id='style-Leion'
-													className='style-Leion'>
+													className='style-Leion'
+												>
 													50%
 												</span>
 												{language === 'ar' ? ' خصم' : ' off'}
@@ -855,14 +868,16 @@ const Offer = () => {
 										language === 'ar'
 											? 'deal-contentAr'
 											: 'deal-content'
-									}>
+									}
+								>
 									<div className='owl-carousel owl-theme list items product-items filterproducts owl-loaded owl-drag'>
 										<div className='owl-stage-outer'>
 											<Wrapper1
 												className='owl-stage style-FUF77'
 												id='style-FUF77'
 												slideIndex={slideIndex}
-												language={language}>
+												language={language}
+											>
 												{offer.map((data) => (
 													<div
 														className='owl-item active style-Ke3kW'
@@ -872,7 +887,8 @@ const Offer = () => {
 														}
 														onMouseLeave={() =>
 															setIsHovered(false)
-														}>
+														}
+													>
 														<div className='item product product-item'>
 															<div
 																className={`product-item-info ${
@@ -880,21 +896,25 @@ const Offer = () => {
 																		? 'product-item-info-ar'
 																		: ''
 																} `}
-																data-container='product-grid'>
+																data-container='product-grid'
+															>
 																<Link
 																	to={`/product/${data._id}`}
 																	className='action quickview-handler
 																	sm_quickview_handler'
 																	title='Quick View'
-																	href=''>
+																	href=''
+																>
 																	<div className='image-product'>
 																		<div className='product photo product-item-photo'>
 																			<span
 																				className='product-image-container product-image-container-13 style-j6oeg'
-																				id='style-j6oeg'>
+																				id='style-j6oeg'
+																			>
 																				<span
 																					className='product-image-wrapper style-gKGpW'
-																					id='style-gKGpW'>
+																					id='style-gKGpW'
+																				>
 																					<img
 																						className='product-image-photo'
 																						src={
@@ -918,7 +938,8 @@ const Offer = () => {
 																			className='action quickview-handler
 																	sm_quickview_handler show-cart3'
 																			title='Quick View'
-																			catog-id={data._id}>
+																			catog-id={data._id}
+																		>
 																			<AiOutlineEye />
 																			<span>Quick View</span>
 																		</Link>
@@ -936,13 +957,15 @@ const Offer = () => {
 																		className='price-box price-final_price'
 																		data-role='priceBox'
 																		data-product-id='13'
-																		data-price-box='product-id-13'>
+																		data-price-box='product-id-13'
+																	>
 																		<span className='price-container price-final_price tax weee'>
 																			<span
 																				id='product-price-13'
 																				data-price-amount='250'
 																				data-price-type='finalPrice'
-																				className='price-wrapper '>
+																				className='price-wrapper '
+																			>
 																				<span className='price55'>
 																					$ {data.price}
 																				</span>
@@ -970,7 +993,8 @@ const Offer = () => {
 																						'ar'
 																							? 'time-leftAr'
 																							: 'time-left'
-																					}>
+																					}
+																				>
 																					{language ===
 																					'ar'
 																						? 'الوقت المتبقي:'
@@ -987,7 +1011,8 @@ const Offer = () => {
 																			<div className='time-ranger'>
 																				<div
 																					className='time-pass style-Tx4nd'
-																					id='style-Tx4nd'></div>
+																					id='style-Tx4nd'
+																				></div>
 																			</div>
 																		</div>
 																	</div>
@@ -996,15 +1021,18 @@ const Offer = () => {
 																			language === 'ar'
 																				? 'product-item-actions'
 																				: 'product-item-actions'
-																		}>
+																		}
+																	>
 																		<div className='actions-primary'>
 																			<Link
-																				to={`/product/${data._id}`}>
+																				to={`/product/${data._id}`}
+																			>
 																				<button
 																					className='action tocart primary'
 																					data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/checkout\/cart\/add\/uenc\/aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo\/product\/13\/","data":{"product":"13","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
 																					type='button'
-																					title='Add to Cart'>
+																					title='Add to Cart'
+																				>
 																					<span>
 																						Add to Cart
 																					</span>
@@ -1013,7 +1041,8 @@ const Offer = () => {
 																		</div>
 																		<div
 																			className='actions-secondary'
-																			data-role='add-to-links'>
+																			data-role='add-to-links'
+																		>
 																			<div className='action towishlist'>
 																				{wishlistData.includes(
 																					data._id,
@@ -1041,7 +1070,8 @@ const Offer = () => {
 																							width='16'
 																							height='16'
 																							fill='currentColor'
-																							viewBox='0 0 16 16'>
+																							viewBox='0 0 16 16'
+																						>
 																							<path
 																								className='add-to-wish2'
 																								fill-rule='evenodd'
@@ -1078,7 +1108,8 @@ const Offer = () => {
 																							width='16'
 																							height='16'
 																							fill='currentColor'
-																							viewBox='0 0 16 16'>
+																							viewBox='0 0 16 16'
+																						>
 																							<path
 																								className='add-to-wish2'
 																								fill-rule='evenodd'
@@ -1106,7 +1137,8 @@ const Offer = () => {
 																			</div>
 																			<div
 																				className='action tocompare'
-																				title='Add to Compare'>
+																				title='Add to Compare'
+																			>
 																				<IoGitCompareOutline />
 																				<span>
 																					Add to Compare
@@ -1125,13 +1157,15 @@ const Offer = () => {
 											<div
 												role='presentation'
 												className='owl-prev disabled'
-												onClick={() => handleClick('left')}>
+												onClick={() => handleClick('left')}
+											>
 												<BiChevronLeft />
 											</div>
 											<div
 												role='presentation'
 												className='owl-next'
-												onClick={() => handleClick('right')}>
+												onClick={() => handleClick('right')}
+											>
 												<BiChevronRight />
 											</div>
 										</div>
