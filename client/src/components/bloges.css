@@ -11,6 +11,9 @@
 		margin-left: auto;
 	}
 }
+html[lang='ar'] .info-post {
+	text-align: right;
+}
 
 .blog_title {
 	position: relative;
@@ -201,7 +204,7 @@
 		line-height: 1.5;
 		font-size: 14px;
 		background-color: #ffffff;
-		font-family: "Open Sans", sans-serif;
+		font-family: 'Open Sans', sans-serif;
 		text-align: left;
 		overflow-x: hidden;
 	}
@@ -244,7 +247,7 @@
 	}
 
 	.block-title:before {
-		content: "";
+		content: '';
 		display: block;
 		width: 100px;
 		height: 2px;
@@ -280,7 +283,7 @@
 		background: url(http://magento2.magentech.com/themes/sm_venuse/pub/static/version1661854504/frontend/Sm/venuse/en_US/images/loader-1.gif)
 			no-repeat center center / 30px auto;
 		min-height: 100px;
-		background-image: url("http://magento2.magentech.com/themes/sm_venuse/pub/static/version1661854504/frontend/Sm/venuse/en_US/images/loader-1.gif");
+		background-image: url('http://magento2.magentech.com/themes/sm_venuse/pub/static/version1661854504/frontend/Sm/venuse/en_US/images/loader-1.gif');
 		background-position-x: center;
 		background-position-y: center;
 		background-size: 30px;
@@ -333,7 +336,7 @@
 	}
 
 	.owl-carousel .owl-stage:after {
-		content: ".";
+		content: '.';
 		display: block;
 		clear: both;
 		visibility: hidden;
@@ -366,7 +369,7 @@
 		cursor: default;
 	}
 
-	.owl-theme .owl-nav [class*="owl-"].disabled {
+	.owl-theme .owl-nav [class*='owl-'].disabled {
 		opacity: 1;
 	}
 
@@ -402,7 +405,7 @@
     font-size: 14px;
   } */
 
-	.owl-theme .owl-nav [class*="owl-"]:before {
+	.owl-theme .owl-nav [class*='owl-']:before {
 		font-size: 19px;
 		line-height: 29px;
 	}
@@ -444,9 +447,9 @@
     text-align: center;
     font-size: 14px;
   } */
-.owl-stage .owl-item  {
-	margin-bottom: 20px;
-}
+	.owl-stage .owl-item {
+		margin-bottom: 20px;
+	}
 	.owl-carousel .owl-item {
 		-webkit-backface-visibility: hidden;
 		-moz-backface-visibility: hidden;
@@ -470,7 +473,7 @@
 		user-select: none;
 	}
 
-	.owl-theme .owl-nav [class*="owl-"] span {
+	.owl-theme .owl-nav [class*='owl-'] span {
 		display: none;
 	}
 
@@ -622,6 +625,6 @@
 .image-post {
 	transition: transform 0.35s;
 }
-.image-post:hover{
+.image-post:hover {
 	transform: scale(1.1);
 }

@@ -2,9 +2,31 @@ import React from 'react';
 import './bloges.css';
 import { useContext } from 'react';
 import { LanguageContext } from '../components/LanguageContext';
+import { format } from 'date-fns';
+import { arSA } from 'date-fns/locale';
 
 const Bloges = () => {
-	const { dictionary } = useContext(LanguageContext);
+	const { dictionary, language } = useContext(LanguageContext);
+
+	const formatDate = (dateString) => {
+		const date = new Date(dateString);
+		// Check if the current language is Arabic
+		if (language === 'ar') {
+			// Format the date to Arabic
+			return date.toLocaleDateString('ar-SA', {
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric',
+			});
+		} else {
+			// Format the date to English
+			return date.toLocaleDateString('en-US', {
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric',
+			});
+		}
+	};
 
 	return (
 		<>
@@ -41,8 +63,12 @@ const Bloges = () => {
 										</div>
 										<div class='info-post'>
 											<div class='post-date'>
-												<span class='label'>Posted:</span>
-												<span class='value'>June 17, 2019</span>
+												<span class='label'>
+													{dictionary.blog['Posted']}
+												</span>
+												<span class='value'>
+													{formatDate('June 17, 2019')}
+												</span>
 											</div>
 											<div class='post-title'>
 												<div class='post-item-link'>
@@ -91,8 +117,12 @@ const Bloges = () => {
 										</div>
 										<div class='info-post'>
 											<div class='post-date'>
-												<span class='label'>Posted:</span>
-												<span class='value'>June 17, 2019</span>
+												<span class='label'>
+													{dictionary.blog['Posted']}
+												</span>
+												<span class='value'>
+													{formatDate('June 17, 2019')}
+												</span>
 											</div>
 											<div class='post-title'>
 												<div class='post-item-link'>
@@ -141,8 +171,12 @@ const Bloges = () => {
 										</div>
 										<div class='info-post'>
 											<div class='post-date'>
-												<span class='label'>Posted:</span>
-												<span class='value'>May 16, 2019</span>
+												<span class='label'>
+													{dictionary.blog['Posted']}
+												</span>
+												<span class='value'>
+													{formatDate('May 16, 2019')}
+												</span>
 											</div>
 											<div class='post-title'>
 												<div class='post-item-link'>
@@ -191,8 +225,12 @@ const Bloges = () => {
 										</div>
 										<div class='info-post'>
 											<div class='post-date'>
-												<span class='label'>Posted:</span>
-												<span class='value'>May 16, 2019</span>
+												<span class='label'>
+													{dictionary.blog['Posted']}
+												</span>
+												<span class='value'>
+													{formatDate('May 16, 2019')}
+												</span>
 											</div>
 											<div class='post-title'>
 												<div class='post-item-link'>
