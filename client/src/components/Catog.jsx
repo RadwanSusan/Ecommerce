@@ -652,9 +652,6 @@ const Catog = ({ item }) => {
 			return product.price;
 		}
 	};
-	function formatNumberToArabic(number) {
-		return new Intl.NumberFormat('ar-EG').format(number);
-	}
 	function formatPrice(price, language) {
 		return new Intl.NumberFormat(language === 'ar' ? 'ar-EG' : 'en-US', {
 			style: 'decimal',

@@ -1,20 +1,17 @@
-import { Add, AddOutlined, Check, Remove } from '@material-ui/icons';
+import { Add, Remove } from '@material-ui/icons';
 import styled from 'styled-components';
 import Announcement from '../components/Announcement';
 import Navbar from '../components/Navbar';
 import NavbarBottom from '../components/NavbarBottom';
 import { mobile } from '../responsive';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import FooterNew from '../components/FooterNew';
 import StripeCheckout from 'react-stripe-checkout';
 import { userRequest } from '../requestMethods';
-// import { useHistory } from 'react-router';
 import { removeProduct } from '../redux/cartRedux';
 import { increase, decrease, calc, reset } from '../redux/cartRedux';
-// import { Link } from 'react-router-dom';
 import { useHistory, Link } from 'react-router-dom';
-
 import swal from 'sweetalert';
 import { useDispatch } from 'react-redux';
 import {
@@ -24,32 +21,26 @@ import {
 	purchaseSuccessfulEmail,
 	purchaseSuccessfulEmailAdmin,
 } from '../redux/apiCalls';
-
 import { clear } from '../redux/cartRedux';
-
+import { LanguageContext } from '../components/LanguageContext';
 const KEY = process.env.REACT_APP_STRIPE;
-
 const Container = styled.div`
 	user-select: none;
 `;
-
 const Wrapper = styled.div`
 	padding: 20px;
 	${mobile({ padding: '10px' })}
 `;
-
 const Title = styled.h1`
 	font-weight: 300;
 	text-align: center;
 `;
-
 const Top = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	padding: 20px;
 `;
-
 const TopButton = styled.button`
 	padding: 10px;
 	font-weight: 600;
@@ -59,7 +50,6 @@ const TopButton = styled.button`
 		props.type === 'filled' ? 'black' : 'transparent'};
 	color: ${(props) => props.type === 'filled' && 'white'};
 `;
-
 const TopTexts = styled.div`
 	${mobile({ display: 'none' })}
 `;
@@ -68,18 +58,15 @@ const TopText = styled.span`
 	cursor: pointer;
 	margin: 0px 10px;
 `;
-
 const Bottom = styled.div`
 	display: flex;
 	justify-content: space-between;
 	${mobile({ flexDirection: 'column' })}
 `;
-
 const Info = styled.div`
 	flex: 3;
 	padding: 5px;
 `;
-
 const Product = styled.div`
 	display: flex;
 	justify-content: space-between;
@@ -89,41 +76,30 @@ const Product = styled.div`
 	padding: 5px;
 	margin: 5px;
 `;
-
 const ProductDetail = styled.div`
 	flex: 2;
 	display: flex;
 `;
-
 const Image = styled.img`
 	width: 200px;
 	height: 250px;
 	object-fit: cover;
 	border-radius: 5px;
 `;
-
 const Details = styled.div`
 	padding: 20px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
 `;
-
 const ProductName = styled.span``;
-
-const ProductId = styled.span`
-	${mobile({ display: 'none' })};
-`;
-
 const ProductColor = styled.div`
 	width: 20px;
 	height: 20px;
 	border-radius: 50%;
 	background-color: ${(props) => props.color};
 `;
-
 const ProductSize = styled.span``;
-
 const PriceDetail = styled.div`
 	flex: 1;
 	display: flex;
@@ -131,32 +107,27 @@ const PriceDetail = styled.div`
 	align-items: center;
 	justify-content: center;
 `;
-
 const ProductAmountContainer = styled.div`
 	display: flex;
 	align-items: center;
 	margin-bottom: 20px;
 `;
-
 const ProductAmount = styled.div`
 	font-size: 24px;
 	margin: 5px;
 	${mobile({ margin: '5px 15px' })}
 	border-bottom:1px solid black;
 `;
-
 const ProductPrice = styled.div`
 	font-size: 30px;
 	font-weight: 200;
 	${mobile({ marginBottom: '20px' })}
 `;
-
 const Hr = styled.hr`
 	background-color: #eee;
 	border: none;
 	height: 1px;
 `;
-
 const Summary = styled.div`
 	flex: 1;
 	border: 0.5px solid lightgray;
@@ -164,11 +135,9 @@ const Summary = styled.div`
 	padding: 20px;
 	height: 50vh;
 `;
-
 const SummaryTitle = styled.h1`
 	font-weight: 200;
 `;
-
 const SummaryItem = styled.div`
 	margin: 20px 0px;
 	display: flex;
@@ -176,11 +145,8 @@ const SummaryItem = styled.div`
 	font-weight: ${(props) => props.type === 'total' && '500'};
 	font-size: ${(props) => props.type === 'total' && '24px'};
 `;
-
 const SummaryItemText = styled.span``;
-
 const SummaryItemPrice = styled.span``;
-
 const Button = styled.button`
 	width: 100%;
 	padding: 10px;
@@ -200,21 +166,20 @@ const Button1 = styled.button`
 	border-radius: 10%;
 	${mobile({ width: '100%' })};
 `;
-
 const Cart = () => {
 	const cart = useSelector((state) => state.cart);
-	const total = useSelector((state) => state.total);
 	const [product, setProduct] = useState({});
-	const [offer, setOffer] = useState({});
 	const dispatch = useDispatch();
 	const [quantity, setQuantity] = useState(1);
 	let [productGet, setProductGet] = useState({});
 	let [offerGet, setOfferGet] = useState({});
-	const cartId = cart.products;
 	const [stripeToken, setStripeToken] = useState(null);
 	const [AllProducts, setAllProducts] = useState([]);
 	const [AllOffers, setAllOffers] = useState([]);
 	const history = useHistory();
+	const { language } = useContext(LanguageContext);
+	const { dictionary } = useContext(LanguageContext);
+	const sizesTranslation = dictionary['sizes'];
 	const onToken = (token) => {
 		setStripeToken(token);
 	};
@@ -223,19 +188,11 @@ const Cart = () => {
 	userId = userId.user;
 	userId = JSON.parse(userId);
 	userId = userId.currentUser._id;
-
 	let email = localStorage.getItem('persist:root');
 	email = JSON.parse(email);
-
 	email = email.user;
-
 	email = JSON.parse(email);
 	email = email.currentUser.email;
-
-	// const handleClick2 = (id) => {
-	// 	dispatch(removeProduct(id));
-	// 	// dispatch(clear());
-	// };
 	const mergedCart = cart.products.reduce((acc, curr) => {
 		const existingItem = acc.find(
 			(item) =>
@@ -257,7 +214,7 @@ const Cart = () => {
 				setAllProducts(res.data);
 				setProductGet(res.data);
 			} catch (err) {
-				console.log('🚀 ~ file: Cart.jsx:209 ~ getAllProducts ~ err:', err);
+				console.error('Error fetching data:', err);
 			}
 		};
 		getAllProducts();
@@ -267,7 +224,7 @@ const Cart = () => {
 				setAllOffers(res.data);
 				setOfferGet(res.data);
 			} catch (err) {
-				console.log('🚀 ~ file: Cart.jsx:216 ~ getAllOffers ~ err:', err);
+				console.error('Error fetching data:', err);
 			}
 		};
 		getAllOffers();
@@ -275,7 +232,11 @@ const Cart = () => {
 	useEffect(() => {
 		const makeRequest = async () => {
 			if (cart.total * 100 === 0) {
-				swal('Your cart is empty');
+				swal(
+					'Error',
+					language === 'ar' ? 'السلة فارغة' : 'Your cart is empty',
+					'error',
+				);
 				return;
 			}
 			try {
@@ -318,7 +279,6 @@ const Cart = () => {
 					products: cart,
 				});
 				let originalPrice = 0;
-
 				mergedCart.map((item) => {
 					originalPrice += item.originalPrice * item.quantity;
 				});
@@ -340,45 +300,56 @@ const Cart = () => {
 				purchaseSuccessfulEmail(email);
 				purchaseSuccessfulEmailAdmin();
 			} catch (err) {
-				console.log('🚀 ~ file: Cart.jsx:245 ~ makeRequest ~ err:', err);
+				console.error('Error fetching data:', err);
 			}
 		};
 		stripeToken && makeRequest();
 	}, [stripeToken, cart.total, history]);
-
+	function formatNumberToArabic(number) {
+		return new Intl.NumberFormat('ar-EG').format(number);
+	}
+	function formatPrice(price, language) {
+		return new Intl.NumberFormat(language === 'ar' ? 'ar-EG' : 'en-US', {
+			style: 'decimal',
+			minimumFractionDigits: 0,
+			maximumFractionDigits: 0,
+		}).format(price);
+	}
 	const handleQuantity = (type, id, selectedVariantId) => {
 		const productFind = productGet.find((item) => item._id === id);
 		const productFindSelected = productFind.variants.find(
 			(item) => item._id === selectedVariantId,
 		);
-
 		const updatedQuantity = cart.products.find(
 			(item) => item.selectedVariant._id === selectedVariantId,
 		);
-
 		if (type === 'dec') {
 			if (updatedQuantity.quantity <= 1) {
 				dispatch(reset(selectedVariantId));
-				swal('Info', 'The minimum quantity is 1', 'info');
+				swal(
+					'Info',
+					language === 'ar'
+						? 'الحد الادنى للكمية هو 1'
+						: 'The minimum quantity is 1',
+					'info',
+				);
 			} else {
 				setQuantity(updatedQuantity.quantity - 1);
 			}
 		} else {
 			if (updatedQuantity.quantity >= productFindSelected.quantity) {
 				dispatch(reset(selectedVariantId));
-
 				swal(
 					'Info',
-					'You have exceeded the number of available products!, the quantity will be reset',
+					language === 'ar'
+						? 'لقد تجاوزت الحد الاقصى للكمية'
+						: 'You have exceeded the number of available products!, the quantity will be reset',
 					'info',
 				);
 			}
 		}
 	};
-
 	const [orderHave, setOrderHave] = useState([]);
-	const [wish, setWish] = useState([]);
-
 	useEffect(() => {
 		dispatch(calc());
 	}, [cart.products]);
@@ -388,34 +359,27 @@ const Cart = () => {
 				const res = await userRequest.get('/orders/find/' + userId);
 				setOrderHave(res.data);
 			} catch (err) {
-				console.log('error');
+				console.error('Error fetching data:', err);
 			}
 		};
 		getOrders();
 	}, []);
-
 	const [matchedOrders, setMatchedOrders] = useState([]);
-
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				const userId = JSON.parse(
 					JSON.parse(localStorage.getItem('persist:root')).user,
 				).currentUser._id;
-
 				const [ordersRes, productsRes, offersRes] = await Promise.all([
 					userRequest.get(`/users/userWishListArray/${userId}`),
 					userRequest.get('/products'),
 					userRequest.get('/offer'),
 				]);
-
 				const orders = ordersRes.data;
 				const products = productsRes.data;
-
 				const offers = offersRes.data;
-
 				const matchedItems = [];
-
 				for (const order of orders) {
 					const matchedItem = [...products, ...offers].find(
 						(item) => item._id === order,
@@ -424,41 +388,42 @@ const Cart = () => {
 						matchedItems.push({ ...matchedItem });
 					}
 				}
-
 				setMatchedOrders(matchedItems);
 			} catch (error) {
 				console.error(error);
 			}
 		};
-
 		fetchData();
 	}, []);
-
 	return (
 		<Container>
 			<Announcement />
 			<Navbar />
 			<NavbarBottom />
 			<Wrapper>
-				<Title>YOUR BAG</Title>
+				<Title>{dictionary.cart['YOUR BAG']}</Title>
 				<Top>
 					<Link to={'/'}>
-						<TopButton>CONTINUE SHOPPING</TopButton>
+						<TopButton>{dictionary.cart['CONTINUE SHOPPING']}</TopButton>
 					</Link>
 					<TopTexts>
 						<Link to={'/orderHave'}>
-							<TopText>Shopping Bag({orderHave.length})</TopText>
+							<TopText>
+								{dictionary.cart['Shopping Bag']}({orderHave.length})
+							</TopText>
 						</Link>
 						<Link to={'/wishList'}>
-							<TopText>Your Wishlist ({matchedOrders.length})</TopText>
+							<TopText>
+								{dictionary.cart['Your Wishlist']} (
+								{matchedOrders.length})
+							</TopText>
 						</Link>
 					</TopTexts>
-					{/* <TopButton type="filled">CHECKOUT NOW</TopButton> */}
 				</Top>
 				<Bottom>
 					<Info>
 						{mergedCart.length === 0 ? (
-							<div>No products in the cart</div>
+							<div>{dictionary.cart['No products in the cart']}</div>
 						) : (
 							mergedCart.map((product) => (
 								<Product>
@@ -466,25 +431,22 @@ const Cart = () => {
 										<Image src={product.selectedVariant?.img[0]} />
 										<Details>
 											<ProductName>
-												<b>Product:</b> {product.title}
+												<b>{dictionary.cart['Product:']}</b>{' '}
+												{language === 'en'
+													? product.title
+													: product.title_ar}
 											</ProductName>
-											<ProductId>
-												<b>ID:</b> {product._id}
-											</ProductId>
 											<ProductColor
 												color={product.selectedVariant?.color}
 											/>
 											<ProductSize>
-												<b>Size:</b> {product.selectedVariant?.size}
+												<b>{dictionary.cart['Size:']}</b>{' '}
+												{
+													sizesTranslation[
+														product.selectedVariant?.size
+													]
+												}
 											</ProductSize>
-											{/* {product.variants.map((variant) => (
-												<>
-													<ProductColor color={variant.color} />
-													<ProductSize>
-														<b>Size:</b> {variant.size}
-													</ProductSize>
-												</> */}
-											{/* ))} */}
 											<ProductSize>
 												<Button1
 													onClick={() => {
@@ -495,9 +457,8 @@ const Cart = () => {
 																	product.selectedVariant._id,
 															}),
 														);
-													}}
-												>
-													Remove
+													}}>
+													{dictionary.cart['Remove']}
 												</Button1>
 											</ProductSize>
 										</Details>
@@ -513,14 +474,14 @@ const Cart = () => {
 													handleQuantity(
 														'dec',
 														product._id,
-
 														product.selectedVariant._id,
 													);
 												}}
 											/>
-
 											<ProductAmount>
-												{product.quantity}
+												{language === 'ar'
+													? formatNumberToArabic(product.quantity)
+													: product.quantity}
 											</ProductAmount>
 											<Add
 												className={`AddQuantity${product._id}`}
@@ -531,23 +492,18 @@ const Cart = () => {
 													handleQuantity(
 														'inc',
 														product._id,
-
 														product.selectedVariant._id,
 													);
 												}}
 											/>
-											{/* )) */}
-											{/* } */}
-											{/* <Add
-											className={`AddQuantity${product._id}`}
-											onClick={() => {
-												dispatch(increase(product._id));
-												handleQuantity("inc", product._id);
-											}}
-										/> */}
 										</ProductAmountContainer>
 										<ProductPrice>
-											$ {product.price * product.quantity}
+											${' '}
+											{language === 'ar'
+												? formatNumberToArabic(
+														product.price * product.quantity,
+												  )
+												: product.price * product.quantity}
 										</ProductPrice>
 									</PriceDetail>
 								</Product>
@@ -556,22 +512,46 @@ const Cart = () => {
 						<Hr />
 					</Info>
 					<Summary>
-						<SummaryTitle>ORDER SUMMARY</SummaryTitle>
+						<SummaryTitle>
+							{dictionary.cart['ORDER SUMMARY']}
+						</SummaryTitle>
 						<SummaryItem>
-							<SummaryItemText>Subtotal</SummaryItemText>
-							<SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+							<SummaryItemText>
+								{dictionary.cart['Subtotal']}
+							</SummaryItemText>
+							<SummaryItemPrice>
+								$
+								{language === 'ar'
+									? formatNumberToArabic(cart.total)
+									: cart.total}
+							</SummaryItemPrice>
 						</SummaryItem>
 						<SummaryItem>
-							<SummaryItemText>Estimated Shipping</SummaryItemText>
-							<SummaryItemPrice>$ 5.90</SummaryItemPrice>
+							<SummaryItemText>
+								{dictionary.cart['Estimated Shipping']}
+							</SummaryItemText>
+							<SummaryItemPrice>
+								${language === 'ar' ? formatNumberToArabic(5.9) : 5.9}
+							</SummaryItemPrice>
 						</SummaryItem>
 						<SummaryItem>
-							<SummaryItemText>Shipping Discount</SummaryItemText>
-							<SummaryItemPrice>$ -5.90</SummaryItemPrice>
+							<SummaryItemText>
+								{dictionary.cart['Shipping Discount']}
+							</SummaryItemText>
+							<SummaryItemPrice>
+								${language === 'ar' ? formatNumberToArabic(-5.9) : -5.9}
+							</SummaryItemPrice>
 						</SummaryItem>
 						<SummaryItem type='total'>
-							<SummaryItemText>Total</SummaryItemText>
-							<SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+							<SummaryItemText>
+								{dictionary.cart['Total']}
+							</SummaryItemText>
+							<SummaryItemPrice>
+								${' '}
+								{language === 'ar'
+									? formatNumberToArabic(cart.total)
+									: cart.total}
+							</SummaryItemPrice>
 						</SummaryItem>
 						<StripeCheckout
 							name='PME Shop'
@@ -581,9 +561,8 @@ const Cart = () => {
 							description={`Your total is $${cart.total}`}
 							amount={cart.total * 100}
 							token={onToken}
-							stripeKey={KEY}
-						>
-							<Button>CHECKOUT NOW</Button>
+							stripeKey={KEY}>
+							<Button>{dictionary.cart['CHECKOUT NOW']}</Button>
 						</StripeCheckout>
 					</Summary>
 				</Bottom>
@@ -592,5 +571,4 @@ const Cart = () => {
 		</Container>
 	);
 };
-
 export default Cart;
