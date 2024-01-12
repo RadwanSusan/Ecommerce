@@ -1,6 +1,5 @@
 import Product from './pages/Product';
 import OfferProducts from './pages/OfferProducts';
-// import Poffer from "./components/Poffer"
 import Home from './pages/Home';
 import ProductList from './pages/ProductList';
 import Register from './pages/Register';

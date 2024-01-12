@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, {
+	useState,
+	useEffect,
+	useRef,
+	useCallback,
+	useMemo,
+} from 'react';
 import './offer.css';
 import styled from 'styled-components';
 import { IoGitCompareOutline } from 'react-icons/io5';
@@ -18,7 +24,7 @@ import { userRequest } from '../requestMethods';
 import * as timeago from 'timeago.js';
 import swal from 'sweetalert';
 import { addProduct } from '../redux/cartRedux';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useContext } from 'react';
 import { LanguageContext } from './LanguageContext';
 const Wrapper1 = styled.div`
@@ -35,15 +41,16 @@ const FilterSizeCatog = styled.select`
 	padding: 5px;
 `;
 const Offer = () => {
+	const cartSelector = (state) => state.cart;
 	const [offer, setOffer] = useState([]);
 	const [wishlistLogin, setWishlistLogin] = useState(false);
-	const [zaidVar, setZaidVar] = useState(0);
 	const [idSelected, setIdSelected] = useState(0);
 	const [product_id, setProduct_id] = useState(0);
 	const [quantity, setQuantity] = useState(1);
 	const [size, setSize] = useState('');
-	const dispatch = useDispatch();
+	const cartProducts = useSelector(cartSelector);
 	const [AllProducts, setAllProducts] = useState([]);
+	const [isProductAvailable, setIsProductAvailable] = useState(false);
 	const [productGet, setProductGet] = useState({});
 	const [offerGet, setOfferGet] = useState({});
 	const [products, setProducts] = useState([]);
@@ -51,6 +58,7 @@ const Offer = () => {
 	const [selectedColor, setSelectedColor] = useState('');
 	const [selectedSize, setSelectedSize] = useState(null);
 	const [selectedVariants, setSelectedVariants] = useState([]);
+	const [cartQuantityValue, setCartQuantity] = useState(0);
 	const [viewArrCatog, setViewArrCatog] = useState(null);
 	const [resetTrigger, setResetTrigger] = useState(0);
 	const [slideIndex, setSlideIndex] = useState(0);
@@ -58,8 +66,11 @@ const Offer = () => {
 	const [currentSlide, setCurrentSlide] = useState(0);
 	const filterSizeCatog = document.querySelector('.FilterSizeCatog2');
 	const [isHovered, setIsHovered] = useState(false);
-	let mergedCart = [];
 	const { language } = useContext(LanguageContext);
+	const { dictionary } = useContext(LanguageContext);
+	const addCartBtn = document.querySelector('.AddCart2');
+	const sizesTranslation = dictionary['sizes'];
+	const dispatch = useDispatch();
 	const slides = [
 		{
 			image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones1.png?raw=true',
@@ -82,13 +93,13 @@ const Offer = () => {
 			alt: 'headphones',
 		},
 	];
+	const totalSlides = slides.length;
 	useEffect(() => {
 		const interval = setInterval(goToNextSlide, 3000);
 		return () => {
 			clearInterval(interval);
 		};
 	}, []);
-	const totalSlides = slides.length;
 	document.querySelectorAll('.CloseCatogCard').forEach((item) =>
 		item.addEventListener('click', (e) => {
 			document.querySelector('.CatogCard2').style.display = 'none';
@@ -114,9 +125,11 @@ const Offer = () => {
 			prevSlide === 0 ? totalSlides - 1 : prevSlide - 1,
 		);
 	};
-	const chekAvail2 = () => {
-		return true;
-	};
+	useEffect(() => {
+		if (isLoading) {
+			setIsProductAvailable(chekAvail2());
+		}
+	}, [isLoading]);
 	useEffect(() => {
 		setQuantity(1);
 		setResetTrigger((prev) => prev + 1);
@@ -204,15 +217,16 @@ const Offer = () => {
 			productCard_block2.style.overflow = 'hidden';
 			document.body.style.overflow = 'hidden';
 			document.querySelector('.CatogCardDesc2').textContent =
-				viewArrCatog.desc;
+				language === 'en' ? viewArrCatog.desc : viewArrCatog.desc_ar;
 			aramex.innerHTML = '';
-			setZaidVar(viewArrCatog._id);
 			setProduct_id(viewArrCatog._id);
 			document.querySelector('.nameProducts2').innerHTML =
-				viewArrCatog.title;
+				language === 'en' ? viewArrCatog.title : viewArrCatog.title_ar;
 			document
 				.querySelector('.block_product__advantagesProduct')
-				.append(viewArrCatog.desc);
+				.append(
+					language === 'en' ? viewArrCatog.desc : viewArrCatog.desc_ar,
+				);
 		}
 	}, [viewArrCatog]);
 	const displayAlert = (title, message, type) => {
@@ -229,11 +243,26 @@ const Offer = () => {
 		btn.style.opacity = '0.5';
 		btn.style.cursor = 'not-allowed';
 	};
+	const enableAddCartBtn = (btn) => {
+		btn.pointerEvents = 'auto';
+		btn.style.opacity = '1';
+		btn.style.cursor = 'pointer';
+	};
 	const handleQuantityDecrement = () => {
+		const selectedOption =
+			filterSizeCatog.options[filterSizeCatog.length - 1];
+		const quantity501 = parseInt(selectedOption.getAttribute('quantity'));
 		if (quantity <= 1) {
-			displayAlert('Info', 'The minimum quantity is 1', 'info');
+			displayAlert(
+				'Info',
+				language === 'en'
+					? 'The minimum quantity is 1'
+					: 'الحد الادنى للكمية هو 1',
+				'info',
+			);
 		} else {
 			setQuantity(quantity - 1);
+			selectedOption.setAttribute('quantity', quantity501 + 1);
 		}
 	};
 	const handleQuantityIncrement = () => {
@@ -247,115 +276,92 @@ const Offer = () => {
 				'selected',
 			);
 		if (!associatedInput) {
-			swal('Error', 'Please select a color', 'error');
+			swal(
+				'Error',
+				language === 'en' ? 'Please select a color' : 'يرجى تحديد اللون',
+				'error',
+			);
 			return;
 		}
 		if (!selectedSize && !selectedSizeNew) {
-			swal('Error', 'Please select a size', 'error');
+			swal(
+				'Error',
+				language === 'en' ? 'Please select a size' : 'يرجى تحديد الحجم',
+				'error',
+			);
+
 			return;
 		}
 		const selectedOption =
 			filterSizeCatog.options[filterSizeCatog.length - 1];
 		const quantity501 = parseInt(selectedOption.getAttribute('quantity'));
 		if (!quantity501) {
-			swal('Error', 'Please select a size', 'error');
+			swal(
+				'Error',
+				language === 'en' ? 'Please select a size' : 'يرجى تحديد الحجم',
+				'error',
+			);
 			return;
 		}
 		if (viewArrCatog) {
-			if (quantity501 < quantity + 1) {
-				swal('Error', 'The maximum quantity is ' + quantity, 'error');
+			if (quantity501 - 1 <= 0) {
+				swal(
+					'Error',
+					language === 'en'
+						? 'The maximum quantity is ' + quantity
+						: 'The maximum quantity is ' + quantity,
+					'error',
+				);
 			} else {
 				setQuantity((prevQuantity) => {
 					const newQuantity = prevQuantity + 1;
-
+					selectedOption.setAttribute('quantity', quantity501 - 1);
 					return newQuantity;
 				});
 			}
 		}
 	};
 	useEffect(() => {
-		if (viewArrCatog && !selectedSize) {
-			aramex.innerHTML = '';
-			let option;
-			const addedColors = new Set();
-			viewArrCatog.variants.forEach((variant) => {
-				variant.color.forEach((color) => {
-					if (!addedColors.has(color)) {
-						addedColors.add(color);
-						const { input, label } = createRadioElement(color);
-						aramex.appendChild(input);
-						aramex.appendChild(label);
-						input.addEventListener('click', (event) => {
-							setSelectedColor(event.target.value);
-							const previousSelectedColor =
-								document.querySelector('.selectedColor');
-							if (previousSelectedColor) {
-								previousSelectedColor.classList.remove('selectedColor');
-							}
-							label.classList.add('selectedColor');
-
-							const selectedVariants = viewArrCatog.variants.filter(
-								(variant) => variant.color.includes(event.target.value),
-							);
-							const sizesForSelectedColor = Array.from(
-								new Set(
-									selectedVariants.flatMap((variant) => variant.size),
-								),
-							);
-							setQuantity(1);
-							filterSizeCatog.innerHTML = '';
-							sizesForSelectedColor.forEach((size) => {
-								option = new Option(size, size);
-								filterSizeCatog.appendChild(option);
-								filterSizeCatog.addEventListener('change', (event) => {
-									setSelectedSize(event.target.value);
-									const selectedVariant = viewArrCatog.variants.find(
-										(variant) =>
-											variant.size.includes(event.target.value),
-									);
-									selectedVariantTemp.current = selectedVariant;
-									option.setAttribute(
-										'quantity',
-										selectedVariant.quantity,
-									);
-									setSelectedVariants([selectedVariant]);
-									setIdSelected(selectedVariant._id);
-									setQuantity(1);
-									sizesForSelectedColor.forEach((size) => {
-										if (size === event.target.value) {
-											option.setAttribute('selected', 'selected');
-										}
-									});
-								});
-							});
-						});
-					}
-				});
-			});
-			const allSizes = viewArrCatog.variants.flatMap(
-				(variant) => variant.size,
-			);
-			const uniqueSizes = Array.from(new Set(allSizes));
-			filterSizeCatog.innerHTML = '';
-			uniqueSizes.forEach((size) => {
-				const option = new Option(size, size);
-				filterSizeCatog.appendChild(option);
-				if (size === uniqueSizes[0]) {
-					option.selected = true;
-					setSize(size);
+		if (!viewArrCatog || selectedSize) return;
+		aramex.innerHTML = '';
+		filterSizeCatog.innerHTML = '';
+		const addedColors = new Set();
+		const allSizes = new Set();
+		viewArrCatog.variants.forEach((variant) => {
+			variant.color.forEach((color) => {
+				if (!addedColors.has(color)) {
+					addedColors.add(color);
+					allSizes.add(...variant.size);
+					const { input, label } = createRadioElement(color);
+					aramex.appendChild(input);
+					aramex.appendChild(label);
 				}
 			});
-			filterSizeCatog.addEventListener('change', (event) => {
-				setSelectedSize(event.target.value);
-				const selectedVariant = viewArrCatog.variants.find((variant) =>
-					variant.size.includes(event.target.value),
-				);
-				selectedVariantTemp.current = selectedVariant;
+		});
+		const uniqueSizes = Array.from(allSizes);
+		uniqueSizes.forEach((size) => {
+			const translatedSize = sizesTranslation[size];
+			const option = new Option(translatedSize, size);
+			setSize(size);
+			filterSizeCatog.appendChild(option);
+		});
+		const handleSizeChange = (event) => {
+			setSelectedSize(event.target.value);
+			const selectedVariant = viewArrCatog.variants.find((variant) =>
+				variant.size.includes(event.target.value),
+			);
+			selectedVariantTemp.current = selectedVariant;
+			if (selectedVariant) {
 				setSelectedVariants([selectedVariant]);
-				setIdSelected(selectedVariant?._id);
 				setQuantity(1);
-			});
-		}
+				if (selectedVariant.quantity > 0) {
+					enableAddCartBtn(addCartBtn);
+				} else {
+					disableAddCartBtn(addCartBtn);
+				}
+			}
+		};
+		filterSizeCatog.addEventListener('click', handleSizeChange);
 	}, [
 		viewArrCatog,
 		selectedVariantTemp,
@@ -364,12 +370,26 @@ const Offer = () => {
 		setSelectedSize,
 		setQuantity,
 	]);
+	const mergedCart = useMemo(() => {
+		return cartProducts.products.reduce((acc, curr) => {
+			const existingItem = acc.find(
+				(item) =>
+					item._id === curr._id &&
+					item.selectedVariant._id === curr.selectedVariant._id,
+			);
+			if (existingItem) {
+				existingItem.quantity += curr.quantity;
+			} else {
+				acc.push({ ...curr });
+			}
+			return acc;
+		}, []);
+	}, [cartProducts]);
 	useEffect(() => {
 		if (viewArrCatog && !selectedSize) {
 			aramex.innerHTML = '';
 			let option;
 			const addedColors = new Set();
-
 			viewArrCatog.variants.forEach((variant) => {
 				variant.color.forEach((color) => {
 					if (!addedColors.has(color)) {
@@ -393,32 +413,51 @@ const Offer = () => {
 									selectedVariants.flatMap((variant) => variant.size),
 								),
 							);
+							document
+								.querySelectorAll('.block_quantity__number')
+								.forEach((input) => {
+									input.value = 1;
+								});
 							setQuantity(1);
 							filterSizeCatog.innerHTML = '';
 							filterSizeCatog.addEventListener('click', (event) => {
+								setSize(event.target.value);
 								const selectedVariant = selectedVariants.find(
 									(variant) =>
 										variant.size.includes(event.target.value),
 								);
 								selectedVariantTemp.current = selectedVariant;
 								setSelectedVariants([selectedVariant]);
-								setIdSelected(selectedVariant?._id);
 								setQuantity(1);
 								sizesForSelectedColor.find((size) => {
 									if (size === event.target.value) {
 										option.setAttribute('selected', 'selected');
+										const cartItem = mergedCart.find(
+											(item) =>
+												item.selectedVariant._id ===
+												selectedVariant._id,
+										);
+										const cartQuantity =
+											cartItem && cartItem.quantity
+												? cartItem.quantity
+												: cartQuantityValue;
 										option.setAttribute(
 											'quantity',
-											selectedVariant.quantity,
+											selectedVariant.quantity - cartQuantity,
 										);
+										if (option.getAttribute('quantity') === '0') {
+											disableAddCartBtn(addCartBtn);
+										}
 									}
 								});
 							});
 							sizesForSelectedColor.forEach((size) => {
-								option = new Option(size, size);
+								const translatedSize = sizesTranslation[size];
+								option = new Option(translatedSize, size);
 								setSize(size);
 								filterSizeCatog.appendChild(option);
 							});
+							enableAddCartBtn(addCartBtn);
 						});
 					}
 				});
@@ -430,6 +469,7 @@ const Offer = () => {
 		setSelectedColor,
 		setSelectedSize,
 		setQuantity,
+		cartQuantityValue,
 	]);
 	showCartItems.forEach((item) => {
 		item.addEventListener('click', (event) => {
@@ -441,13 +481,22 @@ const Offer = () => {
 		const items = [...productGet, ...offerGet];
 		return items.find((item) => item._id === id);
 	};
-	const addCartBtn = document.querySelector('.AddCart2');
+	const chekAvail2 = () => {
+		return true;
+	};
 	const addToCart = (ele) => {
-		const productId = ele.target.getAttribute('product_id');
-		const quantityCart = mergedCart.map((item) => item.quantity)[0];
+		const productId = ele.target.getAttribute('product_id2');
 		const selectedLabel = document.querySelector('.selectedColor');
-		const inputId = selectedLabel.htmlFor;
+		const inputId = selectedLabel ? selectedLabel.htmlFor : null;
 		const inputElement = document.getElementById(inputId);
+		if (!inputElement || !inputElement.value) {
+			showInfoMessage(
+				language === 'en'
+					? 'Please select a color and size'
+					: 'الرجاء تحديد اللون والمقاس',
+			);
+			return;
+		}
 		const colorSelected = inputElement.value;
 		const sizeSelected = document.querySelector('.FilterSizeCatog2').value;
 		const item = findItemById(productId);
@@ -456,46 +505,109 @@ const Offer = () => {
 				variant.color[0] === colorSelected &&
 				variant.size[0] === sizeSelected,
 		);
-		if (quantity > item.quantity) {
-			showInfoMessage('You already have the maximum amount!');
+		if (selectedvariantsNew === undefined) {
+			showInfoMessage(
+				language === 'en'
+					? 'Please select a color and size'
+					: 'الرجاء تحديد اللون والمقاس',
+			);
 			return;
 		}
-		const newItem = {
-			...item,
-			quantity,
-			selectedVariant: selectedvariantsNew,
-		};
-		let existingProducts = localStorage.getItem('persist:root');
-		existingProducts = existingProducts ? JSON.parse(existingProducts) : [];
-		if (!Array.isArray(existingProducts)) {
-			existingProducts = [];
+		if (!item) {
+			showInfoMessage(
+				language === 'en' ? 'Product not found!' : 'المنتج غير موجود!',
+			);
+			return;
 		}
-		const existingItem = existingProducts.find(
-			(product) => product._id === newItem._id,
+		const cartItem = mergedCart.find(
+			(item) => item.selectedVariant._id === selectedvariantsNew._id,
 		);
-		if (existingItem) {
-			existingItem.quantity += newItem.quantity;
-		} else {
-			existingProducts.push(newItem);
-		}
-		localStorage.setItem('persist:root', JSON.stringify(existingProducts));
-		cartProducts = existingProducts;
-		mergedCart = cartProducts.reduce((acc, curr) => {
-			const existingItem = acc.find((item) => item._id === curr._id);
-			if (existingItem) {
-				existingItem.quantity += curr.quantity;
-			} else {
-				acc.push({ ...curr });
-			}
-			return acc;
-		}, []);
-		dispatch(addProduct(newItem));
-		setQuantity(1);
-		chekAvail2();
-		showSuccessMessage('Product added to cart!');
-		if (quantityCart >= selectedvariantsNew.quantity) {
+		const cartQuantity =
+			cartItem && cartItem.quantity ? cartItem.quantity : 0;
+		if (quantity > selectedvariantsNew.quantity - cartQuantity) {
 			disableAddCartBtn(addCartBtn);
-			swal('Info', 'You already have the maximum amount!', 'info');
+			return;
+		}
+		if (quantity > 0) {
+			const newItem = {
+				...item,
+				quantity,
+				selectedVariant: selectedvariantsNew,
+			};
+			let existingProducts = localStorage.getItem('persist:root');
+			existingProducts = existingProducts
+				? JSON.parse(existingProducts)
+				: [];
+			if (!Array.isArray(existingProducts)) {
+				existingProducts = [];
+			}
+			const existingItem = existingProducts.find(
+				(product) => product._id === newItem._id,
+			);
+			if (existingItem) {
+				existingItem.quantity += newItem.quantity;
+			} else {
+				existingProducts.push(newItem);
+			}
+			const selectedColorLabel = document.querySelector(
+				'label.selectedColor',
+			);
+			const associatedInput = document?.getElementById(
+				selectedColorLabel?.getAttribute('for'),
+			)?.value;
+			const filterSizeCatog2 = document.querySelector('.FilterSizeCatog2');
+			const selectedSizeNew =
+				filterSizeCatog2.options[filterSizeCatog2.length - 1].getAttribute(
+					'selected',
+				);
+			if (!associatedInput) {
+				swal(
+					'Error',
+					language === 'en' ? 'Please select a color' : 'يرجى تحديد لون',
+					'error',
+				);
+				return;
+			}
+			if (!selectedSize && !selectedSizeNew) {
+				swal(
+					'Error',
+					language === 'en' ? 'Please select a size' : 'يرجى تحديد حجم',
+					'error',
+				);
+				return;
+			}
+			const selectedOption =
+				filterSizeCatog2.options[filterSizeCatog2.length - 1];
+			const quantity501 = parseInt(selectedOption.getAttribute('quantity'));
+			if (!quantity501) {
+				swal(
+					'Error',
+					language === 'en' ? 'Please select a size' : 'يرجى تحديد حجم',
+					'error',
+				);
+				return;
+			}
+			dispatch(addProduct(newItem));
+			selectedOption.setAttribute(
+				'quantity',
+				selectedvariantsNew.quantity - quantity,
+			);
+			setCartQuantity(selectedvariantsNew.quantity - quantity);
+			setQuantity(1);
+			showSuccessMessage(
+				language === 'en'
+					? 'Product added to cart!'
+					: 'تمت اضافة المنتج الى السلة',
+			);
+			if (selectedOption.getAttribute('quantity') === '0') {
+				disableAddCartBtn(addCartBtn);
+			}
+		} else {
+			showInfoMessage(
+				language === 'en'
+					? 'Try with a different amount!'
+					: 'يرجى تحديد مبلغ مختلف',
+			);
 		}
 	};
 	const intervalIdRef = useRef(null);
@@ -542,28 +654,6 @@ const Offer = () => {
 		};
 		getProducts();
 	}, []);
-	let cartProducts = JSON.parse(localStorage.getItem('persist:root'));
-	if (
-		cartProducts === null ||
-		cartProducts === undefined ||
-		cartProducts === ''
-	) {
-		localStorage.setItem('persist:root', JSON.stringify({ cart: [] }));
-		cartProducts = JSON.parse(localStorage.getItem('persist:root'));
-		cartProducts = cartProducts.cart;
-	} else {
-		cartProducts = cartProducts.cart;
-	}
-	const handleWichlist = (id, ele) => {
-		if (ele.target.classList[0] === 'add-to-wish' && wishlistLogin == true) {
-			ele.target.style.display = 'none';
-			ele.target.nextSibling.style.display = 'block';
-		}
-		if (ele.target.classList[0] === 'add-to-wish2' && wishlistLogin == true) {
-			ele.target.parentNode.style.display = 'none';
-			ele.target.parentNode.previousSibling.style.display = 'block';
-		}
-	};
 	const isMountedRef = useRef(true);
 	const [wishlistData, setWishlistData] = useState([]);
 	let userId = localStorage.getItem('persist:root');
@@ -665,8 +755,7 @@ const Offer = () => {
 													index === currentSlide
 														? 'sliderBlock_items__showing2'
 														: ''
-												}`}
-											>
+												}`}>
 												<img
 													src={slide.image}
 													alt={slide.alt}
@@ -679,14 +768,12 @@ const Offer = () => {
 											<div className='sliderBlock_controls__wrapper'>
 												<div
 													className='sliderBlock_controls__arrow sliderBlock_controls__arrowForward2'
-													onClick={goToNextSlide}
-												>
+													onClick={goToNextSlide}>
 													<BsFillArrowRightCircleFill className='sliderBlock_controls__arrowForward2' />
 												</div>
 												<div
 													className='sliderBlock_controls__arrow sliderBlock_controls__arrowBackward2'
-													onClick={goToPreviousSlide}
-												>
+													onClick={goToPreviousSlide}>
 													<BsFillArrowLeftCircleFill className='sliderBlock_controls__arrowBackward2' />
 												</div>
 											</div>
@@ -699,8 +786,7 @@ const Offer = () => {
 														index === visibleSlide
 															? 'sliderBlock_positionControls__active2'
 															: ''
-													}`}
-												></li>
+													}`}></li>
 											))}
 										</ul>
 									</div>
@@ -716,8 +802,7 @@ const Offer = () => {
 									<div className='block_specification__specificationShow'>
 										<i
 											className='fa fa-cog block_specification__button block_specification__button__rotate'
-											aria-hidden='true'
-										></i>
+											aria-hidden='true'></i>
 									</div>
 								</div>
 								<div className='block_product'>
@@ -732,17 +817,20 @@ const Offer = () => {
 														$ {viewArrCatog?.price}
 													</p>
 													<p className='block_price__shipping'>
-														Shipping and taxes extra
+														{language === 'en'
+															? 'Shipping and taxes extra'
+															: 'الشحن والضريبة'}
 													</p>
 												</div>
 												<div className='block_quantity clearfix'>
 													<span className='text_specification'>
-														Quantity
+														{language === 'en'
+															? 'Quantity'
+															: 'الكمية:'}
 													</span>
 													<div
 														key={resetTrigger}
-														className='block_quantity__chooseBlock'
-													>
+														className='block_quantity__chooseBlock'>
 														<input
 															className='block_quantity__number block_quantity__number2'
 															name='quantityNumber'
@@ -773,43 +861,49 @@ const Offer = () => {
 											<div className='large-6 small-12 column end'>
 												<div className='block_goodColor'>
 													<span className='text_specification'>
-														Choose your colors:
+														{language === 'en'
+															? 'Choose your colors:'
+															: 'اختر الالوان:'}
 													</span>
 													<div
 														className='zaid'
 														style={{
 															display: 'hidden',
-														}}
-													></div>
+														}}></div>
 													<div className='block_goodColor__allColors CatogallColors'></div>
 													<FilterSizeCatog
 														className='FilterSizeCatog2'
 														onChange={(e) =>
 															setSize(e.target.value)
-														}
-													></FilterSizeCatog>
+														}></FilterSizeCatog>
 												</div>
 												{isLoading ? (
-													chekAvail2() ? (
+													isProductAvailable ? (
 														<button
 															className='AddCart2'
-															product_id={product_id}
+															product_id2={product_id}
 															onClick={(ele) => {
 																addToCart(ele);
-															}}
-														>
-															Add to Cart
+															}}>
+															{language === 'en'
+																? 'Add to cart'
+																: 'اضف الى السلة'}
 														</button>
 													) : (
 														<button
 															className='AddCart2'
-															disabled
-														>
-															ADD TO CART
+															disabled>
+															{language === 'en'
+																? 'Out of stock'
+																: 'غير متوفر'}
 														</button>
 													)
 												) : (
-													<p>loading</p>
+													<p>
+														{language === 'en'
+															? 'Loading'
+															: 'جاري التحميل'}
+													</p>
 												)}
 											</div>
 										</div>
@@ -822,20 +916,20 @@ const Offer = () => {
 			</div>
 			<div
 				className='group-deal-1 hidden-title-block nav-style-1 hover-to-show absolute-nav snipcss-s72N8 style-sCNUC'
-				id='style-sCNUC'
-			>
+				id='style-sCNUC'>
 				<div>
 					<div className='block block-list-products'>
 						<div className='block-title'>
-							<strong>Hot Deals</strong>
+							<strong>
+								{language === 'ar' ? 'عروض خاصة' : 'Special Offers'}
+							</strong>
 						</div>
 						<div className='block-content'>
 							<div
 								id='filterproducts_1'
 								className={`product-deal-list ${
 									language === 'ar' ? 'product-deal-list-ar' : ''
-								}`}
-							>
+								}`}>
 								<Link to={`/`}>
 									<div className='deal-left'>
 										<div className='deal-description'>
@@ -847,8 +941,7 @@ const Offer = () => {
 												{language === 'ar' ? ' أعلى من' : 'up to'}
 												<span
 													id='style-Leion'
-													className='style-Leion'
-												>
+													className='style-Leion'>
 													50%
 												</span>
 												{language === 'ar' ? ' خصم' : ' off'}
@@ -868,16 +961,14 @@ const Offer = () => {
 										language === 'ar'
 											? 'deal-contentAr'
 											: 'deal-content'
-									}
-								>
+									}>
 									<div className='owl-carousel owl-theme list items product-items filterproducts owl-loaded owl-drag'>
 										<div className='owl-stage-outer'>
 											<Wrapper1
 												className='owl-stage style-FUF77'
 												id='style-FUF77'
 												slideIndex={slideIndex}
-												language={language}
-											>
+												language={language}>
 												{offer.map((data) => (
 													<div
 														className='owl-item active style-Ke3kW'
@@ -887,8 +978,7 @@ const Offer = () => {
 														}
 														onMouseLeave={() =>
 															setIsHovered(false)
-														}
-													>
+														}>
 														<div className='item product product-item'>
 															<div
 																className={`product-item-info ${
@@ -896,25 +986,21 @@ const Offer = () => {
 																		? 'product-item-info-ar'
 																		: ''
 																} `}
-																data-container='product-grid'
-															>
+																data-container='product-grid'>
 																<Link
 																	to={`/product/${data._id}`}
 																	className='action quickview-handler
 																	sm_quickview_handler'
 																	title='Quick View'
-																	href=''
-																>
+																	href=''>
 																	<div className='image-product'>
 																		<div className='product photo product-item-photo'>
 																			<span
 																				className='product-image-container product-image-container-13 style-j6oeg'
-																				id='style-j6oeg'
-																			>
+																				id='style-j6oeg'>
 																				<span
 																					className='product-image-wrapper style-gKGpW'
-																					id='style-gKGpW'
-																				>
+																					id='style-gKGpW'>
 																					<img
 																						className='product-image-photo'
 																						src={
@@ -938,10 +1024,13 @@ const Offer = () => {
 																			className='action quickview-handler
 																	sm_quickview_handler show-cart3'
 																			title='Quick View'
-																			catog-id={data._id}
-																		>
+																			catog-id={data._id}>
 																			<AiOutlineEye />
-																			<span>Quick View</span>
+																			<span>
+																				{language === 'en'
+																					? 'Quick View'
+																					: 'مشاهدة سريعة'}
+																			</span>
 																		</Link>
 																	</div>
 																</Link>
@@ -957,15 +1046,13 @@ const Offer = () => {
 																		className='price-box price-final_price'
 																		data-role='priceBox'
 																		data-product-id='13'
-																		data-price-box='product-id-13'
-																	>
+																		data-price-box='product-id-13'>
 																		<span className='price-container price-final_price tax weee'>
 																			<span
 																				id='product-price-13'
 																				data-price-amount='250'
 																				data-price-type='finalPrice'
-																				className='price-wrapper '
-																			>
+																				className='price-wrapper '>
 																				<span className='price55'>
 																					$ {data.price}
 																				</span>
@@ -983,18 +1070,19 @@ const Offer = () => {
 																		<div className='time-wrapper'>
 																			<div className='time-label clearfix'>
 																				<div className='stock-qty'>
-																					Availability:
+																					{language ===
+																					'ar'
+																						? 'التوفر:'
+																						: 'Availability:'}
 																					<span>150</span>
 																				</div>
-
 																				<div
 																					className={
 																						language ===
 																						'ar'
 																							? 'time-leftAr'
 																							: 'time-left'
-																					}
-																				>
+																					}>
 																					{language ===
 																					'ar'
 																						? 'الوقت المتبقي:'
@@ -1011,8 +1099,7 @@ const Offer = () => {
 																			<div className='time-ranger'>
 																				<div
 																					className='time-pass style-Tx4nd'
-																					id='style-Tx4nd'
-																				></div>
+																					id='style-Tx4nd'></div>
 																			</div>
 																		</div>
 																	</div>
@@ -1021,28 +1108,27 @@ const Offer = () => {
 																			language === 'ar'
 																				? 'product-item-actions'
 																				: 'product-item-actions'
-																		}
-																	>
+																		}>
 																		<div className='actions-primary'>
 																			<Link
-																				to={`/product/${data._id}`}
-																			>
+																				to={`/product/${data._id}`}>
 																				<button
 																					className='action tocart primary'
 																					data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/checkout\/cart\/add\/uenc\/aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo\/product\/13\/","data":{"product":"13","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
 																					type='button'
-																					title='Add to Cart'
-																				>
+																					title='Add to Cart'>
 																					<span>
-																						Add to Cart
+																						{language ===
+																						'ar'
+																							? 'اضف الى السلة'
+																							: 'Add to Cart'}
 																					</span>
 																				</button>
 																			</Link>
 																		</div>
 																		<div
 																			className='actions-secondary'
-																			data-role='add-to-links'
-																		>
+																			data-role='add-to-links'>
 																			<div className='action towishlist'>
 																				{wishlistData.includes(
 																					data._id,
@@ -1070,8 +1156,7 @@ const Offer = () => {
 																							width='16'
 																							height='16'
 																							fill='currentColor'
-																							viewBox='0 0 16 16'
-																						>
+																							viewBox='0 0 16 16'>
 																							<path
 																								className='add-to-wish2'
 																								fill-rule='evenodd'
@@ -1108,8 +1193,7 @@ const Offer = () => {
 																							width='16'
 																							height='16'
 																							fill='currentColor'
-																							viewBox='0 0 16 16'
-																						>
+																							viewBox='0 0 16 16'>
 																							<path
 																								className='add-to-wish2'
 																								fill-rule='evenodd'
@@ -1132,16 +1216,21 @@ const Offer = () => {
 																					</>
 																				)}
 																				<span>
-																					Add to Wish List
+																					{language ===
+																					'ar'
+																						? 'اضف الى المفضلة'
+																						: 'Add to Wishlist'}
 																				</span>
 																			</div>
 																			<div
 																				className='action tocompare'
-																				title='Add to Compare'
-																			>
+																				title='Add to Compare'>
 																				<IoGitCompareOutline />
 																				<span>
-																					Add to Compare
+																					{language ===
+																					'ar'
+																						? 'اضف للمقارنة'
+																						: 'Add to Compare'}
 																				</span>
 																			</div>
 																		</div>
@@ -1157,22 +1246,22 @@ const Offer = () => {
 											<div
 												role='presentation'
 												className='owl-prev disabled'
-												onClick={() => handleClick('left')}
-											>
+												onClick={() => handleClick('left')}>
 												<BiChevronLeft />
 											</div>
 											<div
 												role='presentation'
 												className='owl-next'
-												onClick={() => handleClick('right')}
-											>
+												onClick={() => handleClick('right')}>
 												<BiChevronRight />
 											</div>
 										</div>
 										<div className='owl-dots disabled'></div>
 									</div>
 									<div className='loading-content'>
-										<span className='hidden'>Loading...</span>
+										<span className='hidden'>
+											{language === 'ar' ? 'تحميل...' : 'Loading...'}
+										</span>
 									</div>
 								</div>
 							</div>

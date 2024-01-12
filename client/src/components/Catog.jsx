@@ -30,10 +30,8 @@ const FilterSizeCatog = styled.select`
 	margin-left: 10px;
 	padding: 5px;
 `;
-const cartSelector = (state) => state.cart;
 const Catog = ({ item }) => {
-	const [zaidVar, setZaidVar] = useState(0);
-	const [idSelected, setIdSelected] = useState(0);
+	const cartSelector = (state) => state.cart;
 	const [product_id, setProduct_id] = useState(0);
 	const [quantity, setQuantity] = useState(1);
 	const [size, setSize] = useState('');
@@ -45,7 +43,6 @@ const Catog = ({ item }) => {
 	const [selectedColor, setSelectedColor] = useState('');
 	const [selectedSize, setSelectedSize] = useState(null);
 	const cartProducts = useSelector(cartSelector);
-	const [selectedVariants, setSelectedVariants] = useState([]);
 	const [viewArrCatog, setViewArrCatog] = useState(null);
 	const [wishlistLogin, setWishlistLogin] = useState(false);
 	const [wishlistData, setWishlistData] = useState([]);
@@ -54,6 +51,7 @@ const Catog = ({ item }) => {
 	const filterSizeCatog = document.querySelector('.FilterSizeCatog1');
 	const showCartItems = Array.from(document.querySelectorAll('.show-cart2'));
 	const aramex = document.querySelector('.CatogallColors2');
+	const addCartBtn = document.querySelector('.AddCart');
 	const selectedVariantTemp = useRef();
 	const isMountedRef = useRef(true);
 	const { language } = useContext(LanguageContext);
@@ -106,6 +104,22 @@ const Catog = ({ item }) => {
 				}
 			});
 	}, [AllProducts.length]);
+	const disableAddCartBtn = (btn) => {
+		btn.pointerEvents = 'none';
+		btn.style.opacity = '0.5';
+		btn.style.cursor = 'not-allowed';
+	};
+	const enableAddCartBtn = (btn) => {
+		btn.pointerEvents = 'auto';
+		btn.style.opacity = '1';
+		btn.style.cursor = 'pointer';
+	};
+	const showInfoMessage = (message) => {
+		swal('Info', message, 'info');
+	};
+	const showSuccessMessage = (message) => {
+		swal('Success', message, 'success');
+	};
 	const createRadioElement = (color) => {
 		const input = document.createElement('input');
 		input.classList.add('radio_button2');
@@ -157,7 +171,6 @@ const Catog = ({ item }) => {
 			document.querySelector('.CatogCardDesc').textContent =
 				language === 'en' ? viewArrCatog.desc : viewArrCatog.desc_ar;
 			aramex.innerHTML = '';
-			setZaidVar(viewArrCatog._id);
 			setProduct_id(viewArrCatog._id);
 			document.querySelector('.nameProducts2').innerHTML =
 				language === 'en' ? viewArrCatog.title : viewArrCatog.title_ar;
@@ -168,6 +181,23 @@ const Catog = ({ item }) => {
 				);
 		}
 	}, [viewArrCatog]);
+	const handleQuantityDecrement = () => {
+		const selectedOption =
+			filterSizeCatog.options[filterSizeCatog.length - 1];
+		const quantity501 = parseInt(selectedOption.getAttribute('quantity'));
+		if (quantity <= 1) {
+			displayAlert(
+				'Info',
+				language === 'en'
+					? 'The minimum quantity is 1'
+					: 'الحد الادنى للكمية هو 1',
+				'info',
+			);
+		} else {
+			setQuantity(quantity - 1);
+			selectedOption.setAttribute('quantity', quantity501 + 1);
+		}
+	};
 	const handleQuantityIncrement = () => {
 		const selectedColorLabel = document.querySelector('label.selectedColor');
 		const associatedInput = document?.getElementById(
@@ -255,8 +285,6 @@ const Catog = ({ item }) => {
 			);
 			selectedVariantTemp.current = selectedVariant;
 			if (selectedVariant) {
-				setSelectedVariants([selectedVariant]);
-				setIdSelected(selectedVariant?._id);
 				setQuantity(1);
 				if (selectedVariant.quantity > 0) {
 					enableAddCartBtn(addCartBtn);
@@ -270,7 +298,6 @@ const Catog = ({ item }) => {
 		viewArrCatog,
 		selectedVariantTemp,
 		setSelectedColor,
-		setSelectedVariants,
 		setSelectedSize,
 		setQuantity,
 	]);
@@ -289,7 +316,6 @@ const Catog = ({ item }) => {
 			return acc;
 		}, []);
 	}, [cartProducts]);
-	const addCartBtn = document.querySelector('.AddCart');
 	useEffect(() => {
 		if (viewArrCatog && !selectedSize) {
 			aramex.innerHTML = '';
@@ -332,8 +358,6 @@ const Catog = ({ item }) => {
 										variant.size.includes(event.target.value),
 								);
 								selectedVariantTemp.current = selectedVariant;
-								setSelectedVariants([selectedVariant]);
-								setIdSelected(selectedVariant?._id);
 								setQuantity(1);
 								sizesForSelectedColor.find((size) => {
 									if (size === event.target.value) {
@@ -394,23 +418,6 @@ const Catog = ({ item }) => {
 	const displayAlert = (title, message, type) => {
 		swal(title, message, type);
 	};
-	const handleQuantityDecrement = () => {
-		const selectedOption =
-			filterSizeCatog.options[filterSizeCatog.length - 1];
-		const quantity501 = parseInt(selectedOption.getAttribute('quantity'));
-		if (quantity <= 1) {
-			displayAlert(
-				'Info',
-				language === 'en'
-					? 'The minimum quantity is 1'
-					: 'الحد الادنى للكمية هو 1',
-				'info',
-			);
-		} else {
-			setQuantity(quantity - 1);
-			selectedOption.setAttribute('quantity', quantity501 + 1);
-		}
-	};
 	const chekAvail2 = () => {
 		return true;
 	};
@@ -422,6 +429,14 @@ const Catog = ({ item }) => {
 		const productId = ele.target.getAttribute('product_id');
 		const selectedLabel = document.querySelector('.selectedColor');
 		const inputId = selectedLabel ? selectedLabel.htmlFor : null;
+		if (!inputElement || !inputElement.value) {
+			showInfoMessage(
+				language === 'en'
+					? 'Please select a color and size'
+					: 'الرجاء تحديد اللون والمقاس',
+			);
+			return;
+		}
 		const inputElement = document.getElementById(inputId);
 		const colorSelected = inputElement.value;
 		const sizeSelected = document.querySelector('.FilterSizeCatog1').value;
@@ -431,6 +446,14 @@ const Catog = ({ item }) => {
 				variant.color[0] === colorSelected &&
 				variant.size[0] === sizeSelected,
 		);
+		if (selectedvariantsNew === undefined) {
+			showInfoMessage(
+				language === 'en'
+					? 'Please select a color and size'
+					: 'الرجاء تحديد اللون والمقاس',
+			);
+			return;
+		}
 		if (!item) {
 			showInfoMessage(
 				language === 'en' ? 'Product not found!' : 'المنتج غير موجود!',
@@ -528,22 +551,6 @@ const Catog = ({ item }) => {
 					: 'يرجى تحديد مبلغ مختلف',
 			);
 		}
-	};
-	const disableAddCartBtn = (btn) => {
-		btn.pointerEvents = 'none';
-		btn.style.opacity = '0.5';
-		btn.style.cursor = 'not-allowed';
-	};
-	const enableAddCartBtn = (btn) => {
-		btn.pointerEvents = 'auto';
-		btn.style.opacity = '1';
-		btn.style.cursor = 'pointer';
-	};
-	const showInfoMessage = (message) => {
-		swal('Info', message, 'info');
-	};
-	const showSuccessMessage = (message) => {
-		swal('Success', message, 'success');
 	};
 	const addToWishlist = async (productId, identifier, ele) => {
 		if (!wishlistLogin) {
@@ -722,9 +729,7 @@ const Catog = ({ item }) => {
 														<button className='block_quantity__button block_quantity__up'>
 															<ArrowDown
 																onClick={() => {
-																	handleQuantityDecrement(
-																		zaidVar,
-																	);
+																	handleQuantityDecrement();
 																}}
 																className='AiOutlineArrowUpanddown down5'
 															/>
@@ -732,10 +737,7 @@ const Catog = ({ item }) => {
 														<button className='block_quantity__button block_quantity__down'>
 															<ArrowUp
 																onClick={() => {
-																	handleQuantityIncrement(
-																		zaidVar,
-																		idSelected,
-																	);
+																	handleQuantityIncrement();
 																}}
 																className='AiOutlineArrowUpanddown up5'
 															/>

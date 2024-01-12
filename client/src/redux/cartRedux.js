@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-
 const cartSlice = createSlice({
 	name: 'cart',
 	initialState: {
@@ -10,28 +9,21 @@ const cartSlice = createSlice({
 	reducers: {
 		addProduct: (state, action) => {
 			const newProduct = action.payload;
-			console.log(`newProduct`, newProduct);
-			console.log(`state`, state.products);
 			const existingProduct = state.products.find(
 				(product) =>
 					product?._id === newProduct?._id &&
 					product.selectedVariant?._id === newProduct.selectedVariant?._id,
 			);
-			console.log(`existingProduct`, existingProduct);
 			if (existingProduct) {
-				// Variant is already in cart, update its quantity
 				existingProduct.quantity += newProduct.quantity;
 			} else {
-				// Variant is not in cart, add it
 				state.products.push(newProduct);
 			}
-			// Update the total
 			state.total = state.products.reduce(
 				(total, product) => total + product.price * product.quantity,
 				0,
 			);
 		},
-
 		removeProduct: (state, action) => {
 			const { productId, variantId } = action.payload;
 			state.products = state.products.filter(
@@ -39,25 +31,18 @@ const cartSlice = createSlice({
 					item._id !== productId || item.selectedVariant._id !== variantId,
 			);
 		},
-
 		increase: (state, action) => {
 			const variantId = action.payload;
-			console.log(`variantId`, variantId);
-			console.log(`state.products`, state.products);
 			const cartItem = state.products.findIndex(
 				(item) => item.selectedVariant._id === variantId,
 			);
-			console.log(`cartItem`, cartItem);
 			state.products[cartItem].quantity += 1;
 		},
 		decrease: (state, action) => {
 			const variantId = action.payload;
-			console.log(`variantId`, variantId);
-			console.log(`state.products`, state.products);
 			const cartItem = state.products.findIndex(
 				(item) => item.selectedVariant._id === variantId,
 			);
-			console.log(`cartItem`, cartItem);
 			state.products[cartItem].quantity -= 1;
 		},
 		clear: (state) => {
@@ -65,17 +50,10 @@ const cartSlice = createSlice({
 			state.total = 0;
 		},
 		reset: (state, action) => {
-			// const cartItem = state.products.findIndex(
-			// 	(item) => item._id === action.payload,
-			// );
-			// state.products[cartItem].quantity = 1;
 			const variantId = action.payload;
-			console.log(`variantId`, variantId);
-			console.log(`state.products`, state.products);
 			const cartItem = state.products.findIndex(
 				(item) => item.selectedVariant._id === variantId,
 			);
-			console.log(`cartItem`, cartItem);
 			state.products[cartItem].quantity = 1;
 		},
 		getAllProduct: (state) => {
@@ -100,7 +78,6 @@ const cartSlice = createSlice({
 		},
 	},
 });
-
 export const {
 	addProduct,
 	removeProduct,

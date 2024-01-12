@@ -1444,6 +1444,13 @@ print {
 	display: flex;
 	justify-content: space-between;
 	flex-wrap: wrap;
+}
+
+html[lang="ar"] #style-pO7ki.style-pO7ki {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
 	flex-direction: row-reverse;
 }
 
