@@ -44,7 +44,7 @@
 		"post-short-description3": "Egestas mus a mus rhoncus adipiscing iaculis facilisis a eu nunc varius a per parturient vestibulum suspendisse aenean semper velit aliquam",
 		"post-short-description4": "Egestas mus a mus rhoncus adipiscing iaculis facilisis a eu nunc varius a per parturient vestibulum suspendisse aenean semper velit aliquam"
 	},
-<<<<<<< Updated upstream
+
 	"cart": {
 		"YOUR BAG": "YOUR BAG",
 		"CONTINUE SHOPPING": "CONTINUE SHOPPING",
@@ -60,12 +60,12 @@
 		"Shipping Discount": "Shipping Discount",
 		"Total": "Total",
 		"CHECKOUT NOW": "CHECKOUT NOW"
-=======
+	},
+
 	"Welcom": {
 		"Welcome to Venus Store": "Welcome to Venus Store",
 		"Wrap new offers": "Wrap new offers / gift every single day on Weekends",
 		"Explorer Now": "Explorer Now",
 		"New Coupon code": "New Coupon code"
->>>>>>> Stashed changes
 	}
 }
