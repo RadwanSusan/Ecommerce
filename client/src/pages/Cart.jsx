@@ -75,10 +75,14 @@ const Product = styled.div`
 	border-radius: 5px;
 	padding: 5px;
 	margin: 5px;
+	flex-direction: ${(props) =>
+		props.language === 'ar' ? 'row-reverse' : 'row'};
 `;
 const ProductDetail = styled.div`
 	flex: 2;
 	display: flex;
+	flex-direction: ${(props) =>
+		props.language === 'ar' ? 'row-reverse' : 'row'};
 `;
 const Image = styled.img`
 	width: 200px;
@@ -91,6 +95,7 @@ const Details = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
+	text-align: ${(props) => (props.language === 'ar' ? 'right' : 'left')};
 `;
 const ProductName = styled.span``;
 const ProductColor = styled.div`
@@ -137,6 +142,7 @@ const Summary = styled.div`
 `;
 const SummaryTitle = styled.h1`
 	font-weight: 200;
+	text-align: ${(props) => props.language === 'ar' && 'right'};
 `;
 const SummaryItem = styled.div`
 	margin: 20px 0px;
@@ -144,6 +150,7 @@ const SummaryItem = styled.div`
 	justify-content: space-between;
 	font-weight: ${(props) => props.type === 'total' && '500'};
 	font-size: ${(props) => props.type === 'total' && '24px'};
+	flex-direction: ${(props) => props.language === 'ar' && 'row-reverse'};
 `;
 const SummaryItemText = styled.span``;
 const SummaryItemPrice = styled.span``;
@@ -155,7 +162,7 @@ const Button = styled.button`
 	font-weight: 600;
 `;
 const Button1 = styled.button`
-	width: 40%;
+	width: 100%;
 	padding: 10px;
 	background-color: #eee;
 	color: black;
@@ -426,10 +433,10 @@ const Cart = () => {
 							<div>{dictionary.cart['No products in the cart']}</div>
 						) : (
 							mergedCart.map((product) => (
-								<Product>
-									<ProductDetail>
+								<Product language={language}>
+									<ProductDetail language={language}>
 										<Image src={product.selectedVariant?.img[0]} />
-										<Details>
+										<Details language={language}>
 											<ProductName>
 												<b>{dictionary.cart['Product:']}</b>{' '}
 												{language === 'en'
@@ -456,6 +463,13 @@ const Cart = () => {
 																variantId:
 																	product.selectedVariant._id,
 															}),
+														);
+														swal(
+															'Info',
+															language === 'ar'
+																? 'تمت العملية بنجاح'
+																: 'Successfully removed',
+															'info',
 														);
 													}}>
 													{dictionary.cart['Remove']}
@@ -512,10 +526,10 @@ const Cart = () => {
 						<Hr />
 					</Info>
 					<Summary>
-						<SummaryTitle>
+						<SummaryTitle language={language}>
 							{dictionary.cart['ORDER SUMMARY']}
 						</SummaryTitle>
-						<SummaryItem>
+						<SummaryItem language={language}>
 							<SummaryItemText>
 								{dictionary.cart['Subtotal']}
 							</SummaryItemText>
@@ -526,7 +540,7 @@ const Cart = () => {
 									: cart.total}
 							</SummaryItemPrice>
 						</SummaryItem>
-						<SummaryItem>
+						<SummaryItem language={language}>
 							<SummaryItemText>
 								{dictionary.cart['Estimated Shipping']}
 							</SummaryItemText>
@@ -534,7 +548,7 @@ const Cart = () => {
 								${language === 'ar' ? formatNumberToArabic(5.9) : 5.9}
 							</SummaryItemPrice>
 						</SummaryItem>
-						<SummaryItem>
+						<SummaryItem language={language}>
 							<SummaryItemText>
 								{dictionary.cart['Shipping Discount']}
 							</SummaryItemText>
@@ -542,7 +556,9 @@ const Cart = () => {
 								${language === 'ar' ? formatNumberToArabic(-5.9) : -5.9}
 							</SummaryItemPrice>
 						</SummaryItem>
-						<SummaryItem type='total'>
+						<SummaryItem
+							type='total'
+							language={language}>
 							<SummaryItemText>
 								{dictionary.cart['Total']}
 							</SummaryItemText>
