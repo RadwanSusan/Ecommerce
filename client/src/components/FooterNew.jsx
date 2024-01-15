@@ -293,24 +293,24 @@ const FooterNew = () => {
 								/>
 							</a>
 							<span class='text snipcss0-3-3-6'>
-								everything you love, in one place..
+								{dictionary.footer['everything you love, in one place']}
 							</span>
 						</div>
 					</aside>
 				</div>
 				<div class='footer-top'>
-					<div class='row snipcss0-0-0-1 tether-target-attached-top tether-element-attached-top tether-element-attached-center tether-target-attached-center'>
+					<div class='row snipcss0-0-0-1 tether-target-attached-top tether-element-attached-top tether-element-attached-center tether-target-attached-center snipcss0-0-0-1Ar '>
 						<div class='col-md-8 col-lg-8 col-sm-7 col-xs-12 middle-right snipcss0-1-1-2'>
-							<div class='row snipcss0-2-2-3'>
+							<div class='row snipcss0-2-2-3 snipcss0-2-2-3Ar'>
 								<div class='col-md-6 col-lg-6 col-sm-12 col-xs-12 snipcss0-3-3-4 ipad'>
-									<div class='row snipcss0-4-4-5'>
+									<div class='row snipcss0-4-4-5 snipcss0-4-4-5Ar'>
 										<div class='col-md-6 col-lg-6 col-sm-6 col-xs-6 snipcss0-5-5-6'>
 											<aside
 												id='text-2'
 												class='widget widget_text snipcss0-6-6-7'
 											>
 												<h3 class='widget-title snipcss0-7-7-8'>
-													INFORMATION
+													{dictionary.footer['INFORMATION']}
 												</h3>
 												<div class='textwidget snipcss0-7-7-9'>
 													<ul
@@ -325,7 +325,11 @@ const FooterNew = () => {
 																href='https://emarche.net/#'
 																class='snipcss0-10-11-12'
 															>
-																About store
+																{
+																	dictionary.footer[
+																		'About store'
+																	]
+																}
 															</a>
 														</li>
 														<li
@@ -336,7 +340,11 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-13-14'
 															>
-																New collections
+																{
+																	dictionary.footer[
+																		'New collections'
+																	]
+																}
 															</a>
 														</li>
 														<li
@@ -347,7 +355,11 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-15-16'
 															>
-																Woman dress
+																{
+																	dictionary.footer[
+																		'Woman dress'
+																	]
+																}
 															</a>
 														</li>
 														<li
@@ -358,7 +370,11 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-17-18'
 															>
-																Contact us
+																{
+																	dictionary.footer[
+																		'Contact us'
+																	]
+																}
 															</a>
 														</li>
 														<li
@@ -369,7 +385,11 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-19-20'
 															>
-																Latest news
+																{
+																	dictionary.footer[
+																		'Latest news'
+																	]
+																}
 															</a>
 														</li>
 														<li
@@ -380,7 +400,11 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-21-22'
 															>
-																Our sitemap
+																{
+																	dictionary.footer[
+																		'Our sitemap'
+																	]
+																}
 															</a>
 														</li>
 													</ul>
@@ -405,7 +429,7 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-27-28'
 															>
-																New York
+																{dictionary.footer['New York']}
 															</a>
 														</li>
 														<li
@@ -416,7 +440,7 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-29-30'
 															>
-																London SF
+																{dictionary.footer['London SF']}
 															</a>
 														</li>
 														<li
@@ -427,7 +451,11 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-31-32'
 															>
-																Cockfosters BP
+																{
+																	dictionary.footer[
+																		'Cockfosters BP'
+																	]
+																}
 															</a>
 														</li>
 														<li
@@ -438,7 +466,11 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-33-34'
 															>
-																Los Angeles
+																{
+																	dictionary.footer[
+																		'Los Angeles'
+																	]
+																}
 															</a>
 														</li>
 														<li
@@ -449,7 +481,7 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-35-36'
 															>
-																Chicago
+																{dictionary.footer['Chicago']}
 															</a>
 														</li>
 														<li
@@ -460,7 +492,7 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-37-38'
 															>
-																Las Vegas
+																{dictionary.footer['Las Vegas']}
 															</a>
 														</li>
 													</ul>
@@ -489,7 +521,11 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-45-46'
 															>
-																Privacy Policy
+																{
+																	dictionary.footer[
+																		'Privacy Policy'
+																	]
+																}
 															</a>
 														</li>
 														<li
@@ -500,7 +536,7 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-47-48'
 															>
-																Returns
+																{dictionary.footer['Returns']}
 															</a>
 														</li>
 														<li
@@ -511,7 +547,11 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-49-50'
 															>
-																Terms &amp; Conditions
+																{
+																	dictionary.footer[
+																		'Terms & Conditions'
+																	]
+																}
 															</a>
 														</li>
 														<li
@@ -522,7 +562,11 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-51-52'
 															>
-																Contact Us
+																{
+																	dictionary.footer[
+																		'Contact us'
+																	]
+																}
 															</a>
 														</li>
 														<li
@@ -533,7 +577,11 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-53-54'
 															>
-																Latest News
+																{
+																	dictionary.footer[
+																		'Latest news'
+																	]
+																}
 															</a>
 														</li>
 														<li
@@ -544,7 +592,11 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-55-56'
 															>
-																Our Sitemap
+																{
+																	dictionary.footer[
+																		'Our sitemap'
+																	]
+																}
 															</a>
 														</li>
 													</ul>
@@ -569,7 +621,7 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-61-62'
 															>
-																Instagram
+																{dictionary.footer['Instagram']}
 															</a>
 														</li>
 														<li
@@ -580,7 +632,7 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-63-64'
 															>
-																Facebook
+																{dictionary.footer['Facebook']}
 															</a>
 														</li>
 														<li
@@ -591,7 +643,11 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-65-66'
 															>
-																Contact Us
+																{
+																	dictionary.footer[
+																		'Contact us'
+																	]
+																}
 															</a>
 														</li>
 														<li
@@ -602,7 +658,11 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-67-68'
 															>
-																Latest News
+																{
+																	dictionary.footer[
+																		'Latest news'
+																	]
+																}
 															</a>
 														</li>
 														<li
@@ -613,7 +673,7 @@ const FooterNew = () => {
 																href='#'
 																class='snipcss0-10-69-70'
 															>
-																Purchase Theme
+																{dictionary.footer['Purchase']}
 															</a>
 														</li>
 														<li
@@ -641,7 +701,7 @@ const FooterNew = () => {
 								class='widget automatic_widget_contact snipcss0-2-73-74'
 							>
 								<h3 class='widget-title snipcss0-3-74-75'>
-									Connect Us
+									{dictionary.footer['Contact us']}
 								</h3>
 								<div class='footer-info-v1 snipcss0-3-74-76'>
 									<div class='links snipcss0-4-76-77'>
@@ -651,7 +711,11 @@ const FooterNew = () => {
 													<AiOutlineHome />
 												</em>
 												<span class='text snipcss0-7-79-81'>
-													Pasig City, Philippines
+													{
+														dictionary.footer[
+															'Pasig City, Philippines'
+														]
+													}
 												</span>
 											</li>
 											<li class='snipcss0-6-78-82'>
@@ -662,7 +726,7 @@ const FooterNew = () => {
 													href='tel:+639668461690'
 													class='snipcss0-7-82-84'
 												>
-													Tel.
+													{dictionary.footer['Tel']}
 													<span class='text snipcss0-8-84-85'>
 														+639668461690
 													</span>
@@ -676,7 +740,7 @@ const FooterNew = () => {
 													href='mailto:support@emarche.net'
 													class='snipcss0-7-86-88'
 												>
-													Mail.
+													{dictionary.footer['Mail']}
 													<span class='text snipcss0-8-88-89'>
 														support@emarche.net
 													</span>
@@ -690,7 +754,7 @@ const FooterNew = () => {
 								id='automatic-social-2'
 								class='widget automatic_widget_social snipcss0-2-73-90'
 							>
-								<div class='social-login-options snipcss0-3-90-91'>
+								<div class='social-login-options snipcss0-3-90-91 snipcss0-3-90-91Ar'>
 									<div class='social snipcss0-4-91-92'>
 										<a
 											href='#'
@@ -746,9 +810,26 @@ const FooterNew = () => {
 				<div class='container'>
 					<div class='row'>
 						<div class='col-md-6 col-lg-6 col-sm-6 col-xs-12'>
-							<div class='pull-left footercopyright'>
-								© 2022 eMARCHE. ALL RIGHTS RESERVED | POWERED BY
-								<a href='#'>PME</a>
+							<div className='pull-left footercopyright'>
+								{language === 'ar' ? (
+									<>
+										<a href='#'>PME</a>
+										{
+											dictionary.footer[
+												'© 2022 eMARCHE. ALL RIGHTS RESERVED | POWERED BY'
+											]
+										}
+									</>
+								) : (
+									<>
+										{
+											dictionary.footer[
+												'© 2022 eMARCHE. ALL RIGHTS RESERVED | POWERED BY'
+											]
+										}
+										<a href='#'>PME</a>
+									</>
+								)}
 							</div>
 						</div>
 						<div class='col-md-6 col-lg-6 col-sm-6 col-xs-12'>

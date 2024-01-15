@@ -387,9 +387,23 @@
 [lang='ar'] .vc_col-sm-7 {
 	flex: 0;
 }
+[lang='ar'] .snipcss0-0-0-1Ar {
+	display: flex;
+	flex-direction: row-reverse;
+}
 [lang='ar'] .snipcss0-9-9-10 {
 	display: flex;
 	flex-direction: row-reverse;
+}
+[lang='ar'] .snipcss0-2-2-3Ar {
+	flex-direction: row-reverse;
+}
+[lang='ar'] .snipcss0-4-4-5Ar {
+	flex-direction: row-reverse;
+}
+[lang='ar'] .snipcss0-3-90-91Ar {
+	display: flex;
+	margin-right: 30px;
 }
 
 @media (min-width: 768px) {
