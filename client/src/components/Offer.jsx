@@ -12,8 +12,6 @@ import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { AiOutlineEye, AiFillCloseCircle } from 'react-icons/ai';
 import {
 	BsHeart,
-	BsFillArrowRightCircleFill,
-	BsFillArrowLeftCircleFill,
 	BsArrowUpCircle as ArrowUp,
 	BsArrowDownCircle as ArrowDown,
 } from 'react-icons/bs';
@@ -21,30 +19,47 @@ import { wishlist, userWishListArrayGet } from '../redux/apiCalls';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { userRequest } from '../requestMethods';
-import * as timeago from 'timeago.js';
 import swal from 'sweetalert';
 import { addProduct } from '../redux/cartRedux';
 import { useDispatch, useSelector } from 'react-redux';
 import { useContext } from 'react';
 import { LanguageContext } from './LanguageContext';
-const Wrapper1 = styled.div`
-	height: 100%;
-	display: flex;
-	transition: all 2s ease;
-	transform: translateX(
-		${(props) =>
-			props.slideIndex * (props.language === 'ar' ? -1 : 1) * -30}vw
-	);
-`;
+import Slider from 'react-slick';
+import ImageSlider from './ImageSlider';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ar';
+import 'dayjs/locale/en';
+import relativeTime from 'dayjs/plugin/relativeTime';
 const FilterSizeCatog = styled.select`
 	margin-left: 10px;
 	padding: 5px;
 `;
+function NextArrow(props) {
+	const { className, style, onClick } = props;
+	return (
+		<BiChevronRight
+			className={className}
+			style={{ ...style, display: 'block', fontSize: '30px' }}
+			onClick={onClick}
+		/>
+	);
+}
+function PrevArrow(props) {
+	const { className, style, onClick } = props;
+	return (
+		<BiChevronLeft
+			className={className}
+			style={{ ...style, display: 'block', fontSize: '30px' }}
+			onClick={onClick}
+		/>
+	);
+}
 const Offer = () => {
 	const cartSelector = (state) => state.cart;
 	const [offer, setOffer] = useState([]);
 	const [wishlistLogin, setWishlistLogin] = useState(false);
-	const [idSelected, setIdSelected] = useState(0);
 	const [product_id, setProduct_id] = useState(0);
 	const [quantity, setQuantity] = useState(1);
 	const [size, setSize] = useState('');
@@ -53,7 +68,6 @@ const Offer = () => {
 	const [isProductAvailable, setIsProductAvailable] = useState(false);
 	const [productGet, setProductGet] = useState({});
 	const [offerGet, setOfferGet] = useState({});
-	const [products, setProducts] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [selectedColor, setSelectedColor] = useState('');
 	const [selectedSize, setSelectedSize] = useState(null);
@@ -61,45 +75,13 @@ const Offer = () => {
 	const [cartQuantityValue, setCartQuantity] = useState(0);
 	const [viewArrCatog, setViewArrCatog] = useState(null);
 	const [resetTrigger, setResetTrigger] = useState(0);
-	const [slideIndex, setSlideIndex] = useState(0);
-	const [visibleSlide, setVisibleSlide] = useState(0);
-	const [currentSlide, setCurrentSlide] = useState(0);
 	const filterSizeCatog = document.querySelector('.FilterSizeCatog2');
-	const [isHovered, setIsHovered] = useState(false);
 	const { language } = useContext(LanguageContext);
 	const { dictionary } = useContext(LanguageContext);
 	const addCartBtn = document.querySelector('.AddCart2');
 	const sizesTranslation = dictionary['sizes'];
+	dayjs.extend(relativeTime);
 	const dispatch = useDispatch();
-	const slides = [
-		{
-			image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones1.png?raw=true',
-			alt: 'headphones',
-		},
-		{
-			image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones2.png?raw=true',
-			alt: 'headphones',
-		},
-		{
-			image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones3.png?raw=true',
-			alt: 'headphones',
-		},
-		{
-			image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones4.png?raw=true',
-			alt: 'headphones',
-		},
-		{
-			image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones5.png?raw=true',
-			alt: 'headphones',
-		},
-	];
-	const totalSlides = slides.length;
-	useEffect(() => {
-		const interval = setInterval(goToNextSlide, 3000);
-		return () => {
-			clearInterval(interval);
-		};
-	}, []);
 	document.querySelectorAll('.CloseCatogCard').forEach((item) =>
 		item.addEventListener('click', (e) => {
 			document.querySelector('.CatogCard2').style.display = 'none';
@@ -109,22 +91,6 @@ const Offer = () => {
 				'none';
 		}),
 	);
-	const goToNextSlide = () => {
-		setCurrentSlide((prevSlide) =>
-			prevSlide === totalSlides - 1 ? 0 : prevSlide + 1,
-		);
-		setVisibleSlide((prevSlide) =>
-			prevSlide === totalSlides - 1 ? 0 : prevSlide + 1,
-		);
-	};
-	const goToPreviousSlide = () => {
-		setCurrentSlide((prevSlide) =>
-			prevSlide === 0 ? totalSlides - 1 : prevSlide - 1,
-		);
-		setVisibleSlide((prevSlide) =>
-			prevSlide === 0 ? totalSlides - 1 : prevSlide - 1,
-		);
-	};
 	useEffect(() => {
 		if (isLoading) {
 			setIsProductAvailable(chekAvail2());
@@ -610,26 +576,6 @@ const Offer = () => {
 			);
 		}
 	};
-	const intervalIdRef = useRef(null);
-	const handleClick = (direction) => {
-		if (intervalIdRef.current) {
-			clearInterval(intervalIdRef.current);
-			intervalIdRef.current = null;
-		}
-		if (language === 'ar') {
-			if (direction === 'left') {
-				setSlideIndex(slideIndex > 0 ? slideIndex - 1 : 2);
-			} else {
-				setSlideIndex(slideIndex < 2 ? slideIndex + 1 : 0);
-			}
-		} else {
-			if (direction === 'left') {
-				setSlideIndex(slideIndex < 2 ? slideIndex + 1 : 0);
-			} else {
-				setSlideIndex(slideIndex > 0 ? slideIndex - 1 : 2);
-			}
-		}
-	};
 	useEffect(() => {
 		const getProducts = async () => {
 			try {
@@ -647,7 +593,6 @@ const Offer = () => {
 					})
 					.slice(0, 4);
 				setOffer(filteredOffer);
-				setProducts(res.data);
 			} catch (err) {
 				console.error('Error fetching data:', err);
 			}
@@ -682,11 +627,6 @@ const Offer = () => {
 	if (!isMountedRef.current) {
 		return null;
 	}
-	useEffect(() => {
-		if (!isHovered) {
-			clearInterval(intervalIdRef.current);
-		}
-	}, [isHovered]);
 	const addToWishlist = async (productId, identifier, ele) => {
 		if (!wishlistLogin) {
 			await swal({
@@ -738,6 +678,34 @@ const Offer = () => {
 			);
 		}
 	};
+	function formatNumberToArabic(number) {
+		return new Intl.NumberFormat('ar-EG').format(number);
+	}
+	const settings = {
+		dots: true,
+		nextArrow: <NextArrow />,
+		prevArrow: <PrevArrow />,
+		infinite: true,
+		speed: 500,
+		slidesToShow: offer.length >= 2 ? 2 : 1,
+		slidesToScroll: 1,
+		rtl: language === 'ar',
+		autoplay: true,
+		autoplaySpeed: 4000,
+		pauseOnHover: true,
+		pauseOnFocus: true,
+		pauseOnDotsHover: true,
+		initialSlide: 0,
+		responsive: [
+			{
+				breakpoint: 1400,
+				settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1,
+				},
+			},
+		],
+	};
 	return (
 		<>
 			<div className='backLayerForShowCart2'></div>
@@ -746,51 +714,7 @@ const Offer = () => {
 					<div className='row11'>
 						<div className='small-12 large-6 columns11'>
 							<div className='productCard_leftSide clearfix'>
-								<div className='sliderBlock'>
-									<ul className='sliderBlock_items50'>
-										{slides.map((slide, index) => (
-											<li
-												key={index}
-												className={`sliderBlock_items__itemPhoto2 ${
-													index === currentSlide
-														? 'sliderBlock_items__showing2'
-														: ''
-												}`}>
-												<img
-													src={slide.image}
-													alt={slide.alt}
-												/>
-											</li>
-										))}
-									</ul>
-									<div className='sliderBlock_controls'>
-										<div className='sliderBlock_controls__navigatin'>
-											<div className='sliderBlock_controls__wrapper'>
-												<div
-													className='sliderBlock_controls__arrow sliderBlock_controls__arrowForward2'
-													onClick={goToNextSlide}>
-													<BsFillArrowRightCircleFill className='sliderBlock_controls__arrowForward2' />
-												</div>
-												<div
-													className='sliderBlock_controls__arrow sliderBlock_controls__arrowBackward2'
-													onClick={goToPreviousSlide}>
-													<BsFillArrowLeftCircleFill className='sliderBlock_controls__arrowBackward2' />
-												</div>
-											</div>
-										</div>
-										<ul className='sliderBlock_positionControls'>
-											{slides.map((_, index) => (
-												<li
-													key={index}
-													className={`sliderBlock_positionControls__paginatorItem2 ${
-														index === visibleSlide
-															? 'sliderBlock_positionControls__active2'
-															: ''
-													}`}></li>
-											))}
-										</ul>
-									</div>
-								</div>
+								<ImageSlider />
 							</div>
 						</div>
 						<div className='small-12 large-6 columns11'>
@@ -807,7 +731,6 @@ const Offer = () => {
 								</div>
 								<div className='block_product'>
 									<h2 className='block_name block_name__mainName nameProducts2'></h2>
-
 									<p className='block_product__advantagesProduct CatogCardDesc2'></p>
 									<div className='block_informationAboutDevice'>
 										<div className='row11 '>
@@ -942,7 +865,9 @@ const Offer = () => {
 												<span
 													id='style-Leion'
 													className='style-Leion'>
-													50%
+													{language === 'en'
+														? ' 50%'
+														: `${formatNumberToArabic(50)}%`}
 												</span>
 												{language === 'ar' ? ' خصم' : ' off'}
 											</div>
@@ -964,21 +889,11 @@ const Offer = () => {
 									}>
 									<div className='owl-carousel owl-theme list items product-items filterproducts owl-loaded owl-drag'>
 										<div className='owl-stage-outer'>
-											<Wrapper1
-												className='owl-stage style-FUF77'
-												id='style-FUF77'
-												slideIndex={slideIndex}
-												language={language}>
+											<Slider {...settings}>
 												{offer.map((data) => (
 													<div
 														className='owl-item active style-Ke3kW'
-														id='style-Ke3kW'
-														onMouseEnter={() =>
-															setIsHovered(true)
-														}
-														onMouseLeave={() =>
-															setIsHovered(false)
-														}>
+														id='style-Ke3kW'>
 														<div className='item product product-item'>
 															<div
 																className={`product-item-info ${
@@ -1021,8 +936,7 @@ const Offer = () => {
 																		</div>
 																		<Link
 																			to={``}
-																			className='action quickview-handler
-																	sm_quickview_handler show-cart3'
+																			className='action quickview-handler sm_quickview_handler show-cart3'
 																			title='Quick View'
 																			catog-id={data._id}>
 																			<AiOutlineEye />
@@ -1085,14 +999,17 @@ const Offer = () => {
 																					}>
 																					{language ===
 																					'ar'
-																						? 'الوقت المتبقي:'
-																						: 'Time left:'}
-																					<span>
-																						{timeago.format(
+																						? 'الوقت المتبقي'
+																						: 'Time left: '}
+																					<span
+																						style={{
+																							color: '#ff4444',
+																						}}>
+																						{dayjs(
 																							data
 																								.discount
 																								.endDate,
-																						)}
+																						).fromNow()}
 																					</span>
 																				</div>
 																			</div>
@@ -1240,23 +1157,8 @@ const Offer = () => {
 														</div>
 													</div>
 												))}
-											</Wrapper1>
+											</Slider>
 										</div>
-										<div className='owl-nav'>
-											<div
-												role='presentation'
-												className='owl-prev disabled'
-												onClick={() => handleClick('left')}>
-												<BiChevronLeft />
-											</div>
-											<div
-												role='presentation'
-												className='owl-next'
-												onClick={() => handleClick('right')}>
-												<BiChevronRight />
-											</div>
-										</div>
-										<div className='owl-dots disabled'></div>
 									</div>
 									<div className='loading-content'>
 										<span className='hidden'>
