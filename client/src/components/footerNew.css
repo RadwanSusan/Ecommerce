@@ -99,7 +99,7 @@
 	.modal-footer:before,
 	.modal-footer:after {
 		display: table;
-		content: " ";
+		content: ' ';
 	}
 
 	.clearfix:after,
@@ -241,7 +241,7 @@
 @media all {
 	.vc_row:after,
 	.vc_row:before {
-		content: " ";
+		content: ' ';
 		display: table;
 	}
 
@@ -277,7 +277,7 @@
 
 	.vc_clearfix:after,
 	.vc_clearfix:before {
-		content: " ";
+		content: ' ';
 		display: table;
 	}
 
@@ -384,6 +384,19 @@
 		box-sizing: border-box;
 	}
 }
+[lang='ar'] .vc_col-sm-7 {
+	flex: 0;
+}
+[lang='ar'] .snipcss0-9-9-10 {
+	display: flex;
+	flex-direction: row-reverse;
+}
+
+@media (min-width: 768px) {
+	[lang='ar'] .vc_col-sm-7 {
+		flex: 0;
+	}
+}
 
 @media (min-width: 768px) {
 	.vc_col-sm-7 {
@@ -452,7 +465,7 @@
 		color: #f60;
 	}
 
-	:where(img[class*="wp-image-"]) {
+	:where(img[class*='wp-image-']) {
 		height: auto;
 		max-width: 100%;
 	}
@@ -475,7 +488,7 @@
 
 	.vc_column-inner:after,
 	.vc_column-inner:before {
-		content: " ";
+		content: ' ';
 		display: table;
 	}
 
@@ -662,19 +675,19 @@
 	}
 
 	.fa-twitter:before {
-		content: "\f099";
+		content: '\f099';
 	}
 
 	.fa-pinterest:before {
-		content: "\f0d2";
+		content: '\f0d2';
 	}
 
 	.fa-instagram:before {
-		content: "\f16d";
+		content: '\f16d';
 	}
 
 	.fa-linkedin:before {
-		content: "\f0e1";
+		content: '\f0e1';
 	}
 
 	.text-center {
@@ -694,8 +707,8 @@
 		color: inherit;
 	}
 
-	[class^="automaticicon-"] {
-		font-family: "automatic_icomoon" !important;
+	[class^='automaticicon-'] {
+		font-family: 'automatic_icomoon' !important;
 		font-style: normal;
 		font-weight: normal;
 		font-variant: normal;
@@ -768,6 +781,17 @@
 		width: 20%;
 		float: left;
 	}
+}
+[lang='ar'] .line-row {
+	display: flex;
+	flex-direction: row-reverse;
+}
+[lang='ar'] .style-4TY4e {
+	display: flex;
+	flex-direction: row-reverse;
+}
+[lang='ar'] .snipcss0-1-1-2Ar {
+	flex: 0;
 }
 
 @media all {
@@ -876,8 +900,8 @@
 		display: flex;
 	}
 
-	[class^="Defaults-"] {
-		font-family: "Defaults";
+	[class^='Defaults-'] {
+		font-family: 'Defaults';
 		font-style: normal;
 		font-weight: normal;
 		font-variant: normal;
@@ -896,23 +920,29 @@
 	}
 
 	.Defaults-ticket:before {
-		content: "\f145";
+		content: '\f145';
 	}
 
 	.Defaults-globe:before {
-		content: "\f0ac";
+		content: '\f0ac';
 	}
 
 	.Defaults-credit-card:before {
-		content: "\f09d";
+		content: '\f09d';
 	}
 
 	.Defaults-thumbs-o-up:before {
-		content: "\f087";
+		content: '\f087';
 	}
 
 	.Defaults-life-bouy:before {
-		content: "\f1cd";
+		content: '\f1cd';
+	}
+	[lang='ar'] .mc4wp-form-fields label {
+		margin-left: 35px;
+	}
+	[lang='ar'] .snipcss0-6-25-26 {
+		display: flex;
 	}
 
 	.mc4wp-form-fields label {
@@ -927,7 +957,7 @@
 		background: url(https://emarche.net/wp-content/themes/automatic/assets/images/subcription.png)
 			no-repeat left center;
 		padding-left: 40px;
-		background-image: url("https://emarche.net/wp-content/themes/automatic/assets/images/subcription.png");
+		background-image: url('https://emarche.net/wp-content/themes/automatic/assets/images/subcription.png');
 		background-position-x: left;
 		background-position-y: center;
 		background-size: initial;
@@ -939,7 +969,7 @@
 		background-color: initial;
 	}
 
-	.mc4wp-form-fields input[type="email"] {
+	.mc4wp-form-fields input[type='email'] {
 		padding: 13px 20px;
 		color: #666;
 		font-size: 16px;
@@ -954,7 +984,7 @@
 		min-width: 275px;
 	}
 
-	input[type="submit"] {
+	input[type='submit'] {
 		-webkit-appearance: button;
 		cursor: pointer;
 		-webkit-transition: all 0.5s;
@@ -974,7 +1004,7 @@
 		border: 2px solid #eee;
 	}
 
-	.mc4wp-form-fields input[type="submit"] {
+	.mc4wp-form-fields input[type='submit'] {
 		padding: 14px 27px;
 		font-size: 14px;
 		color: #222;
@@ -1049,7 +1079,7 @@
 		text-align: center;
 	}
 	.pull-left {
-		float:none;
+		float: none;
 		margin-left: 10px;
 	}
 
@@ -1099,11 +1129,9 @@
 }
 
 @media only screen and (max-width: 820px) {
-	.bottom-footer{
-			text-align: center;
-		}
-
-
+	.bottom-footer {
+		text-align: center;
+	}
 }
 
 @keyframes fadeIn {

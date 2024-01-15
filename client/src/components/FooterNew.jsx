@@ -176,19 +176,31 @@ const FooterNew = () => {
 															<div class='mc4wp-form-fields snipcss0-8-8-9'>
 																<p class='snipcss0-9-9-10'>
 																	<label class='snipcss0-10-10-11'>
-																		Subscription
+																		{
+																			dictionary.footer[
+																				'SUBSCRIPTION'
+																			]
+																		}
 																	</label>
 																	<input
 																		type='email'
 																		name='EMAIL'
-																		placeholder='Your email address ...'
+																		placeholder={
+																			dictionary.footer[
+																				'Your email address'
+																			]
+																		}
 																		required=''
 																		class='snipcss0-10-10-12'
 																	/>
 																	<span class='submit-over snipcss0-10-10-13'>
 																		<input
 																			type='submit'
-																			value='Subscribe us'
+																			value={
+																				dictionary.footer[
+																					'Subscribe us'
+																				]
+																			}
 																			class='snipcss0-11-13-14'
 																		/>
 																	</span>
@@ -198,8 +210,11 @@ const FooterNew = () => {
 																class='snipcss0-8-8-15 style-U78xg'
 																id='style-U78xg'
 															>
-																Leave this field empty if you're
-																human:
+																{
+																	dictionary.footer[
+																		'Leave this field'
+																	]
+																}
 																<input
 																	type='text'
 																	name='_mc4wp_honeypot'
@@ -241,7 +256,11 @@ const FooterNew = () => {
 											<div class='wpb_text_column wpb_content_element snipcss0-4-23-24'>
 												<div class='wpb_wrapper snipcss0-5-24-25'>
 													<div class='call-us snipcss0-6-25-26'>
-														GOT QUESTIONS? CALL US 24/7
+														{
+															dictionary.footer[
+																'GOT QUESTIONS? CALL US 24/7'
+															]
+														}
 														<i class='automaticicon-phone snipcss0-7-26-27'></i>
 														<span class='call-phone snipcss0-7-26-28'>
 															(40) 1257 7058
