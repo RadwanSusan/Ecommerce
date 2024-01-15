@@ -429,6 +429,8 @@ const Catog = ({ item }) => {
 		const productId = ele.target.getAttribute('product_id');
 		const selectedLabel = document.querySelector('.selectedColor');
 		const inputId = selectedLabel ? selectedLabel.htmlFor : null;
+		const inputElement = document.getElementById(inputId);
+
 		if (!inputElement || !inputElement.value) {
 			showInfoMessage(
 				language === 'en'
@@ -437,7 +439,6 @@ const Catog = ({ item }) => {
 			);
 			return;
 		}
-		const inputElement = document.getElementById(inputId);
 		const colorSelected = inputElement.value;
 		const sizeSelected = document.querySelector('.FilterSizeCatog1').value;
 		const item = findItemById(productId);
