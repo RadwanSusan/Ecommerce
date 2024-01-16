@@ -12,7 +12,7 @@ import Offer from '../components/Offer.jsx';
 import Image from '../components/Image';
 // import Newsletter from "../components/Newsletter";
 // import Products from '../components/Products';
-import Slider from '../components/Slider';
+import CustomSlider from '../components/Slider';
 import Welcom from '../components/Welcom';
 // import Catog2 from "../components/Catog2";
 // import Catog3 from "../components/Catog3";
@@ -29,7 +29,7 @@ const Home = () => {
 			<HeaderMobile />
 			<MobileSearch />
 			{/* <MobileMenu /> */}
-			<Slider />
+			<CustomSlider />
 			<Offer />
 			<Welcom />
 			<Categories />
