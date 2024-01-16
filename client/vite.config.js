@@ -1,11 +1,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import nodeGlobalsPolyfill from '@esbuild-plugins/node-globals-polyfill';
-
 export default defineConfig({
 	build: {
 		outDir: 'build',
-		chunkSizeWarningLimit: 1600, // Increase the limit to avoid the warning
+		chunkSizeWarningLimit: 1600,
 		rollupOptions: {
 			output: {
 				manualChunks(id) {

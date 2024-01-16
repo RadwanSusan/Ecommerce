@@ -357,10 +357,8 @@ const Product = () => {
 		checkAvailability();
 	};
 	const setSize2 = (size) => {
-		const variants = product.variants.filter((variant) =>
-			variant.size.includes(size),
-		);
-		const colors = variants.flatMap((variant) => variant.color);
+		const variants = product.variants;
+		const colors = [...new Set(variants.flatMap((variant) => variant.color))];
 		setAvailableColors(colors);
 		setSelectedVariant(variants[0]);
 		const newSelectedVariant = variants[0];
@@ -409,12 +407,10 @@ const Product = () => {
 				}
 			});
 		} else {
-			console.log(product);
 			dispatch(
 				addProduct({
 					...product,
 					price: product.offerPrice || product.price,
-
 					quantity: quantity,
 					selectedVariant,
 				}),
@@ -486,7 +482,6 @@ const Product = () => {
 						<p>No images available</p>
 					)}
 				</ImgContainer>
-
 				<InfoContainer language={language}>
 					<Title>
 						{language === 'ar' ? product.title_ar : product.title}
@@ -508,7 +503,7 @@ const Product = () => {
 					<FilterContainer>
 						<Filter language={language}>
 							<FilterTitle language={language}>
-								{dictionary.color}{' '}
+								{dictionary.color}
 							</FilterTitle>
 							{availableColors.map((c) => (
 								<FilterColor
@@ -528,8 +523,10 @@ const Product = () => {
 								language={language}
 								onChange={(e) => setSize2(e.target.value)}>
 								{availableSizes.map((s) => (
-									<FilterSizeOption key={s}>
-										{dictionary.sizes[s] || s}
+									<FilterSizeOption
+										key={s}
+										value={s}>
+										{language === 'ar' ? dictionary.sizes[s] || s : s}
 									</FilterSizeOption>
 								))}
 							</FilterSize>
@@ -559,5 +556,4 @@ const Product = () => {
 		</Container>
 	);
 };
-
 export default Product;

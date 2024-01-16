@@ -6,7 +6,6 @@ import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { DarkModeContextProvider } from './context/darkModeContext';
 import { LanguageProvider } from './components/LanguageContext';
-
 ReactDOM.render(
 	<React.StrictMode>
 		<Provider store={store}>
