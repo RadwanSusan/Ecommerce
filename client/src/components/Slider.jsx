@@ -63,26 +63,26 @@ const Button = styled.button`
 	background-color: transparent;
 	cursor: pointer;
 `;
-function NextArrow(props) {
-	const { className, style, onClick } = props;
-	return (
-		<BiChevronRight
-			className={className}
-			style={{ ...style, display: 'block', fontSize: '30px' }}
-			onClick={onClick}
-		/>
-	);
-}
-function PrevArrow(props) {
-	const { className, style, onClick } = props;
-	return (
-		<BiChevronLeft
-			className={className}
-			style={{ ...style, display: 'block', fontSize: '30px' }}
-			onClick={onClick}
-		/>
-	);
-}
+// function NextArrow(props) {
+// 	const { className, style, onClick } = props;
+// 	return (
+// 		<BiChevronRight
+// 			className={className}
+// 			style={{ ...style, display: 'block', fontSize: '30px' }}
+// 			onClick={onClick}
+// 		/>
+// 	);
+// }
+// function PrevArrow(props) {
+// 	const { className, style, onClick } = props;
+// 	return (
+// 		<BiChevronLeft
+// 			className={className}
+// 			style={{ ...style, display: 'block', fontSize: '30px' }}
+// 			onClick={onClick}
+// 		/>
+// 	);
+// }
 const CustomSlider = () => {
 	const { language } = useContext(LanguageContext); // Use the language from your
 	const isArabic = language === 'ar';
@@ -90,8 +90,8 @@ const CustomSlider = () => {
 		language === 'ar' ? sliderItemsArabic : sliderItems;
 	const settings = {
 		// dots: true,
-		nextArrow: <NextArrow />,
-		prevArrow: <PrevArrow />,
+		// nextArrow: <NextArrow />,
+		// prevArrow: <PrevArrow />,
 		infinite: true,
 		speed: 500,
 		// slidesToShow: sliderItems.length >= 2 ? 2 : 1,
@@ -99,6 +99,7 @@ const CustomSlider = () => {
 		rtl: language === 'ar',
 		autoplay: true,
 		autoplaySpeed: 4000,
+		arrows: false,
 		pauseOnHover: false,
 		pauseOnFocus: false,
 		// pauseOnDotsHover: true,
