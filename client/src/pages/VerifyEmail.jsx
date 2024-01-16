@@ -2,14 +2,12 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import swal from 'sweetalert';
 import React from 'react';
-
 const VerifyEmail = () => {
 	useEffect(() => {
 		const verifyEmail = async () => {
 			const urlParams = new URLSearchParams(window.location.search);
 			const token = urlParams.get('token');
 			console.log(token);
-
 			if (token) {
 				try {
 					const response = await axios.get(
@@ -22,7 +20,6 @@ const VerifyEmail = () => {
 					} else {
 						swal('Failed to verify email. Invalid or expired token.');
 					}
-					// swal('Your email has been verified!');
 				} catch (error) {
 					console.error('Failed to verify email:', error);
 					swal(
@@ -33,11 +30,8 @@ const VerifyEmail = () => {
 				swal('No verification token provided.');
 			}
 		};
-
 		verifyEmail();
 	}, []);
-
 	return <div>Verifying email...</div>;
 };
-
 export default VerifyEmail;

@@ -28,10 +28,7 @@ const Navbar = () => {
 									style={{
 										display: isActive ? 'block' : '',
 									}}>
-									<nav
-										className='sm_megamenu_wrapper_vertical_menu sambar'
-										id='sm_megamenu_menu6416d6f8c6146'
-										data-sam='9254467321679218424'>
+									<nav className='sm_megamenu_wrapper_vertical_menu sambar'>
 										<div className='sambar-inner'>
 											<Link to={`/products/women`}>
 												<div className='more-w'>
@@ -63,10 +60,7 @@ const Navbar = () => {
 					<div className='horizontal-block'>
 						<div className='horizontal-menu'>
 							<div className='horizontal-megamenu-block'>
-								<nav
-									className='sm_megamenu_wrapper_horizontal_menu sambar'
-									id='sm_megamenu_menu6416d6fa8700d'
-									data-sam='2394106391679218426'>
+								<nav className='sm_megamenu_wrapper_horizontal_menu sambar'>
 									<div className='sambar-inner'>
 										<div className='mega-content'>
 											<ul
@@ -87,8 +81,7 @@ const Navbar = () => {
 												<li className='other-toggle  sm_megamenu_lv1 sm_megamenu_drop parent  '>
 													<a
 														className='sm_megamenu_head sm_megamenu_drop '
-														href=''
-														id='sm_megamenu_15'>
+														href=''>
 														<span className='icon_items'>
 															<img
 																src='http://magento2.magentech.com/themes/sm_venuse/pub/media/wysiwyg/megamenu/icons/sale.png'
@@ -107,8 +100,7 @@ const Navbar = () => {
 												<li className='other-toggle  sm_megamenu_lv1 sm_megamenu_drop parent  '>
 													<a
 														className='sm_megamenu_head sm_megamenu_drop '
-														href=''
-														id='sm_megamenu_19'>
+														href=''>
 														<span className='sm_megamenu_icon sm_megamenu_nodesc'>
 															<span className='sm_megamenu_title'>
 																{dictionary.navbar['Blog']}
@@ -119,8 +111,7 @@ const Navbar = () => {
 												<li className='other-toggle  sm_megamenu_lv1 sm_megamenu_drop parent  '>
 													<a
 														className='sm_megamenu_head sm_megamenu_drop '
-														href=''
-														id='sm_megamenu_17'>
+														href=''>
 														<span className='sm_megamenu_icon sm_megamenu_nodesc'>
 															<span className='sm_megamenu_title'>
 																{dictionary.navbar['About Us']}
@@ -131,8 +122,7 @@ const Navbar = () => {
 												<li className='other-toggle  sm_megamenu_lv1 sm_megamenu_drop parent  '>
 													<a
 														className='sm_megamenu_head sm_megamenu_drop '
-														href=''
-														id='sm_megamenu_18'>
+														href=''>
 														<span className='sm_megamenu_icon sm_megamenu_nodesc'>
 															<span className='sm_megamenu_title'>
 																{

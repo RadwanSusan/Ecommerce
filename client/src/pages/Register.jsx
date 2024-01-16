@@ -3,7 +3,6 @@ import { mobile } from '../responsive';
 import { useState } from 'react';
 import { publicRequest } from '../requestMethods';
 import swal from 'sweetalert';
-
 const Container = styled.div`
 	width: 100vw;
 	height: 100vh;
@@ -18,7 +17,6 @@ const Container = styled.div`
 	align-items: center;
 	justify-content: center;
 `;
-
 const Wrapper = styled.div`
 	width: 40%;
 	padding: 20px;
@@ -29,29 +27,24 @@ const Wrapper = styled.div`
 	-moz-box-shadow: 4px 3px 13px 0px rgba(0, 0, 0, 0.75);
 	border-radius: 5px;
 `;
-
 const Title = styled.h1`
 	font-size: 24px;
 	font-weight: 300;
 `;
-
 const Form = styled.form`
 	display: flex;
 	flex-wrap: wrap;
 `;
-
 const Input = styled.input`
 	flex: 1;
 	min-width: 40%;
 	margin: 20px 10px 0px 0px;
 	padding: 10px;
 `;
-
 const Agreement = styled.span`
 	font-size: 12px;
 	margin: 20px 0px;
 `;
-
 const Button = styled.button`
 	width: 40%;
 	border: none;
@@ -60,26 +53,15 @@ const Button = styled.button`
 	color: white;
 	cursor: pointer;
 `;
-
 const Register = () => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [email, setEmail] = useState('');
-	const [phoneNumber, setPhoneNumber] = useState(''); // New state variable for phone number
-
+	const [phoneNumber, setPhoneNumber] = useState('');
 	const handleClick = async (e) => {
 		e.preventDefault();
 		if (password === confirmPassword) {
-			// const usernameRegex = /^[a-zA-Z0-9]+$/; //
-			// if (username.length < 6) {
-			// 	return swal('Username must be at least 6 characters!');
-			// }
-			// if (!usernameRegex.test(username)) {
-			// 	return swal(
-			// 		'Username must contain at least one letter, one number and one special character!',
-			// 	);
-			// }
 			const emailRes = await publicRequest.get(`/auth/checkEmail/${email}`);
 			if (emailRes.data === 'Email already exists!') {
 				return swal('Email already exists please try again!');
@@ -96,7 +78,7 @@ const Register = () => {
 				password,
 				confirmPassword,
 				email,
-				phoneNumber, // Include the phone number in the request payload
+				phoneNumber,
 			});
 			if (res.statusText === 'Created') {
 				swal('should be make verification email');
@@ -113,7 +95,6 @@ const Register = () => {
 			return;
 		}
 	};
-
 	return (
 		<Container>
 			<Wrapper>
@@ -143,7 +124,7 @@ const Register = () => {
 						required
 					/>
 					<Input
-						placeholder='Phone Number' // New input field for phone number
+						placeholder='Phone Number'
 						onChange={(e) => setPhoneNumber(e.target.value)}
 						required
 					/>

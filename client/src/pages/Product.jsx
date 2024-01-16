@@ -174,6 +174,9 @@ const Product = () => {
 		}
 	}, [userId]);
 	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, []);
+	useEffect(() => {
 		const getProduct = async () => {
 			try {
 				let res = await publicRequest.get('/products/find/' + id);

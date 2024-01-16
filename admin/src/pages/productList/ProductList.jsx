@@ -113,8 +113,7 @@ export default function ProductList() {
 					className='productAddButton'
 					style={{ textDecoration: 'none', width: '100px' }}
 					data={newObj}
-					filename='products.csv'
-				>
+					filename='products.csv'>
 					Export to Excel
 				</CSVLink>
 				<input
@@ -128,8 +127,7 @@ export default function ProductList() {
 					className='productAddButton22'
 					href={myFile}
 					download='my-excel.csv'
-					target='_blank'
-				>
+					target='_blank'>
 					<button>Download CSV</button>
 				</a>
 			</div>
