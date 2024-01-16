@@ -7,6 +7,8 @@ import { LanguageContext } from '../components/LanguageContext';
 const Navbar = () => {
 	const [isActive, setIsActive] = useState(false);
 	const { dictionary } = useContext(LanguageContext);
+	const { language } = useContext(LanguageContext);
+
 	const handleClick = () => {
 		setIsActive((current) => !current);
 	};
@@ -18,7 +20,8 @@ const Navbar = () => {
 						<div className='vertical-menu'>
 							<div
 								className='vertical-menu-block'
-								onClick={handleClick}>
+								onClick={handleClick}
+							>
 								<div className='block-title-menu'>
 									{dictionary.navbar['All Categories']}{' '}
 									<RiArrowDropDownLine />
@@ -27,7 +30,8 @@ const Navbar = () => {
 									className='vertical-menu-content'
 									style={{
 										display: isActive ? 'block' : '',
-									}}>
+									}}
+								>
 									<nav className='sm_megamenu_wrapper_vertical_menu sambar'>
 										<div className='sambar-inner'>
 											<Link to={`/products/women`}>
@@ -64,12 +68,18 @@ const Navbar = () => {
 									<div className='sambar-inner'>
 										<div className='mega-content'>
 											<ul
-												className='horizontal-type sm-megamenu-hover sm_megamenu_menu sm_megamenu_menu_black'
-												data-jsapi='on'>
+												className={`horizontal-type sm-megamenu-hover sm_megamenu_menu sm_megamenu_menu_black ${
+													language === 'ar'
+														? 'sm_megamenu_menuAr'
+														: ''
+												}`}
+												data-jsapi='on'
+											>
 												<li className='home-item other-toggle sm_megamenu_lv1 sm_megamenu_drop'>
 													<a
 														className='sm_megamenu_head sm_megamenu_drop'
-														href=''>
+														href=''
+													>
 														<span className='sm_megamenu_icon sm_megamenu_nodesc'>
 															<span className='sm_megamenu_title'>
 																{dictionary.navbar['Home']}
@@ -81,7 +91,8 @@ const Navbar = () => {
 												<li className='other-toggle  sm_megamenu_lv1 sm_megamenu_drop parent  '>
 													<a
 														className='sm_megamenu_head sm_megamenu_drop '
-														href=''>
+														href=''
+													>
 														<span className='icon_items'>
 															<img
 																src='http://magento2.magentech.com/themes/sm_venuse/pub/media/wysiwyg/megamenu/icons/sale.png'
@@ -100,7 +111,8 @@ const Navbar = () => {
 												<li className='other-toggle  sm_megamenu_lv1 sm_megamenu_drop parent  '>
 													<a
 														className='sm_megamenu_head sm_megamenu_drop '
-														href=''>
+														href=''
+													>
 														<span className='sm_megamenu_icon sm_megamenu_nodesc'>
 															<span className='sm_megamenu_title'>
 																{dictionary.navbar['Blog']}
@@ -111,7 +123,8 @@ const Navbar = () => {
 												<li className='other-toggle  sm_megamenu_lv1 sm_megamenu_drop parent  '>
 													<a
 														className='sm_megamenu_head sm_megamenu_drop '
-														href=''>
+														href=''
+													>
 														<span className='sm_megamenu_icon sm_megamenu_nodesc'>
 															<span className='sm_megamenu_title'>
 																{dictionary.navbar['About Us']}
@@ -122,7 +135,8 @@ const Navbar = () => {
 												<li className='other-toggle  sm_megamenu_lv1 sm_megamenu_drop parent  '>
 													<a
 														className='sm_megamenu_head sm_megamenu_drop '
-														href=''>
+														href=''
+													>
 														<span className='sm_megamenu_icon sm_megamenu_nodesc'>
 															<span className='sm_megamenu_title'>
 																{
@@ -141,7 +155,7 @@ const Navbar = () => {
 							</div>
 						</div>
 						<div className='promotion-block'>
-							<Link to={`/offer/offer`}>
+							<Link to={`/offer/new-offers`}>
 								{dictionary.navbar['Black Friday!']}
 							</Link>
 						</div>
