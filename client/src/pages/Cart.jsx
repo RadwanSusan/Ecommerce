@@ -62,6 +62,8 @@ const Bottom = styled.div`
 	display: flex;
 	justify-content: space-between;
 	${mobile({ flexDirection: 'column' })}
+	flex-direction: ${(props) =>
+		props.language === 'ar' ? 'row-reverse' : 'row'};
 `;
 const Info = styled.div`
 	flex: 3;
@@ -427,7 +429,7 @@ const Cart = () => {
 						</Link>
 					</TopTexts>
 				</Top>
-				<Bottom>
+				<Bottom language={language}>
 					<Info>
 						{mergedCart.length === 0 ? (
 							<div>{dictionary.cart['No products in the cart']}</div>

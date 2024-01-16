@@ -690,7 +690,7 @@ const Offer = () => {
 		slidesToShow: offer.length >= 2 ? 2 : 1,
 		slidesToScroll: 1,
 		rtl: language === 'ar',
-		autoplay: true,
+		autoplay: false,
 		autoplaySpeed: 4000,
 		pauseOnHover: true,
 		pauseOnFocus: true,
