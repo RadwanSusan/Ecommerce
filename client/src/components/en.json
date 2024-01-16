@@ -109,5 +109,10 @@
 		"Tel": "Tel",
 		"Mail": "Mail",
 		"© 2022 eMARCHE. ALL RIGHTS RESERVED | POWERED BY": "© 2022 eMARCHE. ALL RIGHTS RESERVED | POWERED BY"
+	},
+	"newsletter": {
+		"Newsletter": "Newsletter",
+		"Get timely updates from your favorite products": "Get timely updates from your favorite products.",
+		"Enter your email address": "Enter your email address"
 	}
 }

@@ -106,5 +106,10 @@
 		"Tel": "هاتف",
 		"Mail": "بريد",
 		"© 2022 eMARCHE. ALL RIGHTS RESERVED | POWERED BY": "© 2022 إي مارش. جميع الحقوق محفوظة | مشغل بواسطة"
+	},
+	"newsletter": {
+		"Newsletter": "النشرة الإخبارية",
+		"Get timely updates from your favorite products": "احصل على التحديثات في الوقت المناسب من المنتجات المفضلة لديك",
+		"Enter your email address": "أدخل عنوان بريدك الالكتروني"
 	}
 }
