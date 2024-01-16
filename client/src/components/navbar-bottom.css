@@ -1597,8 +1597,8 @@ img {
 }
 
 .sm_megamenu_menuAr {
-	display: flex;
-	flex-direction: row-reverse;
+	display: flex !important;
+	flex-direction: row-reverse !important;
 }
 
 /* .BlackFriday {
