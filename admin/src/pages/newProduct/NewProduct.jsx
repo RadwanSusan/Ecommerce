@@ -11,22 +11,15 @@ import { addProduct } from '../../redux/apiCalls';
 import { useDispatch } from 'react-redux';
 import swal from 'sweetalert';
 import { FaSpinner } from 'react-icons/fa';
-import { original } from '@reduxjs/toolkit';
-
 export default function NewProduct() {
-	// const [inputs, setInputs] = useState({});
 	const [inputs, setInputs] = useState({
 		title: '',
 		desc: '',
-		title_ar: '', // Arabic title
-		desc_ar: '', // Arabic description
+		title_ar: '',
+		desc_ar: '',
 		price: '',
 		originalPrice: '',
-		// img: [],
 		categories: [],
-		// size: [],
-		// color: [],
-		// quantity: '',
 		discount: {
 			startDate: '',
 			endDate: '',
@@ -42,7 +35,6 @@ export default function NewProduct() {
 			endDate: '',
 		},
 	});
-
 	const [file, setFile] = useState([]);
 	const [cat, setCat] = useState([]);
 	const [size, setSize] = useState([]);
@@ -59,17 +51,7 @@ export default function NewProduct() {
 	]);
 	const colorPickerRef = useRef(null);
 	const [currentFile, setCurrentFile] = useState(null);
-
 	const dispatch = useDispatch();
-	// const handleChange = (e) => {
-	// 	setInputs((prev) => {
-	// 		return { ...prev, [e.target.name]: e.target.value };
-	// 	});
-
-	// 	if (e.target.name === 'file') {
-	// 		addNewForm();
-	// 	}
-	// };
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		if (name.startsWith('discount.') || name.startsWith('promo.')) {
@@ -88,32 +70,33 @@ export default function NewProduct() {
 			}));
 		}
 	};
-
 	const handleDragEnter = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
 	};
-
 	const handleDragLeave = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
 	};
-
 	const handleDragOver = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
 	};
-
-	const handleDrop = (e) => {
+	const handleDrop = (e, index) => {
 		e.preventDefault();
 		e.stopPropagation();
-		const file = e.dataTransfer.files;
-		setFile([...file]);
-		setDraggedFile(null);
+		setDraggedFile(false);
+		if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+			const file = e.dataTransfer.files[0];
+			handleFormChange(index, 'file', {
+				target: {
+					files: e.dataTransfer.files,
+				},
+			});
+			e.dataTransfer.clearData();
+		}
 	};
-
 	const defaultColor = '#FFFFFF';
-
 	useEffect(() => {
 		function startup() {
 			colorPickerRef.current = document.querySelectorAll('#color-picker');
@@ -124,28 +107,12 @@ export default function NewProduct() {
 		}
 		startup();
 	}, [defaultColor]);
-
 	function updateColor(index) {
 		const color = colorPickerRef.current[index].value;
 		const setColor = eval(`setColor${index + 1}`);
 		setColor(() => [color]);
 	}
-
 	const colorPickerClear = document.querySelectorAll('#color-picker');
-
-	// const clearColor = (e) => {
-	// 	e.preventDefault();
-	// 	setColor1([]);
-	// 	setColor2([]);
-	// 	setColor3([]);
-	// 	setColor4([]);
-	// 	setColor5([]);
-	// 	setColor6([]);
-	// 	colorPickerClear.forEach((picker) => {
-	// 		picker.value = defaultColor;
-	// 	});
-	// };
-
 	const clearColor = (e, colorIndex) => {
 		e.preventDefault();
 		const colorSetters = [
@@ -159,7 +126,6 @@ export default function NewProduct() {
 		colorSetters[colorIndex]([]);
 		colorPickerClear[colorIndex].value = defaultColor;
 	};
-
 	const handleAddProduct = async (e) => {
 		e.preventDefault();
 		if (forms.some((form) => form.file === null)) {
@@ -167,7 +133,6 @@ export default function NewProduct() {
 				title: 'Error!',
 				text: 'Please select a product image',
 				icon: 'error',
-				button: 'Ok',
 			});
 			return;
 		}
@@ -176,7 +141,6 @@ export default function NewProduct() {
 				title: 'Error!',
 				text: 'Please fill all the fields',
 				icon: 'error',
-				button: 'Ok',
 			});
 			return;
 		}
@@ -194,19 +158,12 @@ export default function NewProduct() {
 				title: 'Error!',
 				text: 'Please fill all the fields',
 				icon: 'error',
-				button: 'Ok',
 			});
 			return;
 		}
-
 		setLoading(true);
 		await new Promise((resolve) => setTimeout(resolve, 2000));
-
-		// Actual message creation logic here
-		// setLoading(false);
-
 		const storage = getStorage(app);
-
 		const uploadPromises = forms.map(async (form) => {
 			const fileSingle = form.file || null;
 
@@ -214,7 +171,6 @@ export default function NewProduct() {
 				const fileName = new Date().getTime() + fileSingle.name;
 				const storageRef = ref(storage, fileName);
 				const uploadTask = uploadBytesResumable(storageRef, fileSingle);
-
 				try {
 					await uploadTask;
 					const url = await getDownloadURL(uploadTask.snapshot.ref);
@@ -245,7 +201,6 @@ export default function NewProduct() {
 				...inputs,
 				variants,
 			};
-
 			await addProduct(product, dispatch);
 			swal({
 				title: 'Success',
@@ -269,7 +224,6 @@ export default function NewProduct() {
 			setLoading(false);
 		}
 	};
-
 	const resetInputs = () => {
 		setInputs({
 			title: '',
@@ -287,32 +241,26 @@ export default function NewProduct() {
 			weight: '',
 		});
 	};
-
 	const resetFile = () => {
 		setFile([]);
 	};
-
 	const resetCategory = () => {
 		setCat([]);
 	};
-
 	const resetSize = () => {
 		setSize([]);
 	};
-
 	const resetColors = () => {
 		const colors = [color1, color2, color3, color4, color5, color6];
 		colors.forEach((color) => {
 			color.length = 0;
 		});
 	};
-
 	const resetColorPickers = () => {
 		colorPickerClear.forEach((picker) => {
 			picker.value = defaultColor;
 		});
 	};
-
 	const resetFormFields = () => {
 		const formFields = document.querySelectorAll(
 			'.Title, .Description, .Price, .OriginalPrice, .Categories, .Quantity, .Width, .Height, .Length, .Weight, .expirationDate1, .expirationDate2, .price',
@@ -321,48 +269,38 @@ export default function NewProduct() {
 			field.value = '';
 		});
 	};
-
 	const resetCheckboxes = () => {
 		const checkboxes = document.querySelectorAll('.Size');
 		checkboxes.forEach((checkbox) => {
 			checkbox.checked = false;
 		});
 	};
-
 	const addNewForm = () => {
 		setForms((prevForms) => [
 			...prevForms,
 			{ file: currentFile, color: '', size: '', quantity: '' },
 		]);
 	};
-
 	const removeForm = (indexToRemove) => {
 		setForms((prevForms) =>
 			prevForms.filter((form, index) => index !== indexToRemove),
 		);
 	};
-
 	const handleFormChange = (index, field, event) => {
-		let value = event;
+		let value = field === 'file' ? event.target.files[0] : event;
 		setForms((prevForms) => {
 			const newForms = [...prevForms];
 			newForms[index][field] = value;
 			return newForms;
 		});
-		if (field === 'file') {
-			value = event.files[0];
-			setCurrentFile(value);
-		}
 	};
-
 	return (
 		<div
 			className='newProduct'
 			onDragEnter={handleDragEnter}
 			onDragLeave={handleDragLeave}
 			onDragOver={handleDragOver}
-			onDrop={handleDrop}
-		>
+			onDrop={handleDrop}>
 			{loading ? (
 				<div className='progress-icon'>
 					<FaSpinner className='spinner' />
@@ -374,26 +312,23 @@ export default function NewProduct() {
 						<form
 							key={index}
 							className='addProductForm addProductForm147 '
-							encType='multipart/form-data'
-						>
+							encType='multipart/form-data'>
 							<div className='divition1'>
 								<div className='addProductItem'>
 									<label>Image</label>
 									<input
 										type='file'
-										id='file'
+										id={`file-${index}`}
 										onChange={(event) =>
-											handleFormChange(index, 'file', event.target)
+											handleFormChange(index, 'file', event)
 										}
 										multiple
 										style={{ display: 'none' }}
 									/>
-
 									{index !== 0 && (
 										<button
 											onClick={() => removeForm(index)}
-											className='closeFormButton'
-										>
+											className='closeFormButton'>
 											x
 										</button>
 									)}
@@ -402,8 +337,7 @@ export default function NewProduct() {
 										onDragEnter={() => setDraggedFile(true)}
 										onDragLeave={() => setDraggedFile(false)}
 										onDragOver={(e) => e.preventDefault()}
-										onDrop={() => setDraggedFile(false)}
-									>
+										onDrop={(e) => handleDrop(e, index)}>
 										{draggedFile ? (
 											<p>Drop your file here</p>
 										) : (
@@ -411,8 +345,7 @@ export default function NewProduct() {
 												<p>Drag and drop your files here or</p>
 												<label
 													className='browse'
-													htmlFor='file'
-												>
+													htmlFor={`file-${index}`}>
 													browse
 												</label>
 											</>
@@ -465,7 +398,6 @@ export default function NewProduct() {
 										/>
 									</div>
 								)}
-
 								<div className='addProductItem'>
 									<fieldset>
 										<legend>Size</legend>
@@ -661,8 +593,7 @@ export default function NewProduct() {
 										<select
 											name='categories'
 											onChange={handleChange}
-											className='Categories'
-										>
+											className='Categories'>
 											<option value=''>Select Categories</option>
 											<option value='coat'>Coat</option>
 											<option value='women'>Women</option>
@@ -740,16 +671,14 @@ export default function NewProduct() {
 									{index === forms.length - 1 && (
 										<div
 											className='addNewForm'
-											onClick={addNewForm}
-										>
+											onClick={addNewForm}>
 											+
 										</div>
 									)}
 									{index === forms.length - 1 && (
 										<button
 											onClick={handleAddProduct}
-											className='addProductButton'
-										>
+											className='addProductButton'>
 											Create
 										</button>
 									)}
