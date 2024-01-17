@@ -25,24 +25,6 @@ const Navbar = () => {
 	const searchRef = useRef(null);
 	const { dictionary } = useContext(LanguageContext);
 	const [tokenState, setToken] = useState();
-	// const newQuantity = useMemo(() => {
-	// 	const productVariantCounts = new Map();
-	// 	let newQuantity = 0;
-	// 	products.forEach((item) => {
-	// 		item.variants.forEach((variant) => {
-	// 			if (variant._id === item.selectedVariant._id) {
-	// 				const productVariantKey = `${item.productId}-${item.selectedVariant._id}`;
-	// 				let count = productVariantCounts.get(productVariantKey) || 0;
-	// 				count += item.quantity;
-	// 				productVariantCounts.set(productVariantKey, count);
-	// 				if (count > 0) {
-	// 					newQuantity++;
-	// 				}
-	// 			}
-	// 		});
-	// 	});
-	// 	return newQuantity;
-	// }, [products]);
 	const newQuantity = useMemo(() => {
 		const uniqueProductVariants = new Set();
 		products.forEach((item) => {
