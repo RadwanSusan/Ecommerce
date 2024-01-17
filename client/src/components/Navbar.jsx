@@ -21,13 +21,39 @@ const Navbar = () => {
 	const [queryName, setQueryName] = useState('');
 	const [dataAll, setDataAll] = useState([]);
 	const [catogName, setCatogName] = useState('');
-	const newQuantity = useMemo(() => {
-		return products.reduce((acc, curr) => acc + curr.quantity, 0);
-	}, [products]);
 	const [showResults, setShowResults] = useState(false);
 	const searchRef = useRef(null);
 	const { dictionary } = useContext(LanguageContext);
 	const [tokenState, setToken] = useState();
+	// const newQuantity = useMemo(() => {
+	// 	const productVariantCounts = new Map();
+	// 	let newQuantity = 0;
+	// 	products.forEach((item) => {
+	// 		item.variants.forEach((variant) => {
+	// 			if (variant._id === item.selectedVariant._id) {
+	// 				const productVariantKey = `${item.productId}-${item.selectedVariant._id}`;
+	// 				let count = productVariantCounts.get(productVariantKey) || 0;
+	// 				count += item.quantity;
+	// 				productVariantCounts.set(productVariantKey, count);
+	// 				if (count > 0) {
+	// 					newQuantity++;
+	// 				}
+	// 			}
+	// 		});
+	// 	});
+	// 	return newQuantity;
+	// }, [products]);
+	const newQuantity = useMemo(() => {
+		const uniqueProductVariants = new Set();
+		products.forEach((item) => {
+			const selectedVariantId = item.selectedVariant._id;
+			if (selectedVariantId && item.quantity > 0) {
+				const productVariantKey = `${item.productId}-${selectedVariantId}`;
+				uniqueProductVariants.add(productVariantKey);
+			}
+		});
+		return uniqueProductVariants.size;
+	}, [products]);
 	const getToken = async () => {
 		try {
 			const token = await localStorage.getItem('persist:root');
