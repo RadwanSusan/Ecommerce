@@ -660,6 +660,13 @@ const Catog = ({ item }) => {
 			maximumFractionDigits: 0,
 		}).format(price);
 	}
+
+	const categoryImages = {
+		women: 'https://images.unsplash.com/photo-1675667804657-be9a9d0a6860?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+		coat: 'https://images.unsplash.com/photo-1584156930330-c6b925f50065?q=80&w=1962&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+		jeans: 'https://images.unsplash.com/photo-1511280303142-0051e93baeeb?q=80&w=1915&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+	};
+
 	return (
 		<>
 			<div className='backLayerForShowCart'></div>
@@ -830,11 +837,16 @@ const Catog = ({ item }) => {
 									<Link to={`/products/${item?.cat}`}>
 										<img
 											className='mark-lazy new-lazy'
-											src='http://magento2.magentech.com/themes/sm_venuse/pub/media/wysiwyg/banner/item-6.jpg'
-											data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/wysiwyg/banner/item-6.jpg'
+											src={
+												categoryImages[item?.cat] ||
+												'default_image_url'
+											} // Use the category string to pick the image URL
+											data-src={
+												categoryImages[item?.cat] ||
+												'default_image_url'
+											} // Use the category string to pick the image URL
 											alt='BannerImage'
-											width='350'
-											height='370'
+											alt='BannerImage'
 										/>
 									</Link>
 								</div>
