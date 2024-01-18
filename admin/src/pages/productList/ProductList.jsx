@@ -94,6 +94,66 @@ export default function ProductList() {
 			},
 		},
 	];
+	const getCsvData = () => {
+		return products.flatMap((product) =>
+			product.variants.map((variant) => ({
+				_id: product._id || '',
+				title: product.title || '',
+				title_ar: product.title_ar || '',
+				desc: product.desc || '',
+				desc_ar: product.desc_ar || '',
+				img: variant.img ? variant.img.join(';') : '', // Join multiple images with a semicolon
+				categories: product.categories ? product.categories.join(';') : '',
+				size: variant.size ? variant.size.join(',') : '',
+				color: variant.color ? variant.color.join(',') : '',
+				price: product.price,
+				originalPrice: product.originalPrice,
+				inStock: product.inStock !== undefined ? product.inStock : '',
+				quantity: variant.quantity,
+				width: product.width,
+				height: product.height,
+				length: product.length,
+				weight: product.weight,
+				promo_code:
+					product.promo && product.promo.code ? product.promo.code : '',
+				promo_startDate:
+					product.promo &&
+					product.promo.startDate &&
+					product.promo.startDate &&
+					product.promo.startDate
+						? new Date(parseInt(product.promo.startDate)).toISOString()
+						: '',
+				promo_endDate:
+					product.promo &&
+					product.promo.endDate &&
+					product.promo.endDate &&
+					product.promo.endDate
+						? new Date(parseInt(product.promo.endDate)).toISOString()
+						: '',
+				discount_startDate:
+					product.discount &&
+					product.discount.startDate &&
+					product.discount.startDate &&
+					product.discount.startDate
+						? new Date(parseInt(product.discount.startDate)).toISOString()
+						: '',
+				discount_endDate:
+					product.discount &&
+					product.discount.endDate &&
+					product.discount.endDate &&
+					product.discount.endDate
+						? new Date(parseInt(product.discount.endDate)).toISOString()
+						: '',
+				discount_amount:
+					product.discount &&
+					product.discount.discount &&
+					product.discount.discount
+						? product.discount.discount
+						: '',
+			})),
+		);
+	};
+
 	const newObj = products.map((row) => ({ ...row }));
 	newObj.map((row) => {
 		if (row.quantity === 0) {
@@ -112,9 +172,10 @@ export default function ProductList() {
 				<CSVLink
 					className='productAddButton'
 					style={{ textDecoration: 'none', width: '100px' }}
-					data={newObj}
-					filename='products.csv'>
-					Export to Excel
+					data={getCsvData()}
+					filename='products.csv'
+				>
+					Export to CSV
 				</CSVLink>
 				<input
 					className='productAddButton22'
@@ -127,12 +188,13 @@ export default function ProductList() {
 					className='productAddButton22'
 					href={myFile}
 					download='my-excel.csv'
-					target='_blank'>
+					target='_blank'
+				>
 					<button>Download CSV</button>
 				</a>
 			</div>
 			<DataGrid
-				rows={newObj}
+				rows={products}
 				disableSelectionOnClick
 				columns={columns}
 				getRowId={(row) => row._id}
