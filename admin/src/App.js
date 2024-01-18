@@ -14,9 +14,7 @@ import NewUser from './pages/newUser/NewUser';
 import ProductList from './pages/productList/ProductList';
 import Product from './pages/product/Product';
 import NewProduct from './pages/newProduct/NewProduct';
-import Offer from './pages/offerList/OfferList';
-import OfferUser from './pages/OfferUser/OfferUser';
-import CreateOffer from './pages/CreateOffer/CreateOffer';
+
 import Login from './pages/login/Login';
 import Forgot from './pages/forgot/Forgot';
 import Transactions from './pages/transactions/Transactions';
@@ -73,18 +71,7 @@ function App() {
 									<Route path='/newproduct'>
 										<NewProduct />
 									</Route>
-									<Route
-										exact
-										path='/offer'
-									>
-										<Offer />
-									</Route>
-									<Route path='/offer/:offerId'>
-										<OfferUser />
-									</Route>
-									<Route path='/createOffer'>
-										<CreateOffer />
-									</Route>
+
 									<Route path='/transactions'>
 										<Transactions />
 									</Route>
