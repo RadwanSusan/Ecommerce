@@ -20,24 +20,21 @@ export default function NewProduct() {
 		price: '',
 		originalPrice: '',
 		categories: [],
+		width: '',
+		height: '',
+		length: '',
+		weight: '',
 		discount: {
 			startDate: '',
 			endDate: '',
 			discount: '',
 		},
-		width: '',
-		height: '',
-		length: '',
-		weight: '',
 		promo: {
 			code: '',
 			startDate: '',
 			endDate: '',
 		},
 	});
-	const [file, setFile] = useState([]);
-	const [cat, setCat] = useState([]);
-	const [size, setSize] = useState([]);
 	const [color1, setColor1] = useState([]);
 	const [color2, setColor2] = useState([]);
 	const [color3, setColor3] = useState([]);
@@ -50,7 +47,7 @@ export default function NewProduct() {
 		{ file: null, color: '', size: '', quantity: '' },
 	]);
 	const colorPickerRef = useRef(null);
-	const [currentFile, setCurrentFile] = useState(null);
+	const DEFAULT_IMAGE_URL = 'https://img.icons8.com/ios/100/no-image.png';
 	const dispatch = useDispatch();
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -126,81 +123,209 @@ export default function NewProduct() {
 		colorSetters[colorIndex]([]);
 		colorPickerClear[colorIndex].value = defaultColor;
 	};
+	// const handleAddProduct = async (e) => {
+	// 	e.preventDefault();
+	// 	if (
+	// 		!inputs.title ||
+	// 		!inputs.desc ||
+	// 		!inputs.title_ar ||
+	// 		!inputs.desc_ar ||
+	// 		!inputs.price ||
+	// 		!inputs.categories ||
+	// 		!inputs.width ||
+	// 		!inputs.height ||
+	// 		!inputs.length ||
+	// 		!inputs.weight
+	// 	) {
+	// 		swal({
+	// 			title: 'Error!',
+	// 			text: 'Please fill all the required fields',
+	// 			icon: 'error',
+	// 		});
+	// 		return;
+	// 	}
+	// 	for (const form of forms) {
+	// 		if (!form.color || !form.size) {
+	// 			swal({
+	// 				title: 'Error!',
+	// 				text: 'Each product variant must have a color and size selected',
+	// 				icon: 'error',
+	// 			});
+	// 			return;
+	// 		}
+	// 	}
+	// 	const isPromoComplete =
+	// 		inputs.promo.code && inputs.promo.startDate && inputs.promo.endDate;
+	// 	const isPromoPartiallyFilled =
+	// 		inputs.promo.code || inputs.promo.startDate || inputs.promo.endDate;
+	// 	if (isPromoPartiallyFilled && !isPromoComplete) {
+	// 		swal({
+	// 			title: 'Incomplete Promo Details',
+	// 			text: 'Please complete all fields for the promo code or remove the partial information.',
+	// 			icon: 'warning',
+	// 		});
+	// 		return;
+	// 	}
+	// 	const isDiscountComplete =
+	// 		inputs.discount.startDate &&
+	// 		inputs.discount.endDate &&
+	// 		inputs.discount.discount;
+	// 	const isDiscountPartiallyFilled =
+	// 		inputs.discount.startDate ||
+	// 		inputs.discount.endDate ||
+	// 		inputs.discount.discount;
+	// 	if (isDiscountPartiallyFilled && !isDiscountComplete) {
+	// 		swal({
+	// 			title: 'Incomplete Discount Details',
+	// 			text: 'Please complete all fields for the discount or remove the partial information.',
+	// 			icon: 'warning',
+	// 		});
+	// 		return;
+	// 	}
+	// 	setLoading(true);
+	// 	await new Promise((resolve) => setTimeout(resolve, 2000));
+	// 	const storage = getStorage(app);
+	// 	const uploadPromises = forms.map(async (form) => {
+	// 		const fileSingle = form.file || null;
+	// 		if (fileSingle) {
+	// 			const fileName = new Date().getTime() + fileSingle.name;
+	// 			const storageRef = ref(storage, fileName);
+	// 			const uploadTask = uploadBytesResumable(storageRef, fileSingle);
+	// 			try {
+	// 				await uploadTask;
+	// 				const url = await getDownloadURL(uploadTask.snapshot.ref);
+	// 				return {
+	// 					img: [url],
+	// 					color: [form.color],
+	// 					size: [form.size],
+	// 					quantity: form.quantity,
+	// 				};
+	// 			} catch (error) {
+	// 				console.error('Error uploading file: ', error);
+	// 				throw error;
+	// 			}
+	// 		} else {
+	// 			return {
+	// 				img: [DEFAULT_IMAGE_URL],
+	// 				color: [form.color],
+	// 				size: [form.size],
+	// 				quantity: form.quantity,
+	// 			};
+	// 		}
+	// 	});
+	// 	try {
+	// 		const variants = await Promise.all(uploadPromises);
+	// 		const product = {
+	// 			...inputs,
+	// 			variants,
+	// 		};
+	// 		if (
+	// 			inputs.discount.startDate &&
+	// 			inputs.discount.endDate &&
+	// 			inputs.discount.discount
+	// 		) {
+	// 			product.discount = inputs.discount;
+	// 		} else {
+	// 			swal('Error', 'Please fill all the fields for discount', 'error');
+	// 		}
+	// 		if (
+	// 			inputs.promo.code &&
+	// 			inputs.promo.startDate &&
+	// 			inputs.promo.endDate
+	// 		) {
+	// 			product.promo = inputs.promo;
+	// 		} else {
+	// 			swal('Error', 'Please fill all the fields for promo-code', 'error');
+	// 		}
+	// 		await addProduct(product, dispatch);
+	// 		swal({
+	// 			title: 'Success',
+	// 			text: 'Product added successfully',
+	// 			icon: 'success',
+	// 			closeOnClickOutside: false,
+	// 			closeOnEsc: false,
+	// 		}).then(() => {
+	// 			resetInputs();
+	// 			resetColors();
+	// 			resetColorPickers();
+	// 			resetFormFields();
+	// 			resetCheckboxes();
+	// 		});
+	// 	} catch (error) {
+	// 		swal('Error', error.message, 'error');
+	// 	} finally {
+	// 		setLoading(false);
+	// 	}
+	// };
+
+	const isObjectComplete = (obj) => Object.values(obj).every((value) => value);
+	const isObjectPartiallyFilled = (obj) =>
+		Object.values(obj).some((value) => value);
+
+	const showError = (title, text) => {
+		swal({ title, text, icon: 'error' });
+	};
 	const handleAddProduct = async (e) => {
 		e.preventDefault();
-		if (forms.some((form) => form.file === null)) {
-			swal({
-				title: 'Error!',
-				text: 'Please select a product image',
-				icon: 'error',
-			});
+		const requiredInputs = [
+			'title',
+			'desc',
+			'title_ar',
+			'desc_ar',
+			'price',
+			'categories',
+			'width',
+			'height',
+			'length',
+			'weight',
+		];
+		const hasAllRequiredInputs = requiredInputs.every(
+			(field) => inputs[field],
+		);
+		if (!hasAllRequiredInputs) {
+			showError('Error!', 'Please fill all the required fields');
 			return;
 		}
-		if (forms.some((form) => !form.size || !form.color || !form.quantity)) {
-			swal({
-				title: 'Error!',
-				text: 'Please fill all the fields',
-				icon: 'error',
-			});
+		const hasAllVariants = forms.every((form) => form.color && form.size);
+		if (!hasAllVariants) {
+			showError(
+				'Error!',
+				'Each product variant must have a color and size selected',
+			);
 			return;
 		}
-		if (
-			!inputs.title ||
-			!inputs.desc ||
-			!inputs.price ||
-			!inputs.originalPrice ||
-			!inputs.width ||
-			!inputs.height ||
-			!inputs.length ||
-			!inputs.weight
-		) {
-			swal({
-				title: 'Error!',
-				text: 'Please fill all the fields',
-				icon: 'error',
-			});
+		const promoComplete = isObjectComplete(inputs.promo);
+		const promoPartiallyFilled = isObjectPartiallyFilled(inputs.promo);
+		if (promoPartiallyFilled && !promoComplete) {
+			showError(
+				'Incomplete Promo Details',
+				'Please complete all fields for the promo code or remove the partial information.',
+			);
+			return;
+		}
+		const discountComplete = isObjectComplete(inputs.discount);
+		const discountPartiallyFilled = isObjectPartiallyFilled(inputs.discount);
+		if (discountPartiallyFilled && !discountComplete) {
+			showError(
+				'Incomplete Discount Details',
+				'Please complete all fields for the discount or remove the partial information.',
+			);
 			return;
 		}
 		setLoading(true);
-		await new Promise((resolve) => setTimeout(resolve, 2000));
-		const storage = getStorage(app);
-		const uploadPromises = forms.map(async (form) => {
-			const fileSingle = form.file || null;
-
-			if (fileSingle) {
-				const fileName = new Date().getTime() + fileSingle.name;
-				const storageRef = ref(storage, fileName);
-				const uploadTask = uploadBytesResumable(storageRef, fileSingle);
-				try {
-					await uploadTask;
-					const url = await getDownloadURL(uploadTask.snapshot.ref);
-
-					return {
-						img: [url],
-						color: [form.color],
-						size: [form.size],
-						quantity: form.quantity,
-					};
-				} catch (error) {
-					console.error('Error uploading file: ', error);
-					throw error;
-				}
-			} else {
-				console.error('No file to upload.');
-				return {
-					img: [],
-					color: [form.color],
-					size: [form.size],
-					quantity: form.quantity,
-				};
-			}
-		});
+		const minimumLoadingPromise = new Promise((resolve) =>
+			setTimeout(resolve, 1000),
+		);
 		try {
-			const variants = await Promise.all(uploadPromises);
-			const product = {
-				...inputs,
-				variants,
-			};
+			const storage = getStorage(app);
+			const uploadPromises = forms.map((form) =>
+				uploadVariantImage(storage, form),
+			);
+			const [variants] = await Promise.all([
+				Promise.all(uploadPromises),
+				minimumLoadingPromise,
+			]);
+			const product = constructProduct(inputs, variants);
 			await addProduct(product, dispatch);
 			swal({
 				title: 'Success',
@@ -208,47 +333,67 @@ export default function NewProduct() {
 				icon: 'success',
 				closeOnClickOutside: false,
 				closeOnEsc: false,
-			}).then(() => {
-				resetInputs();
-				resetFile();
-				resetCategory();
-				resetSize();
-				resetColors();
-				resetColorPickers();
-				resetFormFields();
-				resetCheckboxes();
-			});
+			}).then(resetAllForms);
 		} catch (error) {
-			swal('Error', error.message, 'error');
+			showError('Error', error.message);
 		} finally {
 			setLoading(false);
 		}
+	};
+	const uploadVariantImage = async (storage, form) => {
+		const fileSingle = form.file || null;
+		const fileName =
+			new Date().getTime() +
+			(fileSingle ? fileSingle.name : 'default_image');
+		const storageRef = ref(storage, fileName);
+		if (fileSingle) {
+			const uploadTask = uploadBytesResumable(storageRef, fileSingle);
+			try {
+				await uploadTask;
+				const url = await getDownloadURL(uploadTask.snapshot.ref);
+				return createVariant(form, [url]);
+			} catch (error) {
+				console.error('Error uploading file: ', error);
+				throw error;
+			}
+		}
+		return createVariant(form, [DEFAULT_IMAGE_URL]);
+	};
+	const createVariant = (form, images) => ({
+		img: images,
+		color: [form.color],
+		size: [form.size],
+		quantity: form.quantity,
+	});
+	const constructProduct = (inputs, variants) => ({
+		...inputs,
+		variants,
+		...(isObjectComplete(inputs.discount) && { discount: inputs.discount }),
+		...(isObjectComplete(inputs.promo) && { promo: inputs.promo }),
+	});
+	const resetAllForms = () => {
+		resetInputs();
+		resetColors();
+		resetColorPickers();
+		resetFormFields();
+		resetCheckboxes();
 	};
 	const resetInputs = () => {
 		setInputs({
 			title: '',
 			desc: '',
+			title_ar: '',
+			desc_ar: '',
 			price: '',
 			originalPrice: '',
-			img: [],
 			categories: [],
-			size: [],
-			color: [],
-			quantity: '',
 			width: '',
 			height: '',
 			length: '',
 			weight: '',
+			discount: { startDate: '', endDate: '', discount: '' },
+			promo: { code: '', startDate: '', endDate: '' },
 		});
-	};
-	const resetFile = () => {
-		setFile([]);
-	};
-	const resetCategory = () => {
-		setCat([]);
-	};
-	const resetSize = () => {
-		setSize([]);
 	};
 	const resetColors = () => {
 		const colors = [color1, color2, color3, color4, color5, color6];
@@ -278,7 +423,7 @@ export default function NewProduct() {
 	const addNewForm = () => {
 		setForms((prevForms) => [
 			...prevForms,
-			{ file: currentFile, color: '', size: '', quantity: '' },
+			{ file: null, color: '', size: '', quantity: '' },
 		]);
 	};
 	const removeForm = (indexToRemove) => {
@@ -354,7 +499,7 @@ export default function NewProduct() {
 								</div>
 								{index < 1 && (
 									<div className='addProductItem'>
-										<label>Title</label>
+										<label>Title*</label>
 										<input
 											name='title'
 											className='Title'
@@ -366,7 +511,7 @@ export default function NewProduct() {
 								)}
 								{index < 1 && (
 									<div className='addProductItem'>
-										<label>Description</label>
+										<label>Description*</label>
 										<input
 											name='desc'
 											className='Description'
@@ -378,7 +523,7 @@ export default function NewProduct() {
 								)}
 								{index < 1 && (
 									<div className='addProductItem'>
-										<label>Title (Arabic)</label>
+										<label>Title (Arabic)*</label>
 										<input
 											name='title_ar'
 											type='text'
@@ -389,7 +534,7 @@ export default function NewProduct() {
 								)}
 								{index < 1 && (
 									<div className='addProductItem'>
-										<label>Description (Arabic)</label>
+										<label>Description (Arabic)*</label>
 										<input
 											name='desc_ar'
 											type='text'
@@ -400,7 +545,7 @@ export default function NewProduct() {
 								)}
 								<div className='addProductItem'>
 									<fieldset>
-										<legend>Size</legend>
+										<legend>Size*</legend>
 										<input
 											type='radio'
 											className='Size'
@@ -479,7 +624,7 @@ export default function NewProduct() {
 									</fieldset>
 								</div>
 								<div className='addProductItem color'>
-									<label>Color</label>
+									<label>Color*</label>
 									<br />
 									<input
 										id='color-picker'
@@ -533,7 +678,7 @@ export default function NewProduct() {
 								)}
 								{index < 1 && (
 									<div className='addProductItem'>
-										<label>Price</label>
+										<label>Price*</label>
 										<input
 											name='price'
 											type='number'
@@ -589,7 +734,7 @@ export default function NewProduct() {
 								)}
 								{index < 1 && (
 									<div className='addProductItem'>
-										<label>Categories</label>
+										<label>Categories*</label>
 										<select
 											name='categories'
 											onChange={handleChange}
@@ -602,7 +747,7 @@ export default function NewProduct() {
 									</div>
 								)}
 								<div className='addProductItem'>
-									<label>Quantity</label>
+									<label>Quantity*</label>
 									<input
 										name='quantity'
 										type='number'
@@ -622,7 +767,7 @@ export default function NewProduct() {
 								<div className='divition2'>
 									{index < 1 && (
 										<div className='addProductItem'>
-											<label>Product Width</label>
+											<label>Product Width*</label>
 											<input
 												name='width'
 												type='number'
@@ -634,7 +779,7 @@ export default function NewProduct() {
 									)}
 									{index < 1 && (
 										<div className='addProductItem'>
-											<label>Product Height</label>
+											<label>Product Height*</label>
 											<input
 												name='height'
 												type='number'
@@ -646,7 +791,7 @@ export default function NewProduct() {
 									)}
 									{index < 1 && (
 										<div className='addProductItem'>
-											<label>Product Length</label>
+											<label>Product Length*</label>
 											<input
 												name='length'
 												type='number'
@@ -658,7 +803,7 @@ export default function NewProduct() {
 									)}
 									{index < 1 && (
 										<div className='addProductItem'>
-											<label>Product Weight</label>
+											<label>Product Weight*</label>
 											<input
 												name='weight'
 												type='number'
