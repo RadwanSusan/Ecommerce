@@ -1,4 +1,4 @@
-_id,Title,Description,Categories,Variant Size,Variant Color,Price,Original Price,In Stock,Variant Quantity,Width,Height,Length,Weight,Image URL
-12345,Summer T-Shirt,Comfortable cotton t-shirt,Men's Clothing,S,Red,19.99,29.99,TRUE,100,10,5,0.5,200,http://example.com/image1.jpg
-12345,Summer T-Shirt,Comfortable cotton t-shirt,Men's Clothing,M,Blue,19.99,29.99,TRUE,150,10,5,0.5,200,http://example.com/image2.jpg
-12345,Summer T-Shirt,Comfortable cotton t-shirt,Men's Clothing,L,Green,19.99,29.99,TRUE,200,10,5,0.5,200,http://example.com/image3.jpg
+_id,title,title_ar,desc,desc_ar,img,categories,size,color,price,originalPrice,inStock,quantity,width,height,length,weight,promo_code,promo_startDate,promo_endDate,discount_startDate,discount_endDate,discount_amount
+65aa7fcd6765faad22ad1193,zz,??,zz,??,https://firebasestorage.googleapis.com/v1,jeans,S,#6c6a6a,11,111,TRUE,11,11,11,11,11,111,1970-01-01T00:00:02.024Z,1970-01-01T00:00:02.024Z,1970-01-01T00:00:02.024Z,1970-01-01T00:00:02.024Z,11
+65aa7fcd6765faad22ad1193,zz,??,zz,??,https://firebasestorage.googleapis.com/v2,jeans,M,#6c6a6b,11,111,TRUE,12,11,11,11,11,111,1970-01-01T00:00:02.024Z,1970-01-01T00:00:02.024Z,1970-01-01T00:00:02.024Z,1970-01-01T00:00:02.024Z,11
+65aa7fcd6765faad22ad1193,zz,??,zz,??,https://firebasestorage.googleapis.com/v3,jeans,L,#6c6a6c,11,111,TRUE,13,11,11,11,11,111,1970-01-01T00:00:02.024Z,1970-01-01T00:00:02.024Z,1970-01-01T00:00:02.024Z,1970-01-01T00:00:02.024Z,11
