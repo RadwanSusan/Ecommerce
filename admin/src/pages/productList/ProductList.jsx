@@ -20,14 +20,15 @@ export default function ProductList() {
 	useEffect(() => {
 		getProducts(dispatch);
 	}, [dispatch]);
-	const handleExcelUpload = (event) => {
+	const handleExcelUpload = async (event) => {
 		const file = event.target.files[0];
-		ExcelRenderer(file, (err, resp) => {
+		ExcelRenderer(file, async (err, resp) => {
 			if (err) {
 				console.error(err);
 			} else {
 				const mergedProducts = mergeProducts(resp.rows);
-				addAllProduct2(mergedProducts, dispatch);
+				await addAllProduct2(mergedProducts, dispatch);
+				getProducts(dispatch);
 			}
 		});
 	};
