@@ -1983,11 +1983,13 @@ button:hover {
 
 .block_product__advantagesProduct {
 	width: 271px;
-	height: 41px;
+	height: 240px !important;
+	overflow: hidden;
 	margin-top: 14px;
 	color: #646b6f;
 	font-size: 17px;
 	line-height: 24px;
+	overflow-y: scroll;
 }
 
 .block_product__link {
