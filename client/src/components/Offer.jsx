@@ -186,7 +186,7 @@ const Offer = () => {
 				language === 'en' ? viewArrCatog.desc : viewArrCatog.desc_ar;
 			aramex.innerHTML = '';
 			setProduct_id(viewArrCatog._id);
-			document.querySelector('.nameProducts2').innerHTML =
+			document.querySelector('.nameProducts2').textContent =
 				language === 'en' ? viewArrCatog.title : viewArrCatog.title_ar;
 			document
 				.querySelector('.block_product__advantagesProduct')
@@ -726,8 +726,7 @@ const Offer = () => {
 									<div className='block_specification__specificationShow'>
 										<i
 											className='fa fa-cog block_specification__button block_specification__button__rotate'
-											aria-hidden='true'
-										></i>
+											aria-hidden='true'></i>
 									</div>
 								</div>
 								<div className='block_product'>
@@ -754,8 +753,7 @@ const Offer = () => {
 													</span>
 													<div
 														key={resetTrigger}
-														className='block_quantity__chooseBlock'
-													>
+														className='block_quantity__chooseBlock'>
 														<input
 															className='block_quantity__number block_quantity__number2'
 															name='quantityNumber'
@@ -794,15 +792,13 @@ const Offer = () => {
 														className='zaid'
 														style={{
 															display: 'hidden',
-														}}
-													></div>
+														}}></div>
 													<div className='block_goodColor__allColors CatogallColors'></div>
 													<FilterSizeCatog
 														className='FilterSizeCatog2'
 														onChange={(e) =>
 															setSize(e.target.value)
-														}
-													></FilterSizeCatog>
+														}></FilterSizeCatog>
 												</div>
 												{isLoading ? (
 													isProductAvailable ? (
@@ -811,8 +807,7 @@ const Offer = () => {
 															product_id2={product_id}
 															onClick={(ele) => {
 																addToCart(ele);
-															}}
-														>
+															}}>
 															{language === 'en'
 																? 'Add to cart'
 																: 'اضف الى السلة'}
@@ -820,8 +815,7 @@ const Offer = () => {
 													) : (
 														<button
 															className='AddCart2'
-															disabled
-														>
+															disabled>
 															{language === 'en'
 																? 'Out of stock'
 																: 'غير متوفر'}
@@ -845,8 +839,7 @@ const Offer = () => {
 			</div>
 			<div
 				className='group-deal-1 hidden-title-block nav-style-1 hover-to-show absolute-nav snipcss-s72N8 style-sCNUC'
-				id='style-sCNUC'
-			>
+				id='style-sCNUC'>
 				<div>
 					<div className='block block-list-products'>
 						<div className='block-title'>
@@ -859,8 +852,7 @@ const Offer = () => {
 								id='filterproducts_1'
 								className={`product-deal-list ${
 									language === 'ar' ? 'product-deal-list-ar' : ''
-								}`}
-							>
+								}`}>
 								<Link to={`/offer/new-offers`}>
 									<div className='deal-left'>
 										<div className='deal-description'>
@@ -872,8 +864,7 @@ const Offer = () => {
 												{language === 'ar' ? ' أعلى من' : 'up to'}
 												<span
 													id='style-Leion'
-													className='style-Leion'
-												>
+													className='style-Leion'>
 													{language === 'en'
 														? ' 50%'
 														: `${formatNumberToArabic(50)}%`}
@@ -895,16 +886,14 @@ const Offer = () => {
 										language === 'ar'
 											? 'deal-contentAr'
 											: 'deal-content'
-									}
-								>
+									}>
 									<div className='owl-carousel owl-theme list items product-items filterproducts owl-loaded owl-drag'>
 										<div className='owl-stage-outer'>
 											<Slider {...settings}>
 												{offer.map((data) => (
 													<div
 														className='owl-item active style-Ke3kW'
-														id='style-Ke3kW'
-													>
+														id='style-Ke3kW'>
 														<div className='item product product-item'>
 															<div
 																className={`product-item-info ${
@@ -912,25 +901,21 @@ const Offer = () => {
 																		? 'product-item-info-ar'
 																		: ''
 																} `}
-																data-container='product-grid'
-															>
+																data-container='product-grid'>
 																<Link
 																	to={`/product/${data._id}`}
 																	className='action quickview-handler
 																	sm_quickview_handler'
 																	title='Quick View'
-																	href=''
-																>
+																	href=''>
 																	<div className='image-product'>
 																		<div className='product photo product-item-photo'>
 																			<span
 																				className='product-image-container product-image-container-13 style-j6oeg'
-																				id='style-j6oeg'
-																			>
+																				id='style-j6oeg'>
 																				<span
 																					className='product-image-wrapper style-gKGpW'
-																					id='style-gKGpW'
-																				>
+																					id='style-gKGpW'>
 																					<img
 																						className='product-image-photo'
 																						src={
@@ -953,8 +938,7 @@ const Offer = () => {
 																			to={``}
 																			className='action quickview-handler sm_quickview_handler show-cart3'
 																			title='Quick View'
-																			catog-id={data._id}
-																		>
+																			catog-id={data._id}>
 																			<AiOutlineEye />
 																			<span>
 																				{language === 'en'
@@ -976,15 +960,13 @@ const Offer = () => {
 																		className='price-box price-final_price'
 																		data-role='priceBox'
 																		data-product-id='13'
-																		data-price-box='product-id-13'
-																	>
+																		data-price-box='product-id-13'>
 																		<span className='price-container price-final_price tax weee'>
 																			<span
 																				id='product-price-13'
 																				data-price-amount='250'
 																				data-price-type='finalPrice'
-																				className='price-wrapper '
-																			>
+																				className='price-wrapper '>
 																				<span className='price55'>
 																					$ {data.price}
 																				</span>
@@ -1014,8 +996,7 @@ const Offer = () => {
 																						'ar'
 																							? 'time-leftAr'
 																							: 'time-left'
-																					}
-																				>
+																					}>
 																					{language ===
 																					'ar'
 																						? 'الوقت المتبقي'
@@ -1023,8 +1004,7 @@ const Offer = () => {
 																					<span
 																						style={{
 																							color: '#ff4444',
-																						}}
-																					>
+																						}}>
 																						{dayjs(
 																							data
 																								.discount
@@ -1036,8 +1016,7 @@ const Offer = () => {
 																			<div className='time-ranger'>
 																				<div
 																					className='time-pass style-Tx4nd'
-																					id='style-Tx4nd'
-																				></div>
+																					id='style-Tx4nd'></div>
 																			</div>
 																		</div>
 																	</div>
@@ -1046,18 +1025,15 @@ const Offer = () => {
 																			language === 'ar'
 																				? 'product-item-actions'
 																				: 'product-item-actions'
-																		}
-																	>
+																		}>
 																		<div className='actions-primary'>
 																			<Link
-																				to={`/product/${data._id}`}
-																			>
+																				to={`/product/${data._id}`}>
 																				<button
 																					className='action tocart primary'
 																					data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/checkout\/cart\/add\/uenc\/aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo\/product\/13\/","data":{"product":"13","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
 																					type='button'
-																					title='Add to Cart'
-																				>
+																					title='Add to Cart'>
 																					<span>
 																						{language ===
 																						'ar'
@@ -1069,8 +1045,7 @@ const Offer = () => {
 																		</div>
 																		<div
 																			className='actions-secondary'
-																			data-role='add-to-links'
-																		>
+																			data-role='add-to-links'>
 																			<div className='action towishlist'>
 																				{wishlistData.includes(
 																					data._id,
@@ -1098,8 +1073,7 @@ const Offer = () => {
 																							width='16'
 																							height='16'
 																							fill='currentColor'
-																							viewBox='0 0 16 16'
-																						>
+																							viewBox='0 0 16 16'>
 																							<path
 																								className='add-to-wish2'
 																								fill-rule='evenodd'
@@ -1136,8 +1110,7 @@ const Offer = () => {
 																							width='16'
 																							height='16'
 																							fill='currentColor'
-																							viewBox='0 0 16 16'
-																						>
+																							viewBox='0 0 16 16'>
 																							<path
 																								className='add-to-wish2'
 																								fill-rule='evenodd'
@@ -1168,8 +1141,7 @@ const Offer = () => {
 																			</div>
 																			<div
 																				className='action tocompare'
-																				title='Add to Compare'
-																			>
+																				title='Add to Compare'>
 																				<IoGitCompareOutline />
 																				<span>
 																					{language ===

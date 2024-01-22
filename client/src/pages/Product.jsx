@@ -82,6 +82,7 @@ const FilterColor = styled.div`
 	background-color: ${(props) => props.color};
 	cursor: pointer;
 	margin-left: 10px;
+	border: 1px solid #000;
 	&:hover {
 		outline: 3px solid #292931;
 	}
