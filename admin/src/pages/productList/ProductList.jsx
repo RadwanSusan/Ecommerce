@@ -221,7 +221,8 @@ export default function ProductList() {
 					className='productAddButton'
 					style={{ textDecoration: 'none', width: '100px' }}
 					data={getCsvData()}
-					filename='products.csv'>
+					filename='products.csv'
+				>
 					Export to CSV
 				</CSVLink>
 				<input
@@ -235,7 +236,8 @@ export default function ProductList() {
 					href={myFile}
 					download='my-excel.csv'
 					target='_blank'
-					rel='noopener noreferrer'>
+					rel='noopener noreferrer'
+				>
 					<button>Download CSV</button>
 				</a>
 			</div>
