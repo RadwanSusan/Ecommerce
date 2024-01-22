@@ -2,43 +2,97 @@ import './productList.css';
 import { DataGrid } from '@material-ui/data-grid';
 import { DeleteOutline } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteProduct, getProducts } from '../../redux/apiCalls';
+import {
+	deleteProduct,
+	getProducts,
+	addAllProduct2,
+} from '../../redux/apiCalls';
 import swal from 'sweetalert';
 import { CSVLink } from 'react-csv';
 import { ExcelRenderer } from 'react-excel-renderer';
-import { addAllProduct } from '../../redux/apiCalls';
 import myFile from '../../Assets/ZAID2.csv';
-
 export default function ProductList() {
 	const dispatch = useDispatch();
 	const products = useSelector((state) => state.product.products);
+	const filteredProducts = products.filter((product) => product._id);
 	useEffect(() => {
 		getProducts(dispatch);
 	}, [dispatch]);
-
-	const [excelData, setExcelData] = useState([]);
-
 	const handleExcelUpload = (event) => {
 		const file = event.target.files[0];
-
 		ExcelRenderer(file, (err, resp) => {
 			if (err) {
-				console.log(err);
+				console.error(err);
 			} else {
-				setExcelData(resp.rows);
-
-				addAllProduct(resp.rows);
+				const mergedProducts = mergeProducts(resp.rows);
+				addAllProduct2(mergedProducts, dispatch);
 			}
 		});
+	};
+	const mergeProducts = (rows) => {
+		const productsMap = {};
+		rows.forEach((row, index) => {
+			if (index === 0) return;
+			const product = rowToProduct(row);
+			if (!productsMap[product._id]) {
+				productsMap[product._id] = { ...product, variants: [] };
+			}
+			productsMap[product._id].variants.push({
+				color: product.color,
+				size: product.size,
+				quantity: product.quantity,
+				img: product.img,
+				_id: product.variant_id,
+			});
+		});
+		return Object.values(productsMap).map((product) => {
+			delete product.color;
+			delete product.size;
+			delete product.quantity;
+			delete product.img;
+			delete product.variant_id;
+			return product;
+		});
+	};
+	const rowToProduct = (row) => {
+		return {
+			_id: row[0],
+			title: row[1],
+			title_ar: row[2],
+			desc: row[3],
+			desc_ar: row[4],
+			img: [row[5]],
+			categories: [row[6]],
+			size: [row[7]],
+			color: [row[8]],
+			price: row[9],
+			originalPrice: row[10],
+			inStock: row[11],
+			quantity: row[12],
+			width: row[13],
+			height: row[14],
+			length: row[15],
+			weight: row[16],
+			promo: {
+				code: row[17],
+				startDate: row[18],
+				endDate: row[19],
+			},
+			discount: {
+				startDate: row[20],
+				endDate: row[21],
+				amount: row[22],
+			},
+			variant_id: row[23],
+		};
 	};
 	const handleDelete = (id) => {
 		swal({
 			title: 'Are you sure?',
 			text: 'Once deleted, you will not be able to recover this product!',
 			icon: 'warning',
-			buttons: true,
 			dangerMode: true,
 		})
 			.then((willDelete) => {
@@ -56,53 +110,51 @@ export default function ProductList() {
 			field: 'product',
 			headerName: 'Product',
 			width: 200,
-			renderCell: (params) => {
-				return (
-					<div className='productListItem'>
-						<img
-							className='productListImg'
-							src={params.row.img}
-							alt=''
-						/>
-						{params.row.title}
-					</div>
-				);
-			},
+			renderCell: (params) => (
+				<div className='productListItem'>
+					<img
+						className='productListImg'
+						src={params.row.img}
+						alt=''
+					/>
+					{params.row.title}
+				</div>
+			),
 		},
 		{ field: 'inStock', headerName: 'Stock', width: 200 },
-		{
-			field: 'price',
-			headerName: 'Price',
-			width: 160,
-		},
+		{ field: 'price', headerName: 'Price', width: 160 },
 		{
 			field: 'action',
 			headerName: 'Action',
 			width: 150,
-			renderCell: (params) => {
-				return (
-					<>
-						<Link to={'/product/' + params.row._id}>
-							<button className='productListEdit'>View & Edit</button>
-						</Link>
-						<DeleteOutline
-							className='productListDelete'
-							onClick={() => handleDelete(params.row._id)}
-						/>
-					</>
-				);
-			},
+			renderCell: (params) => (
+				<>
+					<Link to={`/product/${params.row._id}`}>
+						<button className='productListEdit'>View & Edit</button>
+					</Link>
+					<DeleteOutline
+						className='productListDelete'
+						onClick={() => handleDelete(params.row._id)}
+					/>
+				</>
+			),
 		},
 	];
 	const getCsvData = () => {
-		return products.flatMap((product) =>
-			product.variants.map((variant) => ({
+		if (!Array.isArray(products)) {
+			return [];
+		}
+		return products.flatMap((product) => {
+			if (!Array.isArray(product.variants)) {
+				return [];
+			}
+			return product.variants.map((variant) => ({
 				_id: product._id || '',
 				title: product.title || '',
 				title_ar: product.title_ar || '',
 				desc: product.desc || '',
 				desc_ar: product.desc_ar || '',
-				img: variant.img ? variant.img.join(';') : '', // Join multiple images with a semicolon
+				img: variant.img ? variant.img.join(';') : '',
 				categories: product.categories ? product.categories.join(';') : '',
 				size: variant.size ? variant.size.join(',') : '',
 				color: variant.color ? variant.color.join(',') : '',
@@ -150,22 +202,17 @@ export default function ProductList() {
 					product.discount.discount
 						? product.discount.discount
 						: '',
-			})),
-		);
+			}));
+		});
 	};
-
-	const newObj = products.map((row) => ({ ...row }));
-	newObj.map((row) => {
-		if (row.quantity === 0) {
-			row.inStock = false;
-		}
-		return row;
-	});
-
+	const dataGridRows = filteredProducts.map((product) => ({
+		id: product._id,
+		...product,
+	}));
 	return (
 		<div className='productList'>
 			<div className='middle-product-create'>
-				<h2 className='productAddButton1'>Create Product : </h2>
+				<h2 className='productAddButton1'>Create Product:</h2>
 				<Link to='/newproduct'>
 					<button className='productAddButton'>Create</button>
 				</Link>
@@ -173,8 +220,7 @@ export default function ProductList() {
 					className='productAddButton'
 					style={{ textDecoration: 'none', width: '100px' }}
 					data={getCsvData()}
-					filename='products.csv'
-				>
+					filename='products.csv'>
 					Export to CSV
 				</CSVLink>
 				<input
@@ -183,21 +229,20 @@ export default function ProductList() {
 					onChange={handleExcelUpload}
 					style={{ marginLeft: '20px' }}
 				/>
-
 				<a
 					className='productAddButton22'
 					href={myFile}
 					download='my-excel.csv'
 					target='_blank'
-				>
+					rel='noopener noreferrer'>
 					<button>Download CSV</button>
 				</a>
 			</div>
 			<DataGrid
-				rows={products}
+				rows={dataGridRows}
 				disableSelectionOnClick
 				columns={columns}
-				getRowId={(row) => row._id}
+				getRowId={(row) => row.id}
 				pageSize={13}
 				autoHeight
 				rowsPerPageOptions={[5, 10, 25]}

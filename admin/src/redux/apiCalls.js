@@ -1,5 +1,6 @@
 import { loginFailure, loginStart, loginSuccess } from './userRedux';
 import { publicRequest, userRequest } from '../requestMethods';
+import { decode as jwtDecode } from 'jsonwebtoken';
 import {
 	getProductFailure,
 	getProductStart,
@@ -173,9 +174,7 @@ export const updateOffer = async (id, offer, dispatch) => {
 	}
 };
 export const addAllProduct = async (product) => {
-	//   dispatch(updateProductStart());
 	try {
-		// convert this array to object and take the first array index as key
 		const inputArray = [
 			[
 				'_id',
@@ -194,11 +193,8 @@ export const addAllProduct = async (product) => {
 				'length',
 				'weight',
 			],
-			// ... other rows
 		];
 
-		/* This code is converting an array of arrays (where the first array contains the keys and the rest
-    of the arrays contain the values) into an array of objects. */
 		const keys = product[0];
 		const result = product.slice(1).map((row) => {
 			return row.reduce((acc, value, index) => {
@@ -211,8 +207,6 @@ export const addAllProduct = async (product) => {
 		});
 		console.log(`🚀  file: apiCalls.js:215  result =>`, result);
 
-		/* Iterating over each element in the `result` array and making a POST request to the `/products`
-		endpoint with the current element as the request body. */
 		result.forEach((element) => {
 			try {
 				const res = userRequest.post(`/products`, element);
@@ -222,24 +216,12 @@ export const addAllProduct = async (product) => {
 		});
 
 		console.log(result);
-
-		// product
-		// 	.forEach((element) => {
-		// 		const res = userRequest.post(`/products`, element);
-		// 	})
-		// 	.then((res) => {
-		// 		console.log('res', res);
-		// 	});
-
-		// dispatch(updateProductSuccess(res.data));
 	} catch (err) {
-		// dispatch(updateProductFailure());
+		console.log(err);
 	}
 };
 export const addAllOffer = async (offer) => {
-	//   dispatch(updateProductStart());
 	try {
-		// convert this array to object and take the first array index as key
 		const inputArray = [
 			[
 				'_id',
@@ -262,11 +244,8 @@ export const addAllOffer = async (offer) => {
 				'length',
 				'weight',
 			],
-			// ... other rows
 		];
 
-		/* This code is converting an array of arrays (where the first array contains the keys and the rest
-    of the arrays contain the values) into an array of objects. */
 		const keys = offer[0];
 		const result = offer.slice(1).map((row) => {
 			return row.reduce((acc, value, index) => {
@@ -279,8 +258,6 @@ export const addAllOffer = async (offer) => {
 		});
 		console.log(`🚀  file: apiCalls.js:215  result =>`, result);
 
-		/* Iterating over each element in the `result` array and making a POST request to the `/products`
-		endpoint with the current element as the request body. */
 		result.forEach((element) => {
 			try {
 				const res = userRequest.post(`/offer`, element);
@@ -290,21 +267,10 @@ export const addAllOffer = async (offer) => {
 		});
 
 		console.log(result);
-
-		// product
-		// 	.forEach((element) => {
-		// 		const res = userRequest.post(`/products`, element);
-		// 	})
-		// 	.then((res) => {
-		// 		console.log('res', res);
-		// 	});
-
-		// dispatch(updateProductSuccess(res.data));
 	} catch (err) {
-		// dispatch(updateProductFailure());
+		console.log(err);
 	}
 };
-import { decode as jwtDecode } from 'jsonwebtoken';
 
 export const TokenValidator = ({ children, logOut }) => {
 	const user = JSON.parse(localStorage.getItem('persist:root'))?.user;
@@ -336,4 +302,15 @@ export const TokenValidator = ({ children, logOut }) => {
 	}
 
 	return children;
+};
+
+export const addAllProduct2 = async (products, dispatch) => {
+	dispatch(addProductStart());
+	try {
+		const res = await userRequest.post('/products/bulk', products);
+		dispatch(addProductSuccess(res.data));
+	} catch (err) {
+		dispatch(addProductFailure());
+		console.log(err);
+	}
 };

@@ -62,30 +62,6 @@ export default function Product() {
 		],
 		[],
 	);
-	// const [productUpdateData, setProductUpdateData] = useState({
-	// 	title: product.title,
-	// 	desc: product.desc,
-	// 	price: product.price,
-	// 	inStock: product.inStock,
-	// 	// img: product.img,
-	// 	categories: product.categories,
-	// 	// size: product.size,
-	// 	// color: product.color,
-	// 	height: product.height,
-	// 	width: product.width,
-	// 	variants: [
-	// 		{
-	// 			color: [],
-	// 			size: [],
-	// 			quantity: [],
-	// 			img: [],
-	// 		},
-	// 	],
-	// 	// quantity: product.quantity,
-	// 	weight: product.weight,
-	// 	length: product.length,
-	// });
-	// productUpdateData object model
 	const [productUpdateData, setProductUpdateData] = useState({
 		title: product.title,
 		title_ar: product.title_ar,
@@ -526,8 +502,7 @@ export default function Product() {
 				return (
 					<div
 						id={`productBottom ${indexzaid}`}
-						className={`productBottom ${indexzaid}`}
-					>
+						className={`productBottom ${indexzaid}`}>
 						<form
 							key={item.id}
 							className='productForm'
@@ -579,8 +554,7 @@ export default function Product() {
 											name='inStock'
 											className='PStock'
 											id='idStock'
-											onChange={handleUpdate}
-										>
+											onChange={handleUpdate}>
 											<option value='true'>Yes</option>
 											<option value='false'>No</option>
 										</select>
@@ -764,8 +738,7 @@ export default function Product() {
 							<div className='productFormRight'>
 								<div
 									className='productUpload'
-									style={{ display: 'contents' }}
-								>
+									style={{ display: 'contents' }}>
 									<img
 										style={{
 											width: '100px',
@@ -783,8 +756,7 @@ export default function Product() {
 											cursor: 'pointer',
 											marginTop: '-130px',
 											marginLeft: '29px',
-										}}
-									>
+										}}>
 										<RiArrowDownCircleLine size={40} />
 									</label>
 									<input
