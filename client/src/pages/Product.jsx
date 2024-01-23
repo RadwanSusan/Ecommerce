@@ -36,6 +36,7 @@ const Image = styled.img`
 const Image2 = styled.img`
 	height: 500px;
 	width: 900px;
+	object-fit: contain;
 `;
 const InfoContainer = styled.div`
 	flex: 1;
@@ -525,11 +526,13 @@ const Product = () => {
 							</FilterTitle>
 							<FilterSize
 								language={language}
-								onChange={(e) => setSize2(e.target.value)}>
+								onChange={(e) => setSize2(e.target.value)}
+							>
 								{availableSizes.map((s) => (
 									<FilterSizeOption
 										key={s}
-										value={s}>
+										value={s}
+									>
 										{language === 'ar' ? dictionary.sizes[s] || s : s}
 									</FilterSizeOption>
 								))}
@@ -549,7 +552,8 @@ const Product = () => {
 						<Button
 							className='AddCart'
 							onClick={handleClick}
-							disabled={isButtonDisabled}>
+							disabled={isButtonDisabled}
+						>
 							{dictionary.addToCart}
 						</Button>
 					</AddContainer>
