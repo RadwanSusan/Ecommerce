@@ -14,7 +14,6 @@ import NewUser from './pages/newUser/NewUser';
 import ProductList from './pages/productList/ProductList';
 import Product from './pages/product/Product';
 import NewProduct from './pages/newProduct/NewProduct';
-
 import Login from './pages/login/Login';
 import Forgot from './pages/forgot/Forgot';
 import Transactions from './pages/transactions/Transactions';
@@ -24,16 +23,13 @@ import { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { DarkModeContext } from './context/darkModeContext';
 import { TokenValidator } from './redux/apiCalls';
-
 function App() {
 	const admin = useSelector((state) => state.user?.currentUser?.isAdmin);
 	const { darkMode } = useContext(DarkModeContext);
-
 	const logOut = () => {
 		localStorage.removeItem('persist:root');
 		window.location.href = '/login';
 	};
-
 	return (
 		<div className={darkMode ? 'app dark' : 'app'}>
 			<Router>
@@ -49,8 +45,7 @@ function App() {
 								<TokenValidator logOut={logOut}>
 									<Route
 										exact
-										path='/'
-									>
+										path='/'>
 										<Home />
 									</Route>
 									<Route path='/users'>
@@ -71,7 +66,6 @@ function App() {
 									<Route path='/newproduct'>
 										<NewProduct />
 									</Route>
-
 									<Route path='/transactions'>
 										<Transactions />
 									</Route>
@@ -92,5 +86,4 @@ function App() {
 		</div>
 	);
 }
-
 export default App;

@@ -9,6 +9,8 @@ api/node_modules
 client/node_modules/
 api/node_modules/
 /client/node_modules/
+/admin/node_modules/
+admin/node_modules/
 /api/node_modules/
 /node_modules/
 thunder-tests

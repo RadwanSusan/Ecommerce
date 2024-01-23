@@ -14,7 +14,6 @@ const Login = () => {
 		if (!email || !password) {
 			swal('Please fill in all fields');
 		}
-
 		login(dispatch, { email, password });
 	};
 	useEffect(() => {

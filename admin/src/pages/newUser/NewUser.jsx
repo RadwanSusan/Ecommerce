@@ -10,7 +10,6 @@ import app from '../../firebase';
 import { addUser } from '../../redux/apiCalls';
 import { useDispatch } from 'react-redux';
 import swal from 'sweetalert';
-
 export default function NewUser() {
 	const [inputs, setInputs] = useState({});
 	let [file, setFile] = useState(null);
@@ -35,7 +34,6 @@ export default function NewUser() {
 			(snapshot) => {
 				const progress =
 					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-
 				switch (snapshot.state) {
 					case 'paused':
 						break;
@@ -48,7 +46,6 @@ export default function NewUser() {
 			() => {
 				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
 					const user = { ...inputs, img: downloadURL };
-
 					const regex =
 						/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 					if (!regex.test(user.email)) {
@@ -121,10 +118,6 @@ export default function NewUser() {
 						onChange={handleChange}
 					/>
 				</div>
-				{/* <div className="newUserItem">
-					<label>Full Name</label>
-					<input type="text" placeholder="John Smith" />
-				</div> */}
 				<div className='newUserItem'>
 					<label>Email</label>
 					<input
@@ -147,25 +140,6 @@ export default function NewUser() {
 						id='password'
 					/>
 				</div>
-				{/* <div className="newUserItem">
-					<label>Phone</label>
-					<input type="text" placeholder="+1 123 456 78" />
-				</div>
-				<div className="newUserItem">
-					<label>Address</label>
-					<input type="text" placeholder="New York | USA" />
-				</div> */}
-				{/* <div className="newUserItem">
-					<label>Gender</label>
-					<div className="newUserGender">
-						<input type="radio" name="gender" id="male" value="male" />
-						<label for="male">Male</label>
-						<input type="radio" name="gender" id="female" value="female" />
-						<label for="female">Female</label>
-						<input type="radio" name="gender" id="other" value="other" />
-						<label for="other">Other</label>
-					</div>
-				</div> */}
 				<div className='newUserItem'>
 					<label>Admin?</label>
 					<select
@@ -173,16 +147,14 @@ export default function NewUser() {
 						className='IsAdmin newUserSelect'
 						name='isAdmin'
 						id='isAdmin'
-						onChange={handleChange}
-					>
+						onChange={handleChange}>
 						<option value='yes'>Yes</option>
 						<option value='no'>No</option>
 					</select>
 				</div>
 				<button
 					onClick={handleClick}
-					className='newUserButton'
-				>
+					className='newUserButton'>
 					Create
 				</button>
 			</form>

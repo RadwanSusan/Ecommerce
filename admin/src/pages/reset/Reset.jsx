@@ -1,46 +1,8 @@
 import { useState } from 'react';
-// import { useDispatch, useSelector } from "react-redux";
-// import { publicRequest } from "../../admin/src/requestMethods";
-// import { login } from "../../redux/apiCalls";
 import swal from 'sweetalert';
 import './reset.css';
 const Reset = () => {
 	const [password, setPassword] = useState('');
-	// const [password, setPassword] = useState("");
-	// let { isFetching, error } = useSelector((state) => state.user);
-
-	// const dispatch = useDispatch();
-
-	// const handleClick = (e) => {
-	// 	e.preventDefault();
-	// 	login(dispatch, { username, password });
-	// 	setTimeout(() => {
-	// 		window.location.href = "/";
-	// 	});
-	// };
-	// const handleClick = (e) => {
-	//   e.preventDefault();
-	//   if (!username || !password) {
-	//     swal("Please fill in all fields");
-	//   }
-
-	//   login(dispatch, { username, password });
-
-	//   if (error) {
-	//     swal("Invalid Credentials Try Again!");
-	//     setUsername("");
-	//     setPassword("");
-	//     document.getElementById("username").value = "";
-	//     document.getElementById("password").value = "";
-	//     return;
-	//   }
-	// };
-	// const handleClick = async (e) => {
-	//   e.preventDefault();
-	//   const res = await publicRequest.post("/auth/forgot-password", {
-	//     password,
-	//   });
-	// };
 	return (
 		<section className='container501'>
 			<div className='row'>

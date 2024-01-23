@@ -106,7 +106,7 @@ export const getUser = async (dispatch) => {
 		dispatch(getUserSuccess(res.data));
 	} catch (err) {
 		dispatch(getUserFailure());
-		console.log(err);
+		console.error(err);
 	}
 };
 export const deleteUser = async (id, dispatch) => {
@@ -143,7 +143,7 @@ export const getOffer = async (dispatch) => {
 		dispatch(getOfferSuccess(res.data));
 	} catch (err) {
 		dispatch(getOfferFailure());
-		console.log(err);
+		console.error(err);
 	}
 };
 export const addOffer = async (offer, dispatch) => {
@@ -194,7 +194,6 @@ export const addAllProduct = async (product) => {
 				'weight',
 			],
 		];
-
 		const keys = product[0];
 		const result = product.slice(1).map((row) => {
 			return row.reduce((acc, value, index) => {
@@ -205,19 +204,16 @@ export const addAllProduct = async (product) => {
 		result.forEach((element) => {
 			delete element._id;
 		});
-		console.log(`🚀  file: apiCalls.js:215  result =>`, result);
-
 		result.forEach((element) => {
 			try {
 				const res = userRequest.post(`/products`, element);
 			} catch (error) {
-				console.log(error);
+				console.error(error);
 			}
 		});
-
-		console.log(result);
+		console.error(result);
 	} catch (err) {
-		console.log(err);
+		console.error(err);
 	}
 };
 export const addAllOffer = async (offer) => {
@@ -240,12 +236,10 @@ export const addAllOffer = async (offer) => {
 				'offerPrice',
 				'width',
 				'height',
-
 				'length',
 				'weight',
 			],
 		];
-
 		const keys = offer[0];
 		const result = offer.slice(1).map((row) => {
 			return row.reduce((acc, value, index) => {
@@ -256,27 +250,22 @@ export const addAllOffer = async (offer) => {
 		result.forEach((element) => {
 			delete element._id;
 		});
-		console.log(`🚀  file: apiCalls.js:215  result =>`, result);
-
 		result.forEach((element) => {
 			try {
 				const res = userRequest.post(`/offer`, element);
 			} catch (error) {
-				console.log(error);
+				console.error(error);
 			}
 		});
-
-		console.log(result);
+		console.error(result);
 	} catch (err) {
-		console.log(err);
+		console.error(err);
 	}
 };
-
 export const TokenValidator = ({ children, logOut }) => {
 	const user = JSON.parse(localStorage.getItem('persist:root'))?.user;
 	const currentUser = user && JSON.parse(user).currentUser;
 	const TOKEN = currentUser?.accessToken;
-
 	const checkTokenValidity = () => {
 		if (TOKEN) {
 			const decodedToken = jwtDecode(TOKEN);
@@ -287,23 +276,18 @@ export const TokenValidator = ({ children, logOut }) => {
 			}
 		}
 	};
-
 	setTimeout(checkTokenValidity, 3600000);
 	setInterval(checkTokenValidity, 3600000);
-
 	if (TOKEN) {
 		const decodedToken = jwtDecode(TOKEN);
 		const currentTime = Date.now() / 1000;
-
 		if (decodedToken.exp < currentTime) {
 			logOut();
 			return null;
 		}
 	}
-
 	return children;
 };
-
 export const addAllProduct2 = async (products, dispatch) => {
 	dispatch(addProductStart());
 	try {
@@ -311,6 +295,5 @@ export const addAllProduct2 = async (products, dispatch) => {
 		dispatch(addProductSuccess(res.data));
 	} catch (err) {
 		dispatch(addProductFailure());
-		console.log(err);
 	}
 };

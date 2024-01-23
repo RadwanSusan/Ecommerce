@@ -1,4 +1,17 @@
-_id,title,title_ar,desc,desc_ar,img,categories,size,color,price,originalPrice,inStock,quantity,width,height,length,weight,promo_code,promo_startDate,promo_endDate,discount_startDate,discount_endDate,discount_amount,variant_id
-65aa7fcd6765faad22ad1188,zz,??,zz,??,https://firebasestorage.googleapis.com/v1,jeans,S,#6c6a6a,11,111,TRUE,11,11,11,11,11,111,1970-01-01T00:00:02.024Z,1970-01-01T00:00:02.024Z,1970-01-01T00:00:02.024Z,1970-01-01T00:00:02.024Z,11,65aa7fcd6765faad22ad1111
-65aa7fcd6765faad22ad1188,zz,??,zz,??,https://firebasestorage.googleapis.com/v2,jeans,M,#6c6a6b,11,111,TRUE,12,11,11,11,11,111,1970-01-01T00:00:02.024Z,1970-01-01T00:00:02.024Z,1970-01-01T00:00:02.024Z,1970-01-01T00:00:02.024Z,11,65aa7fcd6765faad22ad1122
-65aa7fcd6765faad22ad1188,zz,??,zz,??,https://firebasestorage.googleapis.com/v3,jeans,L,#6c6a6c,11,111,TRUE,13,11,11,11,11,111,1970-01-01T00:00:02.024Z,1970-01-01T00:00:02.024Z,1970-01-01T00:00:02.024Z,1970-01-01T00:00:02.024Z,11,65aa7fcd6765faad22ad1133
+﻿_id,title,title_ar,desc,desc_ar,img,categories,size,color,price,originalPrice,inStock,quantity,width,height,length,weight,promo_code,promo_startDate,promo_endDate,discount_startDate,discount_endDate,discount_amount,variant_id,Column1,_1
+65aa7fcd6765faad22ad1111,Odsufo Quilted Jackets For Women,جاكيتات أودسوفو مبطنة للنساء," This winter coats for women is made of NYLON 100%. Lightweight fabric but warm and skin-friendly, which makes it durable enough and fashion style in cold winter.","هذه المعاطف الشتوية للسيدات مصنوعة من النايلون بنسبة 100%. نسيج خفيف الوزن ولكنه دافئ وصديق للبشرة، مما يجعله متينًا بما فيه الكفاية ونمط عصري في الشتاء البارد.",https://m.media-amazon.com/images/I/71VNKpdpbkL._AC_SY606_.jpg,jeans,S,#272624,120,130,TRUE,11,11,11,11,11,111,1970-01-01 4:00,1970-01-01 4:00,1970-01-01 4:00,1970-01-01 4:00,11,65aa7fcd6765faad22ad1211,,
+65aa7fcd6765faad22ad1111,Odsufo Quilted Jackets For Women,جاكيتات أودسوفو مبطنة للنساء," This winter coats for women is made of NYLON 100%. Lightweight fabric but warm and skin-friendly, which makes it durable enough and fashion style in cold winter.","هذه المعاطف الشتوية للسيدات مصنوعة من النايلون بنسبة 100%. نسيج خفيف الوزن ولكنه دافئ وصديق للبشرة، مما يجعله متينًا بما فيه الكفاية ونمط عصري في الشتاء البارد.",https://m.media-amazon.com/images/I/61X-lDHE-BL._AC_SX522_.jpg,jeans,M,#c9af93,120,130,TRUE,11,11,11,11,11,111,1970-01-01 4:00,1970-01-01 4:00,1970-01-01 4:00,1970-01-01 4:00,11,65aa7fcd6765faad22ad1212,,
+65aa7fcd6765faad22ad1111,Odsufo Quilted Jackets For Women,جاكيتات أودسوفو مبطنة للنساء," This winter coats for women is made of NYLON 100%. Lightweight fabric but warm and skin-friendly, which makes it durable enough and fashion style in cold winter.","هذه المعاطف الشتوية للسيدات مصنوعة من النايلون بنسبة 100%. نسيج خفيف الوزن ولكنه دافئ وصديق للبشرة، مما يجعله متينًا بما فيه الكفاية ونمط عصري في الشتاء البارد.",https://m.media-amazon.com/images/I/617ODT6mbML._AC_SX522_.jpg,jeans,L,#f275a2,120,130,TRUE,11,11,11,11,11,111,1970-01-01 4:00,1970-01-01 4:00,1970-01-01 4:00,1970-01-01 4:00,11,65aa7fcd6765faad22ad1213,,
+65aa7fcd6765faad22ad1111,Odsufo Quilted Jackets For Women,جاكيتات أودسوفو مبطنة للنساء," This winter coats for women is made of NYLON 100%. Lightweight fabric but warm and skin-friendly, which makes it durable enough and fashion style in cold winter.","هذه المعاطف الشتوية للسيدات مصنوعة من النايلون بنسبة 100%. نسيج خفيف الوزن ولكنه دافئ وصديق للبشرة، مما يجعله متينًا بما فيه الكفاية ونمط عصري في الشتاء البارد.",https://m.media-amazon.com/images/I/61oMyckrYRL._AC_SX522_.jpg,jeans,XL,#d8ac45,120,130,TRUE,11,11,11,11,11,111,1970-01-01 4:00,1970-01-01 4:00,1970-01-01 4:00,1970-01-01 4:00,11,65aa7fcd6765faad22ad1214,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,

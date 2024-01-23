@@ -12,6 +12,7 @@ import {
 import swal from 'sweetalert';
 import { CSVLink } from 'react-csv';
 import { ExcelRenderer } from 'react-excel-renderer';
+import jschardet from 'jschardet';
 import myFile from '../../Assets/ZAID2.csv';
 export default function ProductList() {
 	const dispatch = useDispatch();
@@ -22,15 +23,50 @@ export default function ProductList() {
 	}, [dispatch]);
 	const handleExcelUpload = async (event) => {
 		const file = event.target.files[0];
-		ExcelRenderer(file, async (err, resp) => {
-			if (err) {
-				console.error(err);
+		const reader = new FileReader();
+		reader.onload = async (e) => {
+			const content = e.target.result;
+			const detected = jschardet.detect(content);
+			if (detected.encoding === 'UTF-8' && detected.confidence > 0.9) {
+				ExcelRenderer(file, async (err, resp) => {
+					if (err) {
+						console.error(err);
+					} else {
+						const mergedProducts = mergeProducts(resp.rows);
+						await addAllProduct2(mergedProducts, dispatch)
+							.then(() => {
+								getProducts(dispatch);
+								swal({
+									title: 'Success',
+									text: 'Products uploaded successfully',
+									icon: 'success',
+								});
+							})
+							.catch((err) => {
+								swal({
+									title: 'Error adding products to database',
+									text: err,
+									icon: 'error',
+								});
+							});
+					}
+				});
 			} else {
-				const mergedProducts = mergeProducts(resp.rows);
-				await addAllProduct2(mergedProducts, dispatch);
-				getProducts(dispatch);
+				swal({
+					title: 'Error',
+					text: 'The uploaded file is not in UTF-8 encoding.',
+					icon: 'error',
+				});
 			}
-		});
+		};
+		reader.onerror = (e) => {
+			swal({
+				title: 'Error',
+				text: 'An error occurred while reading the file.',
+				icon: 'error',
+			});
+		};
+		reader.readAsBinaryString(file);
 	};
 	const mergeProducts = (rows) => {
 		const productsMap = {};
@@ -222,7 +258,7 @@ export default function ProductList() {
 					style={{ textDecoration: 'none', width: '100px' }}
 					data={getCsvData()}
 					filename='products.csv'
-				>
+					charset='utf-8'>
 					Export to CSV
 				</CSVLink>
 				<input
@@ -236,8 +272,7 @@ export default function ProductList() {
 					href={myFile}
 					download='my-excel.csv'
 					target='_blank'
-					rel='noopener noreferrer'
-				>
+					rel='noopener noreferrer'>
 					<button>Download CSV</button>
 				</a>
 			</div>

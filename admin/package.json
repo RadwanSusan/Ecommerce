@@ -13,6 +13,7 @@
 		"axios": "^1.4.0",
 		"file-saver": "^2.0.5",
 		"firebase": "^9.22.0",
+		"jschardet": "^3.0.0",
 		"jsonwebtoken": "^9.0.0",
 		"multer": "^1.4.5-lts.1",
 		"react": "^17.0.2",

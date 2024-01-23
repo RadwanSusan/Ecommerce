@@ -2,16 +2,11 @@ import './sidebar.css';
 import {
 	LineStyle,
 	Timeline,
-	TrendingUp,
 	PermIdentity,
 	Storefront,
 	AttachMoney,
-	BarChart,
 	MailOutline,
 	DynamicFeed,
-	ChatBubbleOutline,
-	WorkOutline,
-	Report,
 } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import { BiLogOutCircle } from 'react-icons/bi';
@@ -19,14 +14,11 @@ import { CgProfile } from 'react-icons/cg';
 import { DarkModeContext } from '../../context/darkModeContext';
 import { useContext, useCallback } from 'react';
 import { logoutUser } from '../../redux/apiCalls';
-
 export default function Sidebar() {
-	//  const { dispatch } = useContext(DarkModeContext);
 	const { toggle, darkMode } = useContext(DarkModeContext);
 	const handleLogout = useCallback(() => {
 		logoutUser();
 	}, []);
-
 	return (
 		<div className='sidebar'>
 			<div className='sidebarWrapper'>
@@ -35,8 +27,7 @@ export default function Sidebar() {
 					<ul className='sidebarList'>
 						<Link
 							to='/'
-							className='link'
-						>
+							className='link'>
 							<li className='sidebarListItem active'>
 								<LineStyle className='sidebarIcon' />
 								Home
@@ -44,8 +35,7 @@ export default function Sidebar() {
 						</Link>
 						<Link
 							to='/analytics'
-							className='link'
-						>
+							className='link'>
 							<li className='sidebarListItem'>
 								<Timeline className='sidebarIcon' />
 								Analytics User
@@ -58,8 +48,7 @@ export default function Sidebar() {
 					<ul className='sidebarList'>
 						<Link
 							to='/users'
-							className='link'
-						>
+							className='link'>
 							<li className='sidebarListItem'>
 								<PermIdentity className='sidebarIcon' />
 								Users
@@ -67,18 +56,15 @@ export default function Sidebar() {
 						</Link>
 						<Link
 							to='/products'
-							className='link'
-						>
+							className='link'>
 							<li className='sidebarListItem'>
 								<Storefront className='sidebarIcon' />
 								Products
 							</li>
 						</Link>
-
 						<Link
 							to='/transactions'
-							className='link'
-						>
+							className='link'>
 							<li className='sidebarListItem'>
 								<AttachMoney className='sidebarIcon' />
 								Transactions
@@ -91,8 +77,7 @@ export default function Sidebar() {
 					<ul className='sidebarList'>
 						<a
 							className='aramex501'
-							href={'https://mail.google.com'}
-						>
+							href={'https://mail.google.com'}>
 							<li className='sidebarListItem'>
 								<MailOutline className='sidebarIcon' />
 								Mail
@@ -113,8 +98,7 @@ export default function Sidebar() {
 						</li>
 						<li
 							onClick={handleLogout}
-							className='sidebarListItem'
-						>
+							className='sidebarListItem'>
 							<BiLogOutCircle className='sidebarIcon' />
 							Logout
 						</li>
@@ -124,14 +108,12 @@ export default function Sidebar() {
 							className='colorOption'
 							onClick={() => {
 								toggle();
-							}}
-						></div>
+							}}></div>
 						<div
 							className='colorOption'
 							onClick={() => {
 								toggle();
-							}}
-						></div>
+							}}></div>
 					</div>
 				</div>
 			</div>

@@ -8,7 +8,6 @@ import { userRequest } from '../../requestMethods';
 import { useDispatch } from 'react-redux';
 import { updateProduct } from '../../redux/apiCalls';
 import { RiArrowDownCircleLine } from 'react-icons/ri';
-
 import swal from 'sweetalert';
 import {
 	getStorage,
@@ -24,8 +23,6 @@ export default function Product() {
 	const dispatch = useDispatch();
 	const [file, setFile] = useState([]);
 	const [currentIndex, setCurrentIndex] = useState(null);
-	// const [colorArrayUpdate, setColorArrayUpdate] = useState([]);
-	const [selectedSize, setSelectedSize] = useState('');
 	const [size, setSize] = useState([]);
 	const product = useSelector((state) =>
 		state.product.products.find((product) => product._id === productId),
@@ -33,7 +30,6 @@ export default function Product() {
 	const [colorArrayUpdate, setColorArrayUpdate] = useState(
 		product.variants.map((variant) => variant.color),
 	);
-
 	const [quantityArray, setQuantityArray] = useState(
 		product.variants.map((variant) => variant.quantity),
 	);
@@ -41,10 +37,7 @@ export default function Product() {
 	const [imageArray, setImageArray] = useState(
 		product.variants.map((variant) => variant.img),
 	);
-
-	// const colorArrayUpdate = [];
 	const sizeArrayUpdate = [];
-
 	const MONTHS = useMemo(
 		() => [
 			'Jan',
@@ -82,7 +75,6 @@ export default function Product() {
 		],
 		weight: product.weight,
 		length: product.length,
-
 		discount: {
 			startDate: product.discount.startDate,
 			endDate: product.discount.endDate,
@@ -94,7 +86,6 @@ export default function Product() {
 			endDate: product.promo.endDate,
 		},
 	});
-
 	const handleUpdate = (e) => {
 		const { name, value } = e.target;
 		if (name.startsWith('discount.')) {
@@ -122,91 +113,62 @@ export default function Product() {
 			}));
 		}
 	};
-
 	const handleSubmit = async (e, index) => {
 		e.preventDefault();
-		// get value the image and loop over it and add it to imageArray
-
-		// Rest of the code...
-
 		const sizeInputs = document.querySelectorAll('.sizeall');
-
 		sizeInputs.forEach((sizeInput) => {
 			if (sizeInput.checked) {
 				sizeArrayUpdate.push(sizeInput.value);
 			}
 		});
-
 		const sizeInputsS = document.querySelector('.SizeS').checked;
-
 		const colorInputs = document.querySelectorAll('.color-picker1');
-
 		if (colorInputs) {
 			setColorArrayUpdate((prevColors) => {
-				let updatedColors = [...prevColors]; // Make a copy of the previous state
-
+				let updatedColors = [...prevColors];
 				colorInputs.forEach((colorInput, index) => {
 					const colorValue = colorInput.value;
-					updatedColors[index] = colorValue; // Update the copied array
+					updatedColors[index] = colorValue;
 				});
-
-				return updatedColors; // Return the updated array as the new state
+				return updatedColors;
 			});
 		}
-		const storage = getStorage(app); // Initialize Firebase storage
-
+		const storage = getStorage(app);
 		const flatImageArray = imageArray.flat();
-
 		const newProduct = {
 			...productUpdateData,
 			variants: await Promise.all(
 				productUpdateData.variants.map(async (variant, i) => {
-					// let img = imageArray[i];
 					let img = flatImageArray[i];
-
-					// Check if img is a File object
 					if (img instanceof File) {
-						// If img is a File object, create a unique path for the image
 						const imagePath = `images/${Date.now()}-${img.name}`;
-
-						// Create a reference to the location where you want to upload the image
 						const storageRef = ref(storage, imagePath);
-
-						// Upload the image to Firebase storage
 						const snapshot = await uploadBytesResumable(storageRef, img);
-
-						// Get the download URL of the uploaded image
 						const imageUrl = await getDownloadURL(snapshot.ref);
-
 						return {
 							...variant,
 							color: colorArrayUpdate[i],
 							size: sizeArrayUpdate[i],
-							img: imageUrl, // Use the download URL of the uploaded image
+							img: imageUrl,
 							quantity: quantityArray[i],
 						};
 					} else if (typeof img === 'string') {
-						// If img is a URL string, use it directly as the image URL
 						return {
 							...variant,
 							color: colorArrayUpdate[i],
 							size: sizeArrayUpdate[i],
-							img: img, // Use the URL string as the image URL
+							img: img,
 							quantity: quantityArray[i],
 						};
 					} else {
-						// If img is neither a File object nor a URL string, throw an error
 						throw new Error('img must be a File object or a URL string');
 					}
 				}),
 			),
 		};
-
 		updateProduct(productId, newProduct, dispatch);
-
 		swal('Product Updated', '', 'success');
 	};
-
 	useEffect(() => {
 		product.variants.forEach((variant, index) => {
 			if (Array.isArray(variant.color)) {
@@ -221,13 +183,11 @@ export default function Product() {
 			}
 		});
 	}, [product.variants]);
-
 	const handleImageChange = (event, index) => {
 		let newImageArray = [...imageArray];
 		newImageArray[index] = event.target.value;
 		setImageArray(newImageArray);
 	};
-
 	useEffect(() => {
 		const getStats = async () => {
 			try {
@@ -247,7 +207,6 @@ export default function Product() {
 		};
 		getStats();
 	}, [productId, MONTHS]);
-
 	useEffect(() => {
 		product.variants.forEach((variant, index) => {
 			if (Array.isArray(variant.size)) {
@@ -301,20 +260,15 @@ export default function Product() {
 			}
 		});
 	}, [product.variants]);
-
 	const addSize = (e) => {
 		const form = e.target.closest('form');
-		// Remove the haveSize class and remove the size from sizeArrayUpdate from all sizes
 		form
 			.querySelectorAll('.SizeS, .SizeM, .SizeL, .SizeXL, .SizeXXL')
 			.forEach((size) => {
 				size.classList.remove('haveSize');
-
 				size.removeAttribute('checked');
 				e.target.classList.add('haveSize');
-
 				e.target.setAttribute('checked', '');
-
 				const index = sizeArrayUpdate.indexOf(size.value);
 				if (index > -1) {
 					setSize((prev) => {
@@ -324,32 +278,20 @@ export default function Product() {
 					});
 				}
 			});
-
-		// Add the haveSize class and add the size to sizeArrayUpdate for the selected size
 		e.target.classList.add('haveSize');
 		e.target.setAttribute('checked', '');
-
 		setSize((prev) => {
 			return [...prev, e.target.value];
 		});
 	};
-
 	const haveColor = (e) => {
 		document.querySelector(`.${e}`).classList.add('haveColor');
 	};
-
 	if (productUpdateData.quantity > 0) {
 		productUpdateData.inStock = true;
 	} else {
 		productUpdateData.inStock = false;
 	}
-
-	// useEffect(() => {
-	//   if (product.img) {
-	//     setFile(product.img);
-	//   }
-
-	// }, [product.img]);
 	useEffect(() => {
 		const tempVariant = {
 			variants: product.variants.map((variant, index) => ({
@@ -358,43 +300,29 @@ export default function Product() {
 				img: imageArray[index],
 			})),
 		};
-
 		setProductUpdateData((prev) => ({
 			...prev,
 			variants: tempVariant.variants,
 		}));
 	}, [quantityArray, setProductUpdateData]);
-
 	const [selectedClassName, setSelectedClassName] = useState(null);
-
 	const handleFileChange = (e, item, index2) => {
 		setSelectedClassName(e.target.className);
-
 		setCurrentIndex(index2);
 		const file = e.target.files[0];
-		// const className = e.target.className;
-
 		const selectItem = item.img[0];
-
-		const newFileArray = [...fileArray]; // clone the current file array
-		newFileArray[index2] = selectItem; // replace the file at the given index
-		setFileArray(newFileArray); // update the state with the new file array
-
-		// Create a URL representing the selected file
+		const newFileArray = [...fileArray];
+		newFileArray[index2] = selectItem;
+		setFileArray(newFileArray);
 		const previewImage = URL.createObjectURL(file);
-
-		// Update the imageArray state to reflect the selected image
 		const newImageArray = [...imageArray];
 		newImageArray[index2] = previewImage;
 		setImageArray(newImageArray);
 	};
 	const handleColorChange = (event, index) => {
-		// Create a new color array with the updated color
 		const updatedColors = colorArrayUpdate.map((color, i) =>
 			i === index ? event.target.value : color,
 		);
-
-		// Update the state with the new color array
 		setColorArrayUpdate(updatedColors);
 	};
 	return (
@@ -439,22 +367,12 @@ export default function Product() {
 								<span className='productInfoKey'>Weight:</span>
 								<div className='productInfoValue'>{product.weight}</div>
 							</div>
-							{/* <div className='productInfoItem2'>
-								<span className='productInfoKey'>sales:</span>
-								<span className='productInfoValue'>0</span>
-							</div> */}
 							<div className='productInfoItem2'>
 								<span className='productInfoKey'>in stock:</span>
 								<span className='productInfoValue'>
 									{product.inStock.toString()}
 								</span>
 							</div>
-							{/* <div className='productInfoItem2'>
-								<span className='productInfoKey'>price:</span>
-								<span className='productInfoValue'>
-									{product.price}
-								</span>
-							</div> */}
 							<div className='productInfoItem2'>
 								<span className='productInfoKey'>Width:</span>
 								<div className='productInfoValue'>{product.width}</div>
@@ -485,15 +403,6 @@ export default function Product() {
 									})}
 								</div>
 							</div>
-
-							{/* <div className='productInfoItem2'>
-								<span className='productInfoKey'>
-									Product description:
-								</span>
-								<span className='productInfoValue productInfoValue2'>
-									{product.desc}
-								</span>
-							</div> */}
 						</div>
 					</div>
 				</div>
@@ -505,9 +414,7 @@ export default function Product() {
 						className={`productBottom ${indexzaid}`}>
 						<form
 							key={item.id}
-							className='productForm'
-							// onClick={(e) => handleSubmit(e, indexzaid)}
-						>
+							className='productForm'>
 							<div className='productFormLeft'>
 								{indexzaid === 0 && (
 									<>
@@ -540,7 +447,6 @@ export default function Product() {
 											placeholder={product.desc_ar}
 											onChange={handleUpdate}
 										/>
-
 										<label>Price</label>
 										<input
 											type='number'
@@ -684,7 +590,6 @@ export default function Product() {
 										className='PDiscountStartDate'
 										name='discount.startDate'
 										placeholder={product.discount.startDate}
-										// value={product.discount.startDate.split('T')[0]}
 										onChange={handleUpdate}
 									/>
 									<label>Discount End Date</label>
@@ -693,7 +598,6 @@ export default function Product() {
 										className='PDiscountEndDate'
 										name='discount.endDate'
 										placeholder={product.discount.endDate}
-										// value={product.discount.endDate.split('T')[0]}
 										onChange={handleUpdate}
 									/>
 									<label>Discount</label>
@@ -702,10 +606,8 @@ export default function Product() {
 										className='PDiscount'
 										name='discount.discount'
 										placeholder={product.discount.discount}
-										// value={product.discount.discount}
 										onChange={handleUpdate}
 									/>
-
 									<label>Promo Code</label>
 									<input
 										type='text'
@@ -720,7 +622,6 @@ export default function Product() {
 										className='PPromoStartDate'
 										name='promo.startDate'
 										placeholder={product.promo.startDate}
-										// value={product.promo.startDate.split('T')[0]}
 										onChange={handleUpdate}
 									/>
 									<label>Promo End Date</label>
@@ -729,12 +630,10 @@ export default function Product() {
 										className='PPromoEndDate'
 										name='promo.endDate'
 										placeholder={product.promo.endDate}
-										// value={product.promo.endDate.split('T')[0]}
 										onChange={handleUpdate}
 									/>
 								</div>
 							)}
-
 							<div className='productFormRight'>
 								<div
 									className='productUpload'
@@ -770,13 +669,9 @@ export default function Product() {
 										}}
 									/>
 								</div>
-
 								<button
 									className='productButton'
-									// onChange={handleSubmit}
-									onClick={(e) => handleSubmit(e, indexzaid)}
-									// type='submit'
-								>
+									onClick={(e) => handleSubmit(e, indexzaid)}>
 									Update
 								</button>
 							</div>

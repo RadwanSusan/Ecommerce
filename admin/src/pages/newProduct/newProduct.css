@@ -1,28 +1,18 @@
-/*
-input type color margin
-*/
-
 input[type='color'] {
 	padding: 0px !important;
 }
-
 .newProduct {
 	flex: 4;
 }
-
 .addProductForm1 {
 	margin-top: 10px;
 	display: flex;
 	align-items: center;
 	gap: 120px;
 }
-/* .addProductForm147:not(:first-child) {
-	width: fit-content;
-} */
 .newProduct form:nth-child(n + 3) {
 	width: fit-content;
 }
-
 .addNewForm {
 	margin-top: 10px;
 	display: flex;
@@ -36,7 +26,6 @@ input[type='color'] {
 	background-color: darkblue;
 	color: white;
 }
-
 .addProductItem {
 	width: 250px;
 	display: flex;
@@ -47,29 +36,23 @@ input[type='color'] {
 	position: absolute;
 	left: 1120px;
 }
-
 .color {
 	flex-direction: row !important;
 }
-
 .color input {
 	margin-left: 8px;
 }
-
 .addProductItem > label {
 	color: gray;
 	font-weight: 600;
 	margin-bottom: 10px;
 }
-
 .addProductItem > input {
 	padding: 10px;
 }
-
 .addProductItem > select {
 	padding: 10px;
 }
-
 .addProductButton {
 	margin-top: 10px;
 	padding: 7px 10px;
@@ -90,7 +73,7 @@ input[type='color'] {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 600px; /* Adjust the height as needed */
+	height: 600px;
 }
 @keyframes spin {
 	from {
@@ -107,9 +90,7 @@ input[type='color'] {
 	margin-top: 10px;
 	margin-left: 10px;
 	margin-right: 10px;
-
 	margin-bottom: 10px;
-
 	display: flex;
 	align-items: center;
 	gap: 120px;

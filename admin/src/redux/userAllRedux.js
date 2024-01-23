@@ -1,7 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
-
+import { createSlice } from '@reduxjs/toolkit';
 export const userAllSlice = createSlice({
-	name: "userAll",
+	name: 'userAll',
 	initialState: {
 		currentUser: null,
 		usersAll: [],
@@ -9,7 +8,6 @@ export const userAllSlice = createSlice({
 		error: false,
 	},
 	reducers: {
-		//GET ALL
 		getUserStart: (state) => {
 			state.isFetching = true;
 			state.error = false;
@@ -22,7 +20,6 @@ export const userAllSlice = createSlice({
 			state.isFetching = false;
 			state.error = true;
 		},
-		//DELETE
 		deleteUserStart: (state) => {
 			state.isFetching = true;
 			state.error = false;
@@ -37,7 +34,6 @@ export const userAllSlice = createSlice({
 			state.isFetching = false;
 			state.error = true;
 		},
-		//UPDATE
 		updateUserStart: (state) => {
 			state.isFetching = true;
 			state.error = false;
@@ -52,7 +48,6 @@ export const userAllSlice = createSlice({
 			state.isFetching = false;
 			state.error = true;
 		},
-		//ADD
 		addUserStart: (state) => {
 			state.isFetching = true;
 			state.error = false;
@@ -67,7 +62,6 @@ export const userAllSlice = createSlice({
 		},
 	},
 });
-
 export const {
 	getUserStart,
 	getUserSuccess,
