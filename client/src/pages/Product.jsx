@@ -46,7 +46,6 @@ const InfoContainer = styled.div`
 		props.language === 'ar' &&
 		`
     text-align: -webkit-right;
-
   `}
 `;
 const Title = styled.h1`

@@ -3,22 +3,18 @@
 		display: none;
 	}
 }
-
 @media only screen and (max-width: 935px) {
 	.mobile-top {
 		display: block;
 	}
 }
-
 #btn-nav-mobile:hover {
 	color: #000 !important;
 }
-
 @media all {
 	header {
 		display: block;
 	}
-
 	.page-header {
 		border-bottom: 1px solid #d1d1d1;
 		margin-bottom: 23px;
@@ -28,15 +24,12 @@
 		background: none;
 	}
 }
-
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.page-header {
 		border: 0;
 		margin-bottom: 0;
 	}
 }
-
 @media all {
 	.page-wrapper {
 		display: -webkit-flex;
@@ -47,11 +40,9 @@ print {
 		flex-direction: column;
 		min-height: 100vh;
 	}
-
 	body:not(.layout-boxed) .page-wrapper {
 		overflow-x: hidden;
 	}
-
 	body {
 		margin: 0;
 		padding: 0;
@@ -61,11 +52,10 @@ print {
 		line-height: 1.5;
 		font-size: 14px;
 		background-color: #ffffff;
-		font-family: "Open Sans", sans-serif;
+		font-family: 'Open Sans', sans-serif;
 		text-align: left;
 		overflow-x: hidden;
 	}
-
 	html {
 		font-size: 62.5%;
 		-webkit-text-size-adjust: 100%;
@@ -76,18 +66,15 @@ print {
 		-ms-overflow-style: scrollbar;
 		-webkit-tap-highlight-color: transparent;
 	}
-
 	.mobile-top {
 		height: 50px;
 		background-color: #f0cba4;
 	}
-
 	*,
 	:before,
 	:after {
 		box-sizing: border-box;
 	}
-
 	.container {
 		width: 100%;
 		padding-right: 15px;
@@ -96,41 +83,34 @@ print {
 		margin-left: auto;
 	}
 }
-
 @media (min-width: 576px) {
 	.container {
 		max-width: 540px;
 	}
 }
-
 @media (min-width: 768px) {
 	.container {
 		max-width: unset;
 	}
 }
-
 @media (min-width: 576px) {
 	.container {
 		max-width: unset;
 	}
 }
-
 @media all {
 	.container {
 		padding-left: 0;
 		padding-right: 0;
 	}
-
 	body:not(.layout-boxed) .container {
 		margin-left: auto;
 		margin-right: auto;
 		width: calc(100% - 30px);
 	}
-
 	.mobile-header-content {
 		position: relative;
 	}
-
 	.mobile-menu {
 		position: absolute;
 		left: 0;
@@ -139,47 +119,39 @@ print {
 		margin: 3px;
 		cursor: pointer;
 	}
-
 	.mobile-logo {
 		text-align: center;
 		user-select: none;
 	}
-
 	.mobile-cart {
 		position: absolute;
 		top: 0;
 		right: 0;
 		z-index: 200;
 	}
-
 	a {
 		color: #222222;
 		text-decoration: none;
 		background-color: transparent;
 		-webkit-text-decoration-skip: objects;
 	}
-
-	.header-mobile .mobile-menu>a {
+	.header-mobile .mobile-menu > a {
 		display: inline-block;
 		height: 36px;
 		line-height: 36px;
 		margin-top: 7px;
 	}
-
 	a:hover {
 		color: #ffcc00;
 		text-decoration: none;
 	}
-
 	a:visited {
 		text-decoration: none;
 	}
-
 	.minicart-mobile {
 		display: inline-block;
 	}
-
-	.header-mobile .mobile-menu>a span {
+	.header-mobile .mobile-menu > a span {
 		display: block;
 		width: 30px;
 		height: 3px;
@@ -190,11 +162,9 @@ print {
 		-webkit-border-radius: 2px;
 		background-color: #222222;
 	}
-
-	.header-mobile .mobile-menu>a span.s-top {
+	.header-mobile .mobile-menu > a span.s-top {
 		margin-top: 9px;
 	}
-
 	img {
 		max-width: 100%;
 		height: auto;
@@ -203,66 +173,54 @@ print {
 		border-style: none;
 		width: auto;
 	}
-
 	.mobile-logo img {
 		max-height: 30px;
 		width: auto;
 		margin-top: 10px;
 	}
-
 	.hidden {
 		display: none;
 		opacity: 0;
 		visibility: hidden;
 	}
-
 	.mobile-wrapper {
 		display: inline-block;
 		position: relative;
 		float: right;
 	}
 }
-
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.mobile-wrapper {
 		margin-left: 13px;
 	}
 }
-
 @media all {
 	.minicart-mobile .mobile-wrapper {
 		margin: 6px !important;
 		float: none !important;
 	}
-
 	.mobile .action.showcart {
 		display: inline-block;
 		cursor: pointer;
 		text-decoration: none;
 		white-space: nowrap;
 	}
-
 	.mobile .action.showcart {
 		height: 50px;
 		line-height: 50px;
 	}
-
 	.mobile-wrapper .action.showcart svg {
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 		font-size: 35px;
 	}
-
 	.minicart-mobile .mobile-wrapper .action.showcart svg {
 		font-size: 33px;
 		color: #000000;
 	}
-
 	.mobile-wrapper .action.showcart:hover:before {
 		color: #333;
 	}
-
 	.mobile-wrapper .mage-dropdown-dialog {
 		position: absolute;
 		top: 100%;
@@ -270,30 +228,24 @@ print {
 		width: 370px;
 		z-index: 300;
 	}
-
 	.minicart-mobile .mobile-wrapper .action.showcart .text {
 		display: none !important;
 	}
-
 	.mobile-wrapper .action.showcart .counter.qty.empty {
 		display: none;
 	}
-
 	.minicart-mobile .mobile-wrapper .action.showcart .counter.qty {
 		position: relative;
 		margin: 0;
 		top: 13px;
 		vertical-align: top;
 	}
-
 	.minicart-mobile .mobile-wrapper .action.showcart .price-minicart {
 		display: none !important;
 	}
-
 	.block {
 		margin-bottom: 46px;
 	}
-
 	.mobile-wrapper .block-minicart {
 		display: none;
 		margin: 0;
@@ -315,27 +267,22 @@ print {
 		-o-box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 	}
 }
-
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.mobile-wrapper .block-minicart {
 		right: -15px;
 		width: 390px;
 	}
 }
-
 @media all {
-
 	.mobile-wrapper .block-minicart:before,
 	.mobile-wrapper .block-minicart:after {
 		border-bottom-style: solid;
-		content: "";
+		content: '';
 		display: block;
 		height: 0;
 		position: absolute;
 		width: 0;
 	}
-
 	.mobile-wrapper .block-minicart:before {
 		border: 6px solid;
 		border-color: transparent transparent #fff transparent;
@@ -343,14 +290,12 @@ print {
 		right: 26px;
 		top: -12px;
 	}
-
 	.mobile-wrapper .block-minicart:before,
 	.mobile-wrapper .block-minicart:after {
 		display: none;
 		opacity: 0;
 		visibility: hidden;
 	}
-
 	.mobile-wrapper .block-minicart:after {
 		border: 7px solid;
 		border-color: transparent transparent #bbb transparent;
@@ -358,7 +303,6 @@ print {
 		right: 25px;
 		top: -14px;
 	}
-
 	.mobile-wrapper .action.showcart .counter-label {
 		border: 0;
 		clip: rect(0, 0, 0, 0);
@@ -369,19 +313,19 @@ print {
 		position: absolute;
 		width: 1px;
 	}
-
-	.minicart-mobile .mobile-wrapper .action.showcart .counter.qty .counter-label {
+	.minicart-mobile
+		.mobile-wrapper
+		.action.showcart
+		.counter.qty
+		.counter-label {
 		display: none;
 	}
-
 	.mobile-wrapper .block-minicart .block-title {
 		display: none;
 	}
-
 	strong {
 		font-weight: bolder;
 	}
-
 	button {
 		display: inline-block;
 		background-image: none;
@@ -402,7 +346,6 @@ print {
 		text-transform: none;
 		outline: none !important;
 	}
-
 	.close {
 		float: right;
 		font-size: 1.5rem;
@@ -412,19 +355,16 @@ print {
 		text-shadow: 0 1px 0 #fff;
 		opacity: 0.5;
 	}
-
 	button,
-	[type="button"] {
+	[type='button'] {
 		-webkit-appearance: button;
 	}
-
 	button.close {
 		padding: 0;
 		background-color: transparent;
 		border: 0;
 		-webkit-appearance: none;
 	}
-
 	.mobile-wrapper .action.close {
 		display: inline-block;
 		background-image: none;
@@ -444,23 +384,20 @@ print {
 		top: 0;
 		width: 40px;
 	}
-
 	.close:not(:disabled):not(.disabled) {
 		cursor: pointer;
 	}
-
 	.mobile-wrapper .action.close {
 		display: none !important;
 	}
-
 	.mobile-wrapper .action.close:before {
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 		font-size: 32px;
 		line-height: 32px;
 		color: inherit;
-		content: "\e616";
-		font-family: "icons-blank-theme";
+		content: '\e616';
+		font-family: 'icons-blank-theme';
 		margin: 0;
 		vertical-align: top;
 		display: inline-block;
@@ -469,58 +406,46 @@ print {
 		speak: none;
 		text-align: center;
 	}
-
 	button:hover {
 		background: #e2e2e2;
 		border: 1px solid #cdcdcd;
 		color: #555;
 	}
-
 	.close:hover {
 		color: #000;
 		text-decoration: none;
 		opacity: 0.75;
 	}
-
 	.mobile-wrapper .action.close:hover {
 		background: none;
 		border: none;
 	}
-
 	.mobile-wrapper .action.close:hover:before {
 		color: inherit;
 	}
-
 	.block-minicart .subtitle {
 		display: none;
 	}
-
 	.block-minicart .subtitle.empty {
 		display: block;
 		font-size: 14px;
 		padding: 34.5px 0 23px;
 		text-align: center;
 	}
-
 	.mobile-wrapper .block-minicart .subtitle.empty {
 		padding: 30px 0;
 		font-weight: normal;
 	}
-
 	.mobile-wrapper .minicart-widgets {
 		margin-top: 15px;
 	}
-
 	.price-container .price {
 		font-size: 1.4rem;
 	}
 }
-
-/* These were inline style tags. Uses id+class to override almost everything */
 #style-pwEon.style-pwEon {
 	display: none;
 }
-
 #ui-id-1.style-fjlot {
 	display: block;
 }

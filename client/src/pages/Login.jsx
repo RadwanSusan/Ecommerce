@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import swal from 'sweetalert';
-
 const Container = styled.div`
 	width: 100vw;
 	height: 100vh;
@@ -20,7 +19,6 @@ const Container = styled.div`
 	align-items: center;
 	justify-content: center;
 `;
-
 const Wrapper = styled.div`
 	width: 400px;
 	padding: 20px;
@@ -31,24 +29,20 @@ const Wrapper = styled.div`
 	-moz-box-shadow: 4px 3px 13px 0px rgba(0, 0, 0, 0.75);
 	border-radius: 5px;
 `;
-
 const Title = styled.h1`
 	font-size: 24px;
 	font-weight: 300;
 `;
-
 const Form = styled.form`
 	display: flex;
 	flex-direction: column;
 `;
-
 const Input = styled.input`
 	flex: 1;
 	min-width: 40%;
 	margin: 10px 0;
 	padding: 10px;
 `;
-
 const Button = styled.button`
 	width: 40%;
 	border: none;
@@ -62,7 +56,6 @@ const Button = styled.button`
 		cursor: not-allowed;
 	}
 `;
-
 const Link = styled.a`
 	margin: 5px 0px;
 	font-size: 12px;
@@ -100,14 +93,12 @@ const Login = () => {
 			}
 		});
 	}, [history]);
-
 	useEffect(() => {
 		return history.listen(() => {
 			setEmail('');
 			setPassword('');
 		});
 	}, [history]);
-
 	return (
 		<Container>
 			<Wrapper>
@@ -139,5 +130,4 @@ const Login = () => {
 		</Container>
 	);
 };
-
 export default Login;

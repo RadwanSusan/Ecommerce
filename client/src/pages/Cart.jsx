@@ -23,7 +23,7 @@ import {
 } from '../redux/apiCalls';
 import { clear } from '../redux/cartRedux';
 import { LanguageContext } from '../components/LanguageContext';
-const KEY = process.env.REACT_APP_STRIPE;
+const KEY = import.meta.env.VITE_STRIPE;
 const Container = styled.div`
 	user-select: none;
 `;

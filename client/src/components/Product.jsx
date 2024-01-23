@@ -1,31 +1,10 @@
-import {
-	FavoriteBorderOutlined,
-	SearchOutlined,
-	ShoppingCartOutlined,
-} from '@material-ui/icons';
+import { SearchOutlined } from '@material-ui/icons';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect, useRef } from 'react';
-import { IoGitCompareOutline } from 'react-icons/io5';
-import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
-import { AiOutlineEye, AiFillCloseCircle } from 'react-icons/ai';
-import {
-	BsHeart,
-	BsArrowUpCircle,
-	BsArrowDownCircle,
-	BsFillArrowRightCircleFill,
-	BsFillArrowLeftCircleFill,
-} from 'react-icons/bs';
+import { BsHeart } from 'react-icons/bs';
 import { wishlist, userWishListArrayGet } from '../redux/apiCalls';
-import axios from 'axios';
-import { categoriesOffer } from '../data';
-import { userRequest } from '../requestMethods';
-import * as timeago from 'timeago.js';
 import swal from 'sweetalert';
-import { addProduct, getAllProduct } from '../redux/cartRedux';
-import { useDispatch } from 'react-redux';
-import { mobile } from '../responsive';
-
 const Info = styled.div`
 	opacity: 0;
 	width: 100%;
@@ -41,7 +20,6 @@ const Info = styled.div`
 	transition: all 0.5s ease;
 	cursor: pointer;
 `;
-
 const Container = styled.div`
 	flex: 1;
 	margin: 5px;
@@ -56,7 +34,6 @@ const Container = styled.div`
 		opacity: 1;
 	}
 `;
-
 const Circle = styled.div`
 	width: 200px;
 	height: 200px;
@@ -64,12 +41,10 @@ const Circle = styled.div`
 	background-color: white;
 	position: absolute;
 `;
-
 const Image = styled.img`
 	height: 75%;
 	z-index: 2;
 `;
-
 const Icon = styled.div`
 	width: 40px;
 	height: 40px;
@@ -85,23 +60,18 @@ const Icon = styled.div`
 		transform: scale(1.1);
 	}
 `;
-
 const Product = ({ item }) => {
 	const [wishlistLogin, setWishlistLogin] = useState(false);
-
 	const handleWichlist = (id, ele) => {
 		if (ele.target.classList[0] === 'add-to-wish' && wishlistLogin == true) {
-
 			ele.target.style.display = 'none';
 			ele.target.nextSibling.style.display = 'block';
 		}
 		if (ele.target.classList[0] === 'add-to-wish2' && wishlistLogin == true) {
-
 			ele.target.parentNode.style.display = 'none';
 			ele.target.parentNode.previousSibling.style.display = 'block';
 		}
 	};
-
 	const addToWishlist = async (productId, identifier, ele) => {
 		if (!wishlistLogin) {
 			await swal({
@@ -116,13 +86,11 @@ const Product = ({ item }) => {
 			window.location.href = '/login';
 			return;
 		}
-
 		let targetElement = ele.target;
 		if (targetElement.tagName === 'path') {
 			targetElement = targetElement.parentNode;
 		}
 		const targetClass = targetElement.classList[0];
-
 		try {
 			await wishlist(productId, userId);
 			if (identifier === 'remove') {
@@ -143,11 +111,9 @@ const Product = ({ item }) => {
 			swal('Error', 'Something went wrong', 'error');
 		}
 	};
-
 	const isMountedRef = useRef(true);
 	const [wishlistData, setWishlistData] = useState([]);
 	let userId = localStorage.getItem('persist:root');
-
 	useEffect(async () => {
 		if (JSON.parse(userId).user) {
 			try {
@@ -158,7 +124,6 @@ const Product = ({ item }) => {
 				if (userId !== undefined) {
 					setWishlistLogin(true);
 				}
-
 				const res = await userWishListArrayGet(userId);
 				if (isMountedRef.current) {
 					setWishlistData([...res]);
@@ -171,16 +136,13 @@ const Product = ({ item }) => {
 			isMountedRef.current = false;
 		};
 	}, [userId]);
-
 	if (!isMountedRef.current) {
 		return null;
 	}
-
 	return (
 		<Container>
 			<Circle />
 			<Image src={item.variants[0].img[0]} />
-
 			<Info>
 				<Icon>
 					<Link to={`/product/${item._id}`}>
@@ -206,8 +168,7 @@ const Product = ({ item }) => {
 									width='16'
 									height='16'
 									fill='currentColor'
-									viewBox='0 0 16 16'
-								>
+									viewBox='0 0 16 16'>
 									<path
 										className='add-to-wish2'
 										fill-rule='evenodd'
@@ -235,8 +196,7 @@ const Product = ({ item }) => {
 									viewBox='0 0 16 16'
 									style={{
 										display: 'none',
-									}}
-								>
+									}}>
 									<path
 										className='add-to-wish2'
 										fill-rule='evenodd'
@@ -254,5 +214,4 @@ const Product = ({ item }) => {
 		</Container>
 	);
 };
-
 export default Product;

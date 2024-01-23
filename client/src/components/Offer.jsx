@@ -255,7 +255,6 @@ const Offer = () => {
 				language === 'en' ? 'Please select a size' : 'يرجى تحديد الحجم',
 				'error',
 			);
-
 			return;
 		}
 		const selectedOption =

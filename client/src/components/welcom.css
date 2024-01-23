@@ -2,7 +2,6 @@
 	* {
 		box-sizing: border-box;
 	}
-
 	.container {
 		width: 100%;
 		padding-right: 15px;
@@ -11,73 +10,60 @@
 		margin-left: auto;
 	}
 }
-
 html[lang='ar'] .style-E5bOJ {
 	display: flex;
 	flex-direction: row-reverse;
 }
-/* Add this to your CSS file */
 .text-offer .coupon-code {
-	display: inline-flex; /* Use flexbox for inline elements */
-	flex-direction: row-reverse; /* Reverse the order for RTL languages */
+	display: inline-flex;
+	flex-direction: row-reverse;
 	align-items: center;
 	justify-content: flex-start;
 }
-
-/* This is for when the language is not Arabic, to keep the order left-to-right */
 .text-offer .coupon-code.ltr {
 	flex-direction: row;
 }
-
 @media (min-width: 576px) {
 	.container {
 		max-width: 540px;
 	}
 }
-
 @media (min-width: 768px) {
 	.container {
 		max-width: 720px;
 	}
 }
-
 @media (min-width: 992px) {
 	.container {
 		max-width: 960px;
 	}
 }
-
 @media (min-width: 1200px) {
 	.container {
 		max-width: 1140px;
 	}
 }
-
 @media (min-width: 768px) {
 	.container {
 		max-width: unset;
 	}
 }
-
 @media (min-width: 576px) {
 	.container {
 		max-width: unset;
 	}
 }
-
 @media all {
 	body .container {
 		padding-left: 0;
 		padding-right: 0;
 	}
 }
-
 @media (min-width: 1024px) {
 	body .container {
 		max-width: 1650px;
 	}
 }
-
 @media all {
 	body:not(.layout-boxed) .container {
 		margin-left: auto;
@@ -85,14 +71,12 @@ html[lang='ar'] .style-E5bOJ {
 		width: calc(100% - 30px);
 	}
 }
-
 @media (min-width: 769px), print {
 	.column.main {
 		box-sizing: border-box;
 		min-height: 300px;
 	}
 }
-
 @media all {
 	.columns .column.main {
 		box-sizing: border-box;
@@ -107,7 +91,6 @@ html[lang='ar'] .style-E5bOJ {
 		width: 100%;
 	}
 }
-
 @media (min-width: 769px), print {
 	.page-layout-1column .column.main {
 		width: 100%;
@@ -116,7 +99,6 @@ html[lang='ar'] .style-E5bOJ {
 		order: 2;
 	}
 }
-
 @media all {
 	.columns {
 		display: -webkit-flex;
@@ -127,25 +109,21 @@ html[lang='ar'] .style-E5bOJ {
 		box-sizing: border-box;
 	}
 }
-
 @media (min-width: 769px), print {
 	.columns {
 		display: block;
 	}
 }
-
 @media all {
 	main {
 		display: block;
 	}
-
 	.page-main {
 		-webkit-flex-grow: 1;
 		flex-grow: 1;
 		padding: 30px 0 60px;
 	}
 }
-
 @media (min-width: 769px), print {
 	.page-main {
 		box-sizing: border-box;
@@ -157,33 +135,28 @@ html[lang='ar'] .style-E5bOJ {
 		width: 100%;
 	}
 }
-
 @media all {
 	body .page-main {
 		padding-left: 0;
 		padding-right: 0;
 	}
 }
-
 @media (min-width: 1024px) {
 	body .page-main {
 		max-width: 1650px;
 	}
 }
-
 @media all {
 	body:not(.layout-boxed) .page-main {
 		margin-left: auto;
 		margin-right: auto;
 		width: calc(100% - 30px);
 	}
-
 	body.cms-index-index .page-main {
 		padding: 0;
 		width: 100%;
 		max-width: unset;
 	}
-
 	.page-wrapper {
 		display: -webkit-flex;
 		display: -ms-flexbox;
@@ -193,11 +166,9 @@ html[lang='ar'] .style-E5bOJ {
 		flex-direction: column;
 		min-height: 100vh;
 	}
-
 	body:not(.layout-boxed) .page-wrapper {
 		overflow-x: hidden;
 	}
-
 	body {
 		margin: 0;
 		padding: 0;
@@ -211,7 +182,6 @@ html[lang='ar'] .style-E5bOJ {
 		text-align: left;
 		overflow-x: hidden;
 	}
-
 	html {
 		font-size: 62.5%;
 		-webkit-text-size-adjust: 100%;
@@ -222,7 +192,6 @@ html[lang='ar'] .style-E5bOJ {
 		-ms-overflow-style: scrollbar;
 		-webkit-tap-highlight-color: transparent;
 	}
-
 	.text-branner {
 		background-color: #464a63;
 		color: #fff;
@@ -237,13 +206,11 @@ html[lang='ar'] .style-E5bOJ {
 		-moz-border-radius: 10px 5px 5px 10px;
 		-webkit-border-radius: 10px 5px 5px 10px;
 	}
-
 	*,
 	:before,
 	:after {
 		box-sizing: border-box;
 	}
-
 	.text-branner:before {
 		content: '';
 		display: block;
@@ -260,7 +227,6 @@ html[lang='ar'] .style-E5bOJ {
 		-moz-border-radius: 5px;
 		-webkit-border-radius: 5px;
 	}
-
 	.text-branner .hot-item {
 		flex: 1;
 		display: table-cell;
@@ -276,7 +242,6 @@ html[lang='ar'] .style-E5bOJ {
 		background-color: #f0cba4;
 		color: #222222;
 	}
-
 	.text-branner .hot-item:after {
 		content: '';
 		width: 0;
@@ -287,7 +252,6 @@ html[lang='ar'] .style-E5bOJ {
 		top: 0;
 		border-bottom: 63px solid #f0cba4;
 	}
-
 	.text-branner .text-offer {
 		flex: 6;
 		display: table-cell;
@@ -300,23 +264,19 @@ html[lang='ar'] .style-E5bOJ {
 		align-items: center;
 		justify-content: space-between;
 	}
-
 	a {
 		color: #222222;
 		text-decoration: none;
 		background-color: transparent;
 		-webkit-text-decoration-skip: objects;
 	}
-
 	a:visited {
 		text-decoration: none;
 	}
-
 	.text-branner .text-offer .explorer {
 		width: 200px;
 		text-align: center;
 		float: right;
-		/* height: 31px; */
 		line-height: 31px;
 		padding: 0 25px;
 		text-transform: uppercase;
@@ -329,32 +289,26 @@ html[lang='ar'] .style-E5bOJ {
 		background-color: #f0cba4;
 		color: #222222;
 	}
-
 	a:hover {
 		color: #ffcc00;
 		text-decoration: none;
 	}
-
 	.text-branner .text-offer .explorer:hover {
 		background-color: #df984c;
 	}
 }
-
 @media only screen and (min-device-width: 200px) and (max-device-width: 1024px) and (orientation: portrait) {
 	.text-branner {
 		flex-direction: column;
 		gap: 20px;
 	}
-
 	.text-branner .text-offer {
 		gap: 20px;
 	}
-
 	.text-branner .hot-item:after {
 		display: none;
 	}
 }
-
 @media only screen and (max-width: 820px) {
 	.text-branner {
 		display: flex;
@@ -371,8 +325,6 @@ html[lang='ar'] .style-E5bOJ {
 		text-align: center;
 	}
 }
-
-/* These were inline style tags. Uses id+class to override almost everything */
 #style-E5bOJ.style-E5bOJ {
 	margin-bottom: 50px;
 }
