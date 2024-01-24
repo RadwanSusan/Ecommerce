@@ -1,6 +1,8 @@
 import { loginFailure, loginStart, loginSuccess } from './userRedux';
 import { publicRequest } from '../requestMethods';
-import { decode as jwtDecode } from 'jsonwebtoken';
+// import { decode as jwtDecode } from 'jsonwebtoken';
+import { jwtDecode } from 'jwt-decode';
+
 export const login = async (dispatch, user) => {
 	dispatch(loginStart(user.username));
 	try {
