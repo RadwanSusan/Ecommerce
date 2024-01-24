@@ -1,6 +1,7 @@
 .CiDark {
 	margin-right: 10px;
 }
+
 .languageSelect {
 	padding: 10px;
 	border: 1px solid #ccc;
@@ -9,6 +10,7 @@
 	font-size: 1.5rem;
 	color: #333;
 }
+
 .languageSelect option {
 	background: #f9f9f9;
 	color: #333;

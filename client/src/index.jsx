@@ -7,16 +7,19 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { DarkModeContextProvider } from './context/darkModeContext';
 import { LanguageProvider } from './components/LanguageContext';
 ReactDOM.render(
-	<Provider store={store}>
-		<PersistGate
-			loading={null}
-			persistor={persistor}>
-			<DarkModeContextProvider>
-				<LanguageProvider>
-					<App />
-				</LanguageProvider>
-			</DarkModeContextProvider>
-		</PersistGate>
-	</Provider>,
+	<React.StrictMode>
+		<Provider store={store}>
+			<PersistGate
+				loading={null}
+				persistor={persistor}>
+				<DarkModeContextProvider>
+					<LanguageProvider>
+						<App />
+					</LanguageProvider>
+				</DarkModeContextProvider>
+			</PersistGate>
+		</Provider>
+		,
+	</React.StrictMode>,
 	document.getElementById('root'),
 );

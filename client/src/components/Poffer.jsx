@@ -2,19 +2,23 @@ import React, { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import Product from './Product';
 import axios from 'axios';
+
 const Container = styled.div`
 	padding: 20px;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
 `;
+
 const SORT_TYPES = {
 	NEWEST: 'newest',
 	ASC: 'asc',
 	DESC: 'desc',
 };
+
 const Poffer = React.memo(({ filters, sort }) => {
 	const [products, setProducts] = useState([]);
+
 	const filteredOffer = useMemo(() => {
 		const currentDate = new Date();
 		return products
@@ -47,6 +51,7 @@ const Poffer = React.memo(({ filters, sort }) => {
 				}
 			});
 	}, [sort, filters, products]);
+
 	useEffect(() => {
 		const getProducts = async () => {
 			try {
@@ -58,6 +63,7 @@ const Poffer = React.memo(({ filters, sort }) => {
 		};
 		getProducts();
 	}, []);
+
 	return (
 		<Container>
 			{filteredOffer.map((item) => (
@@ -69,4 +75,5 @@ const Poffer = React.memo(({ filters, sort }) => {
 		</Container>
 	);
 });
+
 export default Poffer;

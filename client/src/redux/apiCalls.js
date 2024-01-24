@@ -96,6 +96,7 @@ export const TokenValidator = ({ children, logOut }) => {
 	if (TOKEN) {
 		const decodedToken = jwtDecode(TOKEN);
 		const currentTime = Date.now() / 1000;
+
 		if (decodedToken.exp < currentTime) {
 			logOut();
 			return null;

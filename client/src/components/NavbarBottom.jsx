@@ -8,6 +8,7 @@ const Navbar = () => {
 	const [isActive, setIsActive] = useState(false);
 	const { dictionary } = useContext(LanguageContext);
 	const { language } = useContext(LanguageContext);
+
 	const handleClick = () => {
 		setIsActive((current) => !current);
 	};
