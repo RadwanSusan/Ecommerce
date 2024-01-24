@@ -14,6 +14,7 @@ import { CSVLink } from 'react-csv';
 import { ExcelRenderer } from 'react-excel-renderer';
 import jschardet from 'jschardet';
 import myFile from '../../Assets/ZAID2.csv';
+
 export default function ProductList() {
 	const dispatch = useDispatch();
 	const products = useSelector((state) => state.product.products);
@@ -258,7 +259,8 @@ export default function ProductList() {
 					style={{ textDecoration: 'none', width: '100px' }}
 					data={getCsvData()}
 					filename='products.csv'
-					charset='utf-8'>
+					charset='utf-8'
+				>
 					Export to CSV
 				</CSVLink>
 				<input
@@ -272,7 +274,8 @@ export default function ProductList() {
 					href={myFile}
 					download='my-excel.csv'
 					target='_blank'
-					rel='noopener noreferrer'>
+					rel='noopener noreferrer'
+				>
 					<button>Download CSV</button>
 				</a>
 			</div>

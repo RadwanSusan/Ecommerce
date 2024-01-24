@@ -10,11 +10,13 @@
 		"@testing-library/jest-dom": "^5.16.5",
 		"@testing-library/react": "^11.2.7",
 		"@testing-library/user-event": "^12.8.3",
+		"@vitejs/plugin-react": "^4.2.1",
 		"axios": "^1.4.0",
 		"file-saver": "^2.0.5",
 		"firebase": "^9.22.0",
 		"jschardet": "^3.0.0",
 		"jsonwebtoken": "^9.0.0",
+		"jwt-decode": "^4.0.0",
 		"multer": "^1.4.5-lts.1",
 		"react": "^17.0.2",
 		"react-csv": "^2.2.2",
@@ -23,19 +25,19 @@
 		"react-icons": "^4.8.0",
 		"react-redux": "^8.0.5",
 		"react-router-dom": "^5.3.4",
-		"react-scripts": "4.0.3",
 		"recharts": "^2.6.2",
 		"redux-persist": "^6.0.0",
 		"sass": "^1.62.1",
 		"sweetalert": "^2.1.2",
 		"timeago.js": "^4.0.2",
+		"vite": "^5.0.12",
+		"vite-tsconfig-paths": "^4.3.1",
 		"web-vitals": "^1.1.2"
 	},
 	"scripts": {
-		"start": "react-scripts --openssl-legacy-provider start",
-		"build": "react-scripts --openssl-legacy-provider build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"start": "vite",
+		"build": "vite build",
+		"serve": "vite preview"
 	},
 	"browserslist": {
 		"production": [
@@ -48,5 +50,9 @@
 			"last 1 firefox version",
 			"last 1 safari version"
 		]
+	},
+	"devDependencies": {
+		"@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+		"@rollup/plugin-dsv": "^3.0.4"
 	}
 }
