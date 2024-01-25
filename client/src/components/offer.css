@@ -75,8 +75,7 @@
 	}
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.column.main {
 		box-sizing: border-box;
 		min-height: 300px;
@@ -94,8 +93,7 @@ print {
 	}
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.page-layout-1column .column.main {
 		width: 100%;
 		order: 2;
@@ -110,8 +108,7 @@ print {
 	}
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.columns {
 		display: block;
 	}
@@ -128,8 +125,7 @@ print {
 	}
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.page-main {
 		box-sizing: border-box;
 		margin-left: auto;
@@ -270,9 +266,6 @@ print {
 		width: calc(100% - 330px);
 	}
 
-
-
-
 	.time-leftAr {
 		display: flex;
 		flex-direction: row-reverse;
@@ -333,7 +326,8 @@ print {
 	}
 
 	.loading-content {
-		background: url(http://magento2.magentech.com/themes/sm_venuse/pub/static/version1661854504/frontend/Sm/venuse/en_US/images/loader-1.gif) no-repeat center center / 30px auto;
+		background: url(http://magento2.magentech.com/themes/sm_venuse/pub/static/version1661854504/frontend/Sm/venuse/en_US/images/loader-1.gif)
+			no-repeat center center / 30px auto;
 		min-height: 100px;
 		background-image: url('http://magento2.magentech.com/themes/sm_venuse/pub/static/version1661854504/frontend/Sm/venuse/en_US/images/loader-1.gif');
 		background-position-x: center;
@@ -558,7 +552,6 @@ print {
 		width: auto;
 	}
 
-
 	.group-deal-1 .product-item-info:after {
 		content: '';
 		display: block;
@@ -707,7 +700,10 @@ print {
 }
 
 @media all {
-	.group-deal-1 .product-item-info .product-item-details .product-item-actions {
+	.group-deal-1
+		.product-item-info
+		.product-item-details
+		.product-item-actions {
 		margin: 0;
 		padding-top: 45px;
 	}
@@ -766,7 +762,11 @@ print {
 		margin-top: 5px;
 	}
 
-	.group-deal-1 .product-item-info .product-item-details .product-reviews-summary .reviews-actions {
+	.group-deal-1
+		.product-item-info
+		.product-item-details
+		.product-reviews-summary
+		.reviews-actions {
 		display: none;
 	}
 
@@ -783,7 +783,11 @@ print {
 		vertical-align: middle;
 	}
 
-	.group-deal-1 .product-item-info .product-item-details .product-item-actions .actions-primary {
+	.group-deal-1
+		.product-item-info
+		.product-item-details
+		.product-item-actions
+		.actions-primary {
 		vertical-align: top;
 	}
 
@@ -794,7 +798,11 @@ print {
 		white-space: nowrap;
 	}
 
-	.group-deal-1 .product-item-info .product-item-details .product-item-actions .actions-secondary {
+	.group-deal-1
+		.product-item-info
+		.product-item-details
+		.product-item-actions
+		.actions-secondary {
 		vertical-align: top;
 		/* margin-top: 10px; */
 	}
@@ -846,7 +854,7 @@ print {
 		height: 28px;
 		letter-spacing: -10px;
 		line-height: 28px;
-		content: '\e605' '\e605' '\e605' '\e605' '\e605';
+		content: '\e605''\e605''\e605''\e605''\e605';
 		display: block;
 		font-style: normal;
 		font-weight: normal;
@@ -858,7 +866,7 @@ print {
 		font-family: 'icomoon' !important;
 		font-size: 14px;
 		letter-spacing: 3px;
-		content: '\e95a' '\e95a' '\e95a' '\e95a' '\e95a';
+		content: '\e95a''\e95a''\e95a''\e95a''\e95a';
 	}
 
 	.product-reviews-summary .reviews-actions a {
@@ -936,7 +944,12 @@ print {
 		-webkit-border-radius: 4px;
 	}
 
-	.group-deal-1 .product-item-info .product-item-details .product-item-actions .actions-primary .tocart {
+	.group-deal-1
+		.product-item-info
+		.product-item-details
+		.product-item-actions
+		.actions-primary
+		.tocart {
 		height: 40px;
 		padding: 0 26px;
 		background-color: #f3f3f3;
@@ -955,7 +968,12 @@ print {
 		color: #fff;
 	}
 
-	.group-deal-1 .product-item-info .product-item-details .product-item-actions .actions-primary .tocart:hover {
+	.group-deal-1
+		.product-item-info
+		.product-item-details
+		.product-item-actions
+		.actions-primary
+		.tocart:hover {
 		background-color: #f0cba4;
 		color: #222222;
 	}
@@ -980,7 +998,12 @@ print {
 }
 
 @media all {
-	.group-deal-1 .product-item-info .product-item-details .product-item-actions .actions-secondary .action {
+	.group-deal-1
+		.product-item-info
+		.product-item-details
+		.product-item-actions
+		.actions-secondary
+		.action {
 		background-color: #f3f3f3;
 		display: block;
 		float: left;
@@ -1030,17 +1053,33 @@ print {
 		margin-top: 6px;
 	}
 
-	.group-deal-1 .product-item-info .product-item-details .product-item-actions .actions-secondary .action:before {
+	.group-deal-1
+		.product-item-info
+		.product-item-details
+		.product-item-actions
+		.actions-secondary
+		.action:before {
 		display: none;
 	}
 
-	.group-deal-1 .product-item-info .product-item-details .product-item-actions .actions-secondary .action.towishlist svg {
+	.group-deal-1
+		.product-item-info
+		.product-item-details
+		.product-item-actions
+		.actions-secondary
+		.action.towishlist
+		svg {
 		display: inline-block;
 
 		font-size: 14px;
 	}
 
-	.group-deal-1 .product-item-info .product-item-details .product-item-actions .actions-secondary .action:hover {
+	.group-deal-1
+		.product-item-info
+		.product-item-details
+		.product-item-actions
+		.actions-secondary
+		.action:hover {
 		background-color: #f0cba4;
 		color: #222222;
 	}
@@ -1064,7 +1103,13 @@ print {
 		content: '\e61f';
 	}
 
-	.group-deal-1 .product-item-info .product-item-details .product-item-actions .actions-secondary .action.tocompare svg {
+	.group-deal-1
+		.product-item-info
+		.product-item-details
+		.product-item-actions
+		.actions-secondary
+		.action.tocompare
+		svg {
 		display: inline-block;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
@@ -1126,7 +1171,7 @@ print {
 		height: 28px;
 		letter-spacing: -10px;
 		line-height: 28px;
-		content: '\e605' '\e605' '\e605' '\e605' '\e605';
+		content: '\e605''\e605''\e605''\e605''\e605';
 		font-style: normal;
 		font-weight: normal;
 		speak: none;
@@ -1558,7 +1603,8 @@ button:hover {
 	height: 100%;
 	top: 0;
 	left: 0;
-	background: url('https://github.com/BlackStar1991/CardProduct/blob/master/app/img/decorElements/DecorRectangle.png') 50% 50% no-repeat;
+	background: url('https://github.com/BlackStar1991/CardProduct/blob/master/app/img/decorElements/DecorRectangle.png')
+		50% 50% no-repeat;
 	opacity: 0.2;
 	z-index: 4;
 }
@@ -1627,10 +1673,6 @@ button:hover {
 	margin-left: 5px;
 	background-color: #d7d7d7;
 	cursor: pointer;
-}
-
-.sliderBlock_positionControls__paginatorItem2:first-child {
-	margin-left: 31%;
 }
 
 .sliderBlock_positionControls__active2 {
@@ -2035,23 +2077,6 @@ input[type='radio'] + label {
 	color: #536dfe;
 }
 
-/* .block_quantity__up:before {
-			content: "\f106";
-			width: 11px;
-			height: 6px;
-			font-family: "FontAwesome";
-			color: #37474f;
-			font-size: 18px;
-		  }
-		  .block_quantity__down:before {
-			content: "\f107";
-			width: 11px;
-			height: 6px;
-			font-family: "FontAwesome";
-			color: #37474f;
-			font-size: 18px;
-		  }
-		   */
 .AiOutlineArrowUpanddown {
 	width: 15px;
 	height: 15px;
@@ -2205,11 +2230,18 @@ input[type='radio'] + label {
 		width: 145px;
 	}
 
-	.group-deal-1 .product-item-info .product-item-details .product-item-actions {
+	.group-deal-1
+		.product-item-info
+		.product-item-details
+		.product-item-actions {
 		padding-top: 0px;
 	}
 
-	.group-deal-1 .product-item-info .product-item-details .product-item-actions .actions-primary {
+	.group-deal-1
+		.product-item-info
+		.product-item-details
+		.product-item-actions
+		.actions-primary {
 		margin-bottom: 7px;
 	}
 

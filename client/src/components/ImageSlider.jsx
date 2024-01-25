@@ -3,40 +3,27 @@ import {
 	BsFillArrowRightCircleFill,
 	BsFillArrowLeftCircleFill,
 } from 'react-icons/bs';
-const slides = [
-	{
-		image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones1.png?raw=true',
-		alt: 'headphones',
-	},
-	{
-		image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones2.png?raw=true',
-		alt: 'headphones',
-	},
-	{
-		image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones3.png?raw=true',
-		alt: 'headphones',
-	},
-	{
-		image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones4.png?raw=true',
-		alt: 'headphones',
-	},
-	{
-		image: 'https://github.com/BlackStar1991/CardProduct/blob/master/app/img/goods/item1/phones5.png?raw=true',
-		alt: 'headphones',
-	},
-];
-const ImageSlider = () => {
+
+const ImageSlider = ({ viewArrCatog }) => {
 	const [currentSlide, setCurrentSlide] = useState(0);
+	const slides = (viewArrCatog?.variants || []).map((variant) => ({
+		image: variant.img[0],
+		alt: viewArrCatog.title,
+	}));
+	console.log(slides);
+
 	const goToNextSlide = useCallback(() => {
 		setCurrentSlide((prevSlide) =>
-			prevSlide === slides.length - 1 ? 0 : prevSlide + 1,
+			prevSlide >= slides.length - 1 ? 0 : prevSlide + 1,
 		);
 	}, [slides.length]);
+
 	const goToPreviousSlide = useCallback(() => {
 		setCurrentSlide((prevSlide) =>
-			prevSlide === 0 ? slides.length - 1 : prevSlide - 1,
+			prevSlide <= 0 ? slides.length - 1 : prevSlide - 1,
 		);
 	}, [slides.length]);
+
 	useEffect(() => {
 		const interval = setInterval(goToNextSlide, 3000);
 		return () => clearInterval(interval);
@@ -49,10 +36,13 @@ const ImageSlider = () => {
 						key={slide.image}
 						className={`sliderBlock_items__itemPhoto2 ${
 							index === currentSlide ? 'sliderBlock_items__showing2' : ''
-						}`}>
+						}`}
+					>
 						<img
 							src={slide.image}
+							loading='lazy'
 							alt={slide.alt}
+							style={{ width: '240px', height: '380px' }} // Add your desired width and height
 						/>
 					</li>
 				))}
@@ -62,12 +52,14 @@ const ImageSlider = () => {
 					<div className='sliderBlock_controls__wrapper'>
 						<div
 							className='sliderBlock_controls__arrow sliderBlock_controls__arrowForward2'
-							onClick={goToNextSlide}>
+							onClick={goToNextSlide}
+						>
 							<BsFillArrowRightCircleFill className='sliderBlock_controls__arrowForward2' />
 						</div>
 						<div
 							className='sliderBlock_controls__arrow sliderBlock_controls__arrowBackward2'
-							onClick={goToPreviousSlide}>
+							onClick={goToPreviousSlide}
+						>
 							<BsFillArrowLeftCircleFill className='sliderBlock_controls__arrowBackward2' />
 						</div>
 					</div>
@@ -80,7 +72,8 @@ const ImageSlider = () => {
 								index === currentSlide
 									? 'sliderBlock_positionControls__active2'
 									: ''
-							}`}></li>
+							}`}
+						></li>
 					))}
 				</ul>
 			</div>

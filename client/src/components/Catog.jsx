@@ -301,6 +301,7 @@ const Catog = ({ item }) => {
 		setSelectedSize,
 		setQuantity,
 	]);
+	// console.log('viewArrCatog', viewArrCatog);
 	const mergedCart = useMemo(() => {
 		return cartProducts.products.reduce((acc, curr) => {
 			const existingItem = acc.find(
@@ -675,7 +676,7 @@ const Catog = ({ item }) => {
 					<div className='row11'>
 						<div className='small-12 large-6 columns11'>
 							<div className='productCard_leftSide clearfix'>
-								<ImageSlider />
+								<ImageSlider viewArrCatog ={viewArrCatog} />
 							</div>
 						</div>
 						<div className='small-12 large-6 columns11'>

@@ -56,6 +56,9 @@ dependencies:
   react-icons:
     specifier: ^4.8.0
     version: 4.8.0(react@17.0.2)
+  react-image-file-resizer:
+    specifier: ^0.4.8
+    version: 0.4.8
   react-redux:
     specifier: ^8.0.5
     version: 8.0.5(react-dom@17.0.2)(react@17.0.2)(redux@4.2.1)
@@ -2281,6 +2284,10 @@ packages:
       react: '*'
     dependencies:
       react: 17.0.2
+    dev: false
+
+  /react-image-file-resizer@0.4.8:
+    resolution: {integrity: sha512-Ue7CfKnSlsfJ//SKzxNMz8avDgDSpWQDOnTKOp/GNRFJv4dO9L5YGHNEnj40peWkXXAK2OK0eRIoXhOYpUzUTQ==}
     dev: false
 
   /react-is@16.13.1:
