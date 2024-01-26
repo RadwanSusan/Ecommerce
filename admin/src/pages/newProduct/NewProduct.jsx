@@ -10,6 +10,7 @@ import app from '../../firebase';
 import { addProduct } from '../../redux/apiCalls';
 import { useDispatch } from 'react-redux';
 import swal from 'sweetalert';
+import Resizer from 'react-image-file-resizer';
 import { FaSpinner } from 'react-icons/fa';
 export default function NewProduct() {
 	const [inputs, setInputs] = useState({
@@ -210,9 +211,24 @@ export default function NewProduct() {
 			new Date().getTime() +
 			(fileSingle ? fileSingle.name : 'default_image');
 		const storageRef = ref(storage, fileName);
+
 		if (fileSingle) {
-			const uploadTask = uploadBytesResumable(storageRef, fileSingle);
 			try {
+				const resizedImage = await new Promise((resolve, reject) => {
+					Resizer.imageFileResizer(
+						fileSingle,
+						900,
+						650,
+						'WEBP',
+						100,
+						0,
+						(uri) => {
+							resolve(uri);
+						},
+						'blob',
+					);
+				});
+				const uploadTask = uploadBytesResumable(storageRef, resizedImage);
 				await uploadTask;
 				const url = await getDownloadURL(uploadTask.snapshot.ref);
 				return createVariant(form, [url]);
@@ -224,7 +240,8 @@ export default function NewProduct() {
 		return createVariant(form, [DEFAULT_IMAGE_URL]);
 	};
 	const createVariant = (form, images) => ({
-		img: images,
+		img: images[0],
+		img_large: images[1],
 		color: [form.color],
 		size: [form.size],
 		quantity: form.quantity,

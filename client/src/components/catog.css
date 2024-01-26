@@ -407,6 +407,7 @@
 		border-radius: 10px;
 		width: 340px !important;
 		height: 360px !important;
+		object-fit: cover;
 	}
 
 	.snipcss-X3nN9 h2 {
