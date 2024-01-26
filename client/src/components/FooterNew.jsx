@@ -45,13 +45,13 @@ const FooterNew = () => {
 																</span>
 															</div>
 															<div class='box-content'>
-																<h4 class='title-icon'>
+																<h1 class='title-icon'>
 																	{
 																		dictionary.footer[
 																			'GREAT VALUE'
 																		]
 																	}
-																</h4>
+																</h1>
 																<div>
 																	{dictionary.footer['desc1']}
 																</div>
