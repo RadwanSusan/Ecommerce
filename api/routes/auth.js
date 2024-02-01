@@ -7,116 +7,166 @@ const crypto = require('crypto');
 const cron = require('node-cron');
 
 const nodemailer = require('nodemailer');
-// const reset = require('../../admin/src/pages/reset/Reset');
 
-// REGISTER;
+// REGISTER
 // router.post('/register', async (req, res) => {
 // 	const newUser = new User({
 // 		username: req.body.username,
 // 		email: req.body.email,
+// 		phoneNumber: req.body.phoneNumber,
 // 		isAdmin: req.body.isAdmin,
 // 		verified: false,
-
+// 		verificationToken: req.body.verificationToken,
+// 		verificationTokenExpires: req.body.verificationTokenExpires,
 // 		img: req.body.img,
 // 		password: CryptoJS.AES.encrypt(
 // 			req.body.password,
 // 			process.env.PASS_SEC,
 // 		).toString(),
 // 	});
+// 	console.log(`🚀  newUser =>`, newUser);
+// 	// Generate a verification token
+// 	const token = crypto.randomBytes(20).toString('hex');
+
+// 	// Save the verification token and expiration date to the user's document
+// 	newUser.verificationToken = token;
+// 	newUser.verificationTokenExpires = Date.now() + 300000; // 5 minutes from now
 
 // 	try {
 // 		const savedUser = await newUser.save();
-// 		res.status(201).json(savedUser);
+// 		console.log(`🚀  savedUser =>`, savedUser);
+// 		// await sendVerificationEmail(savedUser, req, res); // Send verification email after user is saved
+// 		res.status(201).json({ user: savedUser, token: token }); // Return the token in the response
 // 	} catch (err) {
+// 		console.log(err);
 // 		res.status(500).json(err);
 // 	}
 // });
 
-// REGISTER
-router.post('/register', async (req, res) => {
-	const newUser = new User({
-		username: req.body.username,
-		email: req.body.email,
-		phoneNumber: req.body.phoneNumber,
-		isAdmin: req.body.isAdmin,
-		verified: false,
-		verificationToken: req.body.verificationToken,
-		verificationTokenExpires: req.body.verificationTokenExpires,
-		img: req.body.img,
-		password: CryptoJS.AES.encrypt(
-			req.body.password,
-			process.env.PASS_SEC,
-		).toString(),
-	});
-	console.log(`🚀  newUser =>`, newUser);
-	// Generate a verification token
-	const token = crypto.randomBytes(20).toString('hex');
+// // Rest of your code for sending emails
 
-	// Save the verification token and expiration date to the user's document
-	newUser.verificationToken = token;
-	newUser.verificationTokenExpires = Date.now() + 300000; // 5 minutes from now
+// async function sendVerificationEmail(user, req, res) {
+// 	// Generate a verification token
+// 	const token = crypto.randomBytes(20).toString('hex');
+// 	console.log(token); // Add this line to print the token
+
+// 	// Save the verification token and expiration date to the user's document
+// 	user.verificationToken = token;
+// 	user.verificationTokenExpires = Date.now() + 300000; // 5 minutes from now
+// 	await user.save();
+
+// 	// Create a transporter object using the default SMTP transport
+// 	let transporter = nodemailer.createTransport({
+// 		service: 'Outlook',
+// 		auth: {
+// 			user: 'zaidalt520@outlook.com',
+// 			pass: '1234#$abcd',
+// 		},
+// 		debug: true,
+// 		logger: true,
+// 	});
+
+// 	// Send the verification email
+// 	let info = await transporter.sendMail({
+// 		from: '"Your App" <zaidalt520@outlook.com>',
+// 		to: user.email,
+// 		subject: 'Account Verification',
+// 		text: `Please verify your account by clicking the following link: http://localhost:3000/verifyEmail?token=${token}`,
+// 		html: `<p>Please verify your account by clicking the following link: <a href="http://localhost:3000/verifyEmail?token=${token}">Verify Account</a></p>`,
+// 	});
+// }
+// router.get('/verifyEmail', async (req, res) => {
+// 	const user = await User.findOne({
+// 		verificationToken: req.query.token,
+// 		verificationTokenExpires: { $gt: Date.now() },
+// 	});
+// 	if (!user) {
+// 		await User.deleteOne({ email: req.query.email });
+// 		return res
+// 			.status(400)
+// 			.send('Invalid or expired token. User has been removed.');
+
+// 		// return res.status(400).send('Invalid or expired token.');
+// 	}
+// 	user.verified = true;
+// 	user.verificationToken = undefined;
+// 	user.verificationTokenExpires = undefined;
+// 	await user.save();
+// 	res.status(200).json({ message: 'Email verified!' });
+// });
+
+router.post('/register', async (req, res) => {
+	const { username, email, phoneNumber, isAdmin, password } = req.body;
+	const hashedPassword = CryptoJS.AES.encrypt(
+		password,
+		process.env.PASS_SEC,
+	).toString();
+
+	// Generate a verification token
+	const verificationToken = crypto.randomBytes(20).toString('hex');
+	const verificationTokenExpires = Date.now() + 300000; // Token expires in 5 minutes
+
+	const newUser = new User({
+		username,
+		email,
+		phoneNumber,
+		isAdmin,
+		verified: false,
+		verificationToken,
+		verificationTokenExpires,
+		img: req.body.img,
+		password: hashedPassword,
+	});
 
 	try {
 		const savedUser = await newUser.save();
-		console.log(`🚀  savedUser =>`, savedUser);
-		// await sendVerificationEmail(savedUser, req, res); // Send verification email after user is saved
-		res.status(201).json({ user: savedUser, token: token }); // Return the token in the response
-	} catch (err) {
-		console.log(err);
-		res.status(500).json(err);
+
+		// Send verification email
+		const transporter = nodemailer.createTransport({
+			service: 'Outlook',
+			auth: {
+				user: 'yourEmail@outlook.com',
+				pass: 'yourEmailPassword',
+			},
+		});
+
+		const verificationUrl = `http://localhost:3000/verifyEmail?token=${verificationToken}`;
+
+		await transporter.sendMail({
+			from: '"Your App" <yourEmail@outlook.com>',
+			to: savedUser.email,
+			subject: 'Account Verification',
+			html: `<p>Please verify your account by clicking the following link: <a href="${verificationUrl}">Verify Account</a></p>`,
+		});
+
+		res.status(201).json({
+			message: 'User registered, please verify your email.',
+		});
+	} catch (error) {
+		res.status(500).json(error);
 	}
 });
 
-// Rest of your code for sending emails
-
-async function sendVerificationEmail(user, req, res) {
-	// Generate a verification token
-	const token = crypto.randomBytes(20).toString('hex');
-	console.log(token); // Add this line to print the token
-
-	// Save the verification token and expiration date to the user's document
-	user.verificationToken = token;
-	user.verificationTokenExpires = Date.now() + 300000; // 5 minutes from now
-	await user.save();
-
-	// Create a transporter object using the default SMTP transport
-	let transporter = nodemailer.createTransport({
-		service: 'Outlook',
-		auth: {
-			user: 'zaidalt520@outlook.com',
-			pass: '1234#$abcd',
-		},
-		debug: true,
-		logger: true,
-	});
-
-	// Send the verification email
-	let info = await transporter.sendMail({
-		from: '"Your App" <zaidalt520@outlook.com>',
-		to: user.email,
-		subject: 'Account Verification',
-		text: `Please verify your account by clicking the following link: http://localhost:3000/verifyEmail?token=${token}`,
-		html: `<p>Please verify your account by clicking the following link: <a href="http://localhost:3000/verifyEmail?token=${token}">Verify Account</a></p>`,
-	});
-}
+// Email verification endpoint
 router.get('/verifyEmail', async (req, res) => {
+	const { token } = req.query;
 	const user = await User.findOne({
-		verificationToken: req.query.token,
+		verificationToken: token,
 		verificationTokenExpires: { $gt: Date.now() },
 	});
+
 	if (!user) {
-		await User.deleteOne({ email: req.query.email });
 		return res
 			.status(400)
-			.send('Invalid or expired token. User has been removed.');
-
-		// return res.status(400).send('Invalid or expired token.');
+			.send('Verification token is invalid or has expired.');
 	}
+
 	user.verified = true;
 	user.verificationToken = undefined;
 	user.verificationTokenExpires = undefined;
 	await user.save();
-	res.status(200).json({ message: 'Email verified!' });
+
+	res.status(200).json({ message: 'Email verified successfully!' });
 });
 
 cron.schedule('* * * * *', async () => {
@@ -329,12 +379,4 @@ router.post('/sendEmailAdmin', async (req, res) => {
 	}
 });
 
-// router.get('checkEmailDuplicate', async (req, res) => {
-//   const email = req.params.email;
-//   const user = await User.findOne({ email });
-//   if (user) {
-//     return res.status(200).json('Email already exists!');
-//   }
-//   res.status(200).json('Email available!');
-// });
 module.exports = router;
