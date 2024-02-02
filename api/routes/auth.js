@@ -219,7 +219,7 @@ router.post('/forgot-password', async (req, res) => {
 		const { email } = req.body;
 		const oldUser = await User.findOne({ email: email });
 		if (!oldUser) {
-			return res.json({ status: 'User Not Exists' });
+			return res.status(404).send('User not found');
 		}
 		const secret = process.env.JWT_SEC + oldUser.password;
 		const token = jwt.sign(
@@ -235,18 +235,18 @@ router.post('/forgot-password', async (req, res) => {
 			port: 587,
 			secure: false,
 			auth: {
-				user: 'zaidalt505@outlook.com',
-				pass: '1234#$abcd',
+				user: 'danali444@outlook.com',
+				pass: 'Outbox@007',
 			},
 			tls: {
 				rejectUnauthorized: false,
 			},
 		});
 		const mailOptions = {
-			from: 'zaidalt505@outlook.com',
-			to: 'zaidaltamari5@gmail.com',
-			subject: 'Test email',
-			text: `This is a test email sent using Nodemailer ${link}`,
+			from: 'danali444@outlook.com',
+			to: oldUser.email,
+			subject: 'Password Reset Link',
+			text: `Please click on the following link to reset your password: ${link}`,
 		};
 		await transporter.sendMail(mailOptions);
 		console.log('Email sent');

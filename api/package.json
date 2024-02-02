@@ -1,25 +1,26 @@
 {
-  "name": "project2api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.jsx",
-  "scripts": {
-    "start": "nodemon index.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "crypto-js": "^4.1.1",
-    "dotenv": "^16.0.3",
-    "ejs": "^3.1.9",
-    "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.0",
-    "mongoose": "^7.0.1",
-    "node-cron": "^3.0.2",
-    "nodemailer": "^6.9.1",
-    "nodemon": "^2.0.21",
-    "stripe": "^11.14.0"
-  }
+	"name": "project2api",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.jsx",
+	"scripts": {
+		"start": "nodemon index.js",
+		"build": "node index.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"cors": "^2.8.5",
+		"crypto-js": "^4.1.1",
+		"dotenv": "^16.4.1",
+		"ejs": "^3.1.9",
+		"express": "^4.18.2",
+		"jsonwebtoken": "^9.0.0",
+		"mongoose": "^8.1.1",
+		"node-cron": "^3.0.2",
+		"nodemailer": "^6.9.1",
+		"nodemon": "^3.0.3",
+		"stripe": "^14.14.0"
+	}
 }
