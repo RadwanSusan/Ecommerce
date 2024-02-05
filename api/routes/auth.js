@@ -125,15 +125,15 @@ router.post('/register', async (req, res) => {
 		const transporter = nodemailer.createTransport({
 			service: 'Outlook',
 			auth: {
-				user: 'yourEmail@outlook.com',
-				pass: 'yourEmailPassword',
+				user: 'danali444@outlook.com',
+				pass: 'Outbox@007',
 			},
 		});
 
-		const verificationUrl = `http://localhost:3000/verifyEmail?token=${verificationToken}`;
+		const verificationUrl = `http://localhost:4000/api/auth/verifyEmail?token=${verificationToken}`;
 
 		await transporter.sendMail({
-			from: '"Your App" <yourEmail@outlook.com>',
+			from: '"Your App" <danali444@outlook.com>',
 			to: savedUser.email,
 			subject: 'Account Verification',
 			html: `<p>Please verify your account by clicking the following link: <a href="${verificationUrl}">Verify Account</a></p>`,
@@ -167,6 +167,7 @@ router.get('/verifyEmail', async (req, res) => {
 	await user.save();
 
 	res.status(200).json({ message: 'Email verified successfully!' });
+	// res.redirect('http://localhost:4000/api/auth/login');
 });
 
 cron.schedule('* * * * *', async () => {
