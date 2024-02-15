@@ -13,10 +13,21 @@ const VerifyEmail = () => {
 					const response = await axios.get(
 						`http://localhost:4000/api/auth/verifyEmail?token=${token}`,
 					);
+
 					console.log(response.data);
-					if (response.data.message === 'Email verified!') {
+					if (response.data.message === 'Email verified successfully!') {
 						swal('Your email has been verified!');
-						window.location.href = '/login';
+						var isAppOpened = false;
+						window.location.href = 'maanstore://verifyemail';
+						setTimeout(function () {
+							if (!isAppOpened) {
+								console.log('app not found');
+								window.location.href = '/login';
+							}
+						}, 1000);
+						window.addEventListener('focus', function () {
+							isAppOpened = true;
+						});
 					} else {
 						swal('Failed to verify email. Invalid or expired token.');
 					}

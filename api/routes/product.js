@@ -1,16 +1,6 @@
 const Product = require('../models/Product');
-const User = require('../models/User');
-
-const {
-	verifyToken,
-	verifyTokenAndAuthorization,
-	verifyTokenAndAdmin,
-} = require('./verifyToken');
-
+const { verifyTokenAndAdmin } = require('./verifyToken');
 const router = require('express').Router();
-
-//CREATE
-
 router.post('/', verifyTokenAndAdmin, async (req, res) => {
 	const newProduct = new Product(req.body);
 
@@ -23,11 +13,9 @@ router.post('/', verifyTokenAndAdmin, async (req, res) => {
 		console.log(err);
 	}
 });
-
-//UPDATE
 router.put('/:id', async (req, res) => {
 	try {
-		const updatedProduct = await Product.findByIdAndUpdate(
+		const updatedProduct = await Product.findByIdAndUp_date(
 			req.params.id,
 			{
 				$set: req.body,
@@ -39,7 +27,6 @@ router.put('/:id', async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-//DELETE
 router.delete('/:id', verifyTokenAndAdmin, async (req, res) => {
 	try {
 		await Product.findByIdAndDelete(req.params.id);
@@ -48,8 +35,6 @@ router.delete('/:id', verifyTokenAndAdmin, async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-
-//GET PRODUCT
 router.get('/find/:id', async (req, res) => {
 	try {
 		const product = await Product.findById(req.params.id);
@@ -58,8 +43,6 @@ router.get('/find/:id', async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-
-//GET ALL PRODUCTS
 router.get('/', async (req, res) => {
 	const qNew = req.query.new;
 	const qCategory = req.query.category;
@@ -83,7 +66,6 @@ router.get('/', async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-
 router.get('/search/:key/', async (req, res) => {
 	const qCategory = req.query.category;
 	try {
@@ -104,5 +86,4 @@ router.get('/search/:key/', async (req, res) => {
 		res.status(500).json({ message: 'Server Error' });
 	}
 });
-
 module.exports = router;

@@ -1,14 +1,14 @@
-const Offer = require("../models/Offer");
+const Offer = require('../models/Offer');
 const {
 	verifyToken,
 	verifyTokenAndAuthorization,
 	verifyTokenAndAdmin,
-} = require("./verifyToken");
+} = require('./verifyToken');
 
-const router = require("express").Router();
+const router = require('express').Router();
 
 //CREATE
-router.post("/", verifyTokenAndAdmin, async (req, res) => {
+router.post('/', verifyTokenAndAdmin, async (req, res) => {
 	const newOffer = new Offer(req.body);
 	try {
 		const savedOffer = await newOffer.save();
@@ -33,7 +33,7 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
 // 		res.status(500).json(err);
 // 	}
 // });
-router.put("/:id", async (req, res) => {
+router.put('/:id', async (req, res) => {
 	try {
 		const updatedOffer = await Offer.findByIdAndUpdate(
 			req.params.id,
@@ -49,16 +49,16 @@ router.put("/:id", async (req, res) => {
 });
 
 //DELETE
-router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
+router.delete('/:id', verifyTokenAndAdmin, async (req, res) => {
 	try {
 		await Offer.findByIdAndDelete(req.params.id);
-		res.status(200).json("Offer has been deleted...");
+		res.status(200).json('Offer has been deleted...');
 	} catch (err) {
 		res.status(500).json(err);
 	}
 });
 //GET Offer
-router.get("/find/:id", async (req, res) => {
+router.get('/find/:id', async (req, res) => {
 	try {
 		const offer = await Offer.findById(req.params.id);
 		res.status(200).json(offer);
@@ -68,7 +68,7 @@ router.get("/find/:id", async (req, res) => {
 });
 
 //GET ALL Offer
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
 	const qNew = req.query.new;
 	const qCategory = req.query.category;
 	try {

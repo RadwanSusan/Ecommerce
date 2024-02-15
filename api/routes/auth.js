@@ -128,6 +128,9 @@ router.post('/register', async (req, res) => {
 				user: 'danali444@outlook.com',
 				pass: 'Outbox@007',
 			},
+			tls: {
+				rejectUnauthorized: false,
+			},
 		});
 
 		const verificationUrl = `http://localhost:4000/api/auth/verifyEmail?token=${verificationToken}`;
