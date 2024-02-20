@@ -24,7 +24,7 @@ const VerifyEmail = () => {
 								console.log('app not found');
 								window.location.href = '/login';
 							}
-						}, 1000);
+						}, 2500);
 						window.addEventListener('focus', function () {
 							isAppOpened = true;
 						});

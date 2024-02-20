@@ -177,4 +177,19 @@ router.get('/userWishListArray/:userId', async (req, res) => {
 	}
 });
 
+// Find user by email
+router.get('/findByEmail', async (req, res) => {
+	try {
+		const user = await User.findOne({ email: req.query.email });
+		if (user) {
+			const { password, ...otherDetails } = user._doc;
+			res.status(200).json(otherDetails);
+		} else {
+			res.status(404).json('User not found');
+		}
+	} catch (err) {
+		res.status(500).json(err);
+	}
+});
+
 module.exports = router;

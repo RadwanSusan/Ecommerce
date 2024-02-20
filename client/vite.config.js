@@ -2,6 +2,9 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import nodeGlobalsPolyfill from '@esbuild-plugins/node-globals-polyfill';
 export default defineConfig({
+	server: {
+		host: true,
+	},
 	build: {
 		outDir: 'build',
 		chunkSizeWarningLimit: 1600,

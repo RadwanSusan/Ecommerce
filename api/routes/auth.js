@@ -133,8 +133,8 @@ router.post('/register', async (req, res) => {
 			},
 		});
 
-		const verificationUrl = `http://localhost:4000/api/auth/verifyEmail?token=${verificationToken}`;
-
+		// const verificationUrl = `http://192.168.4.186:4000/api/auth/verifyEmail?token=${verificationToken}`;
+		const verificationUrl = `http://localhost:3000/verifyEmail?token=${verificationToken}`;
 		await transporter.sendMail({
 			from: '"Your App" <danali444@outlook.com>',
 			to: savedUser.email,
