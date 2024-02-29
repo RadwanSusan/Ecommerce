@@ -23,7 +23,6 @@ import {
 } from '../redux/apiCalls';
 import { clear } from '../redux/cartRedux';
 import { LanguageContext } from '../components/LanguageContext';
-const KEY = process.env.REACT_APP_STRIPE;
 const Container = styled.div`
 	user-select: none;
 `;
@@ -579,7 +578,9 @@ const Cart = () => {
 							description={`Your total is $${cart.total}`}
 							amount={cart.total * 100}
 							token={onToken}
-							stripeKey={KEY}>
+							stripeKey={
+								'pk_test_51MmDtYCeaBijWGLTN2mFTxcOEi10brXyAJfemQB0rkFLQjgrpJ1gMdvweORFdWPAcJMpq48d6DGIyTMXuckAra5t00mB2J9FJP'
+							}>
 							<Button>{dictionary.cart['CHECKOUT NOW']}</Button>
 						</StripeCheckout>
 					</Summary>
