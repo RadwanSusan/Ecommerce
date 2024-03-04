@@ -50,7 +50,9 @@ const Login = () => {
 									className='tab-pane2 active'
 									id='login'
 								>
-									<h5 class='welcom-admin'>WELCOME TO PMEADMIN! 👋🏻</h5>
+									<h5 class='welcom-admin'>
+										WELCOME TOoooooo PMEADMIN! 👋🏻
+									</h5>
 									<div className='form-signin'>
 										<input
 											type='text'
@@ -84,9 +86,9 @@ const Login = () => {
 											Login
 										</button>
 										<div className='register-link'>
-											{/* <Link to='/register'>
+											<Link to='/register'>
 												Don't have an account? Sign up here
-											</Link> */}
+											</Link>
 										</div>
 									</div>
 								</div>
