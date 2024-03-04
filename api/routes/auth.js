@@ -124,7 +124,7 @@ cron.schedule('* * * * *', async () => {
 
 router.post('/login', async (req, res) => {
 	try {
-		const user = await User.findOne({ email: req.body.email });
+		const user = await UserAdmin.findOne({ email: req.body.email });
 		if (!user) {
 			return res.status(401).json('Wrong email!');
 		}
@@ -137,9 +137,11 @@ router.post('/login', async (req, res) => {
 			return res.status(401).json('Wrong password!');
 		}
 		const accessToken = jwt.sign(
-			{ id: user._id, isAdmin: user.isAdmin },
+			{ id: user._id, role: user.role },
 			process.env.JWT_SEC,
-			{ expiresIn: '3d' },
+			{
+				expiresIn: '3d',
+			},
 		);
 		// const { password, ...others } = user._doc;
 		const { password, ...others } = user.toObject();
@@ -172,7 +174,7 @@ router.post('/forgot-password', async (req, res) => {
 			auth: {
 				user: 'danali444@outlook.com',
 				pass: 'Outbox@007',
-				// const { password, ...others } = user.toObject(),
+				// const { password, ...others } = user._doc,
 				tls: {
 					rejectUnauthorized: false,
 				},

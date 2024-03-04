@@ -48,22 +48,52 @@ import {
 	addUserSuccess,
 	addUserFailure,
 } from './userAllRedux';
+// export const login = async (dispatch, user) => {
+// 	dispatch(loginStart());
+// 	try {
+// 		const res = await publicRequest.post('/auth/login', user);
+// 		if (res.data.isAdmin) {
+// 			dispatch(loginSuccess(res.data));
+// 			setTimeout(() => {
+// 				window.location.href = '/';
+// 			});
+// 		} else {
+// 			dispatch(loginFailure());
+// 		}
+// 	} catch (err) {
+// 		dispatch(loginFailure());
+// 	}
+// };
 export const login = async (dispatch, user) => {
 	dispatch(loginStart());
 	try {
 		const res = await publicRequest.post('/auth/login', user);
-		if (res.data.isAdmin) {
+
+		// Redirect based on role
+		if (res.data.role === 'superAdmin') {
 			dispatch(loginSuccess(res.data));
 			setTimeout(() => {
 				window.location.href = '/';
+			}); // Redirect super admin to home/dashboard
+		} else if (
+			res.data.role === 'supplierType1' ||
+			res.data.role === 'supplierType2'
+		) {
+			dispatch(loginSuccess(res.data));
+			setTimeout(() => {
+				window.location.href = '/products'; // Redirect supplier type 1 to products
 			});
 		} else {
+			setTimeout(() => {
+				window.location.href = '/products'; // Redirect unauthorized/logged-out users to login
+			});
 			dispatch(loginFailure());
 		}
 	} catch (err) {
 		dispatch(loginFailure());
 	}
 };
+
 export const logoutUser = () => {
 	localStorage.removeItem('persist:root');
 	window.location.href = '/login';

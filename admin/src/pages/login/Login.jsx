@@ -6,6 +6,7 @@ import swal from 'sweetalert';
 import loginIllustration from '../../Assets/auth-v2-login-illustration-light.png';
 import './login.css';
 import React from 'react';
+
 const Login = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
