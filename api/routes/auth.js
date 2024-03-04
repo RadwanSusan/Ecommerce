@@ -8,7 +8,7 @@ const cron = require('node-cron');
 const UserAdmin = require('../models/UserAdmin'); // Assuming your user model is saved as User.js
 
 const nodemailer = require('nodemailer');
-const user = require( './user' );
+const user = require('./user');
 
 router.post('/registerAdmin', async (req, res) => {
 	const { username, email, password, role } = req.body;
@@ -172,11 +172,11 @@ router.post('/forgot-password', async (req, res) => {
 			auth: {
 				user: 'danali444@outlook.com',
 				pass: 'Outbox@007',
-			const { password, ...others } = user.toObject(),
-			tls: {
-				rejectUnauthorized: false,
+				// const { password, ...others } = user.toObject(),
+				tls: {
+					rejectUnauthorized: false,
+				},
 			},
-		}
 		});
 
 		const mailOptions = {
