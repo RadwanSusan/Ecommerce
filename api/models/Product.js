@@ -36,6 +36,7 @@ const ProductSchema = new mongoose.Schema(
 		height: { type: Number, required: true },
 		length: { type: Number, required: true },
 		weight: { type: Number, required: true },
+		supplier: { type: mongoose.Schema.Types.ObjectId, ref: 'UserAdmin' },
 		promo: PromoSchema,
 		discount: DiscountSchema,
 	},

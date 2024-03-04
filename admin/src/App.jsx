@@ -18,6 +18,7 @@ import Login from './pages/login/Login';
 import Forgot from './pages/forgot/Forgot';
 import Transactions from './pages/transactions/Transactions';
 import Analytics from './pages/Analytics/Analytics';
+import Register from './pages/register/Register';
 import './components/style/dark.scss';
 import { useContext } from 'react';
 import { useSelector } from 'react-redux';
@@ -36,6 +37,9 @@ function App() {
 				<Route path='/login'>
 					{admin ? <Redirect to='/' /> : <Login />}
 				</Route>
+				<Route path='/register'>
+					<Register />
+				</Route>
 				{admin ? (
 					<>
 						<Topbar />
@@ -45,7 +49,8 @@ function App() {
 								<TokenValidator logOut={logOut}>
 									<Route
 										exact
-										path='/'>
+										path='/'
+									>
 										<Home />
 									</Route>
 									<Route path='/users'>

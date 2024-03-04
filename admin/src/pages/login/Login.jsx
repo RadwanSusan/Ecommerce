@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../redux/apiCalls';
+import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import loginIllustration from '../../Assets/auth-v2-login-illustration-light.png';
 import './login.css';
+import React from 'react';
 const Login = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -42,10 +44,12 @@ const Login = () => {
 						<div className='account-wall2'>
 							<div
 								id='my-tab-content'
-								className='tab-content'>
+								className='tab-content'
+							>
 								<div
 									className='tab-pane2 active'
-									id='login'>
+									id='login'
+								>
 									<h5 class='welcom-admin'>WELCOME TO PMEADMIN! 👋🏻</h5>
 									<div className='form-signin'>
 										<input
@@ -68,15 +72,22 @@ const Login = () => {
 											<a
 												href='/forgot'
 												className='forgot2'
-												data-toggle='tab'>
+												data-toggle='tab'
+											>
 												Forgot Password
 											</a>
 										</span>
 										<button
 											className='btn btn-lg btn-saffron2 btn-block'
-											onClick={handleClick}>
+											onClick={handleClick}
+										>
 											Login
 										</button>
+										<div className='register-link'>
+											{/* <Link to='/register'>
+												Don't have an account? Sign up here
+											</Link> */}
+										</div>
 									</div>
 								</div>
 							</div>
