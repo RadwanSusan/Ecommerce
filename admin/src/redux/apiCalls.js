@@ -98,15 +98,28 @@ export const logoutUser = () => {
 	localStorage.removeItem('persist:root');
 	window.location.href = '/login';
 };
-export const getProducts = async (dispatch) => {
+// export const getProducts = async (dispatch) => {
+// 	dispatch(getProductStart());
+// 	try {
+// 		const res = await publicRequest.get('/products');
+// 		dispatch(getProductSuccess(res.data));
+// 	} catch (err) {
+// 		dispatch(getProductFailure());
+// 	}
+// };
+export const getProducts = async (dispatch, supplierId) => {
 	dispatch(getProductStart());
 	try {
-		const res = await publicRequest.get('/products');
+		const url = supplierId
+			? `/products?supplierId=${supplierId}`
+			: '/products';
+		const res = await publicRequest.get(url);
 		dispatch(getProductSuccess(res.data));
 	} catch (err) {
 		dispatch(getProductFailure());
 	}
 };
+
 export const deleteProduct = async (id, dispatch) => {
 	// @ts-ignore
 	const res = await userRequest.delete(`/products/${id}`);

@@ -1,7 +1,10 @@
 const Product = require('../models/Product');
 const router = require('express').Router();
 router.post('/', async (req, res) => {
-	const newProduct = new Product(req.body);
+	const newProduct = new Product({
+		...req.body,
+		supplier: req.body.supplierId,
+	});
 
 	try {
 		const savedProduct = await newProduct.save();
@@ -42,9 +45,34 @@ router.get('/find/:id', async (req, res) => {
 		res.status(500).json(err);
 	}
 });
+// router.get('/', async (req, res) => {
+// 	const qNew = req.query.new;
+// 	const qCategory = req.query.category;
+// 	try {
+// 		let products;
+
+// 		if (qNew) {
+// 			products = await Product.find().sort({ createdAt: -1 }).limit(1);
+// 		} else if (qCategory) {
+// 			products = await Product.find({
+// 				categories: {
+// 					$in: [qCategory],
+// 				},
+// 			});
+// 		} else {
+// 			products = await Product.find();
+// 		}
+
+// 		res.status(200).json(products);
+// 	} catch (err) {
+// 		res.status(500).json(err);
+// 	}
+// });
 router.get('/', async (req, res) => {
 	const qNew = req.query.new;
 	const qCategory = req.query.category;
+	const qSupplierId = req.query.supplierId; // Assuming 'supplierId' is the query parameter
+
 	try {
 		let products;
 
@@ -56,6 +84,9 @@ router.get('/', async (req, res) => {
 					$in: [qCategory],
 				},
 			});
+		} else if (qSupplierId) {
+			// Fetch products specific to a supplier's ID
+			products = await Product.find({ supplier: qSupplierId });
 		} else {
 			products = await Product.find();
 		}
@@ -65,6 +96,7 @@ router.get('/', async (req, res) => {
 		res.status(500).json(err);
 	}
 });
+
 router.get('/search/:key/', async (req, res) => {
 	const qCategory = req.query.category;
 	try {

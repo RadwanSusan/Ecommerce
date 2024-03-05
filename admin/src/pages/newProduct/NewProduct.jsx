@@ -8,7 +8,7 @@ import {
 } from 'firebase/storage';
 import app from '../../firebase';
 import { addProduct } from '../../redux/apiCalls';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import swal from 'sweetalert';
 import Resizer from 'react-image-file-resizer';
 import { FaSpinner } from 'react-icons/fa';
@@ -50,6 +50,7 @@ export default function NewProduct() {
 	const colorPickerRef = useRef(null);
 	const DEFAULT_IMAGE_URL = 'https://img.icons8.com/ios/100/no-image.png';
 	const dispatch = useDispatch();
+	const supplierInfo = useSelector((state) => state.user.currentUser);
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		if (name.startsWith('discount.') || name.startsWith('promo.')) {
@@ -190,7 +191,9 @@ export default function NewProduct() {
 				Promise.all(uploadPromises),
 				minimumLoadingPromise,
 			]);
-			const product = constructProduct(inputs, variants);
+			// const product = constructProduct(inputs, variants);
+			const product = constructProduct(inputs, variants, supplierInfo);
+
 			await addProduct(product, dispatch);
 			swal({
 				title: 'Success',
@@ -246,12 +249,21 @@ export default function NewProduct() {
 		size: [form.size],
 		quantity: form.quantity,
 	});
-	const constructProduct = (inputs, variants) => ({
+	// const constructProduct = (inputs, variants) => ({
+	// 	...inputs,
+	// 	variants,
+	// 	...(isObjectComplete(inputs.discount) && { discount: inputs.discount }),
+	// 	...(isObjectComplete(inputs.promo) && { promo: inputs.promo }),
+	// 	supplierId: supplierInfo,
+	// });
+	const constructProduct = (inputs, variants, supplierInfo) => ({
 		...inputs,
 		variants,
 		...(isObjectComplete(inputs.discount) && { discount: inputs.discount }),
 		...(isObjectComplete(inputs.promo) && { promo: inputs.promo }),
+		supplierId: supplierInfo._id, // Use actual supplier ID
 	});
+
 	const resetAllForms = () => {
 		resetInputs();
 		resetColors();
@@ -326,7 +338,8 @@ export default function NewProduct() {
 			onDragEnter={handleDragEnter}
 			onDragLeave={handleDragLeave}
 			onDragOver={handleDragOver}
-			onDrop={handleDrop}>
+			onDrop={handleDrop}
+		>
 			{loading ? (
 				<div className='progress-icon'>
 					<FaSpinner className='spinner' />
@@ -338,7 +351,8 @@ export default function NewProduct() {
 						<form
 							key={index}
 							className='addProductForm addProductForm147 '
-							encType='multipart/form-data'>
+							encType='multipart/form-data'
+						>
 							<div className='divition1'>
 								<div className='addProductItem'>
 									<label>Image</label>
@@ -354,7 +368,8 @@ export default function NewProduct() {
 									{index !== 0 && (
 										<button
 											onClick={() => removeForm(index)}
-											className='closeFormButton'>
+											className='closeFormButton'
+										>
 											x
 										</button>
 									)}
@@ -363,7 +378,8 @@ export default function NewProduct() {
 										onDragEnter={() => setDraggedFile(true)}
 										onDragLeave={() => setDraggedFile(false)}
 										onDragOver={(e) => e.preventDefault()}
-										onDrop={(e) => handleDrop(e, index)}>
+										onDrop={(e) => handleDrop(e, index)}
+									>
 										{draggedFile ? (
 											<p>Drop your file here</p>
 										) : (
@@ -371,7 +387,8 @@ export default function NewProduct() {
 												<p>Drag and drop your files here or</p>
 												<label
 													className='browse'
-													htmlFor={`file-${index}`}>
+													htmlFor={`file-${index}`}
+												>
 													browse
 												</label>
 											</>
@@ -390,7 +407,19 @@ export default function NewProduct() {
 										/>
 									</div>
 								)}
-								{index < 1 && (
+								{/* {index < 1 && (
+									<div className='addProductItem'>
+										<label>Description*</label>
+										<input
+											name='desc'
+											className='Description'
+											type='text'
+											placeholder='description...'
+											onChange={handleChange}
+										/>
+									</div>
+								)} */}
+								{index < 1 && supplierInfo.role === 'supplierType2' && (
 									<div className='addProductItem'>
 										<label>Description*</label>
 										<input
@@ -402,6 +431,7 @@ export default function NewProduct() {
 										/>
 									</div>
 								)}
+
 								{index < 1 && (
 									<div className='addProductItem'>
 										<label>Title (Arabic)*</label>
@@ -619,7 +649,8 @@ export default function NewProduct() {
 										<select
 											name='categories'
 											onChange={handleChange}
-											className='Categories'>
+											className='Categories'
+										>
 											<option value=''>Select Categories</option>
 											<option value='coat'>Coat</option>
 											<option value='women'>Women</option>
@@ -697,14 +728,16 @@ export default function NewProduct() {
 									{index === forms.length - 1 && (
 										<div
 											className='addNewForm'
-											onClick={addNewForm}>
+											onClick={addNewForm}
+										>
 											+
 										</div>
 									)}
 									{index === forms.length - 1 && (
 										<button
 											onClick={handleAddProduct}
-											className='addProductButton'>
+											className='addProductButton'
+										>
 											Create
 										</button>
 									)}

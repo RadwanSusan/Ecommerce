@@ -17,11 +17,19 @@ import myFile from '../../Assets/ZAID2.csv';
 
 export default function ProductList() {
 	const dispatch = useDispatch();
+	const supplierInfo = useSelector((state) => state.user.currentUser);
 	const products = useSelector((state) => state.product.products);
 	const filteredProducts = products.filter((product) => product._id);
+	// useEffect(() => {
+	// 	getProducts(dispatch);
+	// }, [dispatch]);
 	useEffect(() => {
-		getProducts(dispatch);
-	}, [dispatch]);
+		if (supplierInfo && supplierInfo._id) {
+			getProducts(dispatch, supplierInfo._id);
+		} else {
+			getProducts(dispatch); // Fetch all products if no supplier ID is available
+		}
+	}, [dispatch, supplierInfo]);
 	const handleExcelUpload = async (event) => {
 		const file = event.target.files[0];
 		const reader = new FileReader();
