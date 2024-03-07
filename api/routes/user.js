@@ -161,9 +161,68 @@ router.get('/wishlist/:userId', async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-// Use .lean() when querying the User collection to retrieve plain
-// JavaScript objects instead of Mongoose documents.
-// This can improve the performance of your queries.
+router.get('/wishlist_APP/:userId', async (req, res) => {
+	const { userId } = req.params;
+	try {
+		const user = await User.findById(userId);
+		if (!user) {
+			return res.status(404).json({ message: 'User not found' });
+		}
+		const { wish } = user._doc;
+		res.json(user);
+	} catch (err) {
+		res.status(500).json({ message: 'Server error', error: err });
+	}
+});
+
+router.post('/wishlist/:userId', async (req, res) => {
+	const { userId } = req.params;
+	const productId = req.body.pid;
+	try {
+		const user = await User.findById(userId);
+		const { wish } = user._doc;
+		const alreadyAdded = wish.find((id) => id.toString() === productId);
+		if (!alreadyAdded) {
+			let updatedUser = await User.findByIdAndUpdate(
+				userId,
+				{
+					$push: { wish: productId },
+				},
+				{
+					new: true,
+				},
+			);
+			res.json(updatedUser);
+		} else {
+			res.status(400).json({ message: 'Product already in wishlist' });
+		}
+	} catch (err) {
+		res.status(500).json(err);
+	}
+});
+
+router.delete('/wishlist/:userId', async (req, res) => {
+	const { userId } = req.params;
+	const productId = req.query.pid; // Assuming you're sending productId as a query parameter
+	try {
+		const user = await User.findById(userId);
+		if (user) {
+			const index = user.wish.indexOf(productId);
+			if (index > -1) {
+				user.wish.splice(index, 1); // Remove the product from the wishlist
+				await user.save(); // Save the updated user document
+				res.json({ message: 'Product removed from wishlist' });
+			} else {
+				res.status(404).json({ message: 'Product not found in wishlist' });
+			}
+		} else {
+			res.status(404).json({ message: 'User not found' });
+		}
+	} catch (err) {
+		res.status(500).json({ message: 'Server error', error: err });
+	}
+});
+
 router.get('/userWishListArray/:userId', async (req, res) => {
 	const { userId } = req.params;
 	try {
