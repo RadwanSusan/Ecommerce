@@ -51,6 +51,7 @@ export default function NewProduct() {
 	const DEFAULT_IMAGE_URL = 'https://img.icons8.com/ios/100/no-image.png';
 	const dispatch = useDispatch();
 	const supplierInfo = useSelector((state) => state.user.currentUser);
+
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		if (name.startsWith('discount.') || name.startsWith('promo.')) {
@@ -135,7 +136,7 @@ export default function NewProduct() {
 		e.preventDefault();
 		const requiredInputs = [
 			'title',
-			'desc',
+			// 'desc',
 			'title_ar',
 			'desc_ar',
 			'price',
@@ -256,14 +257,32 @@ export default function NewProduct() {
 	// 	...(isObjectComplete(inputs.promo) && { promo: inputs.promo }),
 	// 	supplierId: supplierInfo,
 	// });
-	const constructProduct = (inputs, variants, supplierInfo) => ({
-		...inputs,
-		variants,
-		...(isObjectComplete(inputs.discount) && { discount: inputs.discount }),
-		...(isObjectComplete(inputs.promo) && { promo: inputs.promo }),
-		supplierId: supplierInfo._id, // Use actual supplier ID
-	});
+	// const constructProduct = (inputs, variants, supplierInfo) => ({
+	// 	...inputs,
+	// 	variants,
+	// 	...(isObjectComplete(inputs.discount) && { discount: inputs.discount }),
+	// 	...(isObjectComplete(inputs.promo) && { promo: inputs.promo }),
+	// 	supplierId: supplierInfo._id, // Use actual supplier ID
+	// });
+	const constructProduct = (inputs, variants, supplierInfo) => {
+		let productData = {
+			...inputs,
+			variants,
+			...(isObjectComplete(inputs.discount) && {
+				discount: inputs.discount,
+			}),
+			...(isObjectComplete(inputs.promo) && { promo: inputs.promo }),
+			supplierId: supplierInfo._id,
+		};
 
+		// Remove 'desc' from productData if supplier's role is 'supplierType1'
+		if (supplierInfo.role === 'supplierType1') {
+			delete productData.desc;
+		}
+		console.log('productData:', productData);
+
+		return productData;
+	};
 	const resetAllForms = () => {
 		resetInputs();
 		resetColors();
@@ -428,6 +447,11 @@ export default function NewProduct() {
 											type='text'
 											placeholder='description...'
 											onChange={handleChange}
+											required={
+												supplierInfo.role === 'supplierType2'
+													? true
+													: false
+											}
 										/>
 									</div>
 								)}

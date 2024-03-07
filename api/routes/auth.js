@@ -122,12 +122,48 @@ cron.schedule('* * * * *', async () => {
 
 //LOGIN
 
+// router.post('/login', async (req, res) => {
+// 	try {
+// 		const user = await UserAdmin.findOne({ email: req.body.email });
+// 		if (!user) {
+// 			return res.status(401).json('Wrong email!');
+// 		}
+// 		const hashedPassword = CryptoJS.AES.decrypt(
+// 			user.password,
+// 			process.env.PASS_SEC,
+// 		);
+// 		const OriginalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
+// 		if (OriginalPassword !== req.body.password) {
+// 			return res.status(401).json('Wrong password!');
+// 		}
+// 		const accessToken = jwt.sign(
+// 			{ id: user._id, role: user.role },
+// 			process.env.JWT_SEC,
+// 			{
+// 				expiresIn: '3d',
+// 			},
+// 		);
+// 		// const { password, ...others } = user._doc;
+// 		const { password, ...others } = user.toObject();
+// 		res.status(200).json({ ...others, accessToken });
+// 	} catch (err) {
+// 		res.status(500).json(err);
+// 	}
+// });
+
 router.post('/login', async (req, res) => {
 	try {
-		const user = await UserAdmin.findOne({ email: req.body.email });
+		// First, check in the UserAdmin collection
+		let user = await UserAdmin.findOne({ email: req.body.email });
+
+		// If not found in UserAdmin, check in the User collection
 		if (!user) {
-			return res.status(401).json('Wrong email!');
+			user = await User.findOne({ email: req.body.email });
+			if (!user) {
+				return res.status(401).json('Wrong email!');
+			}
 		}
+
 		const hashedPassword = CryptoJS.AES.decrypt(
 			user.password,
 			process.env.PASS_SEC,
@@ -136,14 +172,13 @@ router.post('/login', async (req, res) => {
 		if (OriginalPassword !== req.body.password) {
 			return res.status(401).json('Wrong password!');
 		}
+
 		const accessToken = jwt.sign(
-			{ id: user._id, role: user.role },
+			{ id: user._id, role: user.role || 'user' },
 			process.env.JWT_SEC,
-			{
-				expiresIn: '3d',
-			},
+			{ expiresIn: '3d' },
 		);
-		// const { password, ...others } = user._doc;
+
 		const { password, ...others } = user.toObject();
 		res.status(200).json({ ...others, accessToken });
 	} catch (err) {

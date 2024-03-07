@@ -25,7 +25,8 @@ const ProductSchema = new mongoose.Schema(
 	{
 		title: { type: String, required: true },
 		title_ar: { type: String, required: true },
-		desc: { type: String, required: true },
+		// desc: { type: String, required: true },
+		desc: { type: String, required: false },
 		desc_ar: { type: String, required: true },
 		variants: { type: [ProductVariantSchema], required: true },
 		categories: { type: Array },
@@ -42,4 +43,12 @@ const ProductSchema = new mongoose.Schema(
 	},
 	{ timestamps: true },
 );
+// ProductSchema.pre('save', function (next) {
+// 	// Assuming `this.supplier` holds the supplier's ID and you can determine the supplier's type
+// 	// You might need to fetch the supplier's type from the database if it's not part of the document
+// 	if (this.isModified('desc') && supplierType === 'supplierType1') {
+// 		this.desc = undefined; // Remove the desc field
+// 	}
+// 	next();
+// });
 module.exports = mongoose.model('Product', ProductSchema);
