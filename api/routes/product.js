@@ -5,11 +5,8 @@ router.post('/', async (req, res) => {
 		...req.body,
 		supplier: req.body.supplierId,
 	});
-
 	try {
 		const savedProduct = await newProduct.save();
-		console.log(`🚀  file: product.js:19  savedProduct =>`, savedProduct);
-		console.log(res.status(200).json(savedProduct));
 	} catch (err) {
 		res.status(500).json(err);
 		console.log(err);
@@ -17,7 +14,7 @@ router.post('/', async (req, res) => {
 });
 router.put('/:id', async (req, res) => {
 	try {
-		const updatedProduct = await Product.findByIdAndUp_date(
+		const updatedProduct = await Product.findByIdAndUpdate(
 			req.params.id,
 			{
 				$set: req.body,
@@ -45,34 +42,29 @@ router.get('/find/:id', async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-// router.get('/', async (req, res) => {
-// 	const qNew = req.query.new;
-// 	const qCategory = req.query.category;
-// 	try {
-// 		let products;
-
-// 		if (qNew) {
-// 			products = await Product.find().sort({ createdAt: -1 }).limit(1);
-// 		} else if (qCategory) {
-// 			products = await Product.find({
-// 				categories: {
-// 					$in: [qCategory],
-// 				},
-// 			});
-// 		} else {
-// 			products = await Product.find();
-// 		}
-
-// 		res.status(200).json(products);
-// 	} catch (err) {
-// 		res.status(500).json(err);
-// 	}
-// });
+router.get('/:productId/variants/:variantId', async (req, res) => {
+	try {
+		const { productId, variantId } = req.params;
+		const product = await Product.findById(productId);
+		if (!product) {
+			return res.status(404).json({ message: 'Product not found' });
+		}
+		const variant = product.variants.find(
+			(v) => v._id && v._id.toString() === variantId,
+		);
+		if (!variant) {
+			return res.status(404).json({ message: 'Variant not found' });
+		}
+		res.status(200).json({ availableQuantity: variant.quantity });
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ message: 'Server Error' });
+	}
+});
 router.get('/', async (req, res) => {
 	const qNew = req.query.new;
 	const qCategory = req.query.category;
-	const qSupplierId = req.query.supplierId; // Assuming 'supplierId' is the query parameter
-
+	const qSupplierId = req.query.supplierId;
 	try {
 		let products;
 
@@ -85,18 +77,15 @@ router.get('/', async (req, res) => {
 				},
 			});
 		} else if (qSupplierId) {
-			// Fetch products specific to a supplier's ID
 			products = await Product.find({ supplier: qSupplierId });
 		} else {
 			products = await Product.find();
 		}
-
 		res.status(200).json(products);
 	} catch (err) {
 		res.status(500).json(err);
 	}
 });
-
 router.get('/search/:key/', async (req, res) => {
 	const qCategory = req.query.category;
 	try {
