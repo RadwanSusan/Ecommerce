@@ -7,8 +7,6 @@ const {
 
 const router = require('express').Router();
 
-
-
 router.post('/', async (req, res) => {
 	const newOrder = new Order(req.body);
 	try {
@@ -72,7 +70,9 @@ router.get('/income', verifyTokenAndAdmin, async (req, res) => {
 	const date = new Date();
 	const lastMonth = new Date(date.getMonth(date.getMonth() - 1));
 
-	const previousMonth = new Date(new Date().getMonth(lastMonth.getMonth() - 1));
+	const previousMonth = new Date(
+		new Date().getMonth(lastMonth.getMonth() - 1),
+	);
 
 	try {
 		const income = await Order.aggregate([
