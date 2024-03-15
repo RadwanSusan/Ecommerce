@@ -57,22 +57,20 @@ router.post('/register', async (req, res) => {
 	try {
 		const savedUser = await newUser.save();
 
-		// Send verification email
 		const transporter = nodemailer.createTransport({
 			service: 'Outlook',
 			auth: {
-				user: 'danali444@outlook.com',
-				pass: 'Outbox@007',
+				user: 'zaidaltamari50@outlook.com',
+				pass: 'Zaid@12345678',
 			},
 			tls: {
 				rejectUnauthorized: false,
 			},
 		});
 
-		// const verificationUrl = `http://192.168.4.186:4000/api/auth/verifyEmail?token=${verificationToken}`;
 		const verificationUrl = `http://194.195.86.67:5000/verifyEmail?token=${verificationToken}`;
 		await transporter.sendMail({
-			from: '"Your App" <danali444@outlook.com>',
+			from: '"Your App" <zaidaltamari50@outlook.com>',
 			to: savedUser.email,
 			subject: 'Account Verification',
 			html: `<p>Please verify your account by clicking the following link: <a href="${verificationUrl}">Verify Account</a></p>`,
@@ -207,8 +205,8 @@ router.post('/forgot-password', async (req, res) => {
 			port: 587,
 			secure: false,
 			auth: {
-				user: 'danali444@outlook.com',
-				pass: 'Outbox@007',
+				user: 'zaidaltamari50@outlook.com',
+				pass: 'Zaid@12345678',
 				// const { password, ...others } = user._doc,
 				tls: {
 					rejectUnauthorized: false,
@@ -217,7 +215,7 @@ router.post('/forgot-password', async (req, res) => {
 		});
 
 		const mailOptions = {
-			from: 'danali444@outlook.com',
+			from: 'zaidaltamari50@outlook.com',
 			to: oldUser.email,
 			subject: 'Password Reset Link',
 			text: `Please click on the following link to reset your password: ${link}`,
