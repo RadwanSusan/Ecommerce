@@ -21,7 +21,7 @@ function Register() {
 		e.preventDefault();
 		try {
 			await axios.post(
-				'http://localhost:4000/api/auth/registerAdmin',
+				'http://194.195.86.67:4000/api/auth/registerAdmin',
 				formData,
 			);
 			history.push('/login', {
@@ -36,8 +36,7 @@ function Register() {
 		<div className='register-container'>
 			<form
 				onSubmit={handleSubmit}
-				className='register-form'
-			>
+				className='register-form'>
 				<input
 					type='text'
 					name='username'
@@ -66,8 +65,7 @@ function Register() {
 					name='role'
 					value={formData.role}
 					onChange={handleChange}
-					required
-				>
+					required>
 					<option value=''>Select Role</option>
 					<option value='supplierType1'>Supplier Type 1</option>
 					<option value='supplierType2'>Supplier Type 2</option>

@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import nodeGlobalsPolyfill from '@esbuild-plugins/node-globals-polyfill';
 export default defineConfig({
 	server: {
-		host: true,
+		port: 5000,
 	},
 	build: {
 		outDir: 'build',

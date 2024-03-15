@@ -11,7 +11,7 @@ const VerifyEmail = () => {
 			if (token) {
 				try {
 					const response = await axios.get(
-						`http://localhost:4000/api/auth/verifyEmail?token=${token}`,
+						`http://194.195.86.67:4000/api/auth/verifyEmail?token=${token}`,
 					);
 
 					console.log(response.data);

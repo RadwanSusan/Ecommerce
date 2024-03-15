@@ -4,6 +4,9 @@ import nodeGlobalsPolyfill from '@esbuild-plugins/node-globals-polyfill';
 
 import dsv from '@rollup/plugin-dsv';
 export default defineConfig({
+	server: {
+		port: 5001,
+	},
 	build: {
 		outDir: 'build',
 		chunkSizeWarningLimit: 1600,

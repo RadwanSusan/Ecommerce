@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import { popularProducts } from "../data";
-import Product from "./Product";
-import axios from "axios";
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { popularProducts } from '../data';
+import Product from './Product';
+import axios from 'axios';
 
 const Container = styled.div`
 	padding: 20px;
@@ -20,8 +20,8 @@ const Products = ({ cat, filters, sort }) => {
 			try {
 				const res = await axios.get(
 					cat
-						? `http://localhost:4000/api/products?category=${cat}`
-						: "http://localhost:4000/api/products",
+						? `http://194.195.86.67:4000/api/products?category=${cat}`
+						: 'http://194.195.86.67:4000/api/products',
 				);
 				setProducts(res.data);
 			} catch (err) {}
@@ -41,11 +41,11 @@ const Products = ({ cat, filters, sort }) => {
 	}, [products, cat, filters]);
 
 	useEffect(() => {
-		if (sort === "newest") {
+		if (sort === 'newest') {
 			setFilteredProducts((prev) =>
 				[...prev].sort((a, b) => a.createdAt - b.createdAt),
 			);
-		} else if (sort === "asc") {
+		} else if (sort === 'asc') {
 			setFilteredProducts((prev) =>
 				[...prev].sort((a, b) => a.price - b.price),
 			);
@@ -59,8 +59,18 @@ const Products = ({ cat, filters, sort }) => {
 	return (
 		<Container>
 			{cat
-				? filteredProducts.map((item) => <Product item={item} key={item.id} />)
-				: products.map((item) => <Product item={item} key={item.id} />)}
+				? filteredProducts.map((item) => (
+						<Product
+							item={item}
+							key={item.id}
+						/>
+				  ))
+				: products.map((item) => (
+						<Product
+							item={item}
+							key={item.id}
+						/>
+				  ))}
 		</Container>
 	);
 };

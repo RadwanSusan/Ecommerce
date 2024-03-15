@@ -70,7 +70,7 @@ router.post('/register', async (req, res) => {
 		});
 
 		// const verificationUrl = `http://192.168.4.186:4000/api/auth/verifyEmail?token=${verificationToken}`;
-		const verificationUrl = `http://localhost:3000/verifyEmail?token=${verificationToken}`;
+		const verificationUrl = `http://194.195.86.67:5000/verifyEmail?token=${verificationToken}`;
 		await transporter.sendMail({
 			from: '"Your App" <danali444@outlook.com>',
 			to: savedUser.email,
@@ -106,7 +106,7 @@ router.get('/verifyEmail', async (req, res) => {
 	await user.save();
 
 	res.status(200).json({ message: 'Email verified successfully!' });
-	// res.redirect('http://localhost:4000/api/auth/login');
+	// res.redirect('http://194.195.86.67:4000/api/auth/login');
 });
 
 cron.schedule('* * * * *', async () => {
@@ -201,7 +201,7 @@ router.post('/forgot-password', async (req, res) => {
 				expiresIn: '3d',
 			},
 		);
-		const link = `http://localhost:4000/api/auth/reset-password/${oldUser._id}/${token}`;
+		const link = `http://194.195.86.67:4000/api/auth/reset-password/${oldUser._id}/${token}`;
 		const transporter = nodemailer.createTransport({
 			host: 'smtp.office365.com',
 			port: 587,
