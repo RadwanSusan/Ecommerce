@@ -61,7 +61,7 @@ router.post('/register', async (req, res) => {
 			service: 'Outlook',
 			auth: {
 				user: 'zaidaltamari50@outlook.com',
-				pass: 'Zaid@12345678',
+				pass: 'ebulddtefcgrgugw',
 			},
 			tls: {
 				rejectUnauthorized: false,
@@ -206,7 +206,7 @@ router.post('/forgot-password', async (req, res) => {
 			secure: false,
 			auth: {
 				user: 'zaidaltamari50@outlook.com',
-				pass: 'Zaid@12345678',
+				pass: 'ebulddtefcgrgugw',
 				// const { password, ...others } = user._doc,
 				tls: {
 					rejectUnauthorized: false,
