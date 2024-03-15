@@ -31,6 +31,59 @@ router.post('/registerAdmin', async (req, res) => {
 		res.status(500).json(error);
 	}
 });
+// router.post('/register', async (req, res) => {
+// 	const { username, email, phoneNumber, isAdmin, password } = req.body;
+// 	const hashedPassword = CryptoJS.AES.encrypt(
+// 		password,
+// 		process.env.PASS_SEC,
+// 	).toString();
+
+// 	// Generate a verification token
+// 	const verificationToken = crypto.randomBytes(20).toString('hex');
+// 	const verificationTokenExpires = Date.now() + 300000; // Token expires in 5 minutes
+
+// 	const newUser = new User({
+// 		username,
+// 		email,
+// 		phoneNumber,
+// 		isAdmin,
+// 		verified: false,
+// 		verificationToken,
+// 		verificationTokenExpires,
+// 		img: req.body.img,
+// 		password: hashedPassword,
+// 	});
+
+// 	try {
+// 		const savedUser = await newUser.save();
+
+// 		const transporter = nodemailer.createTransport({
+// 			service: 'Outlook',
+// 			auth: {
+// 				user: 'zaidaltamari50@outlook.com',
+// 				pass: 'ebulddtefcgrgugw',
+// 			},
+// 			tls: {
+// 				rejectUnauthorized: false,
+// 			},
+// 		});
+
+// 		const verificationUrl = `http://194.195.86.67:5000/verifyEmail?token=${verificationToken}`;
+// 		await transporter.sendMail({
+// 			from: '"Your App" <zaidaltamari50@outlook.com>',
+// 			to: savedUser.email,
+// 			subject: 'Account Verification',
+// 			html: `<p>Please verify your account by clicking the following link: <a href="${verificationUrl}">Verify Account</a></p>`,
+// 		});
+
+// 		res.status(201).json({
+// 			message: 'User registered, please verify your email.',
+// 		});
+// 	} catch (error) {
+// 		res.status(500).json(error);
+// 	}
+// });
+
 router.post('/register', async (req, res) => {
 	const { username, email, phoneNumber, isAdmin, password } = req.body;
 	const hashedPassword = CryptoJS.AES.encrypt(
@@ -38,46 +91,20 @@ router.post('/register', async (req, res) => {
 		process.env.PASS_SEC,
 	).toString();
 
-	// Generate a verification token
-	const verificationToken = crypto.randomBytes(20).toString('hex');
-	const verificationTokenExpires = Date.now() + 300000; // Token expires in 5 minutes
-
 	const newUser = new User({
 		username,
 		email,
 		phoneNumber,
 		isAdmin,
-		verified: false,
-		verificationToken,
-		verificationTokenExpires,
+		verified: true,
 		img: req.body.img,
 		password: hashedPassword,
 	});
 
 	try {
 		const savedUser = await newUser.save();
-
-		const transporter = nodemailer.createTransport({
-			service: 'Outlook',
-			auth: {
-				user: 'zaidaltamari50@outlook.com',
-				pass: 'ebulddtefcgrgugw',
-			},
-			tls: {
-				rejectUnauthorized: false,
-			},
-		});
-
-		const verificationUrl = `http://194.195.86.67:5000/verifyEmail?token=${verificationToken}`;
-		await transporter.sendMail({
-			from: '"Your App" <zaidaltamari50@outlook.com>',
-			to: savedUser.email,
-			subject: 'Account Verification',
-			html: `<p>Please verify your account by clicking the following link: <a href="${verificationUrl}">Verify Account</a></p>`,
-		});
-
 		res.status(201).json({
-			message: 'User registered, please verify your email.',
+			message: 'User registered successfully.',
 		});
 	} catch (error) {
 		res.status(500).json(error);
