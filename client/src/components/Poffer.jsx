@@ -56,7 +56,7 @@ const Poffer = React.memo(({ filters, sort }) => {
 		const getProducts = async () => {
 			try {
 				const res = await axios.get(
-					'http://194.195.86.67:4000/api/products',
+					'http://localhost:4000/api/products',
 				);
 				setProducts(res.data);
 			} catch (err) {

@@ -89,7 +89,7 @@ export default function ProductList() {
 				color: product.color,
 				size: product.size,
 				quantity: product.quantity,
-				img: product.img,
+				img: product?.img,
 				_id: product.variant_id,
 			});
 		});
@@ -97,7 +97,7 @@ export default function ProductList() {
 			delete product.color;
 			delete product.size;
 			delete product.quantity;
-			delete product.img;
+			delete product?.img;
 			delete product.variant_id;
 			return product;
 		});
@@ -160,7 +160,7 @@ export default function ProductList() {
 				<div className='productListItem'>
 					<img
 						className='productListImg'
-						src={params.row.img}
+						src={params.row?.img}
 						alt=''
 					/>
 					{params.row.title}
@@ -200,14 +200,14 @@ export default function ProductList() {
 				title_ar: product.title_ar || '',
 				desc: product.desc || '',
 				desc_ar: product.desc_ar || '',
-				img: variant.img ? variant.img.join(';') : '',
+				img: variant?.img ? variant?.img?.join(';') : '',
 				categories: product.categories ? product.categories.join(';') : '',
-				size: variant.size ? variant.size.join(',') : '',
-				color: variant.color ? variant.color.join(',') : '',
+				size: variant?.size ? variant?.size?.join(',') : '',
+				color: variant?.color ? variant?.color?.join(',') : '',
 				price: product.price,
 				originalPrice: product.originalPrice,
 				inStock: product.inStock !== undefined ? product.inStock : '',
-				quantity: variant.quantity,
+				quantity: variant?.quantity,
 				width: product.width,
 				height: product.height,
 				length: product.length,
@@ -267,8 +267,7 @@ export default function ProductList() {
 					style={{ textDecoration: 'none', width: '100px' }}
 					data={getCsvData()}
 					filename='products.csv'
-					charset='utf-8'
-				>
+					charset='utf-8'>
 					Export to CSV
 				</CSVLink>
 				<input
@@ -282,8 +281,7 @@ export default function ProductList() {
 					href={myFile}
 					download='my-excel.csv'
 					target='_blank'
-					rel='noopener noreferrer'
-				>
+					rel='noopener noreferrer'>
 					<button>Download CSV</button>
 				</a>
 			</div>

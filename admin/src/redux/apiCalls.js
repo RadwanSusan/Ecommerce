@@ -81,11 +81,11 @@ export const login = async (dispatch, user) => {
 		) {
 			dispatch(loginSuccess(res.data));
 			setTimeout(() => {
-				window.location.href = '/products'; // Redirect supplier type 1 to products
+				window.location.href = '/'; // Redirect supplier type 1 to products
 			});
 		} else {
 			setTimeout(() => {
-				window.location.href = '/products'; // Redirect unauthorized/logged-out users to login
+				window.location.href = '/'; // Redirect unauthorized/logged-out users to login
 			});
 			dispatch(loginFailure());
 		}

@@ -16,10 +16,10 @@ const DiscountSchema = new mongoose.Schema(
 	{ _id: false },
 );
 const ProductVariantSchema = new mongoose.Schema({
-	color: { type: Array, required: true },
-	size: { type: Array, required: true },
-	quantity: { type: Number, required: true },
-	img: { type: Array, required: true },
+	color: { type: Array, required: false },
+	size: { type: Array, required: false },
+	quantity: { type: Number, required: false },
+	img: { type: Array, required: false },
 });
 const ProductSchema = new mongoose.Schema(
 	{
@@ -29,7 +29,7 @@ const ProductSchema = new mongoose.Schema(
 		desc: { type: String, required: false },
 		desc_ar: { type: String, required: true },
 		variants: { type: [ProductVariantSchema], required: true },
-		categories: { type: Array },
+		categories: { type: Array, required: false },
 		price: { type: Number, required: true },
 		originalPrice: { type: Number },
 		inStock: { type: Boolean, default: true },

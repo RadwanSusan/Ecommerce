@@ -153,14 +153,14 @@ export default function NewProduct() {
 			showError('Error!', 'Please fill all the required fields');
 			return;
 		}
-		const hasAllVariants = forms.every((form) => form.color && form.size);
-		if (!hasAllVariants) {
-			showError(
-				'Error!',
-				'Each product variant must have a color and size selected',
-			);
-			return;
-		}
+		// const hasAllVariants = forms.every((form) => form.color && form.size);
+		// if (!hasAllVariants) {
+		// 	showError(
+		// 		'Error!',
+		// 		'Each product variant must have a color and size selected',
+		// 	);
+		// 	return;
+		// }
 		const promoComplete = isObjectComplete(inputs.promo);
 		const promoPartiallyFilled = isObjectPartiallyFilled(inputs.promo);
 		if (promoPartiallyFilled && !promoComplete) {
@@ -357,8 +357,7 @@ export default function NewProduct() {
 			onDragEnter={handleDragEnter}
 			onDragLeave={handleDragLeave}
 			onDragOver={handleDragOver}
-			onDrop={handleDrop}
-		>
+			onDrop={handleDrop}>
 			{loading ? (
 				<div className='progress-icon'>
 					<FaSpinner className='spinner' />
@@ -370,8 +369,7 @@ export default function NewProduct() {
 						<form
 							key={index}
 							className='addProductForm addProductForm147 '
-							encType='multipart/form-data'
-						>
+							encType='multipart/form-data'>
 							<div className='divition1'>
 								<div className='addProductItem'>
 									<label>Image</label>
@@ -387,8 +385,7 @@ export default function NewProduct() {
 									{index !== 0 && (
 										<button
 											onClick={() => removeForm(index)}
-											className='closeFormButton'
-										>
+											className='closeFormButton'>
 											x
 										</button>
 									)}
@@ -397,8 +394,7 @@ export default function NewProduct() {
 										onDragEnter={() => setDraggedFile(true)}
 										onDragLeave={() => setDraggedFile(false)}
 										onDragOver={(e) => e.preventDefault()}
-										onDrop={(e) => handleDrop(e, index)}
-									>
+										onDrop={(e) => handleDrop(e, index)}>
 										{draggedFile ? (
 											<p>Drop your file here</p>
 										) : (
@@ -406,8 +402,7 @@ export default function NewProduct() {
 												<p>Drag and drop your files here or</p>
 												<label
 													className='browse'
-													htmlFor={`file-${index}`}
-												>
+													htmlFor={`file-${index}`}>
 													browse
 												</label>
 											</>
@@ -438,7 +433,7 @@ export default function NewProduct() {
 										/>
 									</div>
 								)} */}
-								{index < 1 && supplierInfo.role === 'supplierType2' && (
+								{index < 1 && (
 									<div className='addProductItem'>
 										<label>Description*</label>
 										<input
@@ -447,11 +442,6 @@ export default function NewProduct() {
 											type='text'
 											placeholder='description...'
 											onChange={handleChange}
-											required={
-												supplierInfo.role === 'supplierType2'
-													? true
-													: false
-											}
 										/>
 									</div>
 								)}
@@ -478,107 +468,113 @@ export default function NewProduct() {
 										/>
 									</div>
 								)}
-								<div className='addProductItem'>
-									<fieldset>
-										<legend>Size*</legend>
+								{index < 1 && (
+									<div className='addProductItem'>
+										<fieldset>
+											<legend>Size*</legend>
+											<input
+												type='radio'
+												className='Size'
+												name='size'
+												onChange={(event) =>
+													handleFormChange(
+														index,
+														'size',
+														event.target.value,
+													)
+												}
+												value='S'
+											/>
+											<label> S</label>
+											<br />
+											<input
+												type='radio'
+												className='Size'
+												name='size'
+												onChange={(event) =>
+													handleFormChange(
+														index,
+														'size',
+														event.target.value,
+													)
+												}
+												value='M'
+											/>
+											<label> M</label>
+											<br />
+											<input
+												type='radio'
+												className='Size'
+												name='size'
+												onChange={(event) =>
+													handleFormChange(
+														index,
+														'size',
+														event.target.value,
+													)
+												}
+												value='L'
+											/>
+											<label> L</label>
+											<br />
+											<input
+												type='radio'
+												className='Size'
+												name='size'
+												onChange={(event) =>
+													handleFormChange(
+														index,
+														'size',
+														event.target.value,
+													)
+												}
+												value='XL'
+											/>
+											<label> XL</label>
+											<br />
+											<input
+												type='radio'
+												name='size'
+												onChange={(event) =>
+													handleFormChange(
+														index,
+														'size',
+														event.target.value,
+													)
+												}
+												value='XXL'
+												className='Size'
+											/>
+											<label> XXL</label>
+											<br />
+										</fieldset>
+									</div>
+								)}
+								{index < 1 && supplierInfo.role === 'superAdmin' && (
+									<div className='addProductItem color'>
+										<label>Color*</label>
+										<br />
 										<input
-											type='radio'
-											className='Size'
-											name='size'
+											id='color-picker'
+											name='color1'
+											type='color'
 											onChange={(event) =>
 												handleFormChange(
 													index,
-													'size',
+													'color',
 													event.target.value,
 												)
 											}
-											value='S'
 										/>
-										<label> S</label>
-										<br />
-										<input
-											type='radio'
-											className='Size'
-											name='size'
-											onChange={(event) =>
-												handleFormChange(
-													index,
-													'size',
-													event.target.value,
-												)
-											}
-											value='M'
-										/>
-										<label> M</label>
-										<br />
-										<input
-											type='radio'
-											className='Size'
-											name='size'
-											onChange={(event) =>
-												handleFormChange(
-													index,
-													'size',
-													event.target.value,
-												)
-											}
-											value='L'
-										/>
-										<label> L</label>
-										<br />
-										<input
-											type='radio'
-											className='Size'
-											name='size'
-											onChange={(event) =>
-												handleFormChange(
-													index,
-													'size',
-													event.target.value,
-												)
-											}
-											value='XL'
-										/>
-										<label> XL</label>
-										<br />
-										<input
-											type='radio'
-											name='size'
-											onChange={(event) =>
-												handleFormChange(
-													index,
-													'size',
-													event.target.value,
-												)
-											}
-											value='XXL'
-											className='Size'
-										/>
-										<label> XXL</label>
-										<br />
-									</fieldset>
-								</div>
-								<div className='addProductItem color'>
-									<label>Color*</label>
-									<br />
-									<input
-										id='color-picker'
-										name='color1'
-										type='color'
-										onChange={(event) =>
-											handleFormChange(
-												index,
-												'color',
-												event.target.value,
-											)
-										}
-									/>
-								</div>
-								<div className='addProductItem'>
-									<button onClick={(e) => clearColor(e, index)}>
-										Clear The Color
-									</button>
-								</div>
+									</div>
+								)}
+								{index < 1 && supplierInfo.role === 'superAdmin' && (
+									<div className='addProductItem'>
+										<button onClick={(e) => clearColor(e, index)}>
+											Clear The Color
+										</button>
+									</div>
+								)}
 							</div>
 							<div className='divition2'>
 								{index < 1 && (
@@ -667,14 +663,13 @@ export default function NewProduct() {
 										/>
 									</div>
 								)}
-								{index < 1 && (
+								{index < 1 && supplierInfo.role === 'superAdmin' && (
 									<div className='addProductItem'>
 										<label>Categories*</label>
 										<select
 											name='categories'
 											onChange={handleChange}
-											className='Categories'
-										>
+											className='Categories'>
 											<option value=''>Select Categories</option>
 											<option value='coat'>Coat</option>
 											<option value='women'>Women</option>
@@ -682,22 +677,24 @@ export default function NewProduct() {
 										</select>
 									</div>
 								)}
-								<div className='addProductItem'>
-									<label>Quantity*</label>
-									<input
-										name='quantity'
-										type='number'
-										placeholder='1'
-										onChange={(event) =>
-											handleFormChange(
-												index,
-												'quantity',
-												event.target.value,
-											)
-										}
-										className='Quantity'
-									/>
-								</div>
+								{index < 1 && (
+									<div className='addProductItem'>
+										<label>Quantity*</label>
+										<input
+											name='quantity'
+											type='number'
+											placeholder='1'
+											onChange={(event) =>
+												handleFormChange(
+													index,
+													'quantity',
+													event.target.value,
+												)
+											}
+											className='Quantity'
+										/>
+									</div>
+								)}
 							</div>
 							{
 								<div className='divition2'>
@@ -752,16 +749,14 @@ export default function NewProduct() {
 									{index === forms.length - 1 && (
 										<div
 											className='addNewForm'
-											onClick={addNewForm}
-										>
+											onClick={addNewForm}>
 											+
 										</div>
 									)}
 									{index === forms.length - 1 && (
 										<button
 											onClick={handleAddProduct}
-											className='addProductButton'
-										>
+											className='addProductButton'>
 											Create
 										</button>
 									)}

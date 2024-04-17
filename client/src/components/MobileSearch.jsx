@@ -15,7 +15,7 @@ const MobileSearch = () => {
 				return;
 			}
 			const res = await axios.get(
-				`http://194.195.86.67:4000/api/products/search/${queryName}`,
+				`http://localhost:4000/api/products/search/${queryName}`,
 			);
 			setDataAll(res.data);
 		};

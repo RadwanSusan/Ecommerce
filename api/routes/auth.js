@@ -10,27 +10,55 @@ const UserAdmin = require('../models/UserAdmin'); // Assuming your user model is
 const nodemailer = require('nodemailer');
 const user = require('./user');
 
+// router.post('/registerAdmin', async (req, res) => {
+// 	const { username, email, password, role } = req.body;
+// 	const hashedPassword = CryptoJS.AES.encrypt(
+// 		password,
+// 		process.env.PASS_SEC,
+// 	).toString();
+
+// 	const newUser = new UserAdmin({
+// 		username,
+// 		email,
+// 		password: hashedPassword,
+// 		role,
+// 	});
+
+// 	try {
+// 		const savedUser = await newUser.save();
+// 		res.status(201).json(savedUser);
+// 	} catch (error) {
+// 		res.status(500).json(error);
+// 	}
+// });
 router.post('/registerAdmin', async (req, res) => {
 	const { username, email, password, role } = req.body;
-	const hashedPassword = CryptoJS.AES.encrypt(
+  
+	try {
+	  const hashedPassword = CryptoJS.AES.encrypt(
 		password,
-		process.env.PASS_SEC,
-	).toString();
-
-	const newUser = new UserAdmin({
+		process.env.PASS_SEC
+	  ).toString();
+  
+	  const newUser = new UserAdmin({
 		username,
 		email,
 		password: hashedPassword,
 		role,
-	});
-
-	try {
-		const savedUser = await newUser.save();
-		res.status(201).json(savedUser);
+	  });
+  
+	  const savedUser = await newUser.save();
+	  res.status(201).json(savedUser);
 	} catch (error) {
-		res.status(500).json(error);
+	  console.error('Error registering admin:', error);
+	  if (error.code === 11000) {
+		// Duplicate key error
+		res.status(400).json({ message: 'Email already exists' });
+	  } else {
+		res.status(500).json({ message: 'Internal server error' });
+	  }
 	}
-});
+  });
 // router.post('/register', async (req, res) => {
 // 	const { username, email, phoneNumber, isAdmin, password } = req.body;
 // 	const hashedPassword = CryptoJS.AES.encrypt(
@@ -68,7 +96,7 @@ router.post('/registerAdmin', async (req, res) => {
 // 			},
 // 		});
 
-// 		const verificationUrl = `http://194.195.86.67:5000/verifyEmail?token=${verificationToken}`;
+// 		const verificationUrl = `http://localhost:5000/verifyEmail?token=${verificationToken}`;
 // 		await transporter.sendMail({
 // 			from: '"Your App" <zaidaltamari50@outlook.com>',
 // 			to: savedUser.email,
@@ -131,7 +159,7 @@ router.get('/verifyEmail', async (req, res) => {
 	await user.save();
 
 	res.status(200).json({ message: 'Email verified successfully!' });
-	// res.redirect('http://194.195.86.67:4000/api/auth/login');
+	// res.redirect('http://localhost:4000/api/auth/login');
 });
 
 cron.schedule('* * * * *', async () => {
@@ -226,7 +254,7 @@ router.post('/forgot-password', async (req, res) => {
 				expiresIn: '3d',
 			},
 		);
-		const link = `http://194.195.86.67:4000/api/auth/reset-password/${oldUser._id}/${token}`;
+		const link = `http://localhost:4000/api/auth/reset-password/${oldUser._id}/${token}`;
 		const transporter = nodemailer.createTransport({
 			host: 'smtp.office365.com',
 			port: 587,
