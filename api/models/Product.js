@@ -25,7 +25,6 @@ const ProductSchema = new mongoose.Schema(
 	{
 		title: { type: String, required: true },
 		title_ar: { type: String, required: true },
-		// desc: { type: String, required: true },
 		desc: { type: String, required: false },
 		desc_ar: { type: String, required: true },
 		variants: { type: [ProductVariantSchema], required: true },

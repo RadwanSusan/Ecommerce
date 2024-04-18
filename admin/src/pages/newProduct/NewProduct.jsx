@@ -136,7 +136,7 @@ export default function NewProduct() {
 		e.preventDefault();
 		const requiredInputs = [
 			'title',
-			// 'desc',
+			'desc',
 			'title_ar',
 			'desc_ar',
 			'price',
@@ -275,9 +275,7 @@ export default function NewProduct() {
 		};
 
 		// Remove 'desc' from productData if supplier's role is 'supplierType1'
-		if (supplierInfo.role === 'supplierType1') {
-			delete productData.desc;
-		}
+
 		console.log('productData:', productData);
 
 		return productData;
@@ -420,18 +418,7 @@ export default function NewProduct() {
 										/>
 									</div>
 								)}
-								{/* {index < 1 && (
-									<div className='addProductItem'>
-										<label>Description*</label>
-										<input
-											name='desc'
-											className='Description'
-											type='text'
-											placeholder='description...'
-											onChange={handleChange}
-										/>
-									</div>
-								)} */}
+
 								{index < 1 && (
 									<div className='addProductItem'>
 										<label>Description*</label>
