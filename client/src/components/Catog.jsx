@@ -68,7 +68,7 @@ const Catog = ({ item }) => {
 			try {
 				const res = await axios.get(
 					item?.cat
-						? `http://localhost:4000/api/products?category=${item?.cat}`
+						? `http://localhost:4000/api/products`
 						: 'http://localhost:4000/api/products',
 				);
 				setProducts(res.data);
@@ -668,6 +668,8 @@ const Catog = ({ item }) => {
 		jeans: 'https://images.unsplash.com/photo-1511280303142-0051e93baeeb?q=80&w=1915&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 	};
 
+	const suppliers = ['661fc87956155222d9a7b8e1', '661ec09579b26e415350f750'];
+
 	return (
 		<>
 			<div className='backLayerForShowCart'></div>
@@ -807,7 +809,7 @@ const Catog = ({ item }) => {
 					</div>
 				</div>
 			</div>
-			<div
+			{/* <div
 				id='listingtabs_0'
 				className='block sm-listing-tabs tab-cms-block slider snipcss-X3nN9'>
 				<h2>{language === 'en' ? item?.title : item?.title_ar}</h2>
@@ -827,7 +829,7 @@ const Catog = ({ item }) => {
 						<div className='listingtabs-cms'>
 							<div className='cms-container'>
 								<div className='banner-image container-hidd'>
-									<Link to={`/products/${item?.cat}`}>
+									<Link to={`/products/661fc87956155222d9a7b8e1`}>
 										<img
 											className='mark-lazy new-lazy'
 											src={
@@ -1085,6 +1087,7 @@ const Catog = ({ item }) => {
 																	</div>
 																</li>
 															</div>
+
 														))}
 													</div>
 												</div>
@@ -1102,6 +1105,955 @@ const Catog = ({ item }) => {
 												</div>
 												<div className='owl-dots disabled'></div>
 											</ol>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div> */}
+			<div>
+				{/* <div
+					id='listingtabs_0'
+					className='block sm-listing-tabs tab-cms-block slider snipcss-X3nN9'>
+					<h2>
+						{language === 'en'
+							? 'Products by Category'
+							: 'المنتجات حسب الفئة'}
+					</h2>
+					<div className='block-content'>
+						<div className='ltabs-wrap'>
+							<div className='ltabs-tabs-container'>
+								<div
+									className='ltabs-tabs-wrap'
+									tabindex='-1'>
+									<span className='ltabs-current-select'>
+										{language === 'en' ? item?.title : item?.title_ar}
+									</span>
+								</div>
+							</div>
+							<div className='listingtabs-cms'>
+								<div className='cms-container'>
+									<div className='banner-image container-hidd'>
+										<Link to={`/products/${item?.cat}`}>
+											<img
+												className='mark-lazy new-lazy'
+												src={
+													categoryImages[item?.cat] ||
+													'default_image_url'
+												}
+												data-src={
+													categoryImages[item?.cat] ||
+													'default_image_url'
+												}
+												alt='BannerImage'
+											/>
+										</Link>
+									</div>
+								</div>
+								<div className='ltabs-items-container'>
+									<div className='ltabs-items ltabs-items-selected ltabs-items-loaded ltabs-items-15'>
+										<div className='ltabs-items-inner'>
+											<div className='products wrapper grid products-grid'>
+												<ol className='products list items product-items owl-carousel owl-theme owl-loaded owl-drag'>
+													<div className='owl-stage-outer'>
+														<div
+															className='owl-stage style-pO7ki'
+															id='style-pO7ki'>
+															{products
+																.slice(0, 4)
+																.map((data) => (
+																	<div
+																		className='owl-item active style-SmoEo'
+																		id='style-SmoEo'>
+																		<li className='item product product-item'>
+																			<div
+																				className='product-item-info'
+																				data-container='product-grid'>
+																				<Link
+																					to={`/product/${data._id}`}
+																					className='action quickview-handler sm_quickview_handler'
+																					title='Quick View'
+																					href=''>
+																					<div className='image-product'>
+																						<a
+																							href='#'
+																							className='product photo product-item-photo'
+																							tabindex='-1'>
+																							<span
+																								className='product-image-container product-image-container-1 style-bH5WH'
+																								id='style-bH5WH'>
+																								<span
+																									className='product-image-wrapper style-MbttD'
+																									id='style-MbttD'>
+																									<img
+																										className='product-image-photo'
+																										src={
+																											data
+																												.variants[0]
+																												.img
+																										}
+																										data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-01.jpg'
+																										loading='lazy'
+																										alt={
+																											language ===
+																											'en'
+																												? data.title
+																												: data.title_ar
+																										}
+																									/>
+																								</span>
+																							</span>
+																						</a>
+																						<Link
+																							to={``}
+																							className='action quickview-handler sm_quickview_handler show-cart2'
+																							title='Quick View'
+																							href=''
+																							catog-id={
+																								data._id
+																							}>
+																							<AiOutlineEye />
+																							<span>
+																								{language ===
+																								'en'
+																									? 'Quick View'
+																									: 'مشاهدة سريعة'}
+																							</span>
+																						</Link>
+																					</div>
+																				</Link>
+																				<div className='product details product-item-details'>
+																					<strong className='product name product-item-name'>
+																						{language ===
+																						'en'
+																							? data.title
+																							: data.title_ar}
+																						<a
+																							className='product-item-link'
+																							href='#'></a>
+																					</strong>
+																					<div
+																						className='price-box price-final_price'
+																						data-role='priceBox'
+																						data-product-id='1'
+																						data-price-box='product-id-1'>
+																						<span className='price-container price-final_price tax weee'>
+																							<span
+																								id='product-price-1'
+																								data-price-amount='250'
+																								data-price-type='finalPrice'
+																								className='price-wrapper'>
+																								<span className='price'>
+																									{language ===
+																									'ar'
+																										? `${formatPrice(
+																												getDiscountedPrice2(
+																													data,
+																												),
+																												language,
+																										  )} $`
+																										: `$ ${formatPrice(
+																												getDiscountedPrice2(
+																													data,
+																												),
+																												language,
+																										  )}`}
+																								</span>
+																							</span>
+																						</span>
+																					</div>
+																					<div className='product-item-inner'>
+																						<div className='product actions product-item-actions'>
+																							<div className='actions-primary'></div>
+																							<div
+																								data-role='add-to-links'
+																								className='actions-secondary'></div>
+																							<Link
+																								to={`/product/${data._id}`}>
+																								<button className='Add-to-Cart-new'>
+																									{language ===
+																									'en'
+																										? 'Add to Cart'
+																										: 'اضف الى السلة'}
+																								</button>
+																							</Link>
+																							<div
+																								className='actions-secondary'
+																								data-role='add-to-links'>
+																								<div
+																									className='action towishlist'
+																									data-action='add-to-wishlist'
+																									title='Add to Wish List'>
+																									{wishlistData.includes(
+																										data._id,
+																									) ? (
+																										<>
+																											<BsHeart
+																												className='add-to-wish list-wish'
+																												onClick={(
+																													ele,
+																												) => {
+																													addToWishlist(
+																														data._id,
+																														'addCatog',
+																														ele,
+																													);
+																												}}
+																												style={{
+																													display:
+																														'none',
+																												}}
+																											/>
+																											<svg
+																												className='add-to-wish2 list-wish bi bi-heart-fill'
+																												xmlns='http://www.w3.org/2000/svg'
+																												width='16'
+																												height='16'
+																												fill='currentColor'
+																												viewBox='0 0 16 16'>
+																												<path
+																													className='add-to-wish2'
+																													fill-rule='evenodd'
+																													d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
+																													onClick={(
+																														ele,
+																													) => {
+																														addToWishlist(
+																															data._id,
+																															'remove',
+																															ele,
+																														);
+																													}}
+																												/>
+																											</svg>
+																										</>
+																									) : (
+																										<>
+																											<BsHeart
+																												className='add-to-wish list-wish'
+																												onClick={(
+																													ele,
+																												) => {
+																													addToWishlist(
+																														data._id,
+																														'addCatog',
+																														ele,
+																													);
+																												}}
+																											/>
+																											<svg
+																												className='add-to-wish2 list-wish bi bi-heart-fill'
+																												xmlns='http://www.w3.org/2000/svg'
+																												width='16'
+																												height='16'
+																												fill='currentColor'
+																												viewBox='0 0 16 16'>
+																												<path
+																													className='add-to-wish2'
+																													fill-rule='evenodd'
+																													d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
+																													onClick={(
+																														ele,
+																													) => {
+																														addToWishlist(
+																															data._id,
+																															'remove',
+																															ele,
+																														);
+																													}}
+																													style={{
+																														display:
+																															'none',
+																													}}
+																												/>
+																											</svg>
+																										</>
+																									)}
+																									<span>
+																										{language ===
+																										'en'
+																											? 'Add to Wish List'
+																											: 'اضف الى القائمة المفضلة'}
+																									</span>
+																								</div>
+																								<div
+																									className='action tocompare'
+																									data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/catalog\/product_compare\/add\/","data":{"product":"1","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
+																									title='Add to Compare'>
+																									<IoGitCompareOutline />
+																									<span>
+																										{language ===
+																										'en'
+																											? 'Add to Compare'
+																											: 'اضف للمقارنة'}
+																									</span>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</li>
+																	</div>
+																))}
+														</div>
+													</div>
+													<div className='owl-nav'>
+														<div
+															role='presentation'
+															className='owl-prev disabled'>
+															<span aria-label='Previous'>
+																‹
+															</span>
+														</div>
+														<div
+															role='presentation'
+															className='owl-next'>
+															<span aria-label='Next'>›</span>
+														</div>
+													</div>
+													<div className='owl-dots disabled'></div>
+												</ol>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div> */}
+
+				<div
+					id='listingtabs_1'
+					className='block sm-listing-tabs tab-cms-block slider snipcss-X3nN9'>
+					<h2>
+						{language === 'en'
+							? 'Products from Supplier 1'
+							: 'منتجات المورد 1'}
+					</h2>
+					<div className='block-content'>
+						<div className='ltabs-wrap'>
+							<div className='ltabs-tabs-container'>
+								<div
+									className='ltabs-tabs-wrap'
+									tabindex='-1'>
+									<span className='ltabs-current-select'>
+										{language === 'en'
+											? 'Supplier 1 Products'
+											: 'منتجات المورد 1'}
+									</span>
+								</div>
+							</div>
+							<div className='listingtabs-cms'>
+								<div className='cms-container'>
+									<div className='banner-image container-hidd'>
+										<Link to={`/products/661ec09579b26e415350f750`}>
+											<img
+												className='mark-lazy new-lazy'
+												src={
+													categoryImages['coat'] ||
+													'default_image_url'
+												}
+												data-src={
+													categoryImages['coat'] ||
+													'default_image_url'
+												}
+												alt='BannerImage'
+											/>
+										</Link>
+									</div>
+								</div>
+								<div className='ltabs-items-container'>
+									<div className='ltabs-items ltabs-items-selected ltabs-items-loaded ltabs-items-15'>
+										<div className='ltabs-items-inner'>
+											<div className='products wrapper grid products-grid'>
+												<ol className='products list items product-items owl-carousel owl-theme owl-loaded owl-drag'>
+													<div className='owl-stage-outer'>
+														<div
+															className='owl-stage style-pO7ki'
+															id='style-pO7ki'>
+															{products
+																.filter(
+																	(data) =>
+																		data.supplier ===
+																		'661ec09579b26e415350f750',
+																)
+																.slice(0, 4)
+																.map((data) => (
+																	<div
+																		className='owl-item active style-SmoEo'
+																		id='style-SmoEo'>
+																		<li className='item product product-item'>
+																			<div
+																				className='product-item-info'
+																				data-container='product-grid'>
+																				<Link
+																					to={`/product/${data._id}`}
+																					className='action quickview-handler sm_quickview_handler'
+																					title='Quick View'
+																					href=''>
+																					<div className='image-product'>
+																						<a
+																							href='#'
+																							className='product photo product-item-photo'
+																							tabindex='-1'>
+																							<span
+																								className='product-image-container product-image-container-1 style-bH5WH'
+																								id='style-bH5WH'>
+																								<span
+																									className='product-image-wrapper style-MbttD'
+																									id='style-MbttD'>
+																									<img
+																										className='product-image-photo'
+																										src={
+																											data
+																												.variants[0]
+																												.img
+																										}
+																										data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-01.jpg'
+																										loading='lazy'
+																										alt={
+																											language ===
+																											'en'
+																												? data.title
+																												: data.title_ar
+																										}
+																									/>
+																								</span>
+																							</span>
+																						</a>
+																						<Link
+																							to={``}
+																							className='action quickview-handler sm_quickview_handler show-cart2'
+																							title='Quick View'
+																							href=''
+																							catog-id={
+																								data._id
+																							}>
+																							<AiOutlineEye />
+																							<span>
+																								{language ===
+																								'en'
+																									? 'Quick View'
+																									: 'مشاهدة سريعة'}
+																							</span>
+																						</Link>
+																					</div>
+																				</Link>
+																				<div className='product details product-item-details'>
+																					<strong className='product name product-item-name'>
+																						{language ===
+																						'en'
+																							? data.title
+																							: data.title_ar}
+																						<a
+																							className='product-item-link'
+																							href='#'></a>
+																					</strong>
+																					<div
+																						className='price-box price-final_price'
+																						data-role='priceBox'
+																						data-product-id='1'
+																						data-price-box='product-id-1'>
+																						<span className='price-container price-final_price tax weee'>
+																							<span
+																								id='product-price-1'
+																								data-price-amount='250'
+																								data-price-type='finalPrice'
+																								className='price-wrapper'>
+																								<span className='price'>
+																									{language ===
+																									'ar'
+																										? `${formatPrice(
+																												getDiscountedPrice2(
+																													data,
+																												),
+																												language,
+																										  )} $`
+																										: `$ ${formatPrice(
+																												getDiscountedPrice2(
+																													data,
+																												),
+																												language,
+																										  )}`}
+																								</span>
+																							</span>
+																						</span>
+																					</div>
+																					<div className='product-item-inner'>
+																						<div className='product actions product-item-actions'>
+																							<div className='actions-primary'></div>
+																							<div
+																								data-role='add-to-links'
+																								className='actions-secondary'></div>
+																							<Link
+																								to={`/product/${data._id}`}>
+																								<button className='Add-to-Cart-new'>
+																									{language ===
+																									'en'
+																										? 'Add to Cart'
+																										: 'اضف الى السلة'}
+																								</button>
+																							</Link>
+																							<div
+																								className='actions-secondary'
+																								data-role='add-to-links'>
+																								<div
+																									className='action towishlist'
+																									data-action='add-to-wishlist'
+																									title='Add to Wish List'>
+																									{wishlistData.includes(
+																										data._id,
+																									) ? (
+																										<>
+																											<BsHeart
+																												className='add-to-wish list-wish'
+																												onClick={(
+																													ele,
+																												) => {
+																													addToWishlist(
+																														data._id,
+																														'addCatog',
+																														ele,
+																													);
+																												}}
+																												style={{
+																													display:
+																														'none',
+																												}}
+																											/>
+																											<svg
+																												className='add-to-wish2 list-wish bi bi-heart-fill'
+																												xmlns='http://www.w3.org/2000/svg'
+																												width='16'
+																												height='16'
+																												fill='currentColor'
+																												viewBox='0 0 16 16'>
+																												<path
+																													className='add-to-wish2'
+																													fill-rule='evenodd'
+																													d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
+																													onClick={(
+																														ele,
+																													) => {
+																														addToWishlist(
+																															data._id,
+																															'remove',
+																															ele,
+																														);
+																													}}
+																												/>
+																											</svg>
+																										</>
+																									) : (
+																										<>
+																											<BsHeart
+																												className='add-to-wish list-wish'
+																												onClick={(
+																													ele,
+																												) => {
+																													addToWishlist(
+																														data._id,
+																														'addCatog',
+																														ele,
+																													);
+																												}}
+																											/>
+																											<svg
+																												className='add-to-wish2 list-wish bi bi-heart-fill'
+																												xmlns='http://www.w3.org/2000/svg'
+																												width='16'
+																												height='16'
+																												fill='currentColor'
+																												viewBox='0 0 16 16'>
+																												<path
+																													className='add-to-wish2'
+																													fill-rule='evenodd'
+																													d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
+																													onClick={(
+																														ele,
+																													) => {
+																														addToWishlist(
+																															data._id,
+																															'remove',
+																															ele,
+																														);
+																													}}
+																													style={{
+																														display:
+																															'none',
+																													}}
+																												/>
+																											</svg>
+																										</>
+																									)}
+																									<span>
+																										{language ===
+																										'en'
+																											? 'Add to Wish List'
+																											: 'اضف الى القائمة المفضلة'}
+																									</span>
+																								</div>
+																								<div
+																									className='action tocompare'
+																									data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/catalog\/product_compare\/add\/","data":{"product":"1","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
+																									title='Add to Compare'>
+																									<IoGitCompareOutline />
+																									<span>
+																										{language ===
+																										'en'
+																											? 'Add to Compare'
+																											: 'اضف للمقارنة'}
+																									</span>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</li>
+																	</div>
+																))}
+														</div>
+													</div>
+													<div className='owl-nav'>
+														<div
+															role='presentation'
+															className='owl-prev disabled'>
+															<span aria-label='Previous'>
+																‹
+															</span>
+														</div>
+														<div
+															role='presentation'
+															className='owl-next'>
+															<span aria-label='Next'>›</span>
+														</div>
+													</div>
+													<div className='owl-dots disabled'></div>
+												</ol>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div
+					id='listingtabs_2'
+					className='block sm-listing-tabs tab-cms-block slider snipcss-X3nN9'>
+					<h2>
+						{language === 'en'
+							? 'Products from Supplier 2'
+							: 'منتجات المورد 2'}
+					</h2>
+					<div className='block-content'>
+						<div className='ltabs-wrap'>
+							<div className='ltabs-tabs-container'>
+								<div
+									className='ltabs-tabs-wrap'
+									tabindex='-1'>
+									<span className='ltabs-current-select'>
+										{language === 'en'
+											? 'Supplier 2 Products'
+											: 'منتجات المورد 2'}
+									</span>
+								</div>
+							</div>
+							<div className='listingtabs-cms'>
+								<div className='cms-container'>
+									<div className='banner-image container-hidd'>
+										<Link to={`/products/661fc87956155222d9a7b8e1`}>
+											<img
+												className='mark-lazy new-lazy'
+												src={
+													categoryImages['jeans'] ||
+													'default_image_url'
+												}
+												data-src={
+													categoryImages['jeans'] ||
+													'default_image_url'
+												}
+												alt='BannerImage'
+											/>
+										</Link>
+									</div>
+								</div>
+								<div className='ltabs-items-container'>
+									<div className='ltabs-items ltabs-items-selected ltabs-items-loaded ltabs-items-15'>
+										<div className='ltabs-items-inner'>
+											<div className='products wrapper grid products-grid'>
+												<ol className='products list items product-items owl-carousel owl-theme owl-loaded owl-drag'>
+													<div className='owl-stage-outer'>
+														<div
+															className='owl-stage style-pO7ki'
+															id='style-pO7ki'>
+															{console.log(products)}
+															{products
+																.filter(
+																	(data) =>
+																		data.supplier ===
+																		'661fc87956155222d9a7b8e1',
+																)
+																.slice(0, 4)
+																.map((data) => (
+																	<div
+																		className='owl-item active style-SmoEo'
+																		id='style-SmoEo'>
+																		<li className='item product product-item'>
+																			<div
+																				className='product-item-info'
+																				data-container='product-grid'>
+																				<Link
+																					to={`/product/${data._id}`}
+																					className='action quickview-handler sm_quickview_handler'
+																					title='Quick View'
+																					href=''>
+																					<div className='image-product'>
+																						<a
+																							href='#'
+																							className='product photo product-item-photo'
+																							tabindex='-1'>
+																							<span
+																								className='product-image-container product-image-container-1 style-bH5WH'
+																								id='style-bH5WH'>
+																								<span
+																									className='product-image-wrapper style-MbttD'
+																									id='style-MbttD'>
+																									<img
+																										className='product-image-photo'
+																										src={
+																											data
+																												.variants[0]
+																												.img
+																										}
+																										data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-01.jpg'
+																										loading='lazy'
+																										alt={
+																											language ===
+																											'en'
+																												? data.title
+																												: data.title_ar
+																										}
+																									/>
+																								</span>
+																							</span>
+																						</a>
+																						<Link
+																							to={``}
+																							className='action quickview-handler sm_quickview_handler show-cart2'
+																							title='Quick View'
+																							href=''
+																							catog-id={
+																								data._id
+																							}>
+																							<AiOutlineEye />
+																							<span>
+																								{language ===
+																								'en'
+																									? 'Quick View'
+																									: 'مشاهدة سريعة'}
+																							</span>
+																						</Link>
+																					</div>
+																				</Link>
+																				<div className='product details product-item-details'>
+																					<strong className='product name product-item-name'>
+																						{language ===
+																						'en'
+																							? data.title
+																							: data.title_ar}
+																						<a
+																							className='product-item-link'
+																							href='#'></a>
+																					</strong>
+																					<div
+																						className='price-box price-final_price'
+																						data-role='priceBox'
+																						data-product-id='1'
+																						data-price-box='product-id-1'>
+																						<span className='price-container price-final_price tax weee'>
+																							<span
+																								id='product-price-1'
+																								data-price-amount='250'
+																								data-price-type='finalPrice'
+																								className='price-wrapper'>
+																								<span className='price'>
+																									{language ===
+																									'ar'
+																										? `${formatPrice(
+																												getDiscountedPrice2(
+																													data,
+																												),
+																												language,
+																										  )} $`
+																										: `$ ${formatPrice(
+																												getDiscountedPrice2(
+																													data,
+																												),
+																												language,
+																										  )}`}
+																								</span>
+																							</span>
+																						</span>
+																					</div>
+																					<div className='product-item-inner'>
+																						<div className='product actions product-item-actions'>
+																							<div className='actions-primary'></div>
+																							<div
+																								data-role='add-to-links'
+																								className='actions-secondary'></div>
+																							<Link
+																								to={`/product/${data._id}`}>
+																								<button className='Add-to-Cart-new'>
+																									{language ===
+																									'en'
+																										? 'Add to Cart'
+																										: 'اضف الى السلة'}
+																								</button>
+																							</Link>
+																							<div
+																								className='actions-secondary'
+																								data-role='add-to-links'>
+																								<div
+																									className='action towishlist'
+																									data-action='add-to-wishlist'
+																									title='Add to Wish List'>
+																									{wishlistData.includes(
+																										data._id,
+																									) ? (
+																										<>
+																											<BsHeart
+																												className='add-to-wish list-wish'
+																												onClick={(
+																													ele,
+																												) => {
+																													addToWishlist(
+																														data._id,
+																														'addCatog',
+																														ele,
+																													);
+																												}}
+																												style={{
+																													display:
+																														'none',
+																												}}
+																											/>
+																											<svg
+																												className='add-to-wish2 list-wish bi bi-heart-fill'
+																												xmlns='http://www.w3.org/2000/svg'
+																												width='16'
+																												height='16'
+																												fill='currentColor'
+																												viewBox='0 0 16 16'>
+																												<path
+																													className='add-to-wish2'
+																													fill-rule='evenodd'
+																													d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
+																													onClick={(
+																														ele,
+																													) => {
+																														addToWishlist(
+																															data._id,
+																															'remove',
+																															ele,
+																														);
+																													}}
+																												/>
+																											</svg>
+																										</>
+																									) : (
+																										<>
+																											<BsHeart
+																												className='add-to-wish list-wish'
+																												onClick={(
+																													ele,
+																												) => {
+																													addToWishlist(
+																														data._id,
+																														'addCatog',
+																														ele,
+																													);
+																												}}
+																											/>
+																											<svg
+																												className='add-to-wish2 list-wish bi bi-heart-fill'
+																												xmlns='http://www.w3.org/2000/svg'
+																												width='16'
+																												height='16'
+																												fill='currentColor'
+																												viewBox='0 0 16 16'>
+																												<path
+																													className='add-to-wish2'
+																													fill-rule='evenodd'
+																													d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
+																													onClick={(
+																														ele,
+																													) => {
+																														addToWishlist(
+																															data._id,
+																															'remove',
+																															ele,
+																														);
+																													}}
+																													style={{
+																														display:
+																															'none',
+																													}}
+																												/>
+																											</svg>
+																										</>
+																									)}
+																									<span>
+																										{language ===
+																										'en'
+																											? 'Add to Wish List'
+																											: 'اضف الى القائمة المفضلة'}
+																									</span>
+																								</div>
+																								<div
+																									className='action tocompare'
+																									data-post='{"action":"http:\/\/magento2.magentech.com\/themes\/sm_venuse\/pub\/french\/catalog\/product_compare\/add\/","data":{"product":"1","uenc":"aHR0cDovL21hZ2VudG8yLm1hZ2VudGVjaC5jb20vdGhlbWVzL3NtX3ZlbnVzZS9wdWIvZnJlbmNo"}}'
+																									title='Add to Compare'>
+																									<IoGitCompareOutline />
+																									<span>
+																										{language ===
+																										'en'
+																											? 'Add to Compare'
+																											: 'اضف للمقارنة'}
+																									</span>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</li>
+																	</div>
+																))}
+														</div>
+													</div>
+													<div className='owl-nav'>
+														<div
+															role='presentation'
+															className='owl-prev disabled'>
+															<span aria-label='Previous'>
+																‹
+															</span>
+														</div>
+														<div
+															role='presentation'
+															className='owl-next'>
+															<span aria-label='Next'>›</span>
+														</div>
+													</div>
+													<div className='owl-dots disabled'></div>
+												</ol>
+											</div>
 										</div>
 									</div>
 								</div>

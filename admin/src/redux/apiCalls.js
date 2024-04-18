@@ -111,8 +111,8 @@ export const getProducts = async (dispatch, supplierId) => {
 	dispatch(getProductStart());
 	try {
 		const url = supplierId
-			? `/products?supplierId=${supplierId}`
-			: '/products';
+			? `/products/adminsupplier?supplierId=${supplierId}`
+			: '/products/adminsupplier';
 		const res = await publicRequest.get(url);
 		dispatch(getProductSuccess(res.data));
 	} catch (err) {
