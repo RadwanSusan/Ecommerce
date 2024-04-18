@@ -17,3 +17,5 @@ thunder-tests
 .safurai/config.yml
 admin/yarn.lock
 pnpm-lock.yaml
+*.ts
+/api/node_modules

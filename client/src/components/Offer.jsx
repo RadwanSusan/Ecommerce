@@ -580,7 +580,7 @@ const Offer = () => {
 		const getProducts = async () => {
 			try {
 				const res = await axios.get(
-					'http://localhost:4000/api/products',
+					'http://194.195.86.67:4000/api/products',
 				);
 				const currentDate = Date.parse(new Date());
 				const filteredOffer = res.data

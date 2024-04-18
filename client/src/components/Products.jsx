@@ -20,8 +20,8 @@
 // 			try {
 // 				const res = await axios.get(
 // 					cat
-// 						? `http://localhost:4000/api/products?supplier=${cat}`
-// 						: 'http://localhost:4000/api/products',
+// 						? `http://194.195.86.67:4000/api/products?supplier=${cat}`
+// 						: 'http://194.195.86.67:4000/api/products',
 // 				);
 // 				setProducts(res.data);
 // 			} catch (err) {}
@@ -97,8 +97,8 @@ const Products = ({ supplier, filters, sort }) => {
 			try {
 				const res = await axios.get(
 					supplier
-						? `http://localhost:4000/api/products?supplier=${supplier}`
-						: 'http://localhost:4000/api/products',
+						? `http://194.195.86.67:4000/api/products?supplier=${supplier}`
+						: 'http://194.195.86.67:4000/api/products',
 				);
 				setProducts(res.data);
 			} catch (err) {
