@@ -194,15 +194,14 @@ export default function NewProduct() {
 			]);
 			// const product = constructProduct(inputs, variants);
 			const product = constructProduct(inputs, variants, supplierInfo);
-
-			await addProduct(product, dispatch);
 			swal({
 				title: 'Success',
 				text: 'Product added successfully',
 				icon: 'success',
 				closeOnClickOutside: false,
 				closeOnEsc: false,
-			}).then(resetAllForms);
+			}).then(setLoading(false), resetAllForms);
+			await addProduct(product, dispatch);
 		} catch (error) {
 			showError('Error', error.message);
 		} finally {
