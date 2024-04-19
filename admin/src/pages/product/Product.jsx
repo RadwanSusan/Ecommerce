@@ -188,25 +188,25 @@ export default function Product() {
 		newImageArray[index] = event.target.value;
 		setImageArray(newImageArray);
 	};
-	useEffect(() => {
-		const getStats = async () => {
-			try {
-				const res = await userRequest.get('orders/income?pid=' + productId);
-				const list = res.data.sort((a, b) => {
-					return a._id - b._id;
-				});
-				list.map((item) =>
-					setPStats((prev) => [
-						...prev,
-						{ name: MONTHS[item._id - 1], Sales: item.total },
-					]),
-				);
-			} catch (err) {
-				swal('Error', err.message, 'error');
-			}
-		};
-		getStats();
-	}, [productId, MONTHS]);
+	// useEffect(() => {
+	// 	const getStats = async () => {
+	// 		try {
+	// 			const res = await userRequest.get('orders/income?pid=' + productId);
+	// 			const list = res.data.sort((a, b) => {
+	// 				return a._id - b._id;
+	// 			});
+	// 			list.map((item) =>
+	// 				setPStats((prev) => [
+	// 					...prev,
+	// 					{ name: MONTHS[item._id - 1], Sales: item.total },
+	// 				]),
+	// 			);
+	// 		} catch (err) {
+	// 			swal('Error', err.message, 'error');
+	// 		}
+	// 	};
+	// 	getStats();
+	// }, [productId, MONTHS]);
 	useEffect(() => {
 		product.variants.forEach((variant, index) => {
 			if (Array.isArray(variant.size)) {

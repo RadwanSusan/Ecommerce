@@ -379,13 +379,14 @@ export default function NewProduct() {
 										multiple
 										style={{ display: 'none' }}
 									/>
-									{index !== 0 && (
+									{/* {index !== 0 && (
 										<button
 											onClick={() => removeForm(index)}
 											className='closeFormButton'>
 											x
 										</button>
-									)}
+									)} */}
+
 									<div
 										className='file-dragndrop'
 										onDragEnter={() => setDraggedFile(true)}
@@ -406,6 +407,7 @@ export default function NewProduct() {
 										)}
 									</div>
 								</div>
+
 								{index < 1 && (
 									<div className='addProductItem'>
 										<label>Title*</label>
@@ -683,7 +685,14 @@ export default function NewProduct() {
 								)}
 							</div>
 							{
-								<div className='divition2'>
+								<div className='divition2 divition221'>
+									{index !== 0 && (
+										<button
+											onClick={() => removeForm(index)}
+											className='closeFormButton'>
+											<span className='close-icon'>&times;</span>
+										</button>
+									)}
 									{index < 1 && (
 										<div className='addProductItem'>
 											<label>Product Width*</label>
