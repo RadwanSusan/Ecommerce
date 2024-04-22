@@ -37,8 +37,7 @@
 	},
 	"scripts": {
 		"start": "PORT=5001 vite",
-		"dev": "PORT=5001 vite --host",
-		"build": "vite build",
+		"build": "PORT=5001 vite build",
 		"serve": "vite preview"
 	},
 	"browserslist": {
