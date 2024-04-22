@@ -460,81 +460,121 @@ export default function NewProduct() {
 									<div className='addProductItem'>
 										<fieldset>
 											<legend>Size*</legend>
-											<input
-												type='radio'
-												className='Size'
-												name='size'
-												onChange={(event) =>
-													handleFormChange(
-														index,
-														'size',
-														event.target.value,
-													)
-												}
-												value='S'
-											/>
-											<label> S</label>
-											<br />
-											<input
-												type='radio'
-												className='Size'
-												name='size'
-												onChange={(event) =>
-													handleFormChange(
-														index,
-														'size',
-														event.target.value,
-													)
-												}
-												value='M'
-											/>
-											<label> M</label>
-											<br />
-											<input
-												type='radio'
-												className='Size'
-												name='size'
-												onChange={(event) =>
-													handleFormChange(
-														index,
-														'size',
-														event.target.value,
-													)
-												}
-												value='L'
-											/>
-											<label> L</label>
-											<br />
-											<input
-												type='radio'
-												className='Size'
-												name='size'
-												onChange={(event) =>
-													handleFormChange(
-														index,
-														'size',
-														event.target.value,
-													)
-												}
-												value='XL'
-											/>
-											<label> XL</label>
-											<br />
-											<input
-												type='radio'
-												name='size'
-												onChange={(event) =>
-													handleFormChange(
-														index,
-														'size',
-														event.target.value,
-													)
-												}
-												value='XXL'
-												className='Size'
-											/>
-											<label> XXL</label>
-											<br />
+
+											{supplierInfo.role !== 'supplierType1' &&
+											supplierInfo.role !== 'supplierType2' ? (
+												<>
+													<input
+														type='radio'
+														className='Size'
+														name='size'
+														onChange={(event) =>
+															handleFormChange(
+																index,
+																'size',
+																event.target.value,
+															)
+														}
+														value='S'
+													/>
+													<label> S</label>
+													<br />
+													<input
+														type='radio'
+														className='Size'
+														name='size'
+														onChange={(event) =>
+															handleFormChange(
+																index,
+																'size',
+																event.target.value,
+															)
+														}
+														value='M'
+													/>
+													<label> M</label>
+													<br />
+													<input
+														type='radio'
+														className='Size'
+														name='size'
+														onChange={(event) =>
+															handleFormChange(
+																index,
+																'size',
+																event.target.value,
+															)
+														}
+														value='L'
+													/>
+													<label> L</label>
+													<br />
+													<input
+														type='radio'
+														className='Size'
+														name='size'
+														onChange={(event) =>
+															handleFormChange(
+																index,
+																'size',
+																event.target.value,
+															)
+														}
+														value='XL'
+													/>
+													<label> XL</label>
+													<br />
+													<input
+														type='radio'
+														name='size'
+														onChange={(event) =>
+															handleFormChange(
+																index,
+																'size',
+																event.target.value,
+															)
+														}
+														value='XXL'
+														className='Size'
+													/>
+													<label> XXL</label>
+													<br />
+												</>
+											) : (
+												<>
+													<input
+														type='radio'
+														className='Size'
+														name='size'
+														onChange={(event) =>
+															handleFormChange(
+																index,
+																'size',
+																event.target.value,
+															)
+														}
+														value='200ml'
+													/>
+													<label>200 ml</label>
+													<br />
+													<input
+														type='radio'
+														className='Size'
+														name='size'
+														onChange={(event) =>
+															handleFormChange(
+																index,
+																'size',
+																event.target.value,
+															)
+														}
+														value='500ml'
+													/>
+													<label>500 ml</label>
+													<br />
+													{/* Add more options as needed */}
+												</>
+											)}
 										</fieldset>
 									</div>
 								)}

@@ -170,6 +170,8 @@ const Product = () => {
 	const { language } = useContext(LanguageContext);
 	const { dictionary } = useContext(LanguageContext);
 	const [imageSrc, setImageSrc] = useState(null);
+	const [productSupplier, setProductSupplier] = useState(null);
+
 	useEffect(() => {
 		if (userId !== undefined) {
 			setWishlistLogin(true);
@@ -178,6 +180,28 @@ const Product = () => {
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, []);
+	// useEffect(() => {
+	// 	const getProduct = async () => {
+	// 		try {
+	// 			let res = await publicRequest.get('/products/find/' + id);
+	// 			if (res.data == null) {
+	// 				res = await publicRequest.get('/offer/find/' + id);
+	// 			}
+	// 			setProduct(res.data);
+	// 			const colors = Array.from(
+	// 				new Set(res.data.variants.flatMap((variant) => variant.color)),
+	// 			);
+	// 			setAvailableColors(colors);
+	// 			const sizes = Array.from(
+	// 				new Set(res.data.variants.flatMap((variant) => variant.size)),
+	// 			);
+	// 			setAvailableSizes(sizes);
+	// 			setImageSrc(res.data.variants[0].img);
+	// 		} catch {}
+	// 	};
+	// 	getProduct();
+	// }, [id]);
+
 	useEffect(() => {
 		const getProduct = async () => {
 			try {
@@ -195,6 +219,12 @@ const Product = () => {
 				);
 				setAvailableSizes(sizes);
 				setImageSrc(res.data.variants[0].img);
+
+				// Fetch the supplier information of the product
+				const supplierRes = await publicRequest.get(
+					`/suppliers/${res.data.supplier}`,
+				);
+				setProductSupplier(supplierRes.data);
 			} catch {}
 		};
 		getProduct();
@@ -207,27 +237,80 @@ const Product = () => {
 			e.target.style.outline = '3px solid #292931';
 		}),
 	);
+	// const handleQuantity = (type) => {
+	// 	const cartProduct = mergedCart.find(
+	// 		(item) =>
+	// 			item._id === product._id &&
+	// 			item.selectedVariant._id === selectedVariant._id,
+	// 	);
+	// 	const cartQuantity = cartProduct ? cartProduct.quantity : 0;
+	// 	const availableQuantity = selectedVariant
+	// 		? selectedVariant.quantity - cartQuantity
+	// 		: 0;
+	// 	if (type === 'dec') {
+	// 		quantity > 1 && setQuantity(quantity - 1);
+	// 	} else {
+	// 		if (quantity >= availableQuantity) {
+	// 			swal(
+	// 				'Info',
+	// 				'You have exceeded the number of available products!',
+	// 				'info',
+	// 			);
+	// 		} else {
+	// 			setQuantity(quantity + 1);
+	// 		}
+	// 	}
+	// };
 	const handleQuantity = (type) => {
-		const cartProduct = mergedCart.find(
-			(item) =>
-				item._id === product._id &&
-				item.selectedVariant._id === selectedVariant._id,
-		);
-		const cartQuantity = cartProduct ? cartProduct.quantity : 0;
-		const availableQuantity = selectedVariant
-			? selectedVariant.quantity - cartQuantity
-			: 0;
-		if (type === 'dec') {
-			quantity > 1 && setQuantity(quantity - 1);
-		} else {
-			if (quantity >= availableQuantity) {
-				swal(
-					'Info',
-					'You have exceeded the number of available products!',
-					'info',
-				);
+		if (
+			productSupplier && // Check if productSupplier exists
+			(productSupplier.role === 'supplierType1' ||
+				productSupplier.role === 'supplierType2')
+		) {
+			const cartProduct = mergedCart.find((item) =>
+				item.variants.some((variant) => variant.size.includes(size)),
+			);
+			const cartQuantity = cartProduct ? cartProduct.quantity : 0;
+			const availableQuantity = selectedVariant
+				? selectedVariant.quantity - cartQuantity
+				: 0;
+
+			if (type === 'dec') {
+				quantity > 1 && setQuantity(quantity - 1);
 			} else {
-				setQuantity(quantity + 1);
+				if (quantity >= availableQuantity) {
+					swal(
+						'Info',
+						'You have exceeded the number of available products!',
+						'info',
+					);
+				} else {
+					setQuantity(quantity + 1);
+				}
+			}
+		} else {
+			const cartProduct = mergedCart.find(
+				(item) =>
+					item._id === product._id &&
+					item.selectedVariant._id === selectedVariant._id,
+			);
+			const cartQuantity = cartProduct ? cartProduct.quantity : 0;
+			const availableQuantity = selectedVariant
+				? selectedVariant.quantity - cartQuantity
+				: 0;
+
+			if (type === 'dec') {
+				quantity > 1 && setQuantity(quantity - 1);
+			} else {
+				if (quantity >= availableQuantity) {
+					swal(
+						'Info',
+						'You have exceeded the number of available products!',
+						'info',
+					);
+				} else {
+					setQuantity(quantity + 1);
+				}
 			}
 		}
 	};
@@ -245,64 +328,91 @@ const Product = () => {
 		return acc;
 	}, []);
 	let totalAvailableQuantity = selectedVariant ? selectedVariant.quantity : 0;
+	// const checkAvailability = useCallback(() => {
+	// 	if (selectedVariant && mergedCart) {
+	// 		const cartProduct = mergedCart.find((item) =>
+	// 			item.variants.find(
+	// 				(variant) => variant._id === selectedVariant._id,
+	// 			),
+	// 		);
+	// 		if (cartProduct) {
+	// 			cartProducts.products.map((item) => {
+	// 				if (
+	// 					item.selectedVariant._id === cartProduct.selectedVariant._id
+	// 				) {
+	// 					setavailableQuantityAfterUpdate(
+	// 						item.selectedVariant.quantity - item.quantity,
+	// 					);
+	// 				}
+	// 			});
+	// 		}
+	// 	}
+	// 	if (selectedVariant && mergedCart) {
+	// 		const updatedCart = mergedCart.map((item) => {
+	// 			const zaid = item.variants.find(
+	// 				(variant) => variant._id === selectedVariant._id,
+	// 			);
+	// 			if (zaid) {
+	// 				return {
+	// 					...item,
+	// 					variants: item.variants.map((variant) => {
+	// 						if (variant._id === selectedVariant._id) {
+	// 							const zaid2 =
+	// 								variant.quantity - availableQuantityAfterUpdate;
+	// 							totalAvailableQuantity = totalAvailableQuantity - zaid2;
+	// 							if (zaid2 <= 0) {
+	// 								setIsButtonDisabled(true);
+	// 							}
+	// 						} else {
+	// 							setIsButtonDisabled(false);
+	// 							return variant;
+	// 						}
+	// 					}),
+	// 				};
+	// 			}
+	// 		});
+	// 	}
+	// 	let availableQuantity;
+	// 	if (availableQuantityAfterUpdate > 0) {
+	// 		availableQuantity = availableQuantityAfterUpdate;
+	// 	} else {
+	// 		availableQuantity = totalAvailableQuantity;
+	// 	}
+	// 	setIsButtonDisabled(availableQuantity <= 0);
+	// }, [
+	// 	mergedCart,
+	// 	product._id,
+	// 	selectedVariant,
+	// 	quantity,
+	// 	availableQuantityAfterUpdate,
+	// ]);
 	const checkAvailability = useCallback(() => {
 		if (selectedVariant && mergedCart) {
-			const cartProduct = mergedCart.find((item) =>
-				item.variants.find(
-					(variant) => variant._id === selectedVariant._id,
-				),
-			);
-			if (cartProduct) {
-				cartProducts.products.map((item) => {
-					if (
-						item.selectedVariant._id === cartProduct.selectedVariant._id
-					) {
-						setavailableQuantityAfterUpdate(
-							item.selectedVariant.quantity - item.quantity,
-						);
-					}
-				});
+			if (
+				productSupplier && // Check if productSupplier exists
+				(productSupplier.role === 'supplierType1' ||
+					productSupplier.role === 'supplierType2')
+			) {
+				const cartProduct = mergedCart.find((item) =>
+					item.variants.some((variant) => variant.size.includes(size)),
+				);
+				const cartQuantity = cartProduct ? cartProduct.quantity : 0;
+				const availableQuantity = selectedVariant.quantity - cartQuantity;
+				setavailableQuantityAfterUpdate(availableQuantity);
+				setIsButtonDisabled(availableQuantity <= 0);
+			} else {
+				const cartProduct = mergedCart.find(
+					(item) =>
+						item._id === product._id &&
+						item.selectedVariant._id === selectedVariant._id,
+				);
+				const cartQuantity = cartProduct ? cartProduct.quantity : 0;
+				const availableQuantity = selectedVariant.quantity - cartQuantity;
+				setavailableQuantityAfterUpdate(availableQuantity);
+				setIsButtonDisabled(availableQuantity <= 0);
 			}
 		}
-		if (selectedVariant && mergedCart) {
-			const updatedCart = mergedCart.map((item) => {
-				const zaid = item.variants.find(
-					(variant) => variant._id === selectedVariant._id,
-				);
-				if (zaid) {
-					return {
-						...item,
-						variants: item.variants.map((variant) => {
-							if (variant._id === selectedVariant._id) {
-								const zaid2 =
-									variant.quantity - availableQuantityAfterUpdate;
-								totalAvailableQuantity = totalAvailableQuantity - zaid2;
-								if (zaid2 <= 0) {
-									setIsButtonDisabled(true);
-								}
-							} else {
-								setIsButtonDisabled(false);
-								return variant;
-							}
-						}),
-					};
-				}
-			});
-		}
-		let availableQuantity;
-		if (availableQuantityAfterUpdate > 0) {
-			availableQuantity = availableQuantityAfterUpdate;
-		} else {
-			availableQuantity = totalAvailableQuantity;
-		}
-		setIsButtonDisabled(availableQuantity <= 0);
-	}, [
-		mergedCart,
-		product._id,
-		selectedVariant,
-		quantity,
-		availableQuantityAfterUpdate,
-	]);
+	}, [mergedCart, product._id, selectedVariant, size, productSupplier]);
 	useEffect(() => {
 		checkAvailability();
 	}, [
@@ -329,37 +439,74 @@ const Product = () => {
 			);
 		}
 	}, [selectedVariant, mergedCart, product._id]);
+	// const setColor2 = (color) => {
+	// 	const variants = product.variants.filter((variant) =>
+	// 		variant.color.includes(color),
+	// 	);
+	// 	const sizes = variants.flatMap((variant) => variant.size);
+	// 	setAvailableSizes(sizes);
+	// 	const newSelectedVariant = variants[0];
+	// 	setSelectedVariant(newSelectedVariant);
+	// 	setQuantity(1);
+	// 	setColor(color);
+	// 	const defaultSize = sizes[0];
+	// 	setSize(defaultSize);
+	// 	const selectedVariant = variants.find((variant) =>
+	// 		variant.size.includes(defaultSize),
+	// 	);
+	// 	const cartProduct = mergedCart.find(
+	// 		(item) =>
+	// 			item._id === product._id &&
+	// 			item.selectedVariant._id === newSelectedVariant._id,
+	// 	);
+	// 	if (cartProduct) {
+	// 		setavailableQuantityAfterUpdate(
+	// 			newSelectedVariant.quantity - cartProduct.quantity,
+	// 		);
+	// 	} else {
+	// 		setavailableQuantityAfterUpdate(
+	// 			newSelectedVariant ? newSelectedVariant.quantity : 0,
+	// 		);
+	// 	}
+	// 	setImageSrc(newSelectedVariant.img);
+	// 	checkAvailability();
+	// };
 	const setColor2 = (color) => {
-		const variants = product.variants.filter((variant) =>
-			variant.color.includes(color),
-		);
-		const sizes = variants.flatMap((variant) => variant.size);
-		setAvailableSizes(sizes);
-		const newSelectedVariant = variants[0];
-		setSelectedVariant(newSelectedVariant);
-		setQuantity(1);
-		setColor(color);
-		const defaultSize = sizes[0];
-		setSize(defaultSize);
-		const selectedVariant = variants.find((variant) =>
-			variant.size.includes(defaultSize),
-		);
-		const cartProduct = mergedCart.find(
-			(item) =>
-				item._id === product._id &&
-				item.selectedVariant._id === newSelectedVariant._id,
-		);
-		if (cartProduct) {
-			setavailableQuantityAfterUpdate(
-				newSelectedVariant.quantity - cartProduct.quantity,
+		if (
+			supplierInfo.role !== 'supplierType1' &&
+			supplierInfo.role !== 'supplierType2'
+		) {
+			const variants = product.variants.filter((variant) =>
+				variant.color.includes(color),
 			);
-		} else {
-			setavailableQuantityAfterUpdate(
-				newSelectedVariant ? newSelectedVariant.quantity : 0,
+			const sizes = variants.flatMap((variant) => variant.size);
+			setAvailableSizes(sizes);
+			const newSelectedVariant = variants[0];
+			setSelectedVariant(newSelectedVariant);
+			setQuantity(1);
+			setColor(color);
+			const defaultSize = sizes[0];
+			setSize(defaultSize);
+			const selectedVariant = variants.find((variant) =>
+				variant.size.includes(defaultSize),
 			);
+			const cartProduct = mergedCart.find(
+				(item) =>
+					item._id === product._id &&
+					item.selectedVariant._id === newSelectedVariant._id,
+			);
+			if (cartProduct) {
+				setavailableQuantityAfterUpdate(
+					newSelectedVariant.quantity - cartProduct.quantity,
+				);
+			} else {
+				setavailableQuantityAfterUpdate(
+					newSelectedVariant ? newSelectedVariant.quantity : 0,
+				);
+			}
+			setImageSrc(newSelectedVariant.img);
+			checkAvailability();
 		}
-		setImageSrc(newSelectedVariant.img);
-		checkAvailability();
 	};
 	const setSize2 = (size) => {
 		const variants = product.variants;
@@ -505,7 +652,7 @@ const Product = () => {
 								: `$ ${formatPrice(product.price, language)}`}
 						</Price>
 					)}
-					<FilterContainer>
+					{/* <FilterContainer>
 						<Filter language={language}>
 							<FilterTitle language={language}>
 								{dictionary.color}
@@ -520,6 +667,42 @@ const Product = () => {
 								/>
 							))}
 						</Filter>
+						<Filter language={language}>
+							<FilterTitle language={language}>
+								{dictionary.size}
+							</FilterTitle>
+							<FilterSize
+								language={language}
+								onChange={(e) => setSize2(e.target.value)}>
+								{availableSizes.map((s) => (
+									<FilterSizeOption
+										key={s}
+										value={s}>
+										{language === 'ar' ? dictionary.sizes[s] || s : s}
+									</FilterSizeOption>
+								))}
+							</FilterSize>
+						</Filter>
+					</FilterContainer> */}
+					<FilterContainer>
+						{productSupplier && // Check if productSupplier exists
+							productSupplier.role !== 'supplierType1' &&
+							productSupplier.role !== 'supplierType2' && (
+								<Filter language={language}>
+									<FilterTitle language={language}>
+										{dictionary.color}
+									</FilterTitle>
+									{availableColors.map((c) => (
+										<FilterColor
+											className='Color'
+											color={c}
+											key={c}
+											language={language}
+											onClick={() => setColor2(c)}
+										/>
+									))}
+								</Filter>
+							)}
 						<Filter language={language}>
 							<FilterTitle language={language}>
 								{dictionary.size}
