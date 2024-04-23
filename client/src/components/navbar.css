@@ -29,8 +29,7 @@ header {
 	}
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.page-header {
 		border: 0px;
 		margin-bottom: 0px;
@@ -46,8 +45,7 @@ print {
 	background: none;
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.page-header {
 		border: 0;
 		margin-bottom: 0;
@@ -92,7 +90,7 @@ body:not(.layout-boxed) .page-wrapper {
 		line-height: 1.5;
 		font-size: 14px;
 		background-color: rgb(255, 255, 255);
-		font-family: "Open Sans", sans-serif;
+		font-family: 'Open Sans', sans-serif;
 		text-align: left;
 		overflow-x: hidden;
 	}
@@ -107,7 +105,7 @@ body {
 	line-height: 1.5;
 	font-size: 14px;
 	background-color: #ffffff;
-	font-family: "Open Sans", sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	text-align: left;
 	overflow-x: hidden;
 }
@@ -146,7 +144,6 @@ html {
 }
 
 @media all {
-
 	*,
 	:before,
 	:after {
@@ -242,12 +239,12 @@ body:not(.layout-boxed) .container {
 }
 
 .middle-content:after {
-	content: "";
+	content: '';
 	display: block;
 	clear: both;
 }
 
-html[lang="ar"] .middle-content {
+html[lang='ar'] .middle-content {
 	display: flex;
 	flex-direction: row-reverse;
 }
@@ -257,7 +254,7 @@ html[lang="ar"] .middle-content {
 	width: 250px;
 }
 
-html[lang="ar"] .logo-container {
+html[lang='ar'] .logo-container {
 	text-align: end;
 }
 
@@ -265,6 +262,7 @@ html[lang="ar"] .logo-container {
 	.right-container {
 		padding-left: 30px;
 		float: left;
+		margin-top: 13px;
 		width: calc(100% - 250px);
 	}
 }
@@ -287,8 +285,7 @@ html[lang="ar"] .logo-container {
 	}
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	h1 {
 		font-size: 40px;
 		margin-bottom: 46px;
@@ -314,7 +311,7 @@ print {
 	width: 100%;
 }
 
-html[lang="ar"] .right-content {
+html[lang='ar'] .right-content {
 	display: flex;
 	flex-direction: row-reverse;
 	height: 0;
@@ -353,16 +350,15 @@ a {
 @media all {
 	.logo {
 		float: left;
-		margin: 0px;
 		max-width: 50%;
 		position: relative;
 		z-index: 5;
 		padding: 0px;
+		margin-top: -20px !important;
 	}
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.logo {
 		margin: 0px auto 25px 0px;
 	}
@@ -377,8 +373,7 @@ print {
 	padding: 0;
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.logo {
 		margin: 0 auto 25px 0;
 	}
@@ -397,13 +392,11 @@ a:visited {
 @media all {
 	.logo-content .logo {
 		max-width: unset;
-		margin: 0px;
 	}
 }
 
 .logo-content .logo {
 	max-width: unset;
-	margin: 0;
 }
 
 @media all {
@@ -432,13 +425,12 @@ a:hover {
 	width: 100% !important;
 }
 
-html[lang="ar"] .block-search {
+html[lang='ar'] .block-search {
 	padding-left: 70px !important;
 	padding-right: 70px !important;
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.block-search {
 		float: right;
 		padding-left: 15px;
@@ -501,8 +493,7 @@ img {
 	}
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.logo img {
 		max-height: inherit;
 	}
@@ -530,8 +521,7 @@ print {
 	}
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.minicart-wrapper {
 		margin-left: 13px;
 	}
@@ -557,17 +547,16 @@ print {
 }
 
 @media all {
-
 	.minicart-wrapper:before,
 	.minicart-wrapper:after {
-		content: "";
+		content: '';
 		display: table;
 	}
 }
 
 .minicart-wrapper:before,
 .minicart-wrapper:after {
-	content: "";
+	content: '';
 	display: table;
 }
 
@@ -603,7 +592,7 @@ form {
 	white-space: nowrap;
 }
 
-html[lang="ar"] .minicart-wrapper .action.showcart {
+html[lang='ar'] .minicart-wrapper .action.showcart {
 	display: flex;
 	flex-direction: row-reverse;
 }
@@ -636,7 +625,7 @@ html[lang="ar"] .minicart-wrapper .action.showcart {
 		font-size: 35px;
 		line-height: 33px;
 		color: rgb(143, 143, 143);
-		content: "";
+		content: '';
 		font-family: icons-blank-theme;
 		margin: 0px;
 		vertical-align: top;
@@ -653,8 +642,8 @@ html[lang="ar"] .minicart-wrapper .action.showcart {
 	font-size: 35px;
 	line-height: 33px;
 	color: #8f8f8f;
-	content: "\e611";
-	font-family: "icons-blank-theme";
+	content: '\e611';
+	font-family: 'icons-blank-theme';
 	margin: 0;
 	vertical-align: top;
 	display: inline-block;
@@ -684,7 +673,7 @@ html[lang="ar"] .minicart-wrapper .action.showcart {
 	top: 12px;
 	color: #222;
 	display: inline-block;
-	font-family: "icomoon" !important;
+	font-family: 'icomoon' !important;
 	font-style: normal;
 	font-weight: normal;
 	font-variant: normal;
@@ -946,8 +935,7 @@ html[lang="ar"] .minicart-wrapper .action.showcart {
 	}
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.minicart-wrapper .block-minicart {
 		right: -15px;
 		width: 390px;
@@ -986,11 +974,10 @@ print {
 }
 
 @media all {
-
 	.minicart-wrapper .block-minicart:before,
 	.minicart-wrapper .block-minicart:after {
 		border-bottom-style: solid;
-		content: "";
+		content: '';
 		display: block;
 		height: 0px;
 		position: absolute;
@@ -1018,7 +1005,7 @@ print {
 .minicart-wrapper .block-minicart:before,
 .minicart-wrapper .block-minicart:after {
 	border-bottom-style: solid;
-	content: "";
+	content: '';
 	display: block;
 	height: 0;
 	position: absolute;
@@ -1069,8 +1056,7 @@ print {
 	}
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.block-search .control {
 		border-top: 0px;
 		margin: 0px;
@@ -1085,8 +1071,7 @@ print {
 	padding: 0 15px;
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.block-search .control {
 		border-top: 0;
 		margin: 0;
@@ -1162,9 +1147,8 @@ button {
 }
 
 @media all {
-
 	button,
-	[type="submit"] {
+	[type='submit'] {
 		appearance: button;
 	}
 }
@@ -1215,7 +1199,6 @@ button[disabled] {
 }
 
 @media all {
-
 	.block-search .form.minisearch .actions button:before,
 	.block-search .form.minisearch .actions button span {
 		display: none;
@@ -1286,7 +1269,11 @@ button:hover {
 	color: rgb(34, 34, 34);
 }
 
-html[lang='ar'] .block-search.search-pro .form.minisearch .field.search .searchbox-cat {
+html[lang='ar']
+	.block-search.search-pro
+	.form.minisearch
+	.field.search
+	.searchbox-cat {
 	padding-left: 20px;
 	padding-right: 20px;
 	text-align: right;
@@ -1308,15 +1295,14 @@ input {
 		position: absolute;
 	}
 
-	input[type="text"] {
+	input[type='text'] {
 		height: 36px;
 		border: 1px solid rgb(221, 221, 221);
 		border-radius: 4px;
 	}
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.block-search input {
 		margin: 0px;
 		padding-right: 35px;
@@ -1324,7 +1310,7 @@ print {
 	}
 }
 
-input[type="text"] {
+input[type='text'] {
 	background: #fff;
 	background-clip: padding-box;
 	border: 1px solid #ddd;
@@ -1345,7 +1331,7 @@ input[type="text"] {
 	position: absolute;
 }
 
-input[type="text"] {
+input[type='text'] {
 	height: 36px;
 	border: 1px solid #ddd;
 	border-radius: 4px;
@@ -1353,8 +1339,7 @@ input[type="text"] {
 	-webkit-border-radius: 4px;
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.block-search input {
 		margin: 0;
 		padding-right: 35px;
@@ -1398,7 +1383,11 @@ print {
 	width: calc(100% - 180px);
 }
 
-html[lang='ar'] .block-search.search-pro .form.minisearch .field.search .input-text {
+html[lang='ar']
+	.block-search.search-pro
+	.form.minisearch
+	.field.search
+	.input-text {
 	text-align: right;
 }
 
@@ -1413,8 +1402,7 @@ html[lang='ar'] .block-search.search-pro .form.minisearch .field.search .input-t
 	}
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.search-autocomplete {
 		margin-top: 0px;
 	}
@@ -1429,8 +1417,7 @@ print {
 	z-index: 3;
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.search-autocomplete {
 		margin-top: 0;
 	}
@@ -1479,9 +1466,8 @@ print {
 }
 
 @media all {
-
 	button,
-	[type="button"] {
+	[type='button'] {
 		appearance: button;
 	}
 
@@ -1560,7 +1546,7 @@ button.close {
 		font-size: 32px;
 		line-height: 32px;
 		color: inherit;
-		content: "";
+		content: '';
 		font-family: icons-blank-theme;
 		margin: 0px;
 		vertical-align: top;
@@ -1577,8 +1563,8 @@ button.close {
 	font-size: 32px;
 	line-height: 32px;
 	color: inherit;
-	content: "\e616";
-	font-family: "icons-blank-theme";
+	content: '\e616';
+	font-family: 'icons-blank-theme';
 	margin: 0;
 	vertical-align: top;
 	display: inline-block;

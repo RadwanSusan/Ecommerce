@@ -18,7 +18,7 @@ const HeaderMobile = () => {
 					</div>
 					<div class='mobile-logo'>
 						<img
-							src='http://magento2.magentech.com/themes/sm_venuse/pub/media/logomobile/default/logo-mobile.png'
+							src='https://emarche.net/wp-content/uploads/2017/02/Logo-resized.png'
 							alt='Logo Mobile'
 							width='157'
 							height='35'
@@ -27,13 +27,11 @@ const HeaderMobile = () => {
 					<div class='mobile-cart'>
 						<div
 							id='minicart-mobile'
-							class='minicart-mobile'
-						>
+							class='minicart-mobile'>
 							<span class='hidden'>Cart Mobile</span>
 							<div
 								data-block='minicart'
-								class='mobile-wrapper'
-							>
+								class='mobile-wrapper'>
 								{/* <a
                   class="mobile action showcart"
                   href="http://magento2.magentech.com/themes/sm_venuse/pub/french/checkout/cart/"
@@ -42,8 +40,7 @@ const HeaderMobile = () => {
 								<Link
 									to={'/cart'}
 									class='mobile action showcart'
-									data-bind="scope: 'minicart_content'"
-								>
+									data-bind="scope: 'minicart_content'">
 									<AiOutlineShoppingCart />
 								</Link>
 								{/* </a> */}
@@ -52,29 +49,24 @@ const HeaderMobile = () => {
 									role='dialog'
 									class='ui-dialog ui-corner-all ui-widget ui-widget-content ui-front mage-dropdown-dialog style-pwEon'
 									aria-describedby='ui-id-1'
-									id='style-pwEon'
-								>
+									id='style-pwEon'>
 									<div
 										class='block block-minicart ui-dialog-content ui-widget-content style-fjlot'
 										data-role='dropdownDialog'
-										id='ui-id-1'
-									>
+										id='ui-id-1'>
 										<div
 											id='minicart-content-wrapper'
-											data-bind="scope: 'minicart_content'"
-										>
+											data-bind="scope: 'minicart_content'">
 											<div class='block-title'>
 												<strong>
 													<span
 														class='text'
-														data-bind="i18n: 'My Cart'"
-													>
+														data-bind="i18n: 'My Cart'">
 														My Cart
 													</span>
 													<span
 														class='qty empty'
-														title='Items in Cart'
-													></span>
+														title='Items in Cart'></span>
 												</strong>
 											</div>
 											<div class='block-content'>
@@ -83,22 +75,19 @@ const HeaderMobile = () => {
 													id='btn-minicart-close'
 													class='action close'
 													data-action='close'
-													title='Close'
-												>
+													title='Close'>
 													<span data-bind="i18n: 'Close'">
 														Close
 													</span>
 												</button>
 												<strong
 													class='subtitle empty'
-													data-bind="i18n: 'You have no items in your shopping cart.'"
-												>
+													data-bind="i18n: 'You have no items in your shopping cart.'">
 													You have no items in your shopping cart.
 												</strong>
 												<div
 													id='minicart-widgets'
-													class='minicart-widgets'
-												></div>
+													class='minicart-widgets'></div>
 											</div>
 										</div>
 									</div>

@@ -125,7 +125,7 @@ const Navbar = () => {
 								className='logo'
 								title={dictionary.navbar.venus}>
 								<img
-									src={LogoImg}
+									src='https://emarche.net/wp-content/uploads/2017/02/Logo-resized.png'
 									alt='Logo'
 									width='157'
 									height='35'

@@ -22,14 +22,12 @@ const FooterNew = () => {
 	return (
 		<div
 			id='foodter_v1'
-			class='footer footer-v1 snipcss-Ehoar tether-target-attached-top tether-element-attached-top tether-element-attached-center tether-target-attached-center'
-		>
+			class='footer footer-v1 snipcss-Ehoar tether-target-attached-top tether-element-attached-top tether-element-attached-center tether-target-attached-center'>
 			<div class='footer-top footer-top-1'>
 				<div class='container'>
 					<aside
 						id='automatic-static-block-2'
-						class='widget automatic_widget_staticblock'
-					>
+						class='widget automatic_widget_staticblock'>
 						<div class='automatic-widget automatic-static-block'>
 							<div class='vc_row wpb_row vc_row-fluid'>
 								<div class='wpb_column vc_column_container vc_col-sm-12'>
@@ -45,13 +43,13 @@ const FooterNew = () => {
 																</span>
 															</div>
 															<div class='box-content'>
-																<h1 class='title-icon'>
+																<h4 class='title-icon'>
 																	{
 																		dictionary.footer[
 																			'GREAT VALUE'
 																		]
 																	}
-																</h1>
+																</h4>
 																<div>
 																	{dictionary.footer['desc1']}
 																</div>
@@ -148,15 +146,13 @@ const FooterNew = () => {
 				<div class='footer-center padding-bottom-100'>
 					<aside
 						id='automatic-static-block-3'
-						class='widget automatic_widget_staticblock'
-					>
+						class='widget automatic_widget_staticblock'>
 						<div class='automatic-widget automatic-static-block'>
 							<div
 								data-vc-full-width='true'
 								data-vc-full-width-init='true'
 								class='vc_row wpb_row vc_row-fluid home1-newletter background-default vc_custom_1489394616135 snipcss0-0-0-1 tether-target-attached-top tether-element-attached-top tether-element-attached-center tether-target-attached-center style-4TY4e'
-								id='style-4TY4e'
-							>
+								id='style-4TY4e'>
 								<div class='wpb_column vc_column_container vc_col-sm-7 snipcss0-1-1-2'>
 									<div class='vc_column-inner snipcss0-2-2-3'>
 										<div class='wpb_wrapper snipcss0-3-3-4'>
@@ -164,15 +160,13 @@ const FooterNew = () => {
 												<div class='wpb_wrapper snipcss0-5-5-6'>
 													<aside
 														id='mc4wp_form_widget-3'
-														class='widget widget_mc4wp_form_widget snipcss0-6-6-7'
-													>
+														class='widget widget_mc4wp_form_widget snipcss0-6-6-7'>
 														<form
 															id='mc4wp-form-1'
 															class='mc4wp-form mc4wp-form-200 snipcss0-7-7-8'
 															method='post'
 															data-id='200'
-															data-name=''
-														>
+															data-name=''>
 															<div class='mc4wp-form-fields snipcss0-8-8-9'>
 																<p class='snipcss0-9-9-10'>
 																	<label class='snipcss0-10-10-11'>
@@ -208,8 +202,7 @@ const FooterNew = () => {
 															</div>
 															<label
 																class='snipcss0-8-8-15 style-U78xg'
-																id='style-U78xg'
-															>
+																id='style-U78xg'>
 																{
 																	dictionary.footer[
 																		'Leave this field'
@@ -279,13 +272,11 @@ const FooterNew = () => {
 				<div class='footer-logo'>
 					<aside
 						id='automatic-logo-2'
-						class='widget automatic_widget_logo snipcss0-1-1-2'
-					>
+						class='widget automatic_widget_logo snipcss0-1-1-2'>
 						<div class='footer-logo'>
 							<a
 								href=''
-								class='snipcss0-3-3-4'
-							>
+								class='snipcss0-3-3-4'>
 								<img
 									src='https://emarche.net/wp-content/uploads/2017/02/Logo-resized.png'
 									alt='eMarche'
@@ -307,24 +298,20 @@ const FooterNew = () => {
 										<div class='col-md-6 col-lg-6 col-sm-6 col-xs-6 snipcss0-5-5-6'>
 											<aside
 												id='text-2'
-												class='widget widget_text snipcss0-6-6-7'
-											>
+												class='widget widget_text snipcss0-6-6-7'>
 												<h3 class='widget-title snipcss0-7-7-8'>
 													{dictionary.footer['INFORMATION']}
 												</h3>
 												<div class='textwidget snipcss0-7-7-9'>
 													<ul
 														id='menu-infomation'
-														class='menu snipcss0-8-9-10'
-													>
+														class='menu snipcss0-8-9-10'>
 														<li
 															id='menu-item-2347'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2347 snipcss0-9-10-11'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2347 snipcss0-9-10-11'>
 															<a
 																href='https://emarche.net/#'
-																class='snipcss0-10-11-12'
-															>
+																class='snipcss0-10-11-12'>
 																{
 																	dictionary.footer[
 																		'About store'
@@ -334,12 +321,10 @@ const FooterNew = () => {
 														</li>
 														<li
 															id='menu-item-2348'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2348 snipcss0-9-10-13'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2348 snipcss0-9-10-13'>
 															<a
 																href='#'
-																class='snipcss0-10-13-14'
-															>
+																class='snipcss0-10-13-14'>
 																{
 																	dictionary.footer[
 																		'New collections'
@@ -349,12 +334,10 @@ const FooterNew = () => {
 														</li>
 														<li
 															id='menu-item-2349'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2349 snipcss0-9-10-15'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2349 snipcss0-9-10-15'>
 															<a
 																href='#'
-																class='snipcss0-10-15-16'
-															>
+																class='snipcss0-10-15-16'>
 																{
 																	dictionary.footer[
 																		'Woman dress'
@@ -364,12 +347,10 @@ const FooterNew = () => {
 														</li>
 														<li
 															id='menu-item-2350'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2350 snipcss0-9-10-17'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2350 snipcss0-9-10-17'>
 															<a
 																href='#'
-																class='snipcss0-10-17-18'
-															>
+																class='snipcss0-10-17-18'>
 																{
 																	dictionary.footer[
 																		'Contact us'
@@ -379,12 +360,10 @@ const FooterNew = () => {
 														</li>
 														<li
 															id='menu-item-2351'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2351 snipcss0-9-10-19'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2351 snipcss0-9-10-19'>
 															<a
 																href='#'
-																class='snipcss0-10-19-20'
-															>
+																class='snipcss0-10-19-20'>
 																{
 																	dictionary.footer[
 																		'Latest news'
@@ -394,12 +373,10 @@ const FooterNew = () => {
 														</li>
 														<li
 															id='menu-item-2352'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2352 snipcss0-9-10-21'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2352 snipcss0-9-10-21'>
 															<a
 																href='#'
-																class='snipcss0-10-21-22'
-															>
+																class='snipcss0-10-21-22'>
 																{
 																	dictionary.footer[
 																		'Our sitemap'
@@ -414,43 +391,35 @@ const FooterNew = () => {
 										<div class='col-md-6 col-lg-6 col-sm-6 col-xs-6 snipcss0-5-5-23'>
 											<aside
 												id='nav_menu-3'
-												class='widget widget_nav_menu snipcss0-6-23-24'
-											>
+												class='widget widget_nav_menu snipcss0-6-23-24'>
 												<div class='menu-location-container snipcss0-7-24-25'>
 													<ul
 														id='menu-location'
-														class='menu snipcss0-8-25-26'
-													>
+														class='menu snipcss0-8-25-26'>
 														<li
 															id='menu-item-2375'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2375 snipcss0-9-26-27'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2375 snipcss0-9-26-27'>
 															<a
 																href='#'
-																class='snipcss0-10-27-28'
-															>
+																class='snipcss0-10-27-28'>
 																{dictionary.footer['New York']}
 															</a>
 														</li>
 														<li
 															id='menu-item-2376'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2376 snipcss0-9-26-29'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2376 snipcss0-9-26-29'>
 															<a
 																href='#'
-																class='snipcss0-10-29-30'
-															>
+																class='snipcss0-10-29-30'>
 																{dictionary.footer['London SF']}
 															</a>
 														</li>
 														<li
 															id='menu-item-2377'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2377 snipcss0-9-26-31'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2377 snipcss0-9-26-31'>
 															<a
 																href='#'
-																class='snipcss0-10-31-32'
-															>
+																class='snipcss0-10-31-32'>
 																{
 																	dictionary.footer[
 																		'Cockfosters BP'
@@ -460,12 +429,10 @@ const FooterNew = () => {
 														</li>
 														<li
 															id='menu-item-2378'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2378 snipcss0-9-26-33'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2378 snipcss0-9-26-33'>
 															<a
 																href='#'
-																class='snipcss0-10-33-34'
-															>
+																class='snipcss0-10-33-34'>
 																{
 																	dictionary.footer[
 																		'Los Angeles'
@@ -475,23 +442,19 @@ const FooterNew = () => {
 														</li>
 														<li
 															id='menu-item-2379'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2379 snipcss0-9-26-35'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2379 snipcss0-9-26-35'>
 															<a
 																href='#'
-																class='snipcss0-10-35-36'
-															>
+																class='snipcss0-10-35-36'>
 																{dictionary.footer['Chicago']}
 															</a>
 														</li>
 														<li
 															id='menu-item-2380'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2380 snipcss0-9-26-37'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2380 snipcss0-9-26-37'>
 															<a
 																href='#'
-																class='snipcss0-10-37-38'
-															>
+																class='snipcss0-10-37-38'>
 																{dictionary.footer['Las Vegas']}
 															</a>
 														</li>
@@ -506,21 +469,17 @@ const FooterNew = () => {
 										<div class='col-md-6 col-lg-6 col-sm-6 col-xs-6 snipcss0-5-40-41'>
 											<aside
 												id='nav_menu-4'
-												class='widget widget_nav_menu snipcss0-6-41-42'
-											>
+												class='widget widget_nav_menu snipcss0-6-41-42'>
 												<div class='menu-useful-links-container snipcss0-7-42-43'>
 													<ul
 														id='menu-useful-links'
-														class='menu snipcss0-8-43-44'
-													>
+														class='menu snipcss0-8-43-44'>
 														<li
 															id='menu-item-2381'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2381 snipcss0-9-44-45'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2381 snipcss0-9-44-45'>
 															<a
 																href='#'
-																class='snipcss0-10-45-46'
-															>
+																class='snipcss0-10-45-46'>
 																{
 																	dictionary.footer[
 																		'Privacy Policy'
@@ -530,23 +489,19 @@ const FooterNew = () => {
 														</li>
 														<li
 															id='menu-item-2382'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2382 snipcss0-9-44-47'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2382 snipcss0-9-44-47'>
 															<a
 																href='#'
-																class='snipcss0-10-47-48'
-															>
+																class='snipcss0-10-47-48'>
 																{dictionary.footer['Returns']}
 															</a>
 														</li>
 														<li
 															id='menu-item-2383'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2383 snipcss0-9-44-49'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2383 snipcss0-9-44-49'>
 															<a
 																href='#'
-																class='snipcss0-10-49-50'
-															>
+																class='snipcss0-10-49-50'>
 																{
 																	dictionary.footer[
 																		'Terms & Conditions'
@@ -556,12 +511,10 @@ const FooterNew = () => {
 														</li>
 														<li
 															id='menu-item-2384'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2384 snipcss0-9-44-51'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2384 snipcss0-9-44-51'>
 															<a
 																href='#'
-																class='snipcss0-10-51-52'
-															>
+																class='snipcss0-10-51-52'>
 																{
 																	dictionary.footer[
 																		'Contact us'
@@ -571,12 +524,10 @@ const FooterNew = () => {
 														</li>
 														<li
 															id='menu-item-2385'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2385 snipcss0-9-44-53'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2385 snipcss0-9-44-53'>
 															<a
 																href='#'
-																class='snipcss0-10-53-54'
-															>
+																class='snipcss0-10-53-54'>
 																{
 																	dictionary.footer[
 																		'Latest news'
@@ -586,12 +537,10 @@ const FooterNew = () => {
 														</li>
 														<li
 															id='menu-item-2386'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2386 snipcss0-9-44-55'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2386 snipcss0-9-44-55'>
 															<a
 																href='#'
-																class='snipcss0-10-55-56'
-															>
+																class='snipcss0-10-55-56'>
 																{
 																	dictionary.footer[
 																		'Our sitemap'
@@ -606,43 +555,35 @@ const FooterNew = () => {
 										<div class='col-md-6 col-lg-6 col-sm-6 col-xs-6 snipcss0-5-40-57'>
 											<aside
 												id='nav_menu-5'
-												class='widget widget_nav_menu snipcss0-6-57-58'
-											>
+												class='widget widget_nav_menu snipcss0-6-57-58'>
 												<div class='menu-menu-container snipcss0-7-58-59'>
 													<ul
 														id='menu-menu'
-														class='menu snipcss0-8-59-60'
-													>
+														class='menu snipcss0-8-59-60'>
 														<li
 															id='menu-item-2387'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2387 snipcss0-9-60-61'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2387 snipcss0-9-60-61'>
 															<a
 																href='#'
-																class='snipcss0-10-61-62'
-															>
+																class='snipcss0-10-61-62'>
 																{dictionary.footer['Instagram']}
 															</a>
 														</li>
 														<li
 															id='menu-item-2388'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2388 snipcss0-9-60-63'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2388 snipcss0-9-60-63'>
 															<a
 																href='#'
-																class='snipcss0-10-63-64'
-															>
+																class='snipcss0-10-63-64'>
 																{dictionary.footer['Facebook']}
 															</a>
 														</li>
 														<li
 															id='menu-item-2389'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2389 snipcss0-9-60-65'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2389 snipcss0-9-60-65'>
 															<a
 																href='#'
-																class='snipcss0-10-65-66'
-															>
+																class='snipcss0-10-65-66'>
 																{
 																	dictionary.footer[
 																		'Contact us'
@@ -652,12 +593,10 @@ const FooterNew = () => {
 														</li>
 														<li
 															id='menu-item-2390'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2390 snipcss0-9-60-67'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2390 snipcss0-9-60-67'>
 															<a
 																href='#'
-																class='snipcss0-10-67-68'
-															>
+																class='snipcss0-10-67-68'>
 																{
 																	dictionary.footer[
 																		'Latest news'
@@ -667,23 +606,19 @@ const FooterNew = () => {
 														</li>
 														<li
 															id='menu-item-2391'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2391 snipcss0-9-60-69'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2391 snipcss0-9-60-69'>
 															<a
 																href='#'
-																class='snipcss0-10-69-70'
-															>
+																class='snipcss0-10-69-70'>
 																{dictionary.footer['Purchase']}
 															</a>
 														</li>
 														<li
 															id='menu-item-2392'
-															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2392 snipcss0-9-60-71'
-														>
+															class='menu-item menu-item-type-custom menu-item-object-custom menu-item-2392 snipcss0-9-60-71'>
 															<a
 																href='#'
-																class='snipcss0-10-71-72'
-															>
+																class='snipcss0-10-71-72'>
 																F.A.Q
 															</a>
 														</li>
@@ -698,8 +633,7 @@ const FooterNew = () => {
 						<div class='col-md-4 col-lg-4 col-sm-5 col-xs-12 middle-left snipcss0-1-1-73'>
 							<aside
 								id='automatic-contact-2'
-								class='widget automatic_widget_contact snipcss0-2-73-74'
-							>
+								class='widget automatic_widget_contact snipcss0-2-73-74'>
 								<h3 class='widget-title snipcss0-3-74-75'>
 									{dictionary.footer['Contact us']}
 								</h3>
@@ -724,8 +658,7 @@ const FooterNew = () => {
 												</em>
 												<a
 													href='tel:+639668461690'
-													class='snipcss0-7-82-84'
-												>
+													class='snipcss0-7-82-84'>
 													{dictionary.footer['Tel']}
 													<span class='text snipcss0-8-84-85'>
 														+639668461690
@@ -738,8 +671,7 @@ const FooterNew = () => {
 												</em>
 												<a
 													href='mailto:support@emarche.net'
-													class='snipcss0-7-86-88'
-												>
+													class='snipcss0-7-86-88'>
 													{dictionary.footer['Mail']}
 													<span class='text snipcss0-8-88-89'>
 														support@emarche.net
@@ -752,15 +684,13 @@ const FooterNew = () => {
 							</aside>
 							<aside
 								id='automatic-social-2'
-								class='widget automatic_widget_social snipcss0-2-73-90'
-							>
+								class='widget automatic_widget_social snipcss0-2-73-90'>
 								<div class='social-login-options snipcss0-3-90-91 snipcss0-3-90-91Ar'>
 									<div class='social snipcss0-4-91-92'>
 										<a
 											href='#'
 											target='_blank'
-											class='snipcss0-5-92-93'
-										>
+											class='snipcss0-5-92-93'>
 											<FaFacebookF />
 										</a>
 									</div>
@@ -768,8 +698,7 @@ const FooterNew = () => {
 										<a
 											href='#'
 											target='_blank'
-											class='snipcss0-5-95-96'
-										>
+											class='snipcss0-5-95-96'>
 											<AiOutlineTwitter />
 										</a>
 									</div>
@@ -777,8 +706,7 @@ const FooterNew = () => {
 										<a
 											href='#'
 											target='_blank'
-											class='snipcss0-5-98-99'
-										>
+											class='snipcss0-5-98-99'>
 											<FaPinterest />
 										</a>
 									</div>
@@ -786,8 +714,7 @@ const FooterNew = () => {
 										<a
 											href='#'
 											target='_blank'
-											class='snipcss0-5-101-102'
-										>
+											class='snipcss0-5-101-102'>
 											<AiOutlineInstagram />
 										</a>
 									</div>
@@ -795,8 +722,7 @@ const FooterNew = () => {
 										<a
 											href='#'
 											target='_blank'
-											class='snipcss0-5-104-105'
-										>
+											class='snipcss0-5-104-105'>
 											<FaLinkedinIn />
 										</a>
 									</div>
