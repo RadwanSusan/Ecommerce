@@ -131,4 +131,20 @@ router.get('/search/:key/', async (req, res) => {
 		res.status(500).json({ message: 'Server Error' });
 	}
 });
+
+router.get('/productsFromSuppliers', async (req, res) => {
+	const { supplier } = req.query;
+	try {
+		const products = await Product.find({ supplier });
+		if (products.length === 0) {
+			return res
+				.status(404)
+				.json({ message: 'No products found for the specified supplier' });
+		}
+		res.status(200).json(products);
+	} catch (error) {
+		console.error('Error fetching products by supplier:', error);
+		res.status(500).json({ message: 'Internal server error' });
+	}
+});
 module.exports = router;

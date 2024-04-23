@@ -5,32 +5,11 @@ const { response } = require('express');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const cron = require('node-cron');
-const UserAdmin = require('../models/UserAdmin'); // Assuming your user model is saved as User.js
+const UserAdmin = require('../models/UserAdmin');
 
 const nodemailer = require('nodemailer');
 const user = require('./user');
 
-// router.post('/registerAdmin', async (req, res) => {
-// 	const { username, email, password, role } = req.body;
-// 	const hashedPassword = CryptoJS.AES.encrypt(
-// 		password,
-// 		process.env.PASS_SEC,
-// 	).toString();
-
-// 	const newUser = new UserAdmin({
-// 		username,
-// 		email,
-// 		password: hashedPassword,
-// 		role,
-// 	});
-
-// 	try {
-// 		const savedUser = await newUser.save();
-// 		res.status(201).json(savedUser);
-// 	} catch (error) {
-// 		res.status(500).json(error);
-// 	}
-// });
 router.post('/registerAdmin', async (req, res) => {
 	const { username, email, password, role } = req.body;
 
@@ -59,58 +38,6 @@ router.post('/registerAdmin', async (req, res) => {
 		}
 	}
 });
-// router.post('/register', async (req, res) => {
-// 	const { username, email, phoneNumber, isAdmin, password } = req.body;
-// 	const hashedPassword = CryptoJS.AES.encrypt(
-// 		password,
-// 		process.env.PASS_SEC,
-// 	).toString();
-
-// 	// Generate a verification token
-// 	const verificationToken = crypto.randomBytes(20).toString('hex');
-// 	const verificationTokenExpires = Date.now() + 300000; // Token expires in 5 minutes
-
-// 	const newUser = new User({
-// 		username,
-// 		email,
-// 		phoneNumber,
-// 		isAdmin,
-// 		verified: false,
-// 		verificationToken,
-// 		verificationTokenExpires,
-// 		img: req.body.img,
-// 		password: hashedPassword,
-// 	});
-
-// 	try {
-// 		const savedUser = await newUser.save();
-
-// 		const transporter = nodemailer.createTransport({
-// 			service: 'Outlook',
-// 			auth: {
-// 				user: 'zaidaltamari50@outlook.com',
-// 				pass: 'ebulddtefcgrgugw',
-// 			},
-// 			tls: {
-// 				rejectUnauthorized: false,
-// 			},
-// 		});
-
-// 		const verificationUrl = `http://194.195.86.67:5000/verifyEmail?token=${verificationToken}`;
-// 		await transporter.sendMail({
-// 			from: '"Your App" <zaidaltamari50@outlook.com>',
-// 			to: savedUser.email,
-// 			subject: 'Account Verification',
-// 			html: `<p>Please verify your account by clicking the following link: <a href="${verificationUrl}">Verify Account</a></p>`,
-// 		});
-
-// 		res.status(201).json({
-// 			message: 'User registered, please verify your email.',
-// 		});
-// 	} catch (error) {
-// 		res.status(500).json(error);
-// 	}
-// });
 
 router.post('/register', async (req, res) => {
 	const { username, email, phoneNumber, isAdmin, password } = req.body;
@@ -173,50 +100,15 @@ cron.schedule('* * * * *', async () => {
 	}
 });
 
-//LOGIN
-
-// router.post('/login', async (req, res) => {
-// 	try {
-// 		const user = await UserAdmin.findOne({ email: req.body.email });
-// 		if (!user) {
-// 			return res.status(401).json('Wrong email!');
-// 		}
-// 		const hashedPassword = CryptoJS.AES.decrypt(
-// 			user.password,
-// 			process.env.PASS_SEC,
-// 		);
-// 		const OriginalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
-// 		if (OriginalPassword !== req.body.password) {
-// 			return res.status(401).json('Wrong password!');
-// 		}
-// 		const accessToken = jwt.sign(
-// 			{ id: user._id, role: user.role },
-// 			process.env.JWT_SEC,
-// 			{
-// 				expiresIn: '3d',
-// 			},
-// 		);
-// 		// const { password, ...others } = user._doc;
-// 		const { password, ...others } = user.toObject();
-// 		res.status(200).json({ ...others, accessToken });
-// 	} catch (err) {
-// 		res.status(500).json(err);
-// 	}
-// });
-
 router.post('/login', async (req, res) => {
 	try {
-		// First, check in the UserAdmin collection
 		let user = await UserAdmin.findOne({ email: req.body.email });
-
-		// If not found in UserAdmin, check in the User collection
 		if (!user) {
 			user = await User.findOne({ email: req.body.email });
 			if (!user) {
 				return res.status(401).json('Wrong email!');
 			}
 		}
-
 		const hashedPassword = CryptoJS.AES.decrypt(
 			user.password,
 			process.env.PASS_SEC,
@@ -225,13 +117,11 @@ router.post('/login', async (req, res) => {
 		if (OriginalPassword !== req.body.password) {
 			return res.status(401).json('Wrong password!');
 		}
-
 		const accessToken = jwt.sign(
 			{ id: user._id, role: user.role || 'user' },
 			process.env.JWT_SEC,
 			{ expiresIn: '3d' },
 		);
-
 		const { password, ...others } = user.toObject();
 		res.status(200).json({ ...others, accessToken });
 	} catch (err) {
@@ -262,13 +152,11 @@ router.post('/forgot-password', async (req, res) => {
 			auth: {
 				user: 'zaidaltamari50@outlook.com',
 				pass: 'ebulddtefcgrgugw',
-				// const { password, ...others } = user._doc,
 				tls: {
 					rejectUnauthorized: false,
 				},
 			},
 		});
-
 		const mailOptions = {
 			from: 'zaidaltamari50@outlook.com',
 			to: oldUser.email,

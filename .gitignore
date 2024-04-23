@@ -19,3 +19,7 @@ admin/yarn.lock
 pnpm-lock.yaml
 *.ts
 /api/node_modules
+/api/node_modules
+/api/node_modules/.bin
+api/node_modules/.bin/mime.cmd
+/api/node_modules
