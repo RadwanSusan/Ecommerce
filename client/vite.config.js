@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import nodeGlobalsPolyfill from '@esbuild-plugins/node-globals-polyfill';
-import dsv from '@rollup/plugin-dsv';
 
 export default defineConfig({
 	server: {
@@ -18,14 +17,12 @@ export default defineConfig({
 						return id.split('node_modules/')[1].split('/')[0];
 					}
 				},
-				format: 'es',
 			},
 		},
 	},
 	plugins: [
 		react(),
 		nodeGlobalsPolyfill(),
-		dsv(),
 		nodeGlobalsPolyfill({
 			process: true,
 			buffer: true,
