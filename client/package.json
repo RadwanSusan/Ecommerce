@@ -43,7 +43,7 @@
 		"start": "PORT=5000 vite",
 		"dev": "PORT=5000 vite --host",
 		"build": "vite build",
-		"serve": "vite preview"
+		"serve": "PORT=5000 vite preview"
 	},
 	"eslintConfig": {
 		"extends": [
