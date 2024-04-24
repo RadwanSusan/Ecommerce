@@ -1742,7 +1742,6 @@ const Catog = ({ item }) => {
 						</div>
 					</div>
 				</div>
-
 				<div
 					id='listingtabs_2'
 					className='block sm-listing-tabs tab-cms-block slider snipcss-X3nN9'>
