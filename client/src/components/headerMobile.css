@@ -29,8 +29,7 @@
 	}
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.page-header {
 		border: 0;
 		margin-bottom: 0;
@@ -61,7 +60,7 @@ print {
 		line-height: 1.5;
 		font-size: 14px;
 		background-color: #ffffff;
-		font-family: "Open Sans", sans-serif;
+		font-family: 'Open Sans', sans-serif;
 		text-align: left;
 		overflow-x: hidden;
 	}
@@ -79,7 +78,7 @@ print {
 
 	.mobile-top {
 		height: 50px;
-		background-color: #f0cba4;
+		background-color: #ff6600;
 	}
 
 	*,
@@ -153,13 +152,13 @@ print {
 	}
 
 	a {
-		color: #222222;
+		color: #4e3f34;
 		text-decoration: none;
 		background-color: transparent;
 		-webkit-text-decoration-skip: objects;
 	}
 
-	.header-mobile .mobile-menu>a {
+	.header-mobile .mobile-menu > a {
 		display: inline-block;
 		height: 36px;
 		line-height: 36px;
@@ -179,7 +178,7 @@ print {
 		display: inline-block;
 	}
 
-	.header-mobile .mobile-menu>a span {
+	.header-mobile .mobile-menu > a span {
 		display: block;
 		width: 30px;
 		height: 3px;
@@ -188,10 +187,10 @@ print {
 		border-radius: 2px;
 		-moz-border-radius: 2px;
 		-webkit-border-radius: 2px;
-		background-color: #222222;
+		background-color: #4e3f34;
 	}
 
-	.header-mobile .mobile-menu>a span.s-top {
+	.header-mobile .mobile-menu > a span.s-top {
 		margin-top: 9px;
 	}
 
@@ -223,8 +222,7 @@ print {
 	}
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.mobile-wrapper {
 		margin-left: 13px;
 	}
@@ -316,8 +314,7 @@ print {
 	}
 }
 
-@media (min-width: 769px),
-print {
+@media (min-width: 769px), print {
 	.mobile-wrapper .block-minicart {
 		right: -15px;
 		width: 390px;
@@ -325,11 +322,10 @@ print {
 }
 
 @media all {
-
 	.mobile-wrapper .block-minicart:before,
 	.mobile-wrapper .block-minicart:after {
 		border-bottom-style: solid;
-		content: "";
+		content: '';
 		display: block;
 		height: 0;
 		position: absolute;
@@ -370,7 +366,11 @@ print {
 		width: 1px;
 	}
 
-	.minicart-mobile .mobile-wrapper .action.showcart .counter.qty .counter-label {
+	.minicart-mobile
+		.mobile-wrapper
+		.action.showcart
+		.counter.qty
+		.counter-label {
 		display: none;
 	}
 
@@ -414,7 +414,7 @@ print {
 	}
 
 	button,
-	[type="button"] {
+	[type='button'] {
 		-webkit-appearance: button;
 	}
 
@@ -459,8 +459,8 @@ print {
 		font-size: 32px;
 		line-height: 32px;
 		color: inherit;
-		content: "\e616";
-		font-family: "icons-blank-theme";
+		content: '\e616';
+		font-family: 'icons-blank-theme';
 		margin: 0;
 		vertical-align: top;
 		display: inline-block;

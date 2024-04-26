@@ -133,7 +133,7 @@ html {
 
 .header-middle {
 	padding: 30px 0 11px;
-	background-color: #f0cba4;
+	background-color: #ff6600;
 	user-select: none;
 }
 
@@ -342,7 +342,7 @@ strong {
 }
 
 a {
-	color: #222222;
+	color: #4e3f34;
 	text-decoration: none;
 	background-color: transparent;
 }
@@ -671,7 +671,7 @@ html[lang='ar'] .minicart-wrapper .action.showcart {
 	left: 12px;
 	right: 0;
 	top: 12px;
-	color: #222;
+	color: #4e3f34;
 	display: inline-block;
 	font-family: 'icomoon' !important;
 	font-style: normal;
@@ -814,7 +814,7 @@ html[lang='ar'] .minicart-wrapper .action.showcart {
 	white-space: nowrap;
 	margin: 0;
 	padding: 0;
-	color: #222;
+	color: #4e3f34;
 	line-height: 44px;
 }
 
@@ -1185,7 +1185,7 @@ button[disabled] {
 }
 
 .form.minisearch .actions button {
-	background-color: #292931;
+	background-color: #4e3f34;
 }
 
 @media all {
@@ -1195,7 +1195,7 @@ button[disabled] {
 }
 
 .block-search .form.minisearch .actions button {
-	color: #222222;
+	color: #4e3f34;
 }
 
 @media all {

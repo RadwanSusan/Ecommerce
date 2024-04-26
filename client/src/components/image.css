@@ -4,7 +4,7 @@
 	}
 
 	a {
-		color: #222222;
+		color: #4e3f34;
 		text-decoration: none;
 		background-color: transparent;
 		-webkit-text-decoration-skip: objects;
@@ -210,7 +210,7 @@
 		line-height: 1.5;
 		font-size: 14px;
 		background-color: #ffffff;
-		font-family: "Open Sans", sans-serif;
+		font-family: 'Open Sans', sans-serif;
 		text-align: left;
 		overflow-x: hidden;
 	}

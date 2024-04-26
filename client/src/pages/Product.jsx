@@ -85,11 +85,11 @@ const FilterColor = styled.div`
 	margin-left: 10px;
 	border: 1px solid #000;
 	&:hover {
-		outline: 3px solid #292931;
+		outline: 3px solid #4e3f34;
 	}
 	> * {
 		&:first-child {
-			outline: 3px solid #292931;
+			outline: 3px solid #4e3f34;
 		}
 	}
 	${(props) =>
@@ -234,7 +234,7 @@ const Product = () => {
 			document.querySelectorAll('.Color').forEach((item2) => {
 				item2.style.outline = 'none';
 			});
-			e.target.style.outline = '3px solid #292931';
+			e.target.style.outline = '3px solid #4e3f34';
 		}),
 	);
 	// const handleQuantity = (type) => {

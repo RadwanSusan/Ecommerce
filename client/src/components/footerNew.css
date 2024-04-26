@@ -255,7 +255,7 @@
 	}
 
 	.background-default {
-		background: #f0cba4;
+		background: #ff6600;
 	}
 }
 
@@ -287,7 +287,7 @@
 
 	a {
 		background-color: transparent;
-		color: #222;
+		color: #4e3f34;
 		text-decoration: none;
 		margin: 0;
 		padding: 0;
@@ -685,7 +685,7 @@
 
 	.fa-facebook-f svg,
 	.fa-facebook svg {
-		color: #222;
+		color: #4e3f34;
 	}
 
 	.fa-twitter:before {
@@ -961,7 +961,7 @@
 
 	.mc4wp-form-fields label {
 		font-size: 20px;
-		color: #222;
+		color: #4e3f34;
 		font-weight: 900;
 		text-transform: uppercase;
 		margin-right: 35px;
@@ -1021,7 +1021,7 @@
 	.mc4wp-form-fields input[type='submit'] {
 		padding: 14px 27px;
 		font-size: 14px;
-		color: #222;
+		color: #4e3f34;
 		text-transform: uppercase;
 		-webkit-border-radius: 0 5px 5px 0;
 		-moz-border-radius: 0 5px 5px 0;
@@ -1032,7 +1032,7 @@
 		height: 55px;
 		margin-left: -3px;
 		font-weight: 900;
-		background: #f0cba4 !important;
+		background: #ff6600 !important;
 	}
 }
 

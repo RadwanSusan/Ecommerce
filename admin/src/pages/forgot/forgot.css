@@ -151,7 +151,7 @@ fieldset[disabled] .btn-saffron:hover {
 }
 .form-signin .custom-input input[type='radio']:checked + span:before,
 .form-signin .custom-input input[type='checkbox']:checked + span:before {
-	color: #222222 !important;
+	color: #4e3f34 !important;
 }
 .form-signin .custom-input input[type='radio']:checked + span:before {
 	content: '\f192';
@@ -244,7 +244,7 @@ fieldset[disabled] .btn-saffron:hover {
 }
 .forgot {
 	text-decoration: none;
-	color: #222222;
+	color: #4e3f34;
 }
 .text-center {
 	text-align: center;

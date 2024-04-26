@@ -2539,11 +2539,11 @@ const en = r.img`
 	margin-left: 10px;
 	border: 1px solid #000;
 	&:hover {
-		outline: 3px solid #292931;
+		outline: 3px solid #4e3f34;
 	}
 	> * {
 		&:first-child {
-			outline: 3px solid #292931;
+			outline: 3px solid #4e3f34;
 		}
 	}
 	${(t) =>
@@ -2650,7 +2650,7 @@ const en = r.img`
 					document.querySelectorAll('.Color').forEach((D) => {
 						D.style.outline = 'none';
 					}),
-						(b.target.style.outline = '3px solid #292931');
+						(b.target.style.outline = '3px solid #4e3f34');
 				}),
 			);
 		const O = (_) => {

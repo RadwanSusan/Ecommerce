@@ -242,7 +242,7 @@
 
 	.block .block-title strong {
 		font-size: 171.428%;
-		color: #222;
+		color: #4e3f34;
 	}
 
 	.group-deal-1 .product-deal-list:after {
@@ -291,8 +291,8 @@
 		border-radius: 0 0 10px 10px;
 		-moz-border-radius: 0 0 10px 10px;
 		-webkit-border-radius: 0 0 10px 10px;
-		background-color: #f0cba4;
-		color: #222222;
+		background-color: #ff6600;
+		color: #4e3f34;
 	}
 
 	.product-items,
@@ -443,7 +443,7 @@
 		height: 50px;
 		background-color: #fff;
 		border: 1px solid #ddd;
-		color: #222;
+		color: #4e3f34;
 		text-align: center;
 		line-height: 50px;
 		position: absolute;
@@ -475,10 +475,10 @@
 
 	/* .owl-theme .owl-nav [class*="owl-"]:hover {
 		background: #869791;
-		color: #222222;
+		color: #4e3f34;
 		text-decoration: none;
-		background-color: #f0cba4;
-		border-color: #f0cba4;
+		background-color: #ff6600;
+		border-color: #ff6600;
 	} */
 
 	.owl-carousel .owl-nav .owl-next {
@@ -570,7 +570,7 @@
 	}
 
 	a {
-		color: #222222;
+		color: #4e3f34;
 		text-decoration: none;
 		background-color: transparent;
 		-webkit-text-decoration-skip: objects;
@@ -599,7 +599,7 @@
 		height: 50px;
 		text-align: center;
 		line-height: 50px;
-		color: #222;
+		color: #4e3f34;
 		position: absolute;
 		left: 50%;
 		top: 50%;
@@ -631,8 +631,8 @@
 	}
 
 	.group-deal-1 .product-item-info .image-product .quickview-handler:hover {
-		background-color: #f0cba4;
-		color: #222222;
+		background-color: #ff6600;
+		color: #4e3f34;
 	}
 
 	.product-item-name {
@@ -953,7 +953,7 @@
 		height: 40px;
 		padding: 0 26px;
 		background-color: #f3f3f3;
-		color: #222;
+		color: #4e3f34;
 	}
 
 	/* button:hover {
@@ -974,8 +974,8 @@
 		.product-item-actions
 		.actions-primary
 		.tocart:hover {
-		background-color: #f0cba4;
-		color: #222222;
+		background-color: #ff6600;
+		color: #4e3f34;
 	}
 
 	.product-item-actions .actions-secondary > .action,
@@ -1012,7 +1012,7 @@
 		height: 40px;
 		text-align: center;
 		line-height: 40px;
-		color: #222;
+		color: #4e3f34;
 		border-radius: 4px;
 		-moz-border-radius: 4px;
 		-webkit-border-radius: 4px;
@@ -1080,8 +1080,8 @@
 		.product-item-actions
 		.actions-secondary
 		.action:hover {
-		background-color: #f0cba4;
-		color: #222222;
+		background-color: #ff6600;
+		color: #4e3f34;
 	}
 
 	.abs-actions-addto-gridlist:hover:before,
@@ -1182,7 +1182,7 @@
 	}
 
 	.price-box .price {
-		color: #222;
+		color: #4e3f34;
 		font-weight: 600;
 	}
 
@@ -1202,12 +1202,12 @@
 
 	.time-countdown-slide .stock-qty {
 		margin-bottom: 5px;
-		color: #222;
+		color: #4e3f34;
 	}
 
 	.time-countdown-slide .time-left {
 		margin-bottom: 5px;
-		color: #222;
+		color: #4e3f34;
 	}
 
 	.time-countdown-slide .time-ranger .time-pass {
@@ -1217,7 +1217,7 @@
 		border-radius: 5px;
 		-moz-border-radius: 5px;
 		-webkit-border-radius: 5px;
-		background-color: #ffd200;
+		background-color: #4e3f34;
 	}
 
 	.product-item-actions .actions-secondary > .action span {
@@ -1280,7 +1280,7 @@
 }
 
 #style-Leion.style-Leion {
-	color: #f0cba4;
+	color: #ff6600;
 	font-size: 48px;
 }
 
@@ -1725,7 +1725,7 @@ button:hover {
 	font-size: 14px;
 	font-weight: 600;
 	text-transform: uppercase;
-	color: #f0cba4;
+	color: #ff6600;
 }
 
 .block_model {
@@ -1870,7 +1870,7 @@ input[type='radio'] + label {
 }
 
 .block_goodColor__allColors > * {
-	/* background-color: #222; */
+	/* background-color: #4e3f34; */
 	border: 1px solid black;
 }
 
@@ -2089,7 +2089,7 @@ input[type='radio'] + label {
 	margin-bottom: 0;
 	padding: 0;
 	color: #fff;
-	background-color: #f0cba4;
+	background-color: #ff6600;
 	font-size: 17px;
 	transition: all 0.3s;
 	margin-left: 20px;
@@ -2098,7 +2098,7 @@ input[type='radio'] + label {
 .button.button_addToCard:hover {
 	/* background-color: #0d2660; */
 	/* padding: 3px; */
-	background-color: #222;
+	background-color: #4e3f34;
 }
 
 .aboutMe a {
@@ -2258,7 +2258,7 @@ input[type='radio'] + label {
 .slick-next {
 	z-index: 50000;
 	color: #000;
-	background: #f0cba4;
+	background: #ff6600;
 	border-radius: 50%;
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
@@ -2294,6 +2294,6 @@ html[lang='ar'] .slick-next {
 .slick-next:focus {
 	color: black;
 	outline: none;
-	background: #f0cba4;
+	background: #ff6600;
 	border: 1px solid #000;
 }
