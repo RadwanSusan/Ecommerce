@@ -1,5 +1,4 @@
 import React from 'react';
-import './footerNew.css';
 import {
 	AiOutlineHome,
 	AiOutlinePhone,
@@ -11,12 +10,11 @@ import {
 } from 'react-icons/ai';
 import { useContext } from 'react';
 import { LanguageContext } from './LanguageContext';
-
 import { FaFacebookF, FaPinterest, FaLinkedinIn } from 'react-icons/fa';
 import { BiSupport } from 'react-icons/bi';
 import { GiTicket, GiWorld } from 'react-icons/gi';
 
-const FooterNew = () => {
+export const FooterNew = () => {
 	const { language } = useContext(LanguageContext);
 	const { dictionary } = useContext(LanguageContext);
 	return (
@@ -212,6 +210,8 @@ const FooterNew = () => {
 																	type='text'
 																	name='_mc4wp_honeypot'
 																	value=''
+																	tabindex='-1'
+																	autocomplete='off'
 																	className='snipcss0-9-15-16'
 																/>
 															</label>
@@ -773,4 +773,3 @@ const FooterNew = () => {
 		</div>
 	);
 };
-export default FooterNew;

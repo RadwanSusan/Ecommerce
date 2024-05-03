@@ -8,6 +8,7 @@ const OfferRoute = require('./routes/offer');
 const cartRoute = require('./routes/cart');
 const orderRoute = require('./routes/order');
 const stripeRoute = require('./routes/stripe');
+const reviewRoute = require('./routes/review');
 const cors = require('cors');
 const app = express();
 dotenv.config();
@@ -37,6 +38,7 @@ app.use('/api/products', productRoute);
 app.use('/api/offer', OfferRoute);
 app.use('/api/carts', cartRoute);
 app.use('/api/orders', orderRoute);
+app.use('/api/review', reviewRoute);
 app.use('/api/checkout', stripeRoute);
 app.listen(process.env.PORT || 4000, () => {
 	console.log(

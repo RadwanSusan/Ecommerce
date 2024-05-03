@@ -173,6 +173,39 @@ router.post('/forgot-password', async (req, res) => {
 			.json({ status: 'There was a problem sending the email!' });
 	}
 });
+router.post('/change-password/:id', async (req, res) => {
+	const { id } = req.params;
+	const { currentPassword, newPassword } = req.body;
+
+	try {
+		const user = await User.findById(id);
+		if (!user) {
+			return res.status(404).json({ message: 'User not found' });
+		}
+
+		const hashedPassword = CryptoJS.AES.decrypt(
+			user.password,
+			process.env.PASS_SEC,
+		);
+		const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
+
+		if (originalPassword !== currentPassword) {
+			return res.status(401).json({ message: 'Invalid current password' });
+		}
+
+		const encryptedPassword = CryptoJS.AES.encrypt(
+			newPassword,
+			process.env.PASS_SEC,
+		).toString();
+		user.password = encryptedPassword;
+		await user.save();
+
+		res.status(200).json({ message: 'Password changed successfully' });
+	} catch (error) {
+		console.error('Error changing password:', error);
+		res.status(500).json({ message: 'Internal server error' });
+	}
+});
 
 router.get('/reset-password/:id/:token', async (req, res) => {
 	const { id, token } = req.params;
