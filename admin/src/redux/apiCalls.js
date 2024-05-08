@@ -79,6 +79,7 @@ export const login = async (dispatch, user) => {
 			res.data.role === 'supplierType1' ||
 			res.data.role === 'supplierType2'
 		) {
+			localStorage.setItem('supplierId', res.data._id);
 			dispatch(loginSuccess(res.data));
 			setTimeout(() => {
 				window.location.href = '/'; // Redirect supplier type 1 to products

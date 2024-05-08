@@ -1,6 +1,7 @@
 import Chart from '../../components/chart/Chart';
 import { useEffect, useMemo, useState } from 'react';
 import { userRequest } from '../../requestMethods';
+import React from 'react';
 export default function Analytics() {
 	const [userStats, setUserStats] = useState([]);
 	const [userStatsDay, setUserStatsDay] = useState([]);

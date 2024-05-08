@@ -254,14 +254,37 @@ const Cart = () => {
 				});
 				setProduct(res.data);
 				mergedCart.map((item) => {
+					console.log(item);
 					AllProducts.map((product) => {
+						console.log(product);
 						if (product._id === item._id) {
+							console.log(item._id);
+							console.log(product._id);
+
+							// const selectedVariant = product.variants.find(
+							// 	(variant) =>
+							// 		variant.color === item.selectedVariant.color &&
+							// 		variant.size === item.selectedVariant.size,
+							// 	console.log(variant.color),
+							// 	console.log(variant.size),
+
+							// 	console.log(item.selectedVariant.color),
+							// 	console.log(item.selectedVariant.size),
+							// );
+							// console.log(selectedVariant);
 							const selectedVariant = product.variants.find(
 								(variant) =>
-									variant.color === item.selectedVariant.color &&
-									variant.size === item.selectedVariant.size,
+									JSON.stringify(variant.color) ===
+										JSON.stringify(item.selectedVariant.color) &&
+									JSON.stringify(variant.size) ===
+										JSON.stringify(item.selectedVariant.size),
 							);
+							console.log(selectedVariant);
+							console.log(selectedVariant.quantity);
+
 							selectedVariant.quantity -= item.quantity;
+							console.log(selectedVariant.quantity);
+
 							updateProductOrOffer(
 								{
 									quantity: selectedVariant.quantity,
@@ -295,12 +318,26 @@ const Cart = () => {
 					products: mergedCart,
 				};
 				dispatch(clear());
+				console.log(res.data);
+				let address = {};
+				if (res.data.billing_details && res.data.billing_details.address) {
+					address = {
+						line1: res.data.billing_details.address.line1 || '',
+						line2: res.data.billing_details.address.line2 || '',
+						city: res.data.billing_details.address.city || '',
+						state: res.data.billing_details.address.state || '',
+						postal_code:
+							res.data.billing_details.address.postal_code || '',
+						country: res.data.billing_details.address.country || '',
+					};
+				}
 				let newArr2 = {
 					userId: userId,
 					products: mergedCart,
 					amountOrgin: originalPrice,
-					amount: res.data.amount / 100,
-					address: res.data.billing_details.address,
+					amount: cart.total,
+					// address: res.data.billing_details.address,
+					address: address,
 					status: 'pending',
 				};
 				addToCart(newArr);

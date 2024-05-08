@@ -8,10 +8,39 @@ export default function FeaturedInfo() {
 	const [percOrgin, setPercOrgin] = useState(0);
 	const [revPerc, setRevSetPerc] = useState(0);
 	let lastindex = 0;
+	const [supplierId, setSupplierId] = useState(null);
+
+	useEffect(() => {
+		const storedSupplierId = localStorage.getItem('supplierId');
+		if (storedSupplierId) {
+			setSupplierId(storedSupplierId);
+		}
+	}, []);
+	console.log(supplierId);
+
+	// useEffect(() => {
+	// 	const getIncome = async () => {
+	// 		try {
+	// 			const res = await userRequest.get('orders/income');
+	// 			res.data.sort((a, b) => a._id - b._id);
+	// 			setIncome(res.data.slice(-2));
+	// 			setPerc((res.data[1].total * 100) / res.data[0].total - 100);
+	// 			setPercOrgin(
+	// 				(res.data[1].totalOrgin * 100) / res.data[0].totalOrgin - 100,
+	// 			);
+	// 			setRevSetPerc(res.data[1].total - res.data[1].totalOrgin);
+	// 		} catch {}
+	// 	};
+	// 	getIncome();
+	// }, []);
 	useEffect(() => {
 		const getIncome = async () => {
 			try {
-				const res = await userRequest.get('orders/income');
+				console.log(supplierId);
+				const url = supplierId
+					? `orders/income?sid=${supplierId}`
+					: 'orders/income';
+				const res = await userRequest.get(url);
 				res.data.sort((a, b) => a._id - b._id);
 				setIncome(res.data.slice(-2));
 				setPerc((res.data[1].total * 100) / res.data[0].total - 100);
@@ -19,10 +48,15 @@ export default function FeaturedInfo() {
 					(res.data[1].totalOrgin * 100) / res.data[0].totalOrgin - 100,
 				);
 				setRevSetPerc(res.data[1].total - res.data[1].totalOrgin);
-			} catch {}
+			} catch (error) {
+				console.error('Error fetching income data:', error);
+			}
 		};
-		getIncome();
-	}, []);
+
+		if (supplierId) {
+			getIncome();
+		}
+	}, [supplierId]);
 	return (
 		<div className='featured'>
 			<div className='featuredItem'>
