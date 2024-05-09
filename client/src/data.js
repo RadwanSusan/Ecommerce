@@ -29,21 +29,21 @@ export const sliderItems = [
 export const sliderItemsArabic = [
 	{
 		id: 1,
-		img: 'https://images.pexels.com/photos/1462637/pexels-photo-1462637.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+		img: image2,
 		title: 'تخفيضات الصيف',
 		desc: 'لا تتنازل عن الأسلوب! احصل على خصم ثابت بنسبة 30% للوافدين الجدد',
 		bg: 'fbf0f4',
 	},
 	{
 		id: 2,
-		img: 'https://i.ibb.co/DG69bQ4/2.png',
+		img: 'https://emarche.net/wp-content/uploads/2017/02/Home-Slider-Image_2.png',
 		title: 'مجموعة الخريف',
 		desc: 'لا تتنازل عن الأسلوب! احصل على خصم ثابت بنسبة 30% للوافدين الجدد.',
 		bg: 'fcf1ed',
 	},
 	{
 		id: 3,
-		img: 'https://i.ibb.co/cXFnLLV/3.png',
+		img: image1,
 		title: 'حب ملابس الاسترخاء',
 		desc: 'لا تتنازل عن الأسلوب! احصل على خصم ثابت بنسبة 30% للوافدين الجدد.',
 		bg: 'fbf0f4',

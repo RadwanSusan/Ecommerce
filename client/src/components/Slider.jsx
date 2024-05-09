@@ -77,7 +77,15 @@ const CustomSlider = () => {
 		pauseOnHover: false,
 		pauseOnFocus: false,
 		initialSlide: 0,
-		fade: true, // Add this line to enable fade animation
+		slidesToShow: 1,
+		pauseOnDotsHover: true,
+		dots: true,
+		dotsClass: 'slick-dots',
+		cssEase: 'linear',
+		draggable: true,
+		edgeFriction: 0.15,
+		adaptiveHeight: true,
+
 		responsive: [
 			{
 				breakpoint: 1400,
