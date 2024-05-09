@@ -19,8 +19,8 @@ const Products = ({ supplier, filters, sort }) => {
 			try {
 				const res = await axios.get(
 					supplier
-						? `http://192.168.4.142:4000/api/products?supplier=${supplier}`
-						: 'http://192.168.4.142:4000/api/products',
+						? `http://194.195.86.67:4000/api/products?supplier=${supplier}`
+						: 'http://194.195.86.67:4000/api/products',
 				);
 				setProducts(res.data);
 			} catch (err) {

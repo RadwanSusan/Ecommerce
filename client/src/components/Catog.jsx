@@ -68,8 +68,8 @@ const Catog = ({ item }) => {
 			try {
 				const res = await axios.get(
 					item?.cat
-						? `http://192.168.4.142:4000/api/products`
-						: 'http://192.168.4.142:4000/api/products',
+						? `http://194.195.86.67:4000/api/products`
+						: 'http://194.195.86.67:4000/api/products',
 				);
 				setProducts(res.data);
 			} catch (err) {

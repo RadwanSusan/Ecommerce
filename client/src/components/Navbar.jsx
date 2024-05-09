@@ -62,7 +62,7 @@ const Navbar = () => {
 	const fetchData = useCallback(async (query, category) => {
 		try {
 			const res = await axios.get(
-				`http://192.168.4.142:4000/api/products/search/${query}?category=${category}`,
+				`http://194.195.86.67:4000/api/products/search/${query}?category=${category}`,
 			);
 			setDataAll(res.data);
 		} catch (error) {

@@ -10,7 +10,7 @@ const VerifyEmail = () => {
 			if (token) {
 				try {
 					const response = await axios.get(
-						`http://192.168.4.142:4000/api/auth/verifyEmail?token=${token}`,
+						`http://194.195.86.67:4000/api/auth/verifyEmail?token=${token}`,
 					);
 					if (response.data.message === 'Email verified successfully!') {
 						swal('Your email has been verified!');
