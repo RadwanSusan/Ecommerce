@@ -202,14 +202,14 @@ router.post('/wishlist/:userId', async (req, res) => {
 
 router.delete('/wishlist/:userId', async (req, res) => {
 	const { userId } = req.params;
-	const productId = req.query.pid; // Assuming you're sending productId as a query parameter
+	const productId = req.query.pid;
 	try {
 		const user = await User.findById(userId);
 		if (user) {
 			const index = user.wish.indexOf(productId);
 			if (index > -1) {
-				user.wish.splice(index, 1); // Remove the product from the wishlist
-				await user.save(); // Save the updated user document
+				user.wish.splice(index, 1);
+				await user.save();
 				res.json({ message: 'Product removed from wishlist' });
 			} else {
 				res.status(404).json({ message: 'Product not found in wishlist' });
@@ -235,7 +235,6 @@ router.get('/userWishListArray/:userId', async (req, res) => {
 	}
 });
 
-// Find user by email
 router.get('/findByEmail', async (req, res) => {
 	try {
 		const user = await User.findOne({ email: req.query.email });

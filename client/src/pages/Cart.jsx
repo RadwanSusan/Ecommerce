@@ -1,3 +1,4 @@
+import React from 'react';
 import { Add, Remove } from '@material-ui/icons';
 import styled from 'styled-components';
 import Announcement from '../components/Announcement';
@@ -190,6 +191,13 @@ const Cart = () => {
 	const sizesTranslation = dictionary['sizes'];
 	const onToken = (token) => {
 		setStripeToken(token);
+		const address = {
+			line1: token.card.address_line1,
+			city: token.card.address_city,
+			state: token.card.address_state,
+			postalCode: token.card.address_zip,
+			country: token.card.address_country,
+		};
 	};
 	let userId = localStorage.getItem('persist:root');
 	userId = JSON.parse(userId);
@@ -251,27 +259,20 @@ const Cart = () => {
 				const res = await userRequest.post('/checkout/payment', {
 					tokenId: stripeToken.id,
 					amount: cart.total * 100,
+					address: {
+						line1: stripeToken.card.address_line1,
+						city: stripeToken.card.address_city,
+						state: stripeToken.card.address_state,
+						postalCode: stripeToken.card.address_zip,
+						country: stripeToken.card.address_country,
+					},
 				});
 				setProduct(res.data);
-				mergedCart.map((item) => {
-					console.log(item);
-					AllProducts.map((product) => {
-						console.log(product);
-						if (product._id === item._id) {
-							console.log(item._id);
-							console.log(product._id);
-
-							// const selectedVariant = product.variants.find(
-							// 	(variant) =>
-							// 		variant.color === item.selectedVariant.color &&
-							// 		variant.size === item.selectedVariant.size,
-							// 	console.log(variant.color),
-							// 	console.log(variant.size),
-
-							// 	console.log(item.selectedVariant.color),
-							// 	console.log(item.selectedVariant.size),
-							// );
-							// console.log(selectedVariant);
+				const updatedProducts = await Promise.all(
+					mergedCart.map(async (item) => {
+						const product = AllProducts.find((p) => p._id === item._id);
+						const offer = AllOffers.find((o) => o._id === item._id);
+						if (product) {
 							const selectedVariant = product.variants.find(
 								(variant) =>
 									JSON.stringify(variant.color) ===
@@ -279,32 +280,26 @@ const Cart = () => {
 									JSON.stringify(variant.size) ===
 										JSON.stringify(item.selectedVariant.size),
 							);
-							console.log(selectedVariant);
-							console.log(selectedVariant.quantity);
-
-							selectedVariant.quantity -= item.quantity;
-							console.log(selectedVariant.quantity);
-
-							updateProductOrOffer(
-								{
-									quantity: selectedVariant.quantity,
-								},
-								item._id,
-							);
-						}
-					});
-					AllOffers.map((offer) => {
-						if (offer._id === item._id) {
+							if (selectedVariant) {
+								selectedVariant.quantity -= item.quantity;
+								await updateProductOrOffer(
+									{
+										variants: product.variants,
+									},
+									item._id,
+								);
+							}
+						} else if (offer) {
 							offer.quantity -= item.quantity;
-							updateProductOrOffer(
+							await updateProductOrOffer(
 								{
 									quantity: offer.quantity,
 								},
 								item._id,
 							);
 						}
-					});
-				});
+					}),
+				);
 				history.push('/success', {
 					stripeData: res.data,
 					products: cart,
@@ -318,17 +313,12 @@ const Cart = () => {
 					products: mergedCart,
 				};
 				dispatch(clear());
-				console.log(res.data);
 				let address = {};
-				if (res.data.billing_details && res.data.billing_details.address) {
+				if (res.data.address) {
 					address = {
-						line1: res.data.billing_details.address.line1 || '',
-						line2: res.data.billing_details.address.line2 || '',
-						city: res.data.billing_details.address.city || '',
-						state: res.data.billing_details.address.state || '',
-						postal_code:
-							res.data.billing_details.address.postal_code || '',
-						country: res.data.billing_details.address.country || '',
+						line1: res.data.address.line1 || '',
+						city: res.data.address.city || '',
+						country: res.data.address.country || '',
 					};
 				}
 				let newArr2 = {
@@ -336,7 +326,6 @@ const Cart = () => {
 					products: mergedCart,
 					amountOrgin: originalPrice,
 					amount: cart.total,
-					// address: res.data.billing_details.address,
 					address: address,
 					status: 'pending',
 				};
@@ -352,13 +341,6 @@ const Cart = () => {
 	}, [stripeToken, cart.total, history]);
 	function formatNumberToArabic(number) {
 		return new Intl.NumberFormat('ar-EG').format(number);
-	}
-	function formatPrice(price, language) {
-		return new Intl.NumberFormat(language === 'ar' ? 'ar-EG' : 'en-US', {
-			style: 'decimal',
-			minimumFractionDigits: 0,
-			maximumFractionDigits: 0,
-		}).format(price);
 	}
 	const handleQuantity = (type, id, selectedVariantId) => {
 		const productFind = productGet.find((item) => item._id === id);
@@ -396,7 +378,7 @@ const Cart = () => {
 	};
 	const [orderHave, setOrderHave] = useState([]);
 	useEffect(() => {
-		dispatch(calc());
+		dispatch(calc({ products: cart.products }));
 	}, [cart.products]);
 	useEffect(() => {
 		const getOrders = async () => {

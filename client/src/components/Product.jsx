@@ -91,12 +91,10 @@ const Product = ({ item }) => {
 
 	const handleWichlist = (id, ele) => {
 		if (ele.target.classList[0] === 'add-to-wish' && wishlistLogin == true) {
-
 			ele.target.style.display = 'none';
 			ele.target.nextSibling.style.display = 'block';
 		}
 		if (ele.target.classList[0] === 'add-to-wish2' && wishlistLogin == true) {
-
 			ele.target.parentNode.style.display = 'none';
 			ele.target.parentNode.previousSibling.style.display = 'block';
 		}
@@ -206,11 +204,10 @@ const Product = ({ item }) => {
 									width='16'
 									height='16'
 									fill='currentColor'
-									viewBox='0 0 16 16'
-								>
+									viewBox='0 0 16 16'>
 									<path
 										className='add-to-wish2'
-										fill-rule='evenodd'
+										fillRule='evenodd'
 										d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
 										onClick={(ele) => {
 											addToWishlist(item._id, 'remove', ele);
@@ -235,11 +232,10 @@ const Product = ({ item }) => {
 									viewBox='0 0 16 16'
 									style={{
 										display: 'none',
-									}}
-								>
+									}}>
 									<path
 										className='add-to-wish2'
-										fill-rule='evenodd'
+										fillRule='evenodd'
 										d='M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z'
 										onClick={(ele) => {
 											addToWishlist(item._id, 'remove', ele);

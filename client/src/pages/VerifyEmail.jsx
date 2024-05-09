@@ -7,21 +7,17 @@ const VerifyEmail = () => {
 		const verifyEmail = async () => {
 			const urlParams = new URLSearchParams(window.location.search);
 			const token = urlParams.get('token');
-			console.log(token);
 			if (token) {
 				try {
 					const response = await axios.get(
 						`http://194.195.86.67:4000/api/auth/verifyEmail?token=${token}`,
 					);
-
-					console.log(response.data);
 					if (response.data.message === 'Email verified successfully!') {
 						swal('Your email has been verified!');
 						var isAppOpened = false;
 						window.location.href = 'maanstore://verifyemail';
 						setTimeout(function () {
 							if (!isAppOpened) {
-								console.log('app not found');
 								window.location.href = '/login';
 							}
 						}, 2500);

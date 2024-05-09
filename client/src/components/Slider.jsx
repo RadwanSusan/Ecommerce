@@ -1,14 +1,11 @@
-import { ArrowLeftOutlined, ArrowRightOutlined } from '@material-ui/icons';
-import { useState } from 'react';
 import styled from 'styled-components';
 import { sliderItems, sliderItemsArabic } from '../data';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { mobile } from '../responsive';
 import { LanguageContext } from '../components/LanguageContext';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 
 import './slider.css';
 
@@ -63,38 +60,15 @@ const Button = styled.button`
 	background-color: transparent;
 	cursor: pointer;
 `;
-// function NextArrow(props) {
-// 	const { className, style, onClick } = props;
-// 	return (
-// 		<BiChevronRight
-// 			className={className}
-// 			style={{ ...style, display: 'block', fontSize: '30px' }}
-// 			onClick={onClick}
-// 		/>
-// 	);
-// }
-// function PrevArrow(props) {
-// 	const { className, style, onClick } = props;
-// 	return (
-// 		<BiChevronLeft
-// 			className={className}
-// 			style={{ ...style, display: 'block', fontSize: '30px' }}
-// 			onClick={onClick}
-// 		/>
-// 	);
-// }
+
 const CustomSlider = () => {
-	const { language } = useContext(LanguageContext); // Use the language from your
+	const { language } = useContext(LanguageContext);
 	const isArabic = language === 'ar';
 	const currentSliderItems =
 		language === 'ar' ? sliderItemsArabic : sliderItems;
 	const settings = {
-		// dots: true,
-		// nextArrow: <NextArrow />,
-		// prevArrow: <PrevArrow />,
 		infinite: true,
 		speed: 500,
-		// slidesToShow: sliderItems.length >= 2 ? 2 : 1,
 		slidesToScroll: 1,
 		rtl: language === 'ar',
 		autoplay: true,
@@ -102,7 +76,6 @@ const CustomSlider = () => {
 		arrows: false,
 		pauseOnHover: false,
 		pauseOnFocus: false,
-		// pauseOnDotsHover: true,
 		initialSlide: 0,
 		responsive: [
 			{
@@ -119,12 +92,10 @@ const CustomSlider = () => {
 		<Container>
 			<div>
 				<Slider {...settings}>
-					{/* <div> */}
 					{currentSliderItems.map((item) => (
 						<Slide
 							bg={item.bg}
-							key={item.id}
-						>
+							key={item.id}>
 							<Wrapper>
 								<ImgContainer className='slideImag'>
 									<Image src={item.img} />

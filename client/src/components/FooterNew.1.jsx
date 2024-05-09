@@ -210,7 +210,7 @@ export const FooterNew = () => {
 																	type='text'
 																	name='_mc4wp_honeypot'
 																	value=''
-																	tabindex='-1'
+																	tabIndex='-1'
 																	autocomplete='off'
 																	className='snipcss0-9-15-16'
 																/>

@@ -85,7 +85,7 @@ export default function Analytics() {
 					]),
 				);
 			} catch {
-				console.log('error');
+				console.error('error');
 			}
 		};
 		getStats2();

@@ -10,16 +10,13 @@ const Bloges = () => {
 
 	const formatDate = (dateString) => {
 		const date = new Date(dateString);
-		// Check if the current language is Arabic
 		if (language === 'ar') {
-			// Format the date to Arabic
 			return date.toLocaleDateString('ar-SA', {
 				year: 'numeric',
 				month: 'long',
 				day: 'numeric',
 			});
 		} else {
-			// Format the date to English
 			return date.toLocaleDateString('en-US', {
 				year: 'numeric',
 				month: 'long',
@@ -30,29 +27,26 @@ const Bloges = () => {
 
 	return (
 		<>
-			<div class='blog_title'>
+			<div className='blog_title'>
 				<h2>{dictionary.blog['Latest Blogs']}</h2>
 			</div>
-			<div class='block block-slider-post snipcss-Pb3fd'>
-				<div class='block-content'>
-					<div class='owl-carousel owl-theme owl-loaded owl-drag'>
-						<div class='owl-stage-outer'>
+			<div className='block block-slider-post snipcss-Pb3fd'>
+				<div className='block-content'>
+					<div className='owl-carousel owl-theme owl-loaded owl-drag'>
+						<div className='owl-stage-outer'>
 							<div
-								class='owl-stage style-MG8jI'
-								id='style-MG8jI'
-							>
+								className='owl-stage style-MG8jI'
+								id='style-MG8jI'>
 								<div
-									class='owl-item active style-3lVoL'
-									id='style-3lVoL'
-								>
-									<div class='item'>
-										<div class='image-post'>
+									className='owl-item active style-3lVoL'
+									id='style-3lVoL'>
+									<div className='item'>
+										<div className='image-post'>
 											<a
 												href=''
-												title='Join millions of others'
-											>
+												title='Join millions of others'>
 												<img
-													class=''
+													className=''
 													src='http://magento2.magentech.com/themes/sm_venuse/pub/media/magefan_blog/8.jpg'
 													data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/magefan_blog/8.jpg'
 													width='1'
@@ -61,21 +55,21 @@ const Bloges = () => {
 												/>
 											</a>
 										</div>
-										<div class='info-post'>
-											<div class='post-date'>
-												<span class='label'>
+										<div className='info-post'>
+											<div className='post-date'>
+												<span className='label'>
 													{dictionary.blog['Posted']}
 												</span>
-												<span class='value'>
+												<span className='value'>
 													{formatDate('June 17, 2019')}
 												</span>
 											</div>
-											<div class='post-title'>
-												<div class='post-item-link'>
+											<div className='post-title'>
+												<div className='post-item-link'>
 													{dictionary.blog['title1']}
 												</div>
 											</div>
-											<div class='post-short-description'>
+											<div className='post-short-description'>
 												<p>
 													{
 														dictionary.blog[
@@ -84,11 +78,10 @@ const Bloges = () => {
 													}
 												</p>
 											</div>
-											<div class='post-read-more'>
+											<div className='post-read-more'>
 												<a
 													href=''
-													title='Join millions of others'
-												>
+													title='Join millions of others'>
 													{dictionary.blog['Read more']}
 												</a>
 											</div>
@@ -96,17 +89,15 @@ const Bloges = () => {
 									</div>
 								</div>
 								<div
-									class='owl-item active style-7pgTY'
-									id='style-7pgTY'
-								>
-									<div class='item'>
-										<div class='image-post'>
+									className='owl-item active style-7pgTY'
+									id='style-7pgTY'>
+									<div className='item'>
+										<div className='image-post'>
 											<a
 												href=''
-												title='Choose the perfect design'
-											>
+												title='Choose the perfect design'>
 												<img
-													class=''
+													className=''
 													src='http://magento2.magentech.com/themes/sm_venuse/pub/media/magefan_blog/6.jpg'
 													data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/magefan_blog/6.jpg'
 													width='1'
@@ -115,21 +106,21 @@ const Bloges = () => {
 												/>
 											</a>
 										</div>
-										<div class='info-post'>
-											<div class='post-date'>
-												<span class='label'>
+										<div className='info-post'>
+											<div className='post-date'>
+												<span className='label'>
 													{dictionary.blog['Posted']}
 												</span>
-												<span class='value'>
+												<span className='value'>
 													{formatDate('June 17, 2019')}
 												</span>
 											</div>
-											<div class='post-title'>
-												<div class='post-item-link'>
+											<div className='post-title'>
+												<div className='post-item-link'>
 													{dictionary.blog['title2']}
 												</div>
 											</div>
-											<div class='post-short-description'>
+											<div className='post-short-description'>
 												<p>
 													{
 														dictionary.blog[
@@ -138,11 +129,10 @@ const Bloges = () => {
 													}
 												</p>
 											</div>
-											<div class='post-read-more'>
+											<div className='post-read-more'>
 												<a
 													href=''
-													title='Choose the perfect design'
-												>
+													title='Choose the perfect design'>
 													{dictionary.blog['Read more']}
 												</a>
 											</div>
@@ -150,17 +140,15 @@ const Bloges = () => {
 									</div>
 								</div>
 								<div
-									class='owl-item style-Tg8VU'
-									id='style-Tg8VU'
-								>
-									<div class='item'>
-										<div class='image-post'>
+									className='owl-item style-Tg8VU'
+									id='style-Tg8VU'>
+									<div className='item'>
+										<div className='image-post'>
 											<a
 												href=''
-												title='What are some good electronic'
-											>
+												title='What are some good electronic'>
 												<img
-													class=''
+													className=''
 													src='http://magento2.magentech.com/themes/sm_venuse/pub/media/magefan_blog/blog-22.jpg'
 													data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/magefan_blog/blog-22.jpg'
 													width='1'
@@ -169,21 +157,21 @@ const Bloges = () => {
 												/>
 											</a>
 										</div>
-										<div class='info-post'>
-											<div class='post-date'>
-												<span class='label'>
+										<div className='info-post'>
+											<div className='post-date'>
+												<span className='label'>
 													{dictionary.blog['Posted']}
 												</span>
-												<span class='value'>
+												<span className='value'>
 													{formatDate('May 16, 2019')}
 												</span>
 											</div>
-											<div class='post-title'>
-												<div class='post-item-link'>
+											<div className='post-title'>
+												<div className='post-item-link'>
 													{dictionary.blog['title3']}
 												</div>
 											</div>
-											<div class='post-short-description'>
+											<div className='post-short-description'>
 												<p>
 													{
 														dictionary.blog[
@@ -192,11 +180,10 @@ const Bloges = () => {
 													}
 												</p>
 											</div>
-											<div class='post-read-more'>
+											<div className='post-read-more'>
 												<a
 													href=''
-													title='What are some good electronic'
-												>
+													title='What are some good electronic'>
 													{dictionary.blog['Read more']}
 												</a>
 											</div>
@@ -204,17 +191,15 @@ const Bloges = () => {
 									</div>
 								</div>
 								<div
-									class='owl-item style-PoS2p'
-									id='style-PoS2p'
-								>
-									<div class='item'>
-										<div class='image-post'>
+									className='owl-item style-PoS2p'
+									id='style-PoS2p'>
+									<div className='item'>
+										<div className='image-post'>
 											<a
 												href=''
-												title='Standard Blog Post Examples'
-											>
+												title='Standard Blog Post Examples'>
 												<img
-													class=''
+													className=''
 													src='http://magento2.magentech.com/themes/sm_venuse/pub/media/magefan_blog/blog-12.jpg'
 													data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/magefan_blog/blog-12.jpg'
 													width='1'
@@ -223,21 +208,21 @@ const Bloges = () => {
 												/>
 											</a>
 										</div>
-										<div class='info-post'>
-											<div class='post-date'>
-												<span class='label'>
+										<div className='info-post'>
+											<div className='post-date'>
+												<span className='label'>
 													{dictionary.blog['Posted']}
 												</span>
-												<span class='value'>
+												<span className='value'>
 													{formatDate('May 16, 2019')}
 												</span>
 											</div>
-											<div class='post-title'>
-												<div class='post-item-link'>
+											<div className='post-title'>
+												<div className='post-item-link'>
 													{dictionary.blog['title4']}
 												</div>
 											</div>
-											<div class='post-short-description'>
+											<div className='post-short-description'>
 												<p>
 													{
 														dictionary.blog[
@@ -246,11 +231,10 @@ const Bloges = () => {
 													}
 												</p>
 											</div>
-											<div class='post-read-more'>
+											<div className='post-read-more'>
 												<a
 													href=''
-													title='Standard Blog Post Examples'
-												>
+													title='Standard Blog Post Examples'>
 													{dictionary.blog['Read more']}
 												</a>
 											</div>
@@ -259,24 +243,22 @@ const Bloges = () => {
 								</div>
 							</div>
 						</div>
-						<div class='owl-nav'>
+						<div className='owl-nav'>
 							<div
 								role='presentation'
-								class='owl-prev disabled'
-							>
+								className='owl-prev disabled'>
 								<span aria-label='Previous'>‹</span>
 							</div>
 							<div
 								role='presentation'
-								class='owl-next'
-							>
+								className='owl-next'>
 								<span aria-label='Next'>›</span>
 							</div>
 						</div>
-						<div class='owl-dots disabled'></div>
+						<div className='owl-dots disabled'></div>
 					</div>
-					<div class='loading-content'>
-						<span class='hidden'>Loading...</span>
+					<div className='loading-content'>
+						<span className='hidden'>Loading...</span>
 					</div>
 				</div>
 			</div>

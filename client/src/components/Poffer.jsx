@@ -51,7 +51,6 @@ const Poffer = React.memo(({ filters, sort }) => {
 				}
 			});
 	}, [sort, filters, products]);
-
 	useEffect(() => {
 		const getProducts = async () => {
 			try {
@@ -60,12 +59,11 @@ const Poffer = React.memo(({ filters, sort }) => {
 				);
 				setProducts(res.data);
 			} catch (err) {
-				console.log(err);
+				console.error(err);
 			}
 		};
 		getProducts();
 	}, []);
-
 	return (
 		<Container>
 			{filteredOffer.map((item) => (

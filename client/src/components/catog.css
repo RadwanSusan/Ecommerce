@@ -14,7 +14,6 @@
 
 .selectedColor {
 	border: 2px solid #000 !important;
-	/* Change border color as needed */
 }
 
 @media (min-width: 576px) {
@@ -506,16 +505,6 @@
 		-webkit-transform: translate3d(0px, 0px, 0px);
 	}
 
-	/* .owl-theme .owl-nav {
-    margin-top: 10px;
-    text-align: center;
-    -webkit-tap-highlight-color: transparent;
-    margin: 0;
-    position: absolute;
-    top: -63px;
-    right: 0;
-  } */
-
 	.owl-theme .owl-dots {
 		text-align: center;
 		-webkit-tap-highlight-color: transparent;
@@ -548,17 +537,6 @@
 		user-select: none;
 	}
 
-	/* .owl-theme .owl-nav [class*="owl-"] {
-    color: #FFF;
-    font-size: 14px;
-    margin: 5px;
-    padding: 4px 7px;
-    background: #D6D6D6;
-    display: inline-block;
-    cursor: pointer;
-    border-radius: 3px;
-  } */
-
 	.owl-theme .owl-nav .disabled {
 		opacity: 0.5;
 		cursor: default;
@@ -568,50 +546,10 @@
 		opacity: 1;
 	}
 
-	/* .owl-theme .owl-nav [class*="owl-"] {
-    display: inline-block;
-    vertical-align: top;
-    width: 44px;
-    height: 34px;
-    border: 2px solid #ddd;
-    background-color: #fff;
-    color: #4e3f34;
-    padding: 0;
-    margin: 0 -1px;
-  } */
-
-	/* .owl-theme .owl-nav [class*="owl-"].owl-prev {
-    border-radius: 17px 0 0 17px;
-    -moz-border-radius: 17px 0 0 17px;
-    -webkit-border-radius: 17px 0 0 17px;
-  } */
-
-	/* .owl-theme .owl-nav [class*="owl-"].owl-prev:before {
-    content: '\e92f';
-    display: inline-block;
-    font-family: 'icomoon' !important;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    font-size: 14px;
-  } */
-
 	.owl-theme .owl-nav [class*='owl-']:before {
 		font-size: 19px;
 		line-height: 29px;
 	}
-
-	/* .owl-theme .owl-nav [class*="owl-"]:hover {
-    background: #869791;
-    color: #4e3f34;
-    text-decoration: none;
-    background-color: #4e3f34;
-    border-color: #4e3f34;
-  } */
 
 	.owl-carousel .owl-nav .owl-next {
 		cursor: pointer;
@@ -620,26 +558,6 @@
 		-ms-user-select: none;
 		user-select: none;
 	}
-
-	/* .owl-theme .owl-nav [class*="owl-"].owl-next {
-    border-radius: 0 17px 17px 0;
-    -moz-border-radius: 0 17px 17px 0;
-    -webkit-border-radius: 0 17px 17px 0;
-  } */
-
-	/* .owl-theme .owl-nav [class*="owl-"].owl-next:before {
-    content: '\e930';
-    display: inline-block;
-    font-family: 'icomoon' !important;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    font-size: 14px;
-  } */
 
 	.owl-carousel .owl-item {
 		-webkit-backface-visibility: hidden;
@@ -1174,7 +1092,6 @@
 	}
 
 	.price-container .price {
-		/* font-size: 1.4rem; */
 	}
 
 	.price-box .price {
@@ -1189,7 +1106,6 @@
 	}
 
 	.products-grid .product-item-info .product-item-details .price-box .price {
-		/* font-size: 128.571%; */
 	}
 
 	form {
@@ -1527,7 +1443,6 @@ html[lang='ar'] #style-pO7ki.style-pO7ki {
 
 #style-TgWkF.style-TgWkF {
 	width: 240px;
-	/* margin-right: 60px; */
 }
 
 #style-lfkFz.style-lfkFz {
@@ -1540,7 +1455,6 @@ html[lang='ar'] #style-pO7ki.style-pO7ki {
 
 #style-XfG6f.style-XfG6f {
 	width: 240px;
-	/* margin-right: 60px; */
 }
 
 #style-bJHjQ.style-bJHjQ {
@@ -1553,7 +1467,6 @@ html[lang='ar'] #style-pO7ki.style-pO7ki {
 
 #style-8BeF9.style-8BeF9 {
 	width: 240px;
-	/* margin-right: 20px; */
 }
 
 #style-lHCFN.style-lHCFN {
@@ -1608,7 +1521,6 @@ html[lang='ar'] #style-pO7ki.style-pO7ki {
 	}
 
 	#style-pO7ki.style-pO7ki {
-		/* flex-direction: column; */
 		align-items: center;
 		gap: 50px;
 	}
@@ -1622,7 +1534,6 @@ html[lang='ar'] #style-pO7ki.style-pO7ki {
 	}
 
 	.listingtabs-cms .ltabs-items-container {
-		/* float: none; */
 		width: 100%;
 	}
 
@@ -1697,13 +1608,6 @@ button:hover {
 	outline: none;
 }
 
-/* button {
-			padding: 0;
-			margin: 0;
-			background-color: transparent;
-			color: #000;
-		  } */
-
 .mainWrapper {
 	position: relative;
 	width: 100%;
@@ -1711,7 +1615,6 @@ button:hover {
 	min-height: 1000px;
 	padding: 0;
 	margin: 0 !important;
-	/* background: radial-gradient(rgb(48, 61, 85), rgb(47, 51, 82)); */
 }
 
 .wrappen_block {
@@ -1720,44 +1623,19 @@ button:hover {
 	height: 100%;
 }
 
-/* .mainBackground {
-			width: 100%;
-			min-height: 1000px;
-			background: url("https://github.com/BlackStar1991/CardProduct/blob/master/app/img/bgRectangl.png?raw=true")
-				left center no-repeat,
-			  url("https://github.com/BlackStar1991/CardProduct/blob/master/app/img/bgPhons.png?raw=true")
-				center center no-repeat,
-			  url("https://github.com/BlackStar1991/CardProduct/blob/master/app/img/layer-3-copy-2.png?raw=true")
-				center center no-repeat,
-			  url("https://github.com/BlackStar1991/CardProduct/blob/master/app/img/mainBg.png?raw=true")
-				center center no-repeat;
-		  } */
-
 .productCard_block {
-	/* position: fixed; */
-
-	/* position: relative; */
-	/* top: 14%; */
-	/* left: 17%; */
 	z-index: 1000;
-	/* margin: 190px auto 0; */
 	max-width: 800px;
 	min-height: 600px;
 	box-shadow: 0 5px 21px rgba(0, 0, 0, 0.08);
 	background-color: #fff;
 	display: none;
-	/* position: absolute; */
 	position: fixed;
 	left: 50%;
-	/* top: 1%; */
-	/* transform: translateY(-50%); */
-	/* transition: auto; */
 	transform: translateX(-50%);
-	/* top: 50%; */
 	top: 8%;
 }
 
-/* LEFT SIDE */
 .productCard_leftSide {
 	position: relative;
 	text-align: center;
@@ -1765,29 +1643,6 @@ button:hover {
 	min-height: 600px;
 }
 
-/* .productCard_brendBlock {
-			width: 100%;
-			height: 75px;
-			position: absolute;
-			top: 0;
-			left: 0;
-			max-width: 184px;
-			max-height: 75px;
-			background-color: #272727;
-			z-index: 2;
-		  }
-		  .productCard_brendBlock__imageBlock {
-			display: block;
-			height: 100%;
-		  }
-		  .productCard_brendBlock__imageBlock img {
-			position: absolute;
-			display: block;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-		  }
-		   */
 .sliderBlock {
 	position: relative;
 	height: 100%;
@@ -1825,8 +1680,6 @@ button:hover {
 	height: 100%;
 	top: 0;
 	left: 0;
-	/* background: url('https://github.com/BlackStar1991/CardProduct/blob/master/app/img/decorElements/DecorRectangle.png')
-		50% 50% no-repeat; */
 	opacity: 0.2;
 	z-index: 4;
 }
@@ -1851,9 +1704,7 @@ button:hover {
 	width: 24px;
 	height: 24px;
 	cursor: pointer;
-	/* border: 1px solid #536dfe; */
 	transition: 300ms all;
-	/* background-color: #0d2660; */
 	border-radius: 50%;
 }
 
@@ -1865,7 +1716,6 @@ button:hover {
 	left: 50%;
 	margin-left: -50%;
 	margin-top: -50%;
-	/* color: #fff; */
 	transition: 300ms all;
 	font-weight: bold;
 	text-align: center;
@@ -1909,7 +1759,6 @@ button:hover {
 	background-color: #323232;
 }
 
-/*   RIGHT SIDE */
 .productCard_rightSide {
 	position: relative;
 	padding-top: 34px;
@@ -2122,14 +1971,12 @@ input[type='radio'] + label {
 	float: right;
 }
 
-/***** CSS Magic to Highlight Stars on Hover *****/
 .block_rating__stars > input:checked ~ label,
 .block_rating__stars:not(:checked) > label:hover,
 .block_rating__stars:not(:checked) > label:hover ~ label {
 	color: #fccf47;
 }
 
-/* hover previous stars in list */
 .block_rating__stars > input:checked + label:hover,
 .block_rating__stars > input:checked ~ label:hover,
 .block_rating__stars > label:hover ~ input:checked ~ label,
@@ -2183,7 +2030,6 @@ input[type='radio'] + label {
 }
 
 .block_goodColor__allColors2 > * {
-	/* background-color: #4e3f34; */
 	border: 1px solid black;
 }
 
@@ -2308,23 +2154,6 @@ input[type='radio'] + label {
 	color: #536dfe;
 }
 
-/* .block_quantity__up:before {
-			content: "\f106";
-			width: 11px;
-			height: 6px;
-			font-family: "FontAwesome";
-			color: #37474f;
-			font-size: 18px;
-		  }
-		  .block_quantity__down:before {
-			content: "\f107";
-			width: 11px;
-			height: 6px;
-			font-family: "FontAwesome";
-			color: #37474f;
-			font-size: 18px;
-		  }
-		   */
 .AiOutlineArrowUpanddown {
 	width: 15px;
 	height: 15px;
@@ -2344,8 +2173,6 @@ input[type='radio'] + label {
 }
 
 .button.button_addToCard:hover {
-	/* background-color: #0d2660; */
-	/* padding: 3px; */
 	background-color: #4e3f34;
 }
 
@@ -2362,7 +2189,6 @@ input[type='radio'] + label {
 }
 
 .row11 {
-	/* display: none; */
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -2439,24 +2265,9 @@ input[type='radio'] + label {
 	}
 }
 
-/* .add-to-wish {
-	margin-left: 12px;
-	margin-top: 15px;
-}
-.add-to-wish2 {
-	margin-left: 12px;
-	margin-top: 15px;
-} */
 .list-wish {
-	/* margin-left: 12px;
-		margin-top: 15px; */
 	margin: 12px;
 	font-size: 16px;
-}
-
-.add-to-wish2 {
-	/* background-color: red; */
-	/* border: solid 5px red ; */
 }
 
 .AddCart {

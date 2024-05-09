@@ -1654,16 +1654,6 @@ button.close {
 }
 
 @media all {
-	.price-container .price {
-		/* font-size: 1.4rem; */
-	}
-}
-
-.price-container .price {
-	/* font-size: 1.4rem; */
-}
-
-@media all {
 	.minicart-wrapper .action.close > span {
 		border: 0px;
 		clip: rect(0px, 0px, 0px, 0px);

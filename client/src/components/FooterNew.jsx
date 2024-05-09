@@ -195,6 +195,7 @@ const FooterNew = () => {
 																					'Subscribe us'
 																				]
 																			}
+																			readOnly
 																			className='snipcss0-11-13-14'
 																		/>
 																	</span>
@@ -213,6 +214,7 @@ const FooterNew = () => {
 																	name='_mc4wp_honeypot'
 																	value=''
 																	className='snipcss0-9-15-16'
+																	readOnly
 																/>
 															</label>
 															<input
@@ -220,18 +222,21 @@ const FooterNew = () => {
 																name='_mc4wp_timestamp'
 																value='1679394145'
 																className='snipcss0-8-8-17'
+																readOnly
 															/>
 															<input
 																type='hidden'
 																name='_mc4wp_form_id'
 																value='200'
 																className='snipcss0-8-8-18'
+																readOnly
 															/>
 															<input
 																type='hidden'
 																name='_mc4wp_form_element_id'
 																value='mc4wp-form-1'
 																className='snipcss0-8-8-19'
+																readOnly
 															/>
 															<div className='mc4wp-response snipcss0-8-8-20'></div>
 														</form>

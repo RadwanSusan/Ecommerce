@@ -153,14 +153,6 @@ export default function NewProduct() {
 			showError('Error!', 'Please fill all the required fields');
 			return;
 		}
-		// const hasAllVariants = forms.every((form) => form.color && form.size);
-		// if (!hasAllVariants) {
-		// 	showError(
-		// 		'Error!',
-		// 		'Each product variant must have a color and size selected',
-		// 	);
-		// 	return;
-		// }
 		const promoComplete = isObjectComplete(inputs.promo);
 		const promoPartiallyFilled = isObjectPartiallyFilled(inputs.promo);
 		if (promoPartiallyFilled && !promoComplete) {
@@ -192,7 +184,6 @@ export default function NewProduct() {
 				Promise.all(uploadPromises),
 				minimumLoadingPromise,
 			]);
-			// const product = constructProduct(inputs, variants);
 			const product = constructProduct(inputs, variants, supplierInfo);
 			swal({
 				title: 'Success',
@@ -249,20 +240,6 @@ export default function NewProduct() {
 		size: [form.size],
 		quantity: form.quantity,
 	});
-	// const constructProduct = (inputs, variants) => ({
-	// 	...inputs,
-	// 	variants,
-	// 	...(isObjectComplete(inputs.discount) && { discount: inputs.discount }),
-	// 	...(isObjectComplete(inputs.promo) && { promo: inputs.promo }),
-	// 	supplierId: supplierInfo,
-	// });
-	// const constructProduct = (inputs, variants, supplierInfo) => ({
-	// 	...inputs,
-	// 	variants,
-	// 	...(isObjectComplete(inputs.discount) && { discount: inputs.discount }),
-	// 	...(isObjectComplete(inputs.promo) && { promo: inputs.promo }),
-	// 	supplierId: supplierInfo._id, // Use actual supplier ID
-	// });
 	const constructProduct = (inputs, variants, supplierInfo) => {
 		let productData = {
 			...inputs,
@@ -273,11 +250,6 @@ export default function NewProduct() {
 			...(isObjectComplete(inputs.promo) && { promo: inputs.promo }),
 			supplierId: supplierInfo._id,
 		};
-
-		// Remove 'desc' from productData if supplier's role is 'supplierType1'
-
-		console.log('productData:', productData);
-
 		return productData;
 	};
 	const resetAllForms = () => {
@@ -379,13 +351,6 @@ export default function NewProduct() {
 										multiple
 										style={{ display: 'none' }}
 									/>
-									{/* {index !== 0 && (
-										<button
-											onClick={() => removeForm(index)}
-											className='closeFormButton'>
-											x
-										</button>
-									)} */}
 
 									<div
 										className='file-dragndrop'
@@ -572,7 +537,6 @@ export default function NewProduct() {
 													/>
 													<label>500 ml</label>
 													<br />
-													{/* Add more options as needed */}
 												</>
 											)}
 										</fieldset>

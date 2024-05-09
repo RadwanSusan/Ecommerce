@@ -4,10 +4,7 @@ const {
 	verifyTokenAndAuthorization,
 	verifyTokenAndAdmin,
 } = require('./verifyToken');
-
 const router = require('express').Router();
-
-//CREATE
 router.post('/', verifyTokenAndAdmin, async (req, res) => {
 	const newOffer = new Offer(req.body);
 	try {
@@ -17,22 +14,6 @@ router.post('/', verifyTokenAndAdmin, async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-
-//UPDATE
-// router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
-// 	try {
-// 		const updatedOffer = await Offer.findByIdAndUpdate(
-// 			req.params.id,
-// 			{
-// 				$set: req.body,
-// 			},
-// 			{ new: true },
-// 		);
-// 		res.status(200).json(updatedOffer);
-// 	} catch (err) {
-// 		res.status(500).json(err);
-// 	}
-// });
 router.put('/:id', async (req, res) => {
 	try {
 		const updatedOffer = await Offer.findByIdAndUpdate(
@@ -47,8 +28,6 @@ router.put('/:id', async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-
-//DELETE
 router.delete('/:id', verifyTokenAndAdmin, async (req, res) => {
 	try {
 		await Offer.findByIdAndDelete(req.params.id);
@@ -57,7 +36,6 @@ router.delete('/:id', verifyTokenAndAdmin, async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-//GET Offer
 router.get('/find/:id', async (req, res) => {
 	try {
 		const offer = await Offer.findById(req.params.id);
@@ -66,8 +44,6 @@ router.get('/find/:id', async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-
-//GET ALL Offer
 router.get('/', async (req, res) => {
 	const qNew = req.query.new;
 	const qCategory = req.query.category;
@@ -89,5 +65,4 @@ router.get('/', async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-
 module.exports = router;

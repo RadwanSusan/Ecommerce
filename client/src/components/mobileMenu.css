@@ -148,10 +148,6 @@
 		-o-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 	}
 
-	.tab-content-mobile {
-		/* padding: 20px 0; */
-	}
-
 	.header-mobile .mobile-bottom .block-search-mobile {
 		margin: 0;
 	}
@@ -678,15 +674,6 @@
 		border-color: #4e3f34;
 	}
 }
-
-/* @media (max-width: 1024px) {
-   .quickview-handler {
-      display: none !important;
-      opacity: 0 !important;
-      visibility: hidden !important;
-      z-index: -10 !important;
-   }
-} */
 
 @media all {
 	.products-grid .product-item-info .image-product .quickview-handler {
@@ -1259,7 +1246,6 @@
 	}
 }
 
-/* These were inline style tags. Uses id+class to override almost everything */
 #style-RC8eV.style-RC8eV {
 	margin-bottom: 30px;
 }

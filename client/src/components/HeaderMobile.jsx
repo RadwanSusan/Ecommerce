@@ -8,15 +8,15 @@ import { Link } from 'react-router-dom';
 
 const HeaderMobile = () => {
 	return (
-		<div class='mobile-top snipcss-OsEnD'>
-			<div class='container'>
-				<div class='mobile-header-content'>
-					<div class='mobile-menu'>
+		<div className='mobile-top snipcss-OsEnD'>
+			<div className='container'>
+				<div className='mobile-header-content'>
+					<div className='mobile-menu'>
 						<ToggleComponent>
 							<MobileMenuComp />
 						</ToggleComponent>
 					</div>
-					<div class='mobile-logo'>
+					<div className='mobile-logo'>
 						<img
 							src='https://emarche.net/wp-content/uploads/2017/02/Logo-resized.png'
 							alt='Logo Mobile'
@@ -24,56 +24,49 @@ const HeaderMobile = () => {
 							height='35'
 						/>
 					</div>
-					<div class='mobile-cart'>
+					<div className='mobile-cart'>
 						<div
 							id='minicart-mobile'
-							class='minicart-mobile'>
-							<span class='hidden'>Cart Mobile</span>
+							className='minicart-mobile'>
+							<span className='hidden'>Cart Mobile</span>
 							<div
 								data-block='minicart'
-								class='mobile-wrapper'>
-								{/* <a
-                  class="mobile action showcart"
-                  href="http://magento2.magentech.com/themes/sm_venuse/pub/french/checkout/cart/"
-                  data-bind="scope: 'minicart_content'"
-                > */}
+								className='mobile-wrapper'>
 								<Link
 									to={'/cart'}
-									class='mobile action showcart'
+									className='mobile action showcart'
 									data-bind="scope: 'minicart_content'">
 									<AiOutlineShoppingCart />
 								</Link>
-								{/* </a> */}
 								<div
-									tabindex='-1'
 									role='dialog'
-									class='ui-dialog ui-corner-all ui-widget ui-widget-content ui-front mage-dropdown-dialog style-pwEon'
+									className='ui-dialog ui-corner-all ui-widget ui-widget-content ui-front mage-dropdown-dialog style-pwEon'
 									aria-describedby='ui-id-1'
 									id='style-pwEon'>
 									<div
-										class='block block-minicart ui-dialog-content ui-widget-content style-fjlot'
+										className='block block-minicart ui-dialog-content ui-widget-content style-fjlot'
 										data-role='dropdownDialog'
 										id='ui-id-1'>
 										<div
 											id='minicart-content-wrapper'
 											data-bind="scope: 'minicart_content'">
-											<div class='block-title'>
+											<div className='block-title'>
 												<strong>
 													<span
-														class='text'
+														className='text'
 														data-bind="i18n: 'My Cart'">
 														My Cart
 													</span>
 													<span
-														class='qty empty'
+														className='qty empty'
 														title='Items in Cart'></span>
 												</strong>
 											</div>
-											<div class='block-content'>
+											<div className='block-content'>
 												<button
 													type='button'
 													id='btn-minicart-close'
-													class='action close'
+													className='action close'
 													data-action='close'
 													title='Close'>
 													<span data-bind="i18n: 'Close'">
@@ -81,13 +74,13 @@ const HeaderMobile = () => {
 													</span>
 												</button>
 												<strong
-													class='subtitle empty'
+													className='subtitle empty'
 													data-bind="i18n: 'You have no items in your shopping cart.'">
 													You have no items in your shopping cart.
 												</strong>
 												<div
 													id='minicart-widgets'
-													class='minicart-widgets'></div>
+													className='minicart-widgets'></div>
 											</div>
 										</div>
 									</div>

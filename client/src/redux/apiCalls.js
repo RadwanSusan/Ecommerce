@@ -1,6 +1,5 @@
 import { loginFailure, loginStart, loginSuccess } from './userRedux';
 import { publicRequest } from '../requestMethods';
-// import { decode as jwtDecode } from 'jsonwebtoken';
 import { jwtDecode } from 'jwt-decode';
 
 export const login = async (dispatch, user) => {
@@ -25,7 +24,7 @@ export const updateProductOrOffer = async (product, productId) => {
 		const res1 = await publicRequest.put(`/products/${productId}`, product);
 		return res.data || res1.data;
 	} catch (err) {
-		console.log(err);
+		console.error(err);
 	}
 };
 export const addToCart = async (product) => {
@@ -33,7 +32,7 @@ export const addToCart = async (product) => {
 		const res = await publicRequest.post('/carts', product);
 		return res.data;
 	} catch (err) {
-		console.log(err);
+		console.error(err);
 	}
 };
 export const addOrder = async (order) => {
@@ -41,7 +40,7 @@ export const addOrder = async (order) => {
 		const res = await publicRequest.post('/orders', order);
 		return res.data;
 	} catch (err) {
-		console.log(err);
+		console.error(err);
 	}
 };
 export const wishlist = async (id) => {
@@ -54,7 +53,7 @@ export const wishlist = async (id) => {
 		const res = await publicRequest.get(`users/wishlist/${userId}?pid=${id}`);
 		return res.data;
 	} catch (err) {
-		console.log(err);
+		console.error(err);
 	}
 };
 export const wishlistCheek = async (id, userId) => {
@@ -64,7 +63,7 @@ export const wishlistCheek = async (id, userId) => {
 		);
 		return res.data;
 	} catch (err) {
-		console.log(err);
+		console.error(err);
 	}
 };
 export const userWishListArrayGet = async (id) => {
@@ -72,7 +71,7 @@ export const userWishListArrayGet = async (id) => {
 		const res = await publicRequest.get(`users/userWishListArray/${id}`);
 		return res.data;
 	} catch (err) {
-		console.log(err);
+		console.error(err);
 	}
 };
 export const purchaseSuccessfulEmail = async (email) => {
@@ -80,7 +79,7 @@ export const purchaseSuccessfulEmail = async (email) => {
 		const res = await publicRequest.post('auth/sendEmail', email);
 		return res.data;
 	} catch (err) {
-		console.log(err);
+		console.error(err);
 	}
 };
 export const purchaseSuccessfulEmailAdmin = async () => {
@@ -88,7 +87,7 @@ export const purchaseSuccessfulEmailAdmin = async () => {
 		const res = await publicRequest.post('auth/sendEmailAdmin');
 		return res.data;
 	} catch (err) {
-		console.log(err);
+		console.error(err);
 	}
 };
 export const TokenValidator = ({ children, logOut }) => {

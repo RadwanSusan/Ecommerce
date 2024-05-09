@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
 		const savedProduct = await newProduct.save();
 	} catch (err) {
 		res.status(500).json(err);
-		console.log(err);
+		console.error(err);
 	}
 });
 router.put('/:id', async (req, res) => {

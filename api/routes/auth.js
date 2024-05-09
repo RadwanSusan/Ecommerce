@@ -31,7 +31,6 @@ router.post('/registerAdmin', async (req, res) => {
 	} catch (error) {
 		console.error('Error registering admin:', error);
 		if (error.code === 11000) {
-			// Duplicate key error
 			res.status(400).json({ message: 'Email already exists' });
 		} else {
 			res.status(500).json({ message: 'Internal server error' });
@@ -66,31 +65,26 @@ router.post('/register', async (req, res) => {
 	}
 });
 
-// Email verification endpoint
 router.get('/verifyEmail', async (req, res) => {
 	const { token } = req.query;
 	const user = await User.findOne({
 		verificationToken: token,
 		verificationTokenExpires: { $gt: Date.now() },
 	});
-
 	if (!user) {
 		return res
 			.status(400)
 			.send('Verification token is invalid or has expired.');
 	}
-
 	user.verified = true;
 	user.verificationToken = undefined;
 	user.verificationTokenExpires = undefined;
 	await user.save();
-
 	res.status(200).json({ message: 'Email verified successfully!' });
-	// res.redirect('http://194.195.86.67:4000/api/auth/login');
 });
 
 cron.schedule('* * * * *', async () => {
-	const cutoff = Date.now() - 300000; // 5 minutes ago
+	const cutoff = Date.now() - 300000;
 	const unverifiedUsers = await User.find({
 		verified: false,
 		createdAt: { $lt: cutoff },
@@ -164,10 +158,9 @@ router.post('/forgot-password', async (req, res) => {
 			text: `Please click on the following link to reset your password: ${link}`,
 		};
 		await transporter.sendMail(mailOptions);
-		console.log('Email sent');
 		return res.json({ status: 'Email Sent' });
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 		return res
 			.status(500)
 			.json({ status: 'There was a problem sending the email!' });
@@ -287,10 +280,9 @@ router.post('/sendEmail', async (req, res) => {
 			text: `buy product`,
 		};
 		await transporter.sendMail(mailOptions);
-		console.log('Email sent');
 		return res.json({ status: 'Email Sent' });
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 		return res
 			.status(500)
 			.json({ status: 'There was a problem sending the email!' });
@@ -317,10 +309,9 @@ router.post('/sendEmailAdmin', async (req, res) => {
 			text: `new order`,
 		};
 		await transporter.sendMail(mailOptions);
-		console.log('Email sent');
 		return res.json({ status: 'Email Sent' });
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 		return res
 			.status(500)
 			.json({ status: 'There was a problem sending the email!' });

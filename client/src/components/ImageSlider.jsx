@@ -10,20 +10,16 @@ const ImageSlider = ({ viewArrCatog }) => {
 		image: variant.img[0],
 		alt: viewArrCatog.title,
 	}));
-	console.log(slides);
-
 	const goToNextSlide = useCallback(() => {
 		setCurrentSlide((prevSlide) =>
 			prevSlide >= slides.length - 1 ? 0 : prevSlide + 1,
 		);
 	}, [slides.length]);
-
 	const goToPreviousSlide = useCallback(() => {
 		setCurrentSlide((prevSlide) =>
 			prevSlide <= 0 ? slides.length - 1 : prevSlide - 1,
 		);
 	}, [slides.length]);
-
 	useEffect(() => {
 		const interval = setInterval(goToNextSlide, 3000);
 		return () => clearInterval(interval);
@@ -36,13 +32,12 @@ const ImageSlider = ({ viewArrCatog }) => {
 						key={slide.image}
 						className={`sliderBlock_items__itemPhoto2 ${
 							index === currentSlide ? 'sliderBlock_items__showing2' : ''
-						}`}
-					>
+						}`}>
 						<img
 							src={slide.image}
 							loading='lazy'
 							alt={slide.alt}
-							style={{ width: '240px', height: '380px' }} // Add your desired width and height
+							style={{ width: '240px', height: '380px' }}
 						/>
 					</li>
 				))}
@@ -52,14 +47,12 @@ const ImageSlider = ({ viewArrCatog }) => {
 					<div className='sliderBlock_controls__wrapper'>
 						<div
 							className='sliderBlock_controls__arrow sliderBlock_controls__arrowForward2'
-							onClick={goToNextSlide}
-						>
+							onClick={goToNextSlide}>
 							<BsFillArrowRightCircleFill className='sliderBlock_controls__arrowForward2' />
 						</div>
 						<div
 							className='sliderBlock_controls__arrow sliderBlock_controls__arrowBackward2'
-							onClick={goToPreviousSlide}
-						>
+							onClick={goToPreviousSlide}>
 							<BsFillArrowLeftCircleFill className='sliderBlock_controls__arrowBackward2' />
 						</div>
 					</div>
@@ -72,8 +65,7 @@ const ImageSlider = ({ viewArrCatog }) => {
 								index === currentSlide
 									? 'sliderBlock_positionControls__active2'
 									: ''
-							}`}
-						></li>
+							}`}></li>
 					))}
 				</ul>
 			</div>

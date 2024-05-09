@@ -20,14 +20,11 @@ export default function ProductList() {
 	const supplierInfo = useSelector((state) => state.user.currentUser);
 	const products = useSelector((state) => state.product.products);
 	const filteredProducts = products.filter((product) => product._id);
-	// useEffect(() => {
-	// 	getProducts(dispatch);
-	// }, [dispatch]);
 	useEffect(() => {
 		if (supplierInfo && supplierInfo._id) {
 			getProducts(dispatch, supplierInfo._id);
 		} else {
-			getProducts(dispatch); // Fetch all products if no supplier ID is available
+			getProducts(dispatch);
 		}
 	}, [dispatch, supplierInfo]);
 	const handleExcelUpload = async (event) => {

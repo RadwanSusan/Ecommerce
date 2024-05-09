@@ -77,22 +77,15 @@ const Navbar = React.memo(
 				</Left>
 				<Right>
 					{darkMode ? (
-						<SiDarkreader
-							className='CiDark'
-							// onClick={toggle}
-						/>
+						<SiDarkreader className='CiDark' />
 					) : (
-						<MdOutlineLightMode
-							className='CiDark'
-							// onClick={toggle}
-						/>
+						<MdOutlineLightMode className='CiDark' />
 					)}
 					<select
 						className='languageSelect'
 						value={language}
 						onChange={(e) => changeLanguage(e.target.value)}
-						style={language === 'ar' ? { marginRight: '15px' } : {}}
-					>
+						style={language === 'ar' ? { marginRight: '15px' } : {}}>
 						<option value='en'>
 							{language === 'en' ? 'English' : 'الانجليزية'}
 						</option>

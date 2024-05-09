@@ -16,15 +16,13 @@ html[lang='ar'] .style-E5bOJ {
 	display: flex;
 	flex-direction: row-reverse;
 }
-/* Add this to your CSS file */
 .text-offer .coupon-code {
-	display: inline-flex; /* Use flexbox for inline elements */
-	flex-direction: row-reverse; /* Reverse the order for RTL languages */
+	display: inline-flex;
+	flex-direction: row-reverse;
 	align-items: center;
 	justify-content: flex-start;
 }
 
-/* This is for when the language is not Arabic, to keep the order left-to-right */
 .text-offer .coupon-code.ltr {
 	flex-direction: row;
 }
@@ -316,7 +314,6 @@ html[lang='ar'] .style-E5bOJ {
 		width: 200px;
 		text-align: center;
 		float: right;
-		/* height: 31px; */
 		line-height: 31px;
 		padding: 0 25px;
 		text-transform: uppercase;
@@ -372,7 +369,6 @@ html[lang='ar'] .style-E5bOJ {
 	}
 }
 
-/* These were inline style tags. Uses id+class to override almost everything */
 #style-E5bOJ.style-E5bOJ {
 	margin-bottom: 50px;
 }

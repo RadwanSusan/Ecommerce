@@ -1,53 +1,39 @@
 .table1 {
-    /* width: -1%; */
-        /* width: 82px; */
-        /* margin-top: 10px; */
-        /* width: 57px; */
-        position: absolute;
-        background-color: rgb(255, 255, 255);
-        width: 87%;
-        margin-left: 178px;
-        border-radius: 5px;
-        /* border: 1px solid rgb(228, 224, 216); */
-        /* box-shadow: 1px 1px 5px black; */
-        font-size: 14px;
-        font-weight: 700;
-        /* padding: 5px; */
-        /* margin: 15px; */
-        
+	position: absolute;
+	background-color: rgb(255, 255, 255);
+	width: 87%;
+	margin-left: 178px;
+	border-radius: 5px;
+	font-size: 14px;
+	font-weight: 700;
 }
 @media only screen and (max-width: 1286px) {
-    .table1 {
-        width: 82%;
-
-    }
+	.table1 {
+		width: 82%;
+	}
 }
 @media only screen and (max-width: 1120px) {
-    .table1 {
-        width: 77%;
-
-    }
+	.table1 {
+		width: 77%;
+	}
 }
 @media only screen and (max-width: 1000px) {
-    .table1 {
-        width: 68%;
-        z-index: 1000;
-
-    }
+	.table1 {
+		width: 68%;
+		z-index: 1000;
+	}
 }
 @media only screen and (max-width: 830px) {
-    .table1 {
-        width: 96%;
-        z-index: 1000;
-        margin-left: 2px;
-
-    }
+	.table1 {
+		width: 96%;
+		z-index: 1000;
+		margin-left: 2px;
+	}
 }
 @media only screen and (max-width: 500px) {
-    .table1 {
-        width: 68%;
-        z-index: 1000;
-        margin-left: 2px;
-
-    }
+	.table1 {
+		width: 68%;
+		z-index: 1000;
+		margin-left: 2px;
+	}
 }

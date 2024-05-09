@@ -1,11 +1,6 @@
 import { loginFailure, loginStart, loginSuccess } from './userRedux';
 import { publicRequest, userRequest } from '../requestMethods';
-// import { decode as jwtDecode } from 'jsonwebtoken';
-
 import { jwtDecode } from 'jwt-decode';
-
-// import jwtDecode from 'jwt-decode';
-
 import {
 	getProductFailure,
 	getProductStart,
@@ -48,33 +43,16 @@ import {
 	addUserSuccess,
 	addUserFailure,
 } from './userAllRedux';
-// export const login = async (dispatch, user) => {
-// 	dispatch(loginStart());
-// 	try {
-// 		const res = await publicRequest.post('/auth/login', user);
-// 		if (res.data.isAdmin) {
-// 			dispatch(loginSuccess(res.data));
-// 			setTimeout(() => {
-// 				window.location.href = '/';
-// 			});
-// 		} else {
-// 			dispatch(loginFailure());
-// 		}
-// 	} catch (err) {
-// 		dispatch(loginFailure());
-// 	}
-// };
+
 export const login = async (dispatch, user) => {
 	dispatch(loginStart());
 	try {
 		const res = await publicRequest.post('/auth/login', user);
-
-		// Redirect based on role
 		if (res.data.role === 'superAdmin') {
 			dispatch(loginSuccess(res.data));
 			setTimeout(() => {
 				window.location.href = '/';
-			}); // Redirect super admin to home/dashboard
+			});
 		} else if (
 			res.data.role === 'supplierType1' ||
 			res.data.role === 'supplierType2'
@@ -82,11 +60,11 @@ export const login = async (dispatch, user) => {
 			localStorage.setItem('supplierId', res.data._id);
 			dispatch(loginSuccess(res.data));
 			setTimeout(() => {
-				window.location.href = '/'; // Redirect supplier type 1 to products
+				window.location.href = '/';
 			});
 		} else {
 			setTimeout(() => {
-				window.location.href = '/'; // Redirect unauthorized/logged-out users to login
+				window.location.href = '/';
 			});
 			dispatch(loginFailure());
 		}
@@ -94,20 +72,10 @@ export const login = async (dispatch, user) => {
 		dispatch(loginFailure());
 	}
 };
-
 export const logoutUser = () => {
 	localStorage.removeItem('persist:root');
 	window.location.href = '/login';
 };
-// export const getProducts = async (dispatch) => {
-// 	dispatch(getProductStart());
-// 	try {
-// 		const res = await publicRequest.get('/products');
-// 		dispatch(getProductSuccess(res.data));
-// 	} catch (err) {
-// 		dispatch(getProductFailure());
-// 	}
-// };
 export const getProducts = async (dispatch, supplierId) => {
 	dispatch(getProductStart());
 	try {
@@ -120,9 +88,7 @@ export const getProducts = async (dispatch, supplierId) => {
 		dispatch(getProductFailure());
 	}
 };
-
 export const deleteProduct = async (id, dispatch) => {
-	// @ts-ignore
 	const res = await userRequest.delete(`/products/${id}`);
 	dispatch(deleteProductStart());
 	try {
@@ -160,7 +126,6 @@ export const getUser = async (dispatch) => {
 	}
 };
 export const deleteUser = async (id, dispatch) => {
-	// @ts-ignore
 	const res = await userRequest.delete(`/users/${id}`);
 	dispatch(deleteUserStart());
 	try {
@@ -207,7 +172,6 @@ export const addOffer = async (offer, dispatch) => {
 	}
 };
 export const deleteOffer = async (id, dispatch) => {
-	// @ts-ignore
 	const res = await userRequest.delete(`/offer/${id}`);
 	dispatch(deleteOfferStart());
 	try {
@@ -227,7 +191,6 @@ export const updateOffer = async (id, offer, dispatch) => {
 };
 export const addAllProduct = async (product) => {
 	try {
-		// @ts-ignore
 		const inputArray = [
 			[
 				'_id',
@@ -259,7 +222,6 @@ export const addAllProduct = async (product) => {
 		});
 		result.forEach((element) => {
 			try {
-				// @ts-ignore
 				const res = userRequest.post(`/products`, element);
 			} catch (error) {
 				console.error(error);
@@ -272,7 +234,6 @@ export const addAllProduct = async (product) => {
 };
 export const addAllOffer = async (offer) => {
 	try {
-		// @ts-ignore
 		const inputArray = [
 			[
 				'_id',
@@ -307,7 +268,6 @@ export const addAllOffer = async (offer) => {
 		});
 		result.forEach((element) => {
 			try {
-				// @ts-ignore
 				const res = userRequest.post(`/offer`, element);
 			} catch (error) {
 				console.error(error);
@@ -319,7 +279,6 @@ export const addAllOffer = async (offer) => {
 	}
 };
 export const TokenValidator = ({ children, logOut }) => {
-	// @ts-ignore
 	const user = JSON.parse(localStorage.getItem('persist:root'))?.user;
 	const currentUser = user && JSON.parse(user).currentUser;
 	const TOKEN = currentUser?.accessToken;
@@ -327,7 +286,7 @@ export const TokenValidator = ({ children, logOut }) => {
 		if (TOKEN) {
 			const decodedToken = jwtDecode(TOKEN);
 			const currentTime = Date.now() / 1000;
-			// @ts-ignore
+
 			if (decodedToken.exp < currentTime) {
 				localStorage.removeItem('persist:root');
 				window.location.reload();
@@ -339,7 +298,7 @@ export const TokenValidator = ({ children, logOut }) => {
 	if (TOKEN) {
 		const decodedToken = jwtDecode(TOKEN);
 		const currentTime = Date.now() / 1000;
-		// @ts-ignore
+
 		if (decodedToken.exp < currentTime) {
 			logOut();
 			return null;

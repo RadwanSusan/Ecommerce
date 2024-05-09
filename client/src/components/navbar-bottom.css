@@ -280,10 +280,6 @@ html[lang='ar'] .vertical-menu-block .block-title-menu svg {
 	-o-box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
-.vertical-menu-block:hover .vertical-menu-content {
-	/* display: block; */
-}
-
 nav {
 	display: block;
 }
@@ -1483,10 +1479,6 @@ img {
 		font-weight: normal;
 	}
 
-	.price-container .price {
-		/* font-size: 1.4rem; */
-	}
-
 	.price-box .price {
 		color: #4e3f34;
 		font-weight: 600;
@@ -1496,10 +1488,6 @@ img {
 		font-size: 1.4rem;
 		font-weight: 600;
 		white-space: nowrap;
-	}
-
-	.products-grid .product-item-info .product-item-details .price-box .price {
-		/* font-size: 128.571%; */
 	}
 
 	.product-item-actions .actions-secondary > .action span {
@@ -1549,7 +1537,6 @@ img {
 	}
 }
 
-/* These were inline style tags. Uses id+class to override almost everything */
 #style-4dVag.style-4dVag {
 	width: 300px;
 }
@@ -1600,7 +1587,3 @@ img {
 	display: flex !important;
 	flex-direction: row-reverse !important;
 }
-
-/* .BlackFriday {
-	color: #000;
-} */

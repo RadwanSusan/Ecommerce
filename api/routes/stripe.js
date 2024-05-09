@@ -10,7 +10,10 @@ router.post('/payment', async (req, res) => {
 			amount: req.body.amount,
 			currency: 'usd',
 		});
-		res.status(200).json({ clientSecret: paymentIntent.client_secret });
+		res.status(200).json({
+			clientSecret: paymentIntent.client_secret,
+			address: req.body.address,
+		});
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}

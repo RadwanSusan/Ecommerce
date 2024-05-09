@@ -45,13 +45,11 @@ const Login = () => {
 						<div className='account-wall2'>
 							<div
 								id='my-tab-content'
-								className='tab-content'
-							>
+								className='tab-content'>
 								<div
 									className='tab-pane2 active'
-									id='login'
-								>
-									<h5 class='welcom-admin'>
+									id='login'>
+									<h5 className='welcom-admin'>
 										WELCOME TOoooooo PMEADMIN! 👋🏻
 									</h5>
 									<div className='form-signin'>
@@ -75,15 +73,13 @@ const Login = () => {
 											<a
 												href='/forgot'
 												className='forgot2'
-												data-toggle='tab'
-											>
+												data-toggle='tab'>
 												Forgot Password
 											</a>
 										</span>
 										<button
 											className='btn btn-lg btn-saffron2 btn-block'
-											onClick={handleClick}
-										>
+											onClick={handleClick}>
 											Login
 										</button>
 										<div className='register-link'>

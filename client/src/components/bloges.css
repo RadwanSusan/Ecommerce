@@ -19,8 +19,6 @@ html[lang='ar'] .info-post {
 	position: relative;
 	width: fit-content;
 	margin: auto;
-	/* left: 9%; */
-	/* margin-left: 5%; */
 	padding: 20px;
 	text-shadow: 1px 1px #0b0b0b;
 	font-size: 25px;
@@ -303,16 +301,6 @@ html[lang='ar'] .info-post {
 		-webkit-transform: translate3d(0px, 0px, 0px);
 	}
 
-	/* .owl-theme .owl-nav {
-    margin-top: 10px;
-    text-align: center;
-    -webkit-tap-highlight-color: transparent;
-    margin: 0;
-    position: absolute;
-    top: -73px;
-    right: 0;
-  } */
-
 	.owl-theme .owl-dots {
 		text-align: center;
 		-webkit-tap-highlight-color: transparent;
@@ -344,26 +332,6 @@ html[lang='ar'] .info-post {
 		height: 0;
 	}
 
-	/* .owl-carousel .owl-nav .owl-prev {
-    cursor: pointer;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  } */
-
-	/* .owl-theme .owl-nav [class*="owl-"] {
-    color: #FFF;
-    font-size: 14px;
-    margin: 5px;
-    padding: 4px 7px;
-    background: #D6D6D6;
-    display: inline-block;
-    cursor: pointer;
-    border-radius: 3px;
-  } */
-
 	.owl-theme .owl-nav .disabled {
 		opacity: 0.5;
 		cursor: default;
@@ -373,50 +341,10 @@ html[lang='ar'] .info-post {
 		opacity: 1;
 	}
 
-	/* .owl-theme .owl-nav [class*="owl-"] {
-    display: inline-block;
-    vertical-align: top;
-    width: 44px;
-    height: 34px;
-    border: 2px solid #ddd;
-    background-color: #fff;
-    color: #4e3f34;
-    padding: 0;
-    margin: 0 -1px;
-  } */
-
-	/* .owl-theme .owl-nav [class*="owl-"].owl-prev {
-    border-radius: 17px 0 0 17px;
-    -moz-border-radius: 17px 0 0 17px;
-    -webkit-border-radius: 17px 0 0 17px;
-  } */
-
-	/* .owl-theme .owl-nav [class*="owl-"].owl-prev:before {
-    content: '\e92f';
-    display: inline-block;
-    font-family: 'icomoon' !important;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    font-size: 14px;
-  } */
-
 	.owl-theme .owl-nav [class*='owl-']:before {
 		font-size: 19px;
 		line-height: 29px;
 	}
-
-	/* .owl-theme .owl-nav [class*="owl-"]:hover {
-    background: #869791;
-    color: #4e3f34;
-    text-decoration: none;
-    background-color: #4e3f34;
-    border-color: #4e3f34;
-  } */
 
 	.owl-carousel .owl-nav .owl-next {
 		cursor: pointer;
@@ -427,26 +355,6 @@ html[lang='ar'] .info-post {
 		user-select: none;
 	}
 
-	/* .owl-theme .owl-nav [class*="owl-"].owl-next {
-    border-radius: 0 17px 17px 0;
-    -moz-border-radius: 0 17px 17px 0;
-    -webkit-border-radius: 0 17px 17px 0;
-  } */
-
-	/* .owl-theme .owl-nav [class*="owl-"].owl-next:before {
-    content: '\e930';
-    display: inline-block;
-    font-family: 'icomoon' !important;
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    font-size: 14px;
-  } */
 	.owl-stage .owl-item {
 		margin-bottom: 20px;
 	}
@@ -548,7 +456,6 @@ html[lang='ar'] .info-post {
 	}
 }
 
-/* These were inline style tags. Uses id+class to override almost everything */
 #style-MG8jI.style-MG8jI {
 	display: flex;
 	justify-content: space-around;

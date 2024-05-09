@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-import './register.css'; // Assuming you have a CSS file named Register.css
+import './register.css';
 
 function Register() {
 	const [formData, setFormData] = useState({

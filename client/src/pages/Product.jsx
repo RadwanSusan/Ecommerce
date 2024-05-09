@@ -1,3 +1,4 @@
+import React from 'react';
 import { Add, Remove } from '@material-ui/icons';
 import styled from 'styled-components';
 import Announcement from '../components/Announcement';
@@ -8,8 +9,8 @@ import { mobile } from '../responsive';
 import FooterNew from '../components/FooterNew';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState, useCallback, useContext } from 'react';
-import { publicRequest, userRequest } from '../requestMethods';
-import { addProduct, getAllProduct } from '../redux/cartRedux';
+import { publicRequest } from '../requestMethods';
+import { addProduct } from '../redux/cartRedux';
 import { useDispatch, useSelector } from 'react-redux';
 import swal from 'sweetalert';
 import { selectCurrentUserId } from '../redux/userRedux';
@@ -95,8 +96,8 @@ const FilterColor = styled.div`
 	${(props) =>
 		props.language === 'ar' &&
 		`
-    margin-right: 10px; /* margin for RTL */
-    margin-left: 0; /* reset default margin for RTL */
+    margin-right: 10px;
+    margin-left: 0;
   `}
 `;
 const FilterSize = styled.select`
@@ -180,27 +181,6 @@ const Product = () => {
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, []);
-	// useEffect(() => {
-	// 	const getProduct = async () => {
-	// 		try {
-	// 			let res = await publicRequest.get('/products/find/' + id);
-	// 			if (res.data == null) {
-	// 				res = await publicRequest.get('/offer/find/' + id);
-	// 			}
-	// 			setProduct(res.data);
-	// 			const colors = Array.from(
-	// 				new Set(res.data.variants.flatMap((variant) => variant.color)),
-	// 			);
-	// 			setAvailableColors(colors);
-	// 			const sizes = Array.from(
-	// 				new Set(res.data.variants.flatMap((variant) => variant.size)),
-	// 			);
-	// 			setAvailableSizes(sizes);
-	// 			setImageSrc(res.data.variants[0].img);
-	// 		} catch {}
-	// 	};
-	// 	getProduct();
-	// }, [id]);
 
 	useEffect(() => {
 		const getProduct = async () => {
@@ -219,8 +199,12 @@ const Product = () => {
 				);
 				setAvailableSizes(sizes);
 				setImageSrc(res.data.variants[0].img);
-
-				// Fetch the supplier information of the product
+				setSelectedVariant(
+					res.data.variants[0].size == '' ||
+						res.data.variants[0].color == ''
+						? res.data.variants[0]
+						: res.data.variants[1],
+				);
 				const supplierRes = await publicRequest.get(
 					`/suppliers/${res.data.supplier}`,
 				);
@@ -237,33 +221,10 @@ const Product = () => {
 			e.target.style.outline = '3px solid #4e3f34';
 		}),
 	);
-	// const handleQuantity = (type) => {
-	// 	const cartProduct = mergedCart.find(
-	// 		(item) =>
-	// 			item._id === product._id &&
-	// 			item.selectedVariant._id === selectedVariant._id,
-	// 	);
-	// 	const cartQuantity = cartProduct ? cartProduct.quantity : 0;
-	// 	const availableQuantity = selectedVariant
-	// 		? selectedVariant.quantity - cartQuantity
-	// 		: 0;
-	// 	if (type === 'dec') {
-	// 		quantity > 1 && setQuantity(quantity - 1);
-	// 	} else {
-	// 		if (quantity >= availableQuantity) {
-	// 			swal(
-	// 				'Info',
-	// 				'You have exceeded the number of available products!',
-	// 				'info',
-	// 			);
-	// 		} else {
-	// 			setQuantity(quantity + 1);
-	// 		}
-	// 	}
-	// };
+
 	const handleQuantity = (type) => {
 		if (
-			productSupplier && // Check if productSupplier exists
+			productSupplier &&
 			(productSupplier.role === 'supplierType1' ||
 				productSupplier.role === 'supplierType2')
 		) {
@@ -274,7 +235,6 @@ const Product = () => {
 			const availableQuantity = selectedVariant
 				? selectedVariant.quantity - cartQuantity
 				: 0;
-
 			if (type === 'dec') {
 				quantity > 1 && setQuantity(quantity - 1);
 			} else {
@@ -298,7 +258,6 @@ const Product = () => {
 			const availableQuantity = selectedVariant
 				? selectedVariant.quantity - cartQuantity
 				: 0;
-
 			if (type === 'dec') {
 				quantity > 1 && setQuantity(quantity - 1);
 			} else {
@@ -327,69 +286,11 @@ const Product = () => {
 		}
 		return acc;
 	}, []);
-	let totalAvailableQuantity = selectedVariant ? selectedVariant.quantity : 0;
-	// const checkAvailability = useCallback(() => {
-	// 	if (selectedVariant && mergedCart) {
-	// 		const cartProduct = mergedCart.find((item) =>
-	// 			item.variants.find(
-	// 				(variant) => variant._id === selectedVariant._id,
-	// 			),
-	// 		);
-	// 		if (cartProduct) {
-	// 			cartProducts.products.map((item) => {
-	// 				if (
-	// 					item.selectedVariant._id === cartProduct.selectedVariant._id
-	// 				) {
-	// 					setavailableQuantityAfterUpdate(
-	// 						item.selectedVariant.quantity - item.quantity,
-	// 					);
-	// 				}
-	// 			});
-	// 		}
-	// 	}
-	// 	if (selectedVariant && mergedCart) {
-	// 		const updatedCart = mergedCart.map((item) => {
-	// 			const zaid = item.variants.find(
-	// 				(variant) => variant._id === selectedVariant._id,
-	// 			);
-	// 			if (zaid) {
-	// 				return {
-	// 					...item,
-	// 					variants: item.variants.map((variant) => {
-	// 						if (variant._id === selectedVariant._id) {
-	// 							const zaid2 =
-	// 								variant.quantity - availableQuantityAfterUpdate;
-	// 							totalAvailableQuantity = totalAvailableQuantity - zaid2;
-	// 							if (zaid2 <= 0) {
-	// 								setIsButtonDisabled(true);
-	// 							}
-	// 						} else {
-	// 							setIsButtonDisabled(false);
-	// 							return variant;
-	// 						}
-	// 					}),
-	// 				};
-	// 			}
-	// 		});
-	// 	}
-	// 	let availableQuantity;
-	// 	if (availableQuantityAfterUpdate > 0) {
-	// 		availableQuantity = availableQuantityAfterUpdate;
-	// 	} else {
-	// 		availableQuantity = totalAvailableQuantity;
-	// 	}
-	// 	setIsButtonDisabled(availableQuantity <= 0);
-	// }, [
-	// 	mergedCart,
-	// 	product._id,
-	// 	selectedVariant,
-	// 	quantity,
-	// 	availableQuantityAfterUpdate,
-	// ]);
+
 	const checkAvailability = useCallback(() => {
 		if (selectedVariant && mergedCart) {
 			if (
-				productSupplier && // Check if productSupplier exists
+				productSupplier &&
 				(productSupplier.role === 'supplierType1' ||
 					productSupplier.role === 'supplierType2')
 			) {
@@ -439,38 +340,7 @@ const Product = () => {
 			);
 		}
 	}, [selectedVariant, mergedCart, product._id]);
-	// const setColor2 = (color) => {
-	// 	const variants = product.variants.filter((variant) =>
-	// 		variant.color.includes(color),
-	// 	);
-	// 	const sizes = variants.flatMap((variant) => variant.size);
-	// 	setAvailableSizes(sizes);
-	// 	const newSelectedVariant = variants[0];
-	// 	setSelectedVariant(newSelectedVariant);
-	// 	setQuantity(1);
-	// 	setColor(color);
-	// 	const defaultSize = sizes[0];
-	// 	setSize(defaultSize);
-	// 	const selectedVariant = variants.find((variant) =>
-	// 		variant.size.includes(defaultSize),
-	// 	);
-	// 	const cartProduct = mergedCart.find(
-	// 		(item) =>
-	// 			item._id === product._id &&
-	// 			item.selectedVariant._id === newSelectedVariant._id,
-	// 	);
-	// 	if (cartProduct) {
-	// 		setavailableQuantityAfterUpdate(
-	// 			newSelectedVariant.quantity - cartProduct.quantity,
-	// 		);
-	// 	} else {
-	// 		setavailableQuantityAfterUpdate(
-	// 			newSelectedVariant ? newSelectedVariant.quantity : 0,
-	// 		);
-	// 	}
-	// 	setImageSrc(newSelectedVariant.img);
-	// 	checkAvailability();
-	// };
+
 	const setColor2 = (color) => {
 		if (
 			supplierInfo.role !== 'supplierType1' &&
@@ -513,22 +383,20 @@ const Product = () => {
 		const colors = [...new Set(variants.flatMap((variant) => variant.color))];
 		setAvailableColors(colors);
 		setSelectedVariant(variants[0]);
-		const newSelectedVariant = variants[0];
-		setSelectedVariant(newSelectedVariant);
 		setQuantity(1);
 		setSize(size);
 		const cartProduct = mergedCart.find(
 			(item) =>
 				item._id === product._id &&
-				item.selectedVariant._id === newSelectedVariant._id,
+				item.selectedVariant._id === variants[0]._id,
 		);
 		if (cartProduct) {
 			setavailableQuantityAfterUpdate(
-				newSelectedVariant.quantity - cartProduct.quantity,
+				variants[0].quantity - cartProduct.quantity,
 			);
 		} else {
 			setavailableQuantityAfterUpdate(
-				newSelectedVariant ? newSelectedVariant.quantity : 0,
+				variants[0] ? variants[0].quantity : 0,
 			);
 		}
 		checkAvailability();
@@ -574,24 +442,51 @@ const Product = () => {
 		}
 	};
 	const findSelectedVariant = () => {
-		if (
-			product &&
-			product.variants &&
-			availableSizes.length === 1 &&
-			availableColors.length === 1
-		) {
-			const selectedVariant2 = product.variants.find(
-				(variant) =>
-					variant.size.includes(availableSizes[0]) &&
-					variant.color.includes(availableColors[0]),
-			);
-			setSelectedVariant(selectedVariant2);
-		} else if (product && product.variants) {
-			const selectedVariant2 = product.variants.find(
-				(variant) =>
-					variant.size.includes(size) && variant.color.includes(color),
-			);
-			setSelectedVariant(selectedVariant2);
+		if (product && product.variants) {
+			if (availableSizes.length === 1 && availableColors.length === 1) {
+				const selectedVariant2 = product.variants.find(
+					(variant) =>
+						variant.size.includes(availableSizes[0]) &&
+						variant.color.includes(availableColors[0]),
+				);
+				if (selectedVariant2 && selectedVariant2.size !== '') {
+					setSelectedVariant(selectedVariant2);
+				} else {
+					const variantWithSize = product.variants.find(
+						(variant) => variant.size !== '',
+					);
+					if (variantWithSize) {
+						setSelectedVariant(variantWithSize);
+					} else {
+						setSelectedVariant(null);
+					}
+				}
+			} else {
+				const selectedVariant2 = product.variants.find(
+					(variant) =>
+						variant.size.includes(size) && variant.color.includes(color),
+				);
+				if (
+					selectedVariant2 &&
+					selectedVariant2.size !== '' &&
+					selectedVariant2.color !== '' &&
+					selectedVariant2.quantity !== null
+				) {
+					setSelectedVariant(selectedVariant2);
+				} else {
+					const variantWithSize = product.variants.find(
+						(variant) =>
+							variant.size !== '' &&
+							variant.color !== '' &&
+							variant.quantity !== null,
+					);
+					if (variantWithSize) {
+						setSelectedVariant(variantWithSize);
+					} else {
+						setSelectedVariant(null);
+					}
+				}
+			}
 		}
 	};
 	function formatNumberToArabic(number) {
@@ -652,40 +547,8 @@ const Product = () => {
 								: `$ ${formatPrice(product.price, language)}`}
 						</Price>
 					)}
-					{/* <FilterContainer>
-						<Filter language={language}>
-							<FilterTitle language={language}>
-								{dictionary.color}
-							</FilterTitle>
-							{availableColors.map((c) => (
-								<FilterColor
-									className='Color'
-									color={c}
-									key={c}
-									language={language}
-									onClick={() => setColor2(c)}
-								/>
-							))}
-						</Filter>
-						<Filter language={language}>
-							<FilterTitle language={language}>
-								{dictionary.size}
-							</FilterTitle>
-							<FilterSize
-								language={language}
-								onChange={(e) => setSize2(e.target.value)}>
-								{availableSizes.map((s) => (
-									<FilterSizeOption
-										key={s}
-										value={s}>
-										{language === 'ar' ? dictionary.sizes[s] || s : s}
-									</FilterSizeOption>
-								))}
-							</FilterSize>
-						</Filter>
-					</FilterContainer> */}
 					<FilterContainer>
-						{productSupplier && // Check if productSupplier exists
+						{productSupplier &&
 							productSupplier.role !== 'supplierType1' &&
 							productSupplier.role !== 'supplierType2' && (
 								<Filter language={language}>
@@ -710,13 +573,18 @@ const Product = () => {
 							<FilterSize
 								language={language}
 								onChange={(e) => setSize2(e.target.value)}>
-								{availableSizes.map((s) => (
-									<FilterSizeOption
-										key={s}
-										value={s}>
-										{language === 'ar' ? dictionary.sizes[s] || s : s}
-									</FilterSizeOption>
-								))}
+								{availableSizes.map(
+									(s) =>
+										s && (
+											<FilterSizeOption
+												key={s}
+												value={s}>
+												{language === 'ar'
+													? dictionary.sizes[s] || s
+													: s}
+											</FilterSizeOption>
+										),
+								)}
 							</FilterSize>
 						</Filter>
 					</FilterContainer>
