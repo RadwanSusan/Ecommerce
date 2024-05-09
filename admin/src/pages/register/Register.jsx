@@ -20,7 +20,7 @@ function Register() {
 		e.preventDefault();
 		try {
 			await axios.post(
-				'http://194.195.86.67:4000/api/auth/registerAdmin',
+				'http://192.168.4.142:4000/api/auth/registerAdmin',
 				formData,
 			);
 			history.push('/login', {

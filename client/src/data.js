@@ -1,7 +1,10 @@
+import image1 from '../src/Media/Img/Vector.png';
+import image2 from '../src/Media/Img/slide3.jpg';
+
 export const sliderItems = [
 	{
 		id: 1,
-		img: 'https://images.pexels.com/photos/1462637/pexels-photo-1462637.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+		img: image2,
 		title: 'SUMMER SALE',
 		desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
 		bg: 'f5fafd',
@@ -9,14 +12,14 @@ export const sliderItems = [
 
 	{
 		id: 2,
-		img: 'https://i.ibb.co/DG69bQ4/2.png',
+		img: 'https://emarche.net/wp-content/uploads/2017/02/Home-Slider-Image_2.png',
 		title: 'AUTUMN COLLECTION',
 		desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
 		bg: 'fcf1ed',
 	},
 	{
 		id: 3,
-		img: 'https://i.ibb.co/cXFnLLV/3.png',
+		img: image1,
 		title: 'LOUNGEWEAR LOVE',
 		desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
 		bg: 'fbf0f4',

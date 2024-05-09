@@ -48,11 +48,12 @@ export const login = async (dispatch, user) => {
 	dispatch(loginStart());
 	try {
 		const res = await publicRequest.post('/auth/login', user);
+		// Redirect based on role
 		if (res.data.role === 'superAdmin') {
 			dispatch(loginSuccess(res.data));
 			setTimeout(() => {
 				window.location.href = '/';
-			});
+			}, 1000); // Redirect super admin to home/dashboard after 1 second
 		} else if (
 			res.data.role === 'supplierType1' ||
 			res.data.role === 'supplierType2'
@@ -60,13 +61,13 @@ export const login = async (dispatch, user) => {
 			localStorage.setItem('supplierId', res.data._id);
 			dispatch(loginSuccess(res.data));
 			setTimeout(() => {
-				window.location.href = '/';
-			});
+				window.location.href = '/products';
+			}, 1000); // Redirect supplier type 1 to products after 1 second
 		} else {
-			setTimeout(() => {
-				window.location.href = '/';
-			});
 			dispatch(loginFailure());
+			setTimeout(() => {
+				window.location.href = '/login';
+			}, 1000); // Redirect unauthorized/logged-out users to login after 1 second
 		}
 	} catch (err) {
 		dispatch(loginFailure());
@@ -74,8 +75,10 @@ export const login = async (dispatch, user) => {
 };
 export const logoutUser = () => {
 	localStorage.removeItem('persist:root');
+	localStorage.removeItem('supplierId');
 	window.location.href = '/login';
 };
+
 export const getProducts = async (dispatch, supplierId) => {
 	dispatch(getProductStart());
 	try {

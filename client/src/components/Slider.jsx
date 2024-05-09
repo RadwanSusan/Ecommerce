@@ -22,8 +22,8 @@ const Wrapper = styled.div`
 
 const Slide = styled.div`
 	display: flex;
+	transition: opacity 0.5s ease-in-out;
 `;
-
 const ImgContainer = styled.div`
 	height: 100%;
 	flex: 1;
@@ -77,6 +77,7 @@ const CustomSlider = () => {
 		pauseOnHover: false,
 		pauseOnFocus: false,
 		initialSlide: 0,
+		fade: true, // Add this line to enable fade animation
 		responsive: [
 			{
 				breakpoint: 1400,

@@ -138,7 +138,7 @@ router.post('/forgot-password', async (req, res) => {
 				expiresIn: '3d',
 			},
 		);
-		const link = `http://194.195.86.67:4000/api/auth/reset-password/${oldUser._id}/${token}`;
+		const link = `http://192.168.4.142:4000/api/auth/reset-password/${oldUser._id}/${token}`;
 		const transporter = nodemailer.createTransport({
 			host: 'smtp.office365.com',
 			port: 587,

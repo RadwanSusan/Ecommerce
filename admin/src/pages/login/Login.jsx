@@ -16,12 +16,13 @@ const Login = () => {
 		e.preventDefault();
 		if (!email || !password) {
 			swal('Please fill in all fields');
+		} else {
+			login(dispatch, { email, password });
 		}
-		login(dispatch, { email, password });
 	};
 	useEffect(() => {
 		if (error) {
-			swal('Invalid Credentials Try Again!');
+			swal('check your email and password!');
 			setEmail('');
 			setPassword('');
 			document.getElementById('email').value = '';
@@ -49,9 +50,7 @@ const Login = () => {
 								<div
 									className='tab-pane2 active'
 									id='login'>
-									<h5 className='welcom-admin'>
-										WELCOME TOoooooo PMEADMIN! 👋🏻
-									</h5>
+									<h5 class='welcom-admin'>WELCOME TO PMEADMIN! 👋🏻</h5>
 									<div className='form-signin'>
 										<input
 											type='text'
