@@ -1,5 +1,5 @@
-import image1 from '../src/Media/Img/Vector.png';
-import image2 from '../src/Media/Img/slide3.jpg';
+import image1 from '../src/Media/Img/Body.png';
+import image2 from '../src/Media/Img/Honey.png';
 
 export const sliderItems = [
 	{
