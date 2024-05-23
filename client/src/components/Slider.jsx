@@ -44,12 +44,12 @@ const InfoContainer = styled.div`
 `;
 
 const Title = styled.h1`
-	font-size: 70px;
+	font-size: 60px;
 `;
 
 const Desc = styled.p`
 	margin: 50px 0px;
-	font-size: 20px;
+	font-size: 17px;
 	font-weight: 500;
 	letter-spacing: 3px;
 `;
@@ -58,7 +58,6 @@ const Button = styled.button`
 	padding: 10px;
 	font-size: 20px;
 	background-color: transparent;
-	cursor: pointer;
 `;
 
 const CustomSlider = () => {
@@ -112,7 +111,9 @@ const CustomSlider = () => {
 								<InfoContainer>
 									<Title>{item.title}</Title>
 									<Desc>{item.desc}</Desc>
-									<Button>{isArabic ? 'مشاهدة' : 'Watch Now'}</Button>
+									<Button className='btn10'>
+										{isArabic ? 'مشاهدة' : 'Watch Now'}
+									</Button>
 								</InfoContainer>
 							</Wrapper>
 						</Slide>
