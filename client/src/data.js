@@ -2,13 +2,13 @@ import image1 from '../src/Media/Img/Body.png';
 import image2 from '../src/Media/Img/Honey.png';
 
 export const sliderItems = [
-	{
-		id: 1,
-		img: image2,
-		title: 'SUMMER SALE',
-		desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
-		bg: 'f5fafd',
-	},
+	// {
+	// 	id: 1,
+	// 	img: image2,
+	// 	title: 'SUMMER SALE',
+	// 	desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
+	// 	bg: 'f5fafd',
+	// },
 
 	{
 		id: 2,
@@ -27,13 +27,13 @@ export const sliderItems = [
 ];
 
 export const sliderItemsArabic = [
-	{
-		id: 1,
-		img: image2,
-		title: 'تخفيضات الصيف',
-		desc: 'لا تتنازل عن الأسلوب! احصل على خصم ثابت بنسبة 30% للوافدين الجدد',
-		bg: 'fbf0f4',
-	},
+	// {
+	// 	id: 1,
+	// 	img: image2,
+	// 	title: 'تخفيضات الصيف',
+	// 	desc: 'لا تتنازل عن الأسلوب! احصل على خصم ثابت بنسبة 30% للوافدين الجدد',
+	// 	bg: 'fbf0f4',
+	// },
 	{
 		id: 2,
 		img: 'https://emarche.net/wp-content/uploads/2017/02/Home-Slider-Image_2.png',

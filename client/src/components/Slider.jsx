@@ -17,6 +17,7 @@ const Container = styled.div`
 const Wrapper = styled.div`
 	height: 100vh;
 	display: flex;
+	align-items: center;
 	width: 100%;
 `;
 
@@ -32,19 +33,28 @@ const ImgContainer = styled.div`
 
 const Image = styled.img`
 	height: 80%;
-	width: 100%;
-	background-size: cover;
-`;
+	width: 80%;
+	object-fit: contain;
 
+	@media (max-width: 768px) {
+		height: 60%;
+	}
+
+	@media (max-width: 480px) {
+		height: 40%;
+	}
+`;
 const InfoContainer = styled.div`
 	flex: 1;
 	padding: 50px;
 	backgroundcolor: #1d1308;
-	margin-top: 200px;
 `;
 
 const Title = styled.h1`
-	font-size: 60px;
+	font-size: 50px;
+	@media (max-width: 900px) {
+		font-size: 30px;
+	}
 `;
 
 const Desc = styled.p`
@@ -78,7 +88,7 @@ const CustomSlider = () => {
 		initialSlide: 0,
 		slidesToShow: 1,
 		pauseOnDotsHover: true,
-		dots: true,
+		// dots: true,
 		dotsClass: 'slick-dots',
 		cssEase: 'linear',
 		draggable: true,
@@ -106,7 +116,10 @@ const CustomSlider = () => {
 							key={item.id}>
 							<Wrapper>
 								<ImgContainer className='slideImag'>
-									<Image src={item.img} />
+									<Image
+										className='slideImag2'
+										src={item.img}
+									/>
 								</ImgContainer>
 								<InfoContainer>
 									<Title>{item.title}</Title>
