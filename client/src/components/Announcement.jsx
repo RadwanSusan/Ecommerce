@@ -10,7 +10,10 @@ import { DarkModeContext } from '../context/darkModeContext';
 import { LanguageContext } from './LanguageContext';
 import './announcement.css';
 const Container = styled.div`
-	height: 60px;
+	height: 45px;
+	margin-top: 5px;
+	padding-left: 20px;
+	padding-right: 20px;
 	${mobile({ height: '50px' })}
 	user-select: none;
 	@media screen and (max-width: 935px) {
@@ -19,7 +22,6 @@ const Container = styled.div`
 	direction: ${({ language }) => (language === 'ar' ? 'rtl' : 'ltr')};
 `;
 const Wrapper = styled.div`
-	padding: 10px 20px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -38,9 +40,9 @@ const Right = styled.div`
 	${mobile({ flex: 2, justifyContent: 'center' })}
 `;
 const MenuItem = styled.div`
-	font-size: 14px;
+	font-size: 13px;
 	cursor: pointer;
-	margin-left: 25px;
+	background-color: transparent;
 	${mobile({ fontSize: '12px', marginLeft: '10px' })}
 `;
 const Navbar = React.memo(
@@ -55,8 +57,10 @@ const Navbar = React.memo(
 					</MenuItem>
 					{!isGuest && (
 						<MenuItem>
-							<button onClick={handleLogout}>
-								{language === 'en' ? 'LOG OUT' : 'تسجيل الخروج'}
+							<button
+								className='logout-nav'
+								onClick={handleLogout}>
+								{language === 'en' ? 'Logout' : 'تسجيل الخروج'}
 							</button>
 						</MenuItem>
 					)}

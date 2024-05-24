@@ -1,54 +1,48 @@
-import React, { useContext } from 'react';
-import { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './navbar-bottom.css';
-import { RiArrowDropDownLine } from 'react-icons/ri';
+
 import { Link } from 'react-router-dom';
 import { LanguageContext } from '../components/LanguageContext';
+import { FaShoppingCart, FaSearch, FaBars } from 'react-icons/fa'; // Add FaBars import
+
 const Navbar = () => {
 	const [isActive, setIsActive] = useState(false);
-	const { dictionary } = useContext(LanguageContext);
-	const { language } = useContext(LanguageContext);
+	const { dictionary, language } = useContext(LanguageContext);
 
-	const handleClick = () => {
-		setIsActive((current) => !current);
-	};
+	const toggleMenu = () => setIsActive(!isActive);
+
 	return (
-		<div className='header-bottom ontop-element snipcss-7ocdx'>
+		<div className='header-bottom ontop-element'>
 			<div className='container'>
 				<div className='desktop-menu'>
 					<div className='vertical-block'>
 						<div className='vertical-menu'>
 							<div
 								className='vertical-menu-block'
-								onClick={handleClick}
-							>
+								onClick={toggleMenu}>
 								<div className='block-title-menu'>
-									{dictionary.navbar['All Categories']}{' '}
-									<RiArrowDropDownLine />
+									{dictionary.navbar['All Categories']} <FaBars />
 								</div>
 								<div
 									className='vertical-menu-content'
-									style={{
-										display: isActive ? 'block' : '',
-									}}
-								>
+									style={{ display: isActive ? 'block' : 'none' }}>
 									<nav className='sm_megamenu_wrapper_vertical_menu sambar'>
 										<div className='sambar-inner'>
-											<Link to={`/products/women`}>
+											<Link to='/products/women'>
 												<div className='more-w'>
 													<span className='more-view line'>
 														{dictionary.navbar['Women']}
 													</span>
 												</div>
 											</Link>
-											<Link to={`/products/coat`}>
+											<Link to='/products/coat'>
 												<div className='more-w'>
 													<span className='more-view line'>
 														{dictionary.navbar['Coats']}
 													</span>
 												</div>
 											</Link>
-											<Link to={`/products/jeans`}>
+											<Link to='/products/jeans'>
 												<div className='more-w'>
 													<span className='more-view'>
 														{dictionary.navbar['Jeans']}
@@ -73,81 +67,30 @@ const Navbar = () => {
 														? 'sm_megamenu_menuAr'
 														: ''
 												}`}
-												data-jsapi='on'
-											>
-												<li className='home-item other-toggle sm_megamenu_lv1 sm_megamenu_drop'>
-													<a
-														className='sm_megamenu_head sm_megamenu_drop'
-														href=''
-													>
-														<span className='sm_megamenu_icon sm_megamenu_nodesc'>
-															<span className='sm_megamenu_title'>
-																{dictionary.navbar['Home']}
+												data-jsapi='on'>
+												{[
+													'Home',
+													'Shop',
+													'Blog',
+													'About Us',
+													'Contact Us',
+												].map((item, index) => (
+													<li
+														key={item}
+														className={`other-toggle sm_megamenu_lv1 sm_megamenu_drop ${
+															index === 0 ? 'home-item' : ''
+														}`}>
+														<a
+															className='sm_megamenu_head sm_megamenu_drop'
+															href='#'>
+															<span className='sm_megamenu_icon sm_megamenu_nodesc'>
+																<span className='sm_megamenu_title'>
+																	{dictionary.navbar[item]}
+																</span>
 															</span>
-														</span>
-													</a>
-												</li>
-												<span className='btn-submobile'></span>
-												<li className='other-toggle  sm_megamenu_lv1 sm_megamenu_drop parent  '>
-													<a
-														className='sm_megamenu_head sm_megamenu_drop '
-														href=''
-													>
-														<span className='icon_items'>
-															<img
-																src='http://magento2.magentech.com/themes/sm_venuse/pub/media/wysiwyg/megamenu/icons/sale.png'
-																alt='icon items'
-																width='1'
-																height='1'
-															/>
-														</span>
-														<span className='sm_megamenu_icon sm_megamenu_nodesc'>
-															<span className='sm_megamenu_title'>
-																{dictionary.navbar['Shop']}
-															</span>
-														</span>
-													</a>
-												</li>
-												<li className='other-toggle  sm_megamenu_lv1 sm_megamenu_drop parent  '>
-													<a
-														className='sm_megamenu_head sm_megamenu_drop '
-														href=''
-													>
-														<span className='sm_megamenu_icon sm_megamenu_nodesc'>
-															<span className='sm_megamenu_title'>
-																{dictionary.navbar['Blog']}
-															</span>
-														</span>
-													</a>
-												</li>
-												<li className='other-toggle  sm_megamenu_lv1 sm_megamenu_drop parent  '>
-													<a
-														className='sm_megamenu_head sm_megamenu_drop '
-														href=''
-													>
-														<span className='sm_megamenu_icon sm_megamenu_nodesc'>
-															<span className='sm_megamenu_title'>
-																{dictionary.navbar['About Us']}
-															</span>
-														</span>
-													</a>
-												</li>
-												<li className='other-toggle  sm_megamenu_lv1 sm_megamenu_drop parent  '>
-													<a
-														className='sm_megamenu_head sm_megamenu_drop '
-														href=''
-													>
-														<span className='sm_megamenu_icon sm_megamenu_nodesc'>
-															<span className='sm_megamenu_title'>
-																{
-																	dictionary.navbar[
-																		'Contact Us'
-																	]
-																}
-															</span>
-														</span>
-													</a>
-												</li>
+														</a>
+													</li>
+												))}
 											</ul>
 										</div>
 									</div>
@@ -155,7 +98,7 @@ const Navbar = () => {
 							</div>
 						</div>
 						<div className='promotion-block'>
-							<Link to={`/offer/new-offers`}>
+							<Link to='/offer/new-offers'>
 								{dictionary.navbar['Black Friday!']}
 							</Link>
 						</div>
@@ -165,4 +108,5 @@ const Navbar = () => {
 		</div>
 	);
 };
+
 export default Navbar;

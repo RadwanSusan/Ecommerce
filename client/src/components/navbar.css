@@ -1,277 +1,3 @@
-/* * {
-	box-sizing: border-box;
-}
-
-body {
-	margin: 0;
-	padding: 0;
-	font-family: 'Open Sans', sans-serif;
-	font-size: 14px;
-	font-weight: 400;
-	line-height: 1.5;
-	color: #666;
-	background-color: #fff;
-	text-align: left;
-	overflow-x: hidden;
-}
-
-.header-middle {
-	padding: 30px 0 0;
-	background-color: #ff6600;
-	user-select: none;
-}
-
-@media only screen and (max-width: 935px) {
-	.header-middle {
-		display: none;
-	}
-}
-
-.container {
-	width: 100%;
-	max-width: 1650px;
-	padding: 0 15px;
-	margin: 0 auto;
-}
-.middle-content {
-	display: flex;
-	align-items: center;
-}
-
-.middle-content::after {
-	content: '';
-	display: block;
-	clear: both;
-}
-
-.logo-container {
-	float: left;
-	width: 250px;
-}
-
-.right-container {
-	float: left;
-	width: calc(100% - 250px);
-	padding-left: 30px;
-	margin-top: 13px;
-}
-
-.logo-content {
-	display: inline-block;
-	margin: 4px 0 0;
-	vertical-align: top;
-}
-
-.right-content {
-	display: table;
-	width: 100%;
-}
-
-.logo {
-	float: left;
-	max-width: 50%;
-	position: relative;
-	z-index: 5;
-	padding: 0;
-	margin-top: -20px;
-}
-
-.logo img {
-	display: block;
-	height: auto;
-}
-
-.block-search {
-	display: table-cell;
-	width: 100%;
-	vertical-align: top;
-	margin-bottom: 0;
-	padding-right: 70px;
-	padding-left: 0;
-}
-
-.minicart-header {
-	display: table-cell;
-	vertical-align: top;
-}
-
-.minicart-wrapper {
-	display: inline-block;
-	position: relative;
-	margin: 0;
-	padding: 0;
-}
-
-.block-search .form.minisearch {
-	display: table;
-	width: 100%;
-}
-
-.minicart-wrapper .action.showcart {
-	display: inline-block;
-	height: 44px;
-	padding: 0 20px 0 79px;
-	background-color: #fff;
-	border-radius: 4px;
-	cursor: pointer;
-	text-decoration: none;
-	white-space: nowrap;
-	position: relative;
-}
-
-.minicart-wrapper .action.showcart svg {
-	display: block;
-	width: 20px;
-	height: 20px;
-	line-height: 44px;
-	position: absolute;
-	left: 12px;
-	top: 12px;
-	color: #4e3f34;
-}
-
-.block-search .form.minisearch .field.search {
-	display: table-cell;
-	width: 100%;
-	vertical-align: top;
-	background-color: #fff;
-	border-right: none;
-	border-radius: 4px 0 0 4px;
-}
-
-.block-search .form.minisearch .actions {
-	display: table-cell;
-	vertical-align: top;
-}
-
-.minicart-wrapper .action.showcart .text {
-	display: inline-block;
-	vertical-align: middle;
-	width: auto;
-	height: auto;
-	white-space: nowrap;
-	margin: 0;
-	padding: 0;
-	color: #4e3f34;
-	line-height: 44px;
-}
-
-.minicart-wrapper .action.showcart .counter.qty {
-	display: block;
-	position: absolute;
-	top: 12px;
-	left: 49px;
-	min-width: 20px;
-	height: 20px;
-	line-height: 20px;
-	background-color: #ff4b58;
-	color: #fff;
-	text-align: center;
-	padding: 0;
-	margin: 0;
-	font-size: 85.714%;
-	border-radius: 10px;
-	z-index: 20;
-}
-
-.minicart-wrapper .action.showcart .price-minicart {
-	display: inline-block;
-	vertical-align: middle;
-	line-height: 44px;
-	margin: 0 5px;
-	color: #ff2d37;
-}
-
-.minicart-wrapper .block-minicart {
-	display: none;
-	margin: 0;
-	padding: 25px 23px;
-	list-style: none;
-	background: #fff;
-	border: none;
-	margin-top: 4px;
-	min-width: 100%;
-	width: 100%;
-	box-sizing: border-box;
-	position: static;
-	top: 100%;
-	right: 0;
-	box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-	z-index: 101;
-}
-
-.block-search .control {
-	clear: both;
-	margin: 0;
-	padding: 0;
-}
-
-.block-search .form.minisearch .field.search .control {
-	margin: 0;
-	padding: 0;
-	border: none;
-	position: relative;
-}
-
-.block-search .form.minisearch .actions button {
-	position: static;
-	margin: 0;
-	padding: 0;
-	height: 44px;
-	width: 64px;
-	text-align: center;
-	line-height: 44px;
-	border-radius: 0 4px 4px 0;
-	border: none;
-	opacity: 1;
-	background-color: #4e3f34;
-	color: #fff;
-}
-
-.block-search .form.minisearch .actions button svg {
-	display: inline-block;
-	margin-top: 13px;
-	font-size: 19px;
-	color: #fff;
-}
-
-.block-search.search-pro .form.minisearch .field.search .searchbox-cat {
-	position: absolute;
-	left: 0;
-	top: 0;
-	height: 44px;
-	width: 170px;
-	padding-left: 20px;
-	background-color: transparent;
-	border: none;
-	color: #222;
-}
-
-.block-search input {
-	font-size: 16px;
-	margin: 0;
-	height: 36px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	position: static;
-}
-
-.block-search .form.minisearch .field.search .input-text {
-	background: none;
-	position: static;
-	border: none;
-	margin: 0;
-	padding: 0 10px 0 20px;
-	width: 100%;
-	height: 44px;
-	border-radius: 0;
-}
-
-.block-search.search-pro .form.minisearch .field.search .input-text {
-	margin-left: 180px;
-	border-left: 1px solid #ddd;
-	width: calc(100% - 180px);
-} */
 * {
 	box-sizing: border-box;
 }
@@ -290,7 +16,7 @@ body {
 }
 
 .header-middle {
-	padding: 30px 0 0;
+	padding: 25px 0 0;
 	background-color: #ff6600;
 	user-select: none;
 }
@@ -311,6 +37,7 @@ body {
 .middle-content {
 	display: flex;
 	align-items: center;
+	padding-bottom: 10px;
 }
 
 .middle-content::after {
@@ -432,24 +159,6 @@ body {
 	line-height: 44px;
 }
 
-.minicart-wrapper .action.showcart .counter.qty {
-	display: block;
-	position: absolute;
-	top: 12px;
-	left: 49px;
-	min-width: 20px;
-	height: 20px;
-	line-height: 20px;
-	background-color: #ff4b58;
-	color: #fff;
-	text-align: center;
-	padding: 0;
-	margin: 0;
-	font-size: 85.714%;
-	border-radius: 10px;
-	z-index: 20;
-}
-
 .minicart-wrapper .action.showcart .price-minicart {
 	display: inline-block;
 	vertical-align: middle;
@@ -521,6 +230,7 @@ body {
 	background-color: transparent;
 	border: none;
 	color: #222;
+	font-weight: 602;
 }
 
 .block-search input {
@@ -547,4 +257,33 @@ body {
 	margin-left: 180px;
 	border-left: 1px solid #ddd;
 	width: calc(100% - 180px);
+}
+
+.minicart-wrapper .action.showcart .counter.qty {
+	display: block;
+	position: absolute;
+	top: 12px;
+	left: 49px;
+	min-width: 20px;
+	height: 20px;
+	line-height: 20px;
+	background-color: #ff4b58;
+	color: #fff;
+	text-align: center;
+	padding: 0;
+	margin: 0;
+	font-size: 85.714%;
+	border-radius: 10px;
+	z-index: 20;
+}
+
+.minicart-wrapper .action.showcart .counter-line {
+	position: absolute;
+	top: 50%;
+	left: 58px;
+	width: 1px;
+	height: 43px;
+	background-color: #ddd;
+	transform: translateY(-50%);
+	z-index: 0;
 }
