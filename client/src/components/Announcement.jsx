@@ -50,8 +50,8 @@ const Navbar = React.memo(
 				<Left>
 					<MenuItem>
 						{language === 'en'
-							? 'Welcome to Venuse store'
-							: 'مرحبا بك في متجر فينوس'}
+							? 'Welcome to Emarcha store'
+							: 'مرحبا بك في متجر Emarcha'}
 					</MenuItem>
 					{!isGuest && (
 						<MenuItem>
