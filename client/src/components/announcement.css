@@ -11,6 +11,9 @@
 	border: none;
 	color: #333;
 }
+.registernew {
+	margin: 20px;
+}
 
 .languageSelect option {
 	background: #f9f9f9;

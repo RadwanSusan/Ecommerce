@@ -69,7 +69,7 @@ const Navbar = React.memo(
 					{isGuest && (
 						<>
 							<MenuItem>
-								<Link to='/Register'>
+								<Link className='registernew' to='/Register'>
 									{language === 'en'
 										? 'REGISTER             '
 										: 'انشاء حساب'}
