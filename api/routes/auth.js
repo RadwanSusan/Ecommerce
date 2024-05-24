@@ -1,31 +1,23 @@
 const router = require('express').Router();
 const User = require('../models/User');
 const CryptoJS = require('crypto-js');
-const { response } = require('express');
 const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
 const cron = require('node-cron');
 const UserAdmin = require('../models/UserAdmin');
-
 const nodemailer = require('nodemailer');
-const user = require('./user');
-
 router.post('/registerAdmin', async (req, res) => {
 	const { username, email, password, role } = req.body;
-
 	try {
 		const hashedPassword = CryptoJS.AES.encrypt(
 			password,
 			process.env.PASS_SEC,
 		).toString();
-
 		const newUser = new UserAdmin({
 			username,
 			email,
 			password: hashedPassword,
 			role,
 		});
-
 		const savedUser = await newUser.save();
 		res.status(201).json(savedUser);
 	} catch (error) {
@@ -37,14 +29,12 @@ router.post('/registerAdmin', async (req, res) => {
 		}
 	}
 });
-
 router.post('/register', async (req, res) => {
 	const { username, email, phoneNumber, isAdmin, password } = req.body;
 	const hashedPassword = CryptoJS.AES.encrypt(
 		password,
 		process.env.PASS_SEC,
 	).toString();
-
 	const newUser = new User({
 		username,
 		email,
@@ -54,7 +44,6 @@ router.post('/register', async (req, res) => {
 		img: req.body.img,
 		password: hashedPassword,
 	});
-
 	try {
 		const savedUser = await newUser.save();
 		res.status(201).json({
@@ -64,7 +53,6 @@ router.post('/register', async (req, res) => {
 		res.status(500).json(error);
 	}
 });
-
 router.get('/verifyEmail', async (req, res) => {
 	const { token } = req.query;
 	const user = await User.findOne({
@@ -82,7 +70,6 @@ router.get('/verifyEmail', async (req, res) => {
 	await user.save();
 	res.status(200).json({ message: 'Email verified successfully!' });
 });
-
 cron.schedule('* * * * *', async () => {
 	const cutoff = Date.now() - 300000;
 	const unverifiedUsers = await User.find({
@@ -93,7 +80,6 @@ cron.schedule('* * * * *', async () => {
 		await User.deleteOne({ _id: user._id });
 	}
 });
-
 router.post('/login', async (req, res) => {
 	try {
 		let user = await UserAdmin.findOne({ email: req.body.email });
@@ -122,7 +108,6 @@ router.post('/login', async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-
 router.post('/forgot-password', async (req, res) => {
 	try {
 		const { email } = req.body;
@@ -144,15 +129,15 @@ router.post('/forgot-password', async (req, res) => {
 			port: 587,
 			secure: false,
 			auth: {
-				user: 'zaidaltamari50@outlook.com',
-				pass: 'ebulddtefcgrgugw',
+				user: 'danali444@outlook.com',
+				pass: 'ozutptxpikkndxec',
 				tls: {
 					rejectUnauthorized: false,
 				},
 			},
 		});
 		const mailOptions = {
-			from: 'zaidaltamari50@outlook.com',
+			from: 'danali444@outlook.com',
 			to: oldUser.email,
 			subject: 'Password Reset Link',
 			text: `Please click on the following link to reset your password: ${link}`,
@@ -160,7 +145,6 @@ router.post('/forgot-password', async (req, res) => {
 		await transporter.sendMail(mailOptions);
 		return res.json({ status: 'Email Sent' });
 	} catch (error) {
-		console.error(error);
 		return res
 			.status(500)
 			.json({ status: 'There was a problem sending the email!' });
@@ -169,37 +153,31 @@ router.post('/forgot-password', async (req, res) => {
 router.post('/change-password/:id', async (req, res) => {
 	const { id } = req.params;
 	const { currentPassword, newPassword } = req.body;
-
 	try {
 		const user = await User.findById(id);
 		if (!user) {
 			return res.status(404).json({ message: 'User not found' });
 		}
-
 		const hashedPassword = CryptoJS.AES.decrypt(
 			user.password,
 			process.env.PASS_SEC,
 		);
 		const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
-
 		if (originalPassword !== currentPassword) {
 			return res.status(401).json({ message: 'Invalid current password' });
 		}
-
 		const encryptedPassword = CryptoJS.AES.encrypt(
 			newPassword,
 			process.env.PASS_SEC,
 		).toString();
 		user.password = encryptedPassword;
 		await user.save();
-
 		res.status(200).json({ message: 'Password changed successfully' });
 	} catch (error) {
 		console.error('Error changing password:', error);
 		res.status(500).json({ message: 'Internal server error' });
 	}
 });
-
 router.get('/reset-password/:id/:token', async (req, res) => {
 	const { id, token } = req.params;
 	const oldUser = await User.findOne({ _id: id });
@@ -217,7 +195,6 @@ router.get('/reset-password/:id/:token', async (req, res) => {
 		res.send(e);
 	}
 });
-
 router.post('/reset-password/:id/:token', async (req, res) => {
 	const { id, token } = req.params;
 	const { password } = req.body;
@@ -247,7 +224,6 @@ router.post('/reset-password/:id/:token', async (req, res) => {
 		res.send('Not Verified');
 	}
 });
-
 router.get('/checkEmail/:email', async (req, res) => {
 	const email = req.params.email;
 	const user = await User.findOne({ email });
@@ -256,26 +232,23 @@ router.get('/checkEmail/:email', async (req, res) => {
 	}
 	res.status(200).json('Email available!');
 });
-
 router.post('/sendEmail', async (req, res) => {
 	try {
-		const { email } = req.body;
-
 		const transporter = nodemailer.createTransport({
 			host: 'smtp.office365.com',
 			port: 587,
 			secure: false,
 			auth: {
-				user: 'zaidalt505@outlook.com',
-				pass: '1234#$abcd',
+				user: 'danali444@outlook.com',
+				pass: 'ozutptxpikkndxec',
 			},
 			tls: {
 				rejectUnauthorized: false,
 			},
 		});
 		const mailOptions = {
-			from: 'zaidalt505@outlook.com',
-			to: 'zaidaltamari5@gmail.com',
+			from: 'danali444@outlook.com',
+			to: 'radwansusan90@gmail.com',
 			subject: 'Test email',
 			text: `buy product`,
 		};
@@ -295,16 +268,16 @@ router.post('/sendEmailAdmin', async (req, res) => {
 			port: 587,
 			secure: false,
 			auth: {
-				user: 'zaidalt505@outlook.com',
-				pass: '1234#$abcd',
+				user: 'danali444@outlook.com',
+				pass: 'ozutptxpikkndxec',
 			},
 			tls: {
 				rejectUnauthorized: false,
 			},
 		});
 		const mailOptions = {
-			from: 'zaidalt505@outlook.com',
-			to: 'zaidalt505@outlook.com',
+			from: 'danali444@outlook.com',
+			to: 'radwansusan90@gmail.com',
 			subject: 'Test email',
 			text: `new order`,
 		};
@@ -317,5 +290,4 @@ router.post('/sendEmailAdmin', async (req, res) => {
 			.json({ status: 'There was a problem sending the email!' });
 	}
 });
-
 module.exports = router;
