@@ -52,7 +52,7 @@ const Navbar = React.memo(
 				<Left>
 					<MenuItem>
 						{language === 'en'
-							? 'Welcome to Emarcha store'
+							? 'Welcome to Emarcha store             '
 							: 'مرحبا بك في متجر Emarcha'}
 					</MenuItem>
 					{!isGuest && (
@@ -60,7 +60,9 @@ const Navbar = React.memo(
 							<button
 								className='logout-nav'
 								onClick={handleLogout}>
-								{language === 'en' ? 'Logout' : 'تسجيل الخروج'}
+								{language === 'en'
+									? 'Logout          '
+									: 'تسجيل الخروج'}
 							</button>
 						</MenuItem>
 					)}
@@ -68,7 +70,9 @@ const Navbar = React.memo(
 						<>
 							<MenuItem>
 								<Link to='/Register'>
-									{language === 'en' ? 'REGISTER' : 'انشاء حساب'}
+									{language === 'en'
+										? 'REGISTER             '
+										: 'انشاء حساب'}
 								</Link>
 							</MenuItem>
 							<MenuItem>
