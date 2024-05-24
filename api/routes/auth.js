@@ -53,6 +53,31 @@ router.post('/register', async (req, res) => {
 		res.status(500).json(error);
 	}
 });
+router.post('/registerAPP', async (req, res) => {
+	const { username, email, phoneNumber, isAdmin, password } = req.body;
+	const hashedPassword = CryptoJS.AES.encrypt(
+		password,
+		process.env.PASS_SEC,
+	).toString();
+	const newUser = new User({
+		username,
+		email,
+		phoneNumber,
+		isAdmin,
+		verified: true,
+		img: req.body.img,
+		password: hashedPassword,
+	});
+	try {
+		const savedUser = await newUser.save();
+		res.status(201).json({
+			message: 'User registered successfully.',
+			customerId: savedUser._id,
+		});
+	} catch (error) {
+		res.status(500).json(error);
+	}
+});
 router.get('/verifyEmail', async (req, res) => {
 	const { token } = req.query;
 	const user = await User.findOne({
