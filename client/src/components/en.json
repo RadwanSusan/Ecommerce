@@ -1,5 +1,5 @@
 {
-	"welcome": "Welcome to Venus Store",
+	"welcome": "Welcome to Emarcha Store",
 	"addToCart": "Add to Cart",
 	"size": "Size",
 	"color": "Color",
@@ -11,7 +11,7 @@
 		"XXL": "XXL"
 	},
 	"navbar": {
-		"venus": "Venus - Powerful Responsive Magento 2 Theme",
+		"venus": "Emarcha - Powerful Responsive Magento 2 Theme",
 		"All Categories": "All Categories",
 		"- Jeans": "- Jeans",
 		"- Coats": "- Coats",
@@ -63,7 +63,7 @@
 	},
 
 	"Welcom": {
-		"Welcome to Venus Store": "Welcome to Venus Store",
+		"Welcome to Venus Store": "Welcome to Emarcha Store",
 		"Wrap new offers": "Wrap new offers / gift every single day on Weekends",
 		"Explorer Now": "Explorer Now",
 		"New Coupon code": "New Coupon code"

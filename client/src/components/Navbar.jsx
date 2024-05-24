@@ -1,125 +1,94 @@
-import React, {
-	useState,
-	useEffect,
-	useCallback,
-	useRef,
-	useContext,
-	useMemo,
-} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { FaShoppingCart, FaSearch } from 'react-icons/fa';
 import { BiLogIn } from 'react-icons/bi';
-import LogoImg from '../Media/Img/SvgLogo.svg';
 import './navbar.css';
 import Table from './Table';
 import axios from 'axios';
-import debounce from 'lodash.debounce';
 import { LanguageContext } from '../components/LanguageContext';
+
 const Navbar = () => {
 	const { products, total } = useSelector((state) => state.cart);
-	const [queryName, setQueryName] = useState('');
-	const [dataAll, setDataAll] = useState([]);
-	const [catogName, setCatogName] = useState('');
+	const [query, setQuery] = useState('');
+	const [searchResults, setSearchResults] = useState([]);
+	const [category, setCategory] = useState('');
 	const [showResults, setShowResults] = useState(false);
-	const searchRef = useRef(null);
 	const { dictionary } = useContext(LanguageContext);
-	const [tokenState, setToken] = useState();
-	const newQuantity = useMemo(() => {
-		const uniqueProductVariants = new Set();
-		products.forEach((item) => {
-			const selectedVariantId = item.selectedVariant._id;
-			if (selectedVariantId && item.quantity > 0) {
-				const productVariantKey = `${item.productId}-${selectedVariantId}`;
-				uniqueProductVariants.add(productVariantKey);
-			}
-		});
-		return uniqueProductVariants.size;
-	}, [products]);
-	const getToken = async () => {
-		try {
-			const token = await localStorage.getItem('persist:root');
-			if (
-				(token !== null &&
-					token !== undefined &&
-					token !== '' &&
-					JSON.parse(JSON.parse(token)?.user)?.currentUser !== undefined &&
-					JSON.parse(JSON.parse(token)?.user)?.currentUser !== null &&
-					JSON.parse(JSON.parse(token)?.user)?.username !== undefined &&
-					JSON.parse(JSON.parse(token)?.user)?.username !== null &&
-					JSON.parse(JSON.parse(token)?.user)?.username !== undefined) ||
-				JSON.parse(JSON.parse(token)?.user)?.username !== ''
-			) {
-				setToken(token);
-			}
-		} catch (error) {
-			console.error(error);
-		}
-	};
+	const [token, setToken] = useState(null);
+
 	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const res = await axios.get(
+					`http://192.168.4.143:4000/api/products/search/${query}?category=${category}`,
+				);
+				setSearchResults(res.data);
+			} catch (error) {
+				console.error(error);
+			}
+		};
+
+		const getToken = async () => {
+			try {
+				const storedToken = await localStorage.getItem('persist:root');
+				if (storedToken) {
+					const { user } = JSON.parse(JSON.parse(storedToken));
+					if (user && user.currentUser && user.username) {
+						setToken(storedToken);
+					}
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		};
+
 		getToken();
-	}, []);
-	const fetchData = useCallback(async (query, category) => {
-		try {
-			const res = await axios.get(
-				`http://194.195.86.67:4000/api/products/search/${query}?category=${category}`,
-			);
-			setDataAll(res.data);
-		} catch (error) {
-			console.error(error);
-		}
-	}, []);
-	const debouncedFetchData = useRef(debounce(fetchData, 350));
-	useEffect(() => {
-		debouncedFetchData.current = debounce(fetchData, 350);
-		return () => {
-			debouncedFetchData.current.cancel();
-		};
-	}, [fetchData]);
+		fetchData();
+	}, [query, category]);
+
 	const handleCategoryChange = (event) => {
-		setCatogName(event.target.value);
-		setQueryName('');
+		setCategory(event.target.value);
+		setQuery('');
 	};
+
+	const handleSearchChange = (event) => {
+		const value = event.target.value.toLowerCase();
+		setQuery(value);
+		setShowResults(value !== '');
+	};
+
+	const handleClickOutside = (event) => {
+		if (!event.target.closest('.block-search')) {
+			setShowResults(false);
+		}
+	};
+
 	useEffect(() => {
-		const handleClickOutside = (event) => {
-			if (searchRef.current && !searchRef.current.contains(event.target)) {
-				setShowResults(false);
-			}
-		};
 		document.addEventListener('mousedown', handleClickOutside);
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
 	}, []);
-	const handleSearchChange = (event) => {
-		const value = event.target.value.toLowerCase();
-		setQueryName(value);
-		if (value === '') {
-			setShowResults(false);
-		} else {
-			setShowResults(true);
-			debouncedFetchData.current(value, catogName);
+
+	const uniqueProductVariants = products.reduce((acc, item) => {
+		if (
+			item.selectedVariant &&
+			item.selectedVariant._id &&
+			item.quantity > 0
+		) {
+			const productVariantKey = `${item.productId}-${item.selectedVariant._id}`;
+			acc.add(productVariantKey);
 		}
-	};
-	const handleFocus = () => {
-		if (queryName) {
-			setShowResults(true);
-		}
-	};
-	const handleBlur = () => {
-		setTimeout(() => {
-			if (document.activeElement !== searchRef.current) {
-				setShowResults(false);
-			}
-		}, 150);
-	};
+		return acc;
+	}, new Set()).size;
+
 	return (
-		<div className='header-middle snipcss-LbbnX'>
+		<header className='header-middle'>
 			<div className='container'>
 				<div className='middle-content'>
 					<div className='logo-container'>
 						<h1 className='logo-content'>
-							<strong>{dictionary.navbar.venus}</strong>
 							<Link
 								to='/'
 								className='logo'
@@ -135,11 +104,9 @@ const Navbar = () => {
 					</div>
 					<div className='right-container'>
 						<div className='right-content'>
-							<div
-								id='sm_searchbox14558078331679218424'
-								className='block block-search search-pro'>
+							<div className='block block-search search-pro'>
 								<div className='block block-content'>
-									<div
+									<form
 										className='form minisearch active'
 										id='searchbox_mini_form'>
 										<div className='field search'>
@@ -147,7 +114,7 @@ const Navbar = () => {
 												<select
 													className='cat searchbox-cat'
 													name='cat'
-													value={catogName}
+													value={category}
 													onChange={handleCategoryChange}>
 													<option value=''>
 														{dictionary.navbar['All Categories']}
@@ -173,27 +140,25 @@ const Navbar = () => {
 													className='input-text input-searchbox'
 													maxLength={128}
 													autoComplete='off'
-													value={queryName}
+													value={query}
 													onChange={handleSearchChange}
-													onFocus={handleFocus}
-													onBlur={handleBlur}
-													ref={searchRef}
 												/>
-												{showResults && <Table data={dataAll} />}
+												{showResults && (
+													<Table data={searchResults} />
+												)}
 											</div>
 										</div>
 										<div className='actions'>
 											<button title='Search'>
 												<FaSearch />
-												<span>{dictionary.navbar.Search}</span>
 											</button>
 										</div>
-									</div>
+									</form>
 								</div>
 							</div>
 							<div className='minicart-header'>
 								<div className='minicart-wrapper'>
-									{tokenState ? (
+									{token ? (
 										<Link
 											to='/cart'
 											className='action showcart'>
@@ -203,7 +168,7 @@ const Navbar = () => {
 											</span>
 											<span className='counter qty empty'>
 												<span className='counter-number'>
-													{newQuantity}
+													{uniqueProductVariants}
 												</span>
 											</span>
 											<span className='price-minicart'>
@@ -234,7 +199,8 @@ const Navbar = () => {
 					</div>
 				</div>
 			</div>
-		</div>
+		</header>
 	);
 };
-export default React.memo(Navbar);
+
+export default Navbar;
