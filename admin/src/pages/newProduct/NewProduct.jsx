@@ -385,6 +385,7 @@ export default function NewProduct() {
 									<div className='radio-group'>
 										<label>
 											<input
+												className='radio-input-type'
 												type='radio'
 												name='type'
 												value='simple'
@@ -395,6 +396,7 @@ export default function NewProduct() {
 										</label>
 										<label>
 											<input
+												className='radio-input-type'
 												type='radio'
 												name='type'
 												value='variable'
@@ -527,6 +529,7 @@ export default function NewProduct() {
 									<label>Enable Discount</label>
 									<input
 										type='checkbox'
+										className='radio-input-type'
 										checked={inputs.enableDiscount}
 										onChange={handleToggleDiscount}
 									/>
@@ -565,6 +568,7 @@ export default function NewProduct() {
 								<div className='form-group'>
 									<label>Enable Promo Code</label>
 									<input
+										className='radio-input-type'
 										type='checkbox'
 										checked={inputs.enablePromo}
 										onChange={handleTogglePromo}
