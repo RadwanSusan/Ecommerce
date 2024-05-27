@@ -11,6 +11,7 @@ import { addProduct } from '../../redux/apiCalls';
 import { useDispatch, useSelector } from 'react-redux';
 import swal from 'sweetalert';
 import { FaSpinner } from 'react-icons/fa';
+
 export default function NewProduct() {
 	const [inputs, setInputs] = useState({
 		type: 'simple',
@@ -33,15 +34,30 @@ export default function NewProduct() {
 			startDate: '',
 			endDate: '',
 		},
+		enablePromo: false,
+		enableDiscount: false,
 	});
+	const handleTogglePromo = () => {
+		setInputs((prev) => ({
+			...prev,
+			enablePromo: !prev.enablePromo,
+		}));
+	};
+
+	const handleToggleDiscount = () => {
+		setInputs((prev) => ({
+			...prev,
+			enableDiscount: !prev.enableDiscount,
+		}));
+	};
 	const [loading, setLoading] = useState(false);
 	const [draggedFile, setDraggedFile] = useState(null);
 	const [variants, setVariants] = useState([{ key: '', values: [] }]);
 	const [generatedVariants, setGeneratedVariants] = useState([]);
 	const [expandedVariants, setExpandedVariants] = useState([]);
-	const [categoryInput, setCategoryInput] = useState('');
 	const dispatch = useDispatch();
 	const supplierInfo = useSelector((state) => state.user.currentUser);
+
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		if (name.startsWith('categories.')) {
@@ -68,18 +84,22 @@ export default function NewProduct() {
 			}));
 		}
 	};
+
 	const handleDragEnter = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
 	};
+
 	const handleDragLeave = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
 	};
+
 	const handleDragOver = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
 	};
+
 	const handleDrop = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
@@ -93,12 +113,15 @@ export default function NewProduct() {
 			e.dataTransfer.clearData();
 		}
 	};
+
 	const isObjectComplete = (obj) => Object.values(obj).every((value) => value);
 	const isObjectPartiallyFilled = (obj) =>
 		Object.values(obj).some((value) => value);
+
 	const showError = (title, text) => {
 		swal({ title, text, icon: 'error' });
 	};
+
 	const handleAddProduct = async (e) => {
 		e.preventDefault();
 		const requiredInputs = [
@@ -112,13 +135,7 @@ export default function NewProduct() {
 			'length',
 			'weight',
 		];
-		// const hasAllRequiredInputs = requiredInputs.every(
-		// 	(field) => inputs[field],
-		// );
-		// if (!hasAllRequiredInputs) {
-		// 	showError('Error!', 'Please fill all the required fields');
-		// 	return;
-		// }
+
 		const promoComplete = isObjectComplete(inputs.promo);
 		const promoPartiallyFilled = isObjectPartiallyFilled(inputs.promo);
 		if (promoPartiallyFilled && !promoComplete) {
@@ -160,18 +177,7 @@ export default function NewProduct() {
 				Promise.all(uploadPromises),
 				minimumLoadingPromise,
 			]);
-			// const variantsData =
-			// 	inputs.type === 'variable'
-			// 		? await Promise.all(
-			// 				uploadedVariants.map((uploadTask) =>
-			// 					getDownloadURL(uploadTask.ref).then((url) => ({
-			// 						key: uploadTask.metadata.name.split('_')[1],
-			// 						value: uploadTask.metadata.name.split('_')[2],
-			// 						image: url,
-			// 					})),
-			// 				),
-			// 		  )
-			// 		: [];
+
 			const variantsData = await Promise.all(
 				uploadedVariants.map((uploadTask, index) => {
 					const variantKey = uploadTask.metadata.name.split('_')[1];
@@ -183,20 +189,7 @@ export default function NewProduct() {
 					}));
 				}),
 			);
-			// const product = constructProduct(
-			// 	inputs,
-			// 	generatedVariants.map((variant, index) => ({
-			// 		...variant,
-			// 		images: variantsData
-			// 			.filter(
-			// 				(data) =>
-			// 					data.key === variant.key &&
-			// 					data.value === variant.value,
-			// 			)
-			// 			.map((data) => data.image),
-			// 	})),
-			// 	supplierInfo,
-			// );
+
 			const updatedGeneratedVariants = generatedVariants.map(
 				(variant, index) => {
 					const variantImages = variantsData
@@ -233,31 +226,7 @@ export default function NewProduct() {
 			setLoading(false);
 		}
 	};
-	// const constructProduct = (inputs, variants, supplierInfo) => {
-	// 	let productData = {
-	// 		type: inputs.type,
-	// 		...inputs,
-	// 		categories: inputs.categories.map(({ name, name_ar }) => ({
-	// 			name,
-	// 			name_ar,
-	// 		})),
-	// 		...(inputs.type === 'variable' && {
-	// 			variants: generatedVariants.map((variant) => ({
-	// 				key: variant.key,
-	// 				value: variant.value,
-	// 				images: variant.images || [],
-	// 				price: variant.price,
-	// 				originalPrice: variant.originalPrice,
-	// 			})),
-	// 		}),
-	// 		...(isObjectComplete(inputs.discount) && {
-	// 			discount: inputs.discount,
-	// 		}),
-	// 		...(isObjectComplete(inputs.promo) && { promo: inputs.promo }),
-	// 		supplierId: supplierInfo._id,
-	// 	};
-	// 	return productData;
-	// };
+
 	const constructProduct = (inputs, variants, supplierInfo) => {
 		let productData = {
 			type: inputs.type,
@@ -283,11 +252,13 @@ export default function NewProduct() {
 		};
 		return productData;
 	};
+
 	const resetAllForms = () => {
 		resetInputs();
 		resetVariants();
 		resetCategories();
 	};
+
 	const resetInputs = () => {
 		setInputs({
 			type: 'simple',
@@ -305,12 +276,18 @@ export default function NewProduct() {
 			file: null,
 		});
 	};
+
 	const resetVariants = () => {
 		setVariants([{ key: '', value: '' }]);
 	};
+
 	const resetCategories = () => {
-		setCategoryInput('');
+		setInputs((prev) => ({
+			...prev,
+			categories: [{ name: '', name_ar: '' }],
+		}));
 	};
+
 	const handleVariantChange = (index, field, value) => {
 		const newVariants = [...variants];
 		if (field === 'key') {
@@ -320,14 +297,17 @@ export default function NewProduct() {
 		}
 		setVariants(newVariants);
 	};
+
 	const addVariant = () => {
 		setVariants([...variants, { key: '', values: [] }]);
 	};
+
 	const removeVariant = (index) => {
 		const newVariants = [...variants];
 		newVariants.splice(index, 1);
 		setVariants(newVariants);
 	};
+
 	const generateVariants = () => {
 		const keys = variants.map((variant) => variant.key);
 		const values = variants.map((variant) => variant.values);
@@ -346,11 +326,13 @@ export default function NewProduct() {
 		});
 		setGeneratedVariants(newGeneratedVariants);
 	};
+
 	const removeGeneratedVariant = (index) => {
 		const newGeneratedVariants = [...generatedVariants];
 		newGeneratedVariants.splice(index, 1);
 		setGeneratedVariants(newGeneratedVariants);
 	};
+
 	const toggleVariant = (index) => {
 		setExpandedVariants((prevExpandedVariants) => {
 			const newExpandedVariants = [...prevExpandedVariants];
@@ -358,27 +340,28 @@ export default function NewProduct() {
 			return newExpandedVariants;
 		});
 	};
+
 	const cartesianProduct = (...arrays) => {
 		return arrays.reduce(
 			(a, b) => a.flatMap((d) => b.map((e) => [d, e].flat())),
 			[[]],
 		);
 	};
-	const handleCategoryChange = (e) => {
-		setCategoryInput(e.target.value);
-	};
+
 	const addCategory = () => {
 		setInputs((prev) => ({
 			...prev,
 			categories: [...prev.categories, { name: '', name_ar: '' }],
 		}));
 	};
+
 	const removeCategory = (index) => {
 		setInputs((prev) => ({
 			...prev,
 			categories: prev.categories.filter((_, i) => i !== index),
 		}));
 	};
+
 	return (
 		<div
 			className='newProduct'
@@ -393,351 +376,440 @@ export default function NewProduct() {
 			) : (
 				<div className='newProduct'>
 					<h1 className='addProductTitle'>New Product</h1>
-					<div className='addProductItem'>
-						<label>Product Type*</label>
-						<div>
-							<label>
-								<input
-									type='radio'
-									name='type'
-									value='simple'
-									checked={inputs.type === 'simple'}
-									onChange={handleChange}
-								/>
-								Simple
-							</label>
-							<label>
-								<input
-									type='radio'
-									name='type'
-									value='variable'
-									checked={inputs.type === 'variable'}
-									onChange={handleChange}
-								/>
-								Variable
-							</label>
-						</div>
-					</div>
-					{inputs.type === 'variable' && (
-						<div className='variantsContainer'>
-							<h3>Variants</h3>
-							{variants.map((variant, index) => (
-								<div
-									key={index}
-									className='variantItem'>
-									<input
-										type='text'
-										placeholder='Key'
-										value={variant.key}
-										onChange={(e) =>
-											handleVariantChange(
-												index,
-												'key',
-												e.target.value,
-											)
-										}
-									/>
-									<input
-										type='text'
-										placeholder="Values (separated by '|')"
-										value={variant.values.join('|')}
-										onChange={(e) =>
-											handleVariantChange(
-												index,
-												'values',
-												e.target.value,
-											)
-										}
-									/>
-									<button onClick={() => removeVariant(index)}>
-										Remove
-									</button>
-								</div>
-							))}
-							<button onClick={addVariant}>Add Variant</button>
-							<button onClick={generateVariants}>
-								Generate Variants
-							</button>
-						</div>
-					)}
-					<div className='generatedVariantsContainer'>
-						<h3>Generated Variants</h3>
-						{generatedVariants.map((variant, index) => (
-							<div
-								key={index}
-								className='generatedVariantItem'>
-								<div onClick={() => toggleVariant(index)}>
-									{Object.entries(variant).map(([key, value]) => (
-										<div key={key}>
-											<span>
-												{key}:{' '}
-												{key === 'images'
-													? value
-															.map((file) => file.name)
-															.join(', ')
-													: value}
-											</span>
-										</div>
-									))}
-								</div>
-								{expandedVariants[index] && (
-									<div>
-										<input
-											type='number'
-											placeholder='Quantity'
-											value={variant.quantity}
-											onChange={(e) => {
-												const newGeneratedVariants = [
-													...generatedVariants,
-												];
-												newGeneratedVariants[index].quantity =
-													e.target.value;
-												setGeneratedVariants(newGeneratedVariants);
-											}}
-										/>
-										<input
-											type='file'
-											multiple
-											onChange={(e) => {
-												const newGeneratedVariants = [
-													...generatedVariants,
-												];
-												newGeneratedVariants[index].images =
-													Array.from(e.target.files);
-												setGeneratedVariants(newGeneratedVariants);
-											}}
-										/>
-										<input
-											type='number'
-											placeholder='Price'
-											value={variant.price}
-											onChange={(e) => {
-												const newGeneratedVariants = [
-													...generatedVariants,
-												];
-												newGeneratedVariants[index].price =
-													e.target.value;
-												setGeneratedVariants(newGeneratedVariants);
-											}}
-										/>
-										<input
-											type='number'
-											placeholder='Original Price'
-											value={variant.originalPrice}
-											onChange={(e) => {
-												const newGeneratedVariants = [
-													...generatedVariants,
-												];
-												newGeneratedVariants[index].originalPrice =
-													e.target.value;
-												setGeneratedVariants(newGeneratedVariants);
-											}}
-										/>
+					<div className='product-form'>
+						<div className='form-column'>
+							<div className='form-section'>
+								<h2>Basic Information</h2>
+								<div className='form-group'>
+									<label>Product Type*</label>
+									<div className='radio-group'>
+										<label>
+											<input
+												type='radio'
+												name='type'
+												value='simple'
+												checked={inputs.type === 'simple'}
+												onChange={handleChange}
+											/>
+											Simple
+										</label>
+										<label>
+											<input
+												type='radio'
+												name='type'
+												value='variable'
+												checked={inputs.type === 'variable'}
+												onChange={handleChange}
+											/>
+											Variable
+										</label>
 									</div>
-								)}
-								<button onClick={() => removeGeneratedVariant(index)}>
-									Remove
-								</button>
+								</div>
+								<div className='form-group'>
+									<label>Title*</label>
+									<input
+										name='title'
+										type='text'
+										placeholder='Apple Airpods'
+										onChange={handleChange}
+									/>
+								</div>
+								<div className='form-group'>
+									<label>Description*</label>
+									<textarea
+										name='desc'
+										placeholder='Product description...'
+										onChange={handleChange}
+									/>
+								</div>
+								<div className='form-group'>
+									<label>Title (Arabic)</label>
+									<input
+										name='title_ar'
+										type='text'
+										placeholder='Title in Arabic'
+										onChange={handleChange}
+									/>
+								</div>
+								<div className='form-group'>
+									<label>Description (Arabic)</label>
+									<textarea
+										name='desc_ar'
+										placeholder='Product description in Arabic...'
+										onChange={handleChange}
+									/>
+								</div>
 							</div>
-						))}
-					</div>
-					<div className='addProductItem'>
-						<label>Image</label>
-						<input
-							type='file'
-							onChange={(e) =>
-								setInputs((prev) => ({
-									...prev,
-									file: e.target.files[0],
-								}))
-							}
-							multiple
-						/>
-						<div
-							className='file-dragndrop'
-							onDragEnter={() => setDraggedFile(true)}
-							onDragLeave={() => setDraggedFile(false)}
-							onDragOver={(e) => e.preventDefault()}
-							onDrop={handleDrop}>
-							{draggedFile ? (
-								<p>Drop your file here</p>
-							) : (
-								<>
-									<p>Drag and drop your files here or</p>
-									<label className='browse'>browse</label>
-								</>
-							)}
-						</div>
-					</div>
-					<div className='divition1'>
-						<div className='addProductItem'>
-							<label>Title*</label>
-							<input
-								name='title'
-								className='Title'
-								type='text'
-								placeholder='Apple Airpods'
-								onChange={handleChange}
-							/>
-						</div>
-						<div className='addProductItem'>
-							<label>Description*</label>
-							<input
-								name='desc'
-								className='Description'
-								type='text'
-								placeholder='description...'
-								onChange={handleChange}
-							/>
-						</div>
-						<div className='addProductItem'>
-							<label>Title (Arabic)</label>
-							<input
-								name='title_ar'
-								type='text'
-								placeholder='Title in Arabic'
-								onChange={handleChange}
-							/>
-						</div>
-						<div className='addProductItem'>
-							<label>Description (Arabic)</label>
-							<input
-								name='desc_ar'
-								type='text'
-								placeholder='Description in Arabic'
-								onChange={handleChange}
-							/>
-						</div>
-					</div>
-					<div className='divition2'>
-						<div className='addProductItem'>
-							<label>Discount Start Date</label>
-							<input
-								name='discount.startDate'
-								type='date'
-								onChange={handleChange}
-							/>
-						</div>
-						<div className='addProductItem'>
-							<label>Discount End Date</label>
-							<input
-								name='discount.endDate'
-								type='date'
-								onChange={handleChange}
-							/>
-						</div>
-						<div className='addProductItem'>
-							<label>Discount</label>
-							<input
-								name='discount.discount'
-								type='number'
-								onChange={handleChange}
-							/>
-						</div>
-					</div>
-					<div className='divition2'>
-						<div className='addProductItem'>
-							<label>Promo Code</label>
-							<input
-								name='promo.code'
-								type='text'
-								onChange={handleChange}
-							/>
-						</div>
-						<div className='addProductItem'>
-							<label>Promo Start Date</label>
-							<input
-								name='promo.startDate'
-								type='date'
-								onChange={handleChange}
-							/>
-						</div>
-						<div className='addProductItem'>
-							<label>Promo End Date</label>
-							<input
-								name='promo.endDate'
-								type='date'
-								onChange={handleChange}
-							/>
-						</div>
-						<div className='addProductItem'>
-							<label>Categories*</label>
-							<div className='categoriesContainer'>
+							<div className='form-section'>
+								<h2>Categories</h2>
 								{inputs.categories.map((category, index) => (
 									<div
 										key={index}
-										className='categoryItem'>
-										<input
-											type='text'
-											name={`categories.${index}.name`}
-											placeholder='Category Name'
-											value={category.name}
-											onChange={handleChange}
-										/>
-										<input
-											type='text'
-											name={`categories.${index}.name_ar`}
-											placeholder='Category Name (Arabic)'
-											value={category.name_ar}
-											onChange={handleChange}
-										/>
-										<button onClick={() => removeCategory(index)}>
+										className='category-item'>
+										<div className='form-group'>
+											<label>Category Name</label>
+											<input
+												type='text'
+												name={`categories.${index}.name`}
+												placeholder='Category Name'
+												value={category.name}
+												onChange={handleChange}
+											/>
+										</div>
+										<div className='form-group'>
+											<label>Category Name (Arabic)</label>
+											<input
+												type='text'
+												name={`categories.${index}.name_ar`}
+												placeholder='Category Name (Arabic)'
+												value={category.name_ar}
+												onChange={handleChange}
+											/>
+										</div>
+										<button
+											type='button'
+											onClick={() => removeCategory(index)}>
 											Remove
 										</button>
 									</div>
 								))}
-								<div className='addCategoryItem'>
-									<button onClick={addCategory}>Add Category</button>
-								</div>
+								<button
+									type='button'
+									onClick={addCategory}>
+									Add Category
+								</button>
 							</div>
 						</div>
-					</div>
-					<div className='divition2 divition221'>
-						<div className='addProductItem'>
-							<label>Product Width*</label>
-							<input
-								name='width'
-								type='number'
-								placeholder='200'
-								onChange={handleChange}
-								className='Width'
-							/>
+						<div className='form-column'>
+							<div className='form-section'>
+								<h2>Product Dimensions</h2>
+								<div className='form-group'>
+									<label>Width*</label>
+									<input
+										name='width'
+										type='number'
+										placeholder='200'
+										onChange={handleChange}
+									/>
+								</div>
+								<div className='form-group'>
+									<label>Height*</label>
+									<input
+										name='height'
+										type='number'
+										placeholder='200'
+										onChange={handleChange}
+									/>
+								</div>
+								<div className='form-group'>
+									<label>Length*</label>
+									<input
+										name='length'
+										type='number'
+										placeholder='200'
+										onChange={handleChange}
+									/>
+								</div>
+								<div className='form-group'>
+									<label>Weight*</label>
+									<input
+										name='weight'
+										type='number'
+										placeholder='200'
+										onChange={handleChange}
+									/>
+								</div>
+							</div>
+
+							<div className='form-section'>
+								<h2>Discount</h2>
+								<div className='form-group'>
+									<label>Enable Discount</label>
+									<input
+										type='checkbox'
+										checked={inputs.enableDiscount}
+										onChange={handleToggleDiscount}
+									/>
+								</div>
+								{inputs.enableDiscount && (
+									<>
+										<div className='form-group'>
+											<label>Discount Start Date</label>
+											<input
+												name='discount.startDate'
+												type='date'
+												onChange={handleChange}
+											/>
+										</div>
+										<div className='form-group'>
+											<label>Discount End Date</label>
+											<input
+												name='discount.endDate'
+												type='date'
+												onChange={handleChange}
+											/>
+										</div>
+										<div className='form-group'>
+											<label>Discount Amount</label>
+											<input
+												name='discount.discount'
+												type='number'
+												onChange={handleChange}
+											/>
+										</div>
+									</>
+								)}
+							</div>
+							<div className='form-section'>
+								<h2>Promo Code</h2>
+								<div className='form-group'>
+									<label>Enable Promo Code</label>
+									<input
+										type='checkbox'
+										checked={inputs.enablePromo}
+										onChange={handleTogglePromo}
+									/>
+								</div>
+								{inputs.enablePromo && (
+									<>
+										<div className='form-group'>
+											<label>Promo Code</label>
+											<input
+												name='promo.code'
+												type='text'
+												onChange={handleChange}
+											/>
+										</div>
+										<div className='form-group'>
+											<label>Promo Start Date</label>
+											<input
+												name='promo.startDate'
+												type='date'
+												onChange={handleChange}
+											/>
+										</div>
+										<div className='form-group'>
+											<label>Promo End Date</label>
+											<input
+												name='promo.endDate'
+												type='date'
+												onChange={handleChange}
+											/>
+										</div>
+									</>
+								)}
+							</div>
 						</div>
-						<div className='addProductItem'>
-							<label>Product Height*</label>
-							<input
-								name='height'
-								type='number'
-								placeholder='200'
-								onChange={handleChange}
-								className='Height'
-							/>
+						<div className='form-column'>
+							<div className='form-section'>
+								<h2>Product Images</h2>
+								<div className='form-group'>
+									<label>Images</label>
+									<input
+										type='file'
+										onChange={(e) =>
+											setInputs((prev) => ({
+												...prev,
+												file: e.target.files[0],
+											}))
+										}
+										multiple
+									/>
+									<div
+										className='file-dragndrop'
+										onDragEnter={() => setDraggedFile(true)}
+										onDragLeave={() => setDraggedFile(false)}
+										onDragOver={(e) => e.preventDefault()}
+										onDrop={handleDrop}>
+										{draggedFile ? (
+											<p>Drop your files here</p>
+										) : (
+											<>
+												<p>Drag and drop your files here or</p>
+												<label className='browse-button'>
+													Browse
+												</label>
+											</>
+										)}
+									</div>
+								</div>
+							</div>
+							{inputs.type === 'variable' && (
+								<div className='form-section'>
+									<h2>Variants</h2>
+									{variants.map((variant, index) => (
+										<div
+											key={index}
+											className='variant-item'>
+											<div className='form-group'>
+												<label>Key</label>
+												<input
+													type='text'
+													placeholder='Key'
+													value={variant.key}
+													onChange={(e) =>
+														handleVariantChange(
+															index,
+															'key',
+															e.target.value,
+														)
+													}
+												/>
+											</div>
+											<div className='form-group'>
+												<label>Values</label>
+												<input
+													type='text'
+													placeholder="Values (separated by '|')"
+													value={variant.values.join('|')}
+													onChange={(e) =>
+														handleVariantChange(
+															index,
+															'values',
+															e.target.value,
+														)
+													}
+												/>
+											</div>
+											<button
+												type='button'
+												onClick={() => removeVariant(index)}>
+												Remove
+											</button>
+										</div>
+									))}
+									<button
+										type='button'
+										onClick={addVariant}>
+										Add Variant
+									</button>
+									<button
+										type='button'
+										onClick={generateVariants}>
+										Generate Variants
+									</button>
+									<div className='generated-variants'>
+										<h3>Generated Variants</h3>
+										{generatedVariants.map((variant, index) => (
+											<div
+												key={index}
+												className='generated-variant-item'>
+												<div onClick={() => toggleVariant(index)}>
+													{Object.entries(variant).map(
+														([key, value]) => (
+															<div key={key}>
+																<span>
+																	{key}:{' '}
+																	{key === 'images'
+																		? value
+																				.map(
+																					(file) =>
+																						file.name,
+																				)
+																				.join(', ')
+																		: value}
+																</span>
+															</div>
+														),
+													)}
+												</div>
+												{expandedVariants[index] && (
+													<div>
+														<div className='form-group'>
+															<label>Quantity</label>
+															<input
+																type='number'
+																placeholder='Quantity'
+																value={variant.quantity}
+																onChange={(e) => {
+																	const newGeneratedVariants =
+																		[...generatedVariants];
+																	newGeneratedVariants[
+																		index
+																	].quantity = e.target.value;
+																	setGeneratedVariants(
+																		newGeneratedVariants,
+																	);
+																}}
+															/>
+														</div>
+														<div className='form-group'>
+															<label>Images</label>
+															<input
+																type='file'
+																multiple
+																onChange={(e) => {
+																	const newGeneratedVariants =
+																		[...generatedVariants];
+																	newGeneratedVariants[
+																		index
+																	].images = Array.from(
+																		e.target.files,
+																	);
+																	setGeneratedVariants(
+																		newGeneratedVariants,
+																	);
+																}}
+															/>
+														</div>
+														<div className='form-group'>
+															<label>Price</label>
+															<input
+																type='number'
+																placeholder='Price'
+																value={variant.price}
+																onChange={(e) => {
+																	const newGeneratedVariants =
+																		[...generatedVariants];
+																	newGeneratedVariants[
+																		index
+																	].price = e.target.value;
+																	setGeneratedVariants(
+																		newGeneratedVariants,
+																	);
+																}}
+															/>
+														</div>
+														<div className='form-group'>
+															<label>Original Price</label>
+															<input
+																type='number'
+																placeholder='Original Price'
+																value={variant.originalPrice}
+																onChange={(e) => {
+																	const newGeneratedVariants =
+																		[...generatedVariants];
+																	newGeneratedVariants[
+																		index
+																	].originalPrice =
+																		e.target.value;
+																	setGeneratedVariants(
+																		newGeneratedVariants,
+																	);
+																}}
+															/>
+														</div>
+													</div>
+												)}
+												<button
+													type='button'
+													onClick={() =>
+														removeGeneratedVariant(index)
+													}>
+													Remove
+												</button>
+											</div>
+										))}
+									</div>
+								</div>
+							)}
+							<button
+								type='submit'
+								className='submit-button'
+								onClick={handleAddProduct}>
+								Create Product
+							</button>
 						</div>
-						<div className='addProductItem'>
-							<label>Product Length*</label>
-							<input
-								name='length'
-								type='number'
-								placeholder='200'
-								onChange={handleChange}
-								className='Length'
-							/>
-						</div>
-						<div className='addProductItem'>
-							<label>Product Weight*</label>
-							<input
-								name='weight'
-								type='number'
-								placeholder='200'
-								onChange={handleChange}
-								className='Weight'
-							/>
-						</div>
-						<button
-							onClick={handleAddProduct}
-							className='addProductButton'>
-							Create
-						</button>
 					</div>
 				</div>
 			)}
