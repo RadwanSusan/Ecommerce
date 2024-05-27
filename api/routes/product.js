@@ -1,12 +1,19 @@
-const { Product, Category } = require('../models/Product');
+const { Product } = require('../models/Product');
 const router = require('express').Router();
-
 router.post('/', async (req, res) => {
+	const variants = Array.isArray(req.body.variants) ? req.body.variants : [];
 	const newProduct = new Product({
 		...req.body,
 		supplier: req.body.supplierId,
+		variants: variants.map((variant) => ({
+			...variant,
+			key: variant.key,
+			value: variant.value,
+			price: variant.price,
+			originalPrice: variant.originalPrice,
+			images: variant.images || [],
+		})),
 	});
-
 	try {
 		const savedProduct = await newProduct.save();
 		res.status(201).json(savedProduct);
@@ -15,7 +22,6 @@ router.post('/', async (req, res) => {
 		console.error(err);
 	}
 });
-
 router.put('/:id', async (req, res) => {
 	try {
 		const updatedProduct = await Product.findByIdAndUpdate(
@@ -30,7 +36,6 @@ router.put('/:id', async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-
 router.delete('/:id', async (req, res) => {
 	try {
 		await Product.findByIdAndDelete(req.params.id);
@@ -39,7 +44,6 @@ router.delete('/:id', async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-
 router.get('/find/:id', async (req, res) => {
 	try {
 		const product = await Product.findById(req.params.id).populate(
@@ -50,15 +54,12 @@ router.get('/find/:id', async (req, res) => {
 		res.status(500).json(err);
 	}
 });
-
 router.get('/adminsupplier', async (req, res) => {
 	const qNew = req.query.new;
 	const qCategory = req.query.category;
 	const qSupplierId = req.query.supplierId;
-
 	try {
 		let products;
-
 		if (qNew) {
 			products = await Product.find()
 				.sort({ createdAt: -1 })
@@ -77,21 +78,17 @@ router.get('/adminsupplier', async (req, res) => {
 		} else {
 			products = await Product.find().populate('categories');
 		}
-
 		res.status(200).json(products);
 	} catch (err) {
 		res.status(500).json(err);
 	}
 });
-
 router.get('/', async (req, res) => {
 	const qNew = req.query.new;
 	const qCategory = req.query.category;
 	const qSupplier = req.query.supplier;
-
 	try {
 		let products;
-
 		if (qNew) {
 			products = await Product.find()
 				.sort({ createdAt: -1 })
@@ -110,19 +107,15 @@ router.get('/', async (req, res) => {
 		} else {
 			products = await Product.find().populate('categories');
 		}
-
 		res.status(200).json(products);
 	} catch (err) {
 		res.status(500).json(err);
 	}
 });
-
 router.get('/search/:key/', async (req, res) => {
 	const qCategory = req.query.category;
-
 	try {
 		let products;
-
 		if (qCategory) {
 			products = await Product.find({
 				categories: qCategory,
@@ -133,31 +126,25 @@ router.get('/search/:key/', async (req, res) => {
 				title: { $regex: req.params.key },
 			}).populate('categories');
 		}
-
 		res.status(200).json(products);
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({ message: 'Server Error' });
 	}
 });
-
 router.get('/productsFromSuppliers', async (req, res) => {
 	const { supplier } = req.query;
-
 	try {
 		const products = await Product.find({ supplier }).populate('categories');
-
 		if (products.length === 0) {
 			return res
 				.status(404)
 				.json({ message: 'No products found for the specified supplier' });
 		}
-
 		res.status(200).json(products);
 	} catch (error) {
 		console.error('Error fetching products by supplier:', error);
 		res.status(500).json({ message: 'Internal server error' });
 	}
 });
-
 module.exports = router;
