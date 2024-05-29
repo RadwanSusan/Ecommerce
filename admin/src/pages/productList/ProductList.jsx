@@ -264,7 +264,7 @@ export default function ProductList() {
 					style={{ textDecoration: 'none', width: '100px' }}
 					data={getCsvData()}
 					filename='products.csv'
-					charset='utf-8'>
+					charSet='utf-8'>
 					Export to CSV
 				</CSVLink>
 				<input

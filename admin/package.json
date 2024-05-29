@@ -31,12 +31,12 @@
 		"sass": "^1.62.1",
 		"sweetalert": "^2.1.2",
 		"timeago.js": "^4.0.2",
-		"vite": "^5.0.12",
+		"vite": "^5.2.12",
 		"vite-tsconfig-paths": "^4.3.1",
 		"web-vitals": "^1.1.2"
 	},
 	"scripts": {
-		"start": "PORT=5001 vite",
+		"start": "vite",
 		"build": "PORT=5001 vite build",
 		"serve": "vite preview"
 	},

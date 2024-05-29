@@ -18,8 +18,7 @@ const ProductSchema = new mongoose.Schema({
 	weight: { type: Number, required: true },
 	price: { type: Number },
 	originalPrice: { type: Number },
-	images: [{ type: String }], // Include this field
-
+	images: [{ type: String }],
 	variants: [
 		{
 			key: { type: String },
@@ -29,6 +28,7 @@ const ProductSchema = new mongoose.Schema({
 			originalPrice: { type: Number },
 		},
 	],
+	supplier: { type: mongoose.Schema.Types.ObjectId, ref: 'UserAdmin' },
 });
 ProductSchema.pre('validate', function (next) {
 	if (
