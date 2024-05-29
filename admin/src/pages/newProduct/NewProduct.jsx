@@ -241,7 +241,7 @@ export default function NewProduct() {
 				closeOnClickOutside: false,
 				closeOnEsc: false,
 			}).then(setLoading(false), resetAllForms);
-
+			resetAllForms();
 			await addProduct(product, dispatch);
 		} catch (error) {
 			showError('Error', error.message);
@@ -250,37 +250,6 @@ export default function NewProduct() {
 		}
 	};
 
-	// const constructProduct = (inputs, variants, supplierInfo) => {
-	// 	console.log('Variants:', variants);
-	// 	let productData = {
-	// 		type: inputs.type,
-	// 		...inputs,
-	// 		categories: inputs.categories.map(({ name, name_ar }) => ({
-	// 			name,
-	// 			name_ar,
-	// 		})),
-	// 		...(inputs.type === 'variable' && {
-	// 			variants: variants.map((variant) => ({
-	// 				key: variant.key,
-	// 				value: variant.value,
-	// 				quantity: variant.quantity,
-	// 				images: variant.images || [],
-	// 				price: variant.price,
-	// 				originalPrice: variant.originalPrice,
-	// 			})),
-	// 		}),
-	// 		...(inputs.type === 'simple' && {
-	// 			price: inputs.price,
-	// 			originalPrice: inputs.originalPrice,
-	// 		}),
-	// 		...(isObjectComplete(inputs.discount) && {
-	// 			discount: inputs.discount,
-	// 		}),
-	// 		...(isObjectComplete(inputs.promo) && { promo: inputs.promo }),
-	// 		supplierId: supplierInfo._id,
-	// 	};
-	// 	return productData;
-	// };
 	const constructProduct = (inputs, variants, supplierInfo) => {
 		let productData = {
 			type: inputs.type,
@@ -313,10 +282,28 @@ export default function NewProduct() {
 		return productData;
 	};
 
+	// const resetAllForms = () => {
+	// 	resetInputs();
+	// 	resetVariants();
+	// 	resetCategories();
+	// 	resetPreviewImages(); // Add this line
+	// };
 	const resetAllForms = () => {
+		console.log('Resetting all forms');
 		resetInputs();
 		resetVariants();
 		resetCategories();
+		resetPreviewImages();
+		setDraggedFile(null);
+		setGeneratedVariants((prevVariants) =>
+			prevVariants.map((variant) => ({
+				...variant,
+				images: [],
+				price: '',
+				originalPrice: '',
+			})),
+		);
+		setExpandedVariants([]);
 	};
 
 	const resetInputs = () => {
@@ -326,19 +313,31 @@ export default function NewProduct() {
 			desc: '',
 			title_ar: '',
 			desc_ar: '',
-			categories: [],
+			categories: [{ name: '', name_ar: '' }],
 			width: '',
 			height: '',
 			length: '',
 			weight: '',
-			discount: { startDate: '', endDate: '', discount: '' },
-			promo: { code: '', startDate: '', endDate: '' },
-			file: null,
+			discount: {
+				startDate: '',
+				endDate: '',
+				discount: '',
+			},
+			promo: {
+				code: '',
+				startDate: '',
+				endDate: '',
+			},
+			enablePromo: false,
+			enableDiscount: false,
+			price: '',
+			originalPrice: '',
+			images: [],
 		});
 	};
 
 	const resetVariants = () => {
-		setVariants([{ key: '', value: '' }]);
+		setVariants([{ key: '', values: [] }]);
 	};
 
 	const resetCategories = () => {
@@ -346,6 +345,10 @@ export default function NewProduct() {
 			...prev,
 			categories: [{ name: '', name_ar: '' }],
 		}));
+	};
+
+	const resetPreviewImages = () => {
+		setPreviewImages([]);
 	};
 
 	const handleVariantChange = (index, field, value) => {
