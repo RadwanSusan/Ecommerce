@@ -36,11 +36,29 @@ export default function NewProduct() {
 		},
 		enablePromo: false,
 		enableDiscount: false,
+		price: '',
+		originalPrice: '',
+		images: [],
 	});
 	const handleTogglePromo = () => {
 		setInputs((prev) => ({
 			...prev,
 			enablePromo: !prev.enablePromo,
+		}));
+	};
+	const [previewImages, setPreviewImages] = useState([]);
+
+	const handleImageChange = (e) => {
+		const newFiles = Array.from(e.target.files);
+		const newImageUrls = newFiles.map((file) => URL.createObjectURL(file));
+
+		setPreviewImages((prevPreviewImages) => [
+			...prevPreviewImages,
+			...newImageUrls,
+		]);
+		setInputs((prev) => ({
+			...prev,
+			file: [...(prev.file || []), ...newFiles],
 		}));
 	};
 
@@ -54,7 +72,9 @@ export default function NewProduct() {
 	const [draggedFile, setDraggedFile] = useState(null);
 	const [variants, setVariants] = useState([{ key: '', values: [] }]);
 	const [generatedVariants, setGeneratedVariants] = useState([]);
-	const [expandedVariants, setExpandedVariants] = useState([]);
+	const [expandedVariants, setExpandedVariants] = useState(
+		generatedVariants.map(() => true),
+	);
 	const dispatch = useDispatch();
 	const supplierInfo = useSelector((state) => state.user.currentUser);
 
@@ -124,6 +144,7 @@ export default function NewProduct() {
 
 	const handleAddProduct = async (e) => {
 		e.preventDefault();
+
 		const requiredInputs = [
 			'title',
 			'desc',
@@ -145,6 +166,7 @@ export default function NewProduct() {
 			);
 			return;
 		}
+
 		const discountComplete = isObjectComplete(inputs.discount);
 		const discountPartiallyFilled = isObjectPartiallyFilled(inputs.discount);
 		if (discountPartiallyFilled && !discountComplete) {
@@ -154,64 +176,64 @@ export default function NewProduct() {
 			);
 			return;
 		}
+
 		setLoading(true);
+
 		const minimumLoadingPromise = new Promise((resolve) =>
 			setTimeout(resolve, 1000),
 		);
+
 		try {
 			const storage = getStorage(app);
-			const uploadPromises =
-				inputs.type === 'variable'
-					? variants.flatMap((variant, index) => {
-							const variantImages = generatedVariants[index].images;
-							return variantImages.map((image) => {
-								const fileName = `${new Date().getTime()}_${
-									variant.key
-								}_${variant.value}_${image.name}`;
-								const storageRef = ref(storage, fileName);
-								return uploadBytesResumable(storageRef, image);
-							});
-					  })
-					: [];
-			const [uploadedVariants] = await Promise.all([
-				Promise.all(uploadPromises),
+			const uploadPromises = generatedVariants.flatMap((variant) =>
+				variant.images.map((image) => {
+					const fileName = `${new Date().getTime()}_${variant.key}_${
+						variant.value
+					}_${image.name}`;
+					const storageRef = ref(storage, fileName);
+					return uploadBytesResumable(storageRef, image);
+				}),
+			);
+
+			const uploadedVariants = await Promise.all([
+				...uploadPromises,
 				minimumLoadingPromise,
 			]);
 
 			const variantsData = await Promise.all(
-				uploadedVariants.map((uploadTask, index) => {
-					const variantKey = uploadTask.metadata.name.split('_')[1];
-					const variantValue = uploadTask.metadata.name.split('_')[2];
-					return getDownloadURL(uploadTask.ref).then((url) => ({
-						key: variantKey,
-						value: variantValue,
-						image: url,
-					}));
-				}),
+				uploadedVariants
+					.filter((uploadTask) => uploadTask !== undefined)
+					.map((uploadTask) => {
+						const variantKey = uploadTask.metadata.name.split('_')[1];
+						const variantValue = uploadTask.metadata.name.split('_')[2];
+						return getDownloadURL(uploadTask.ref).then((url) => ({
+							key: variantKey,
+							value: variantValue,
+							image: url,
+						}));
+					}),
 			);
 
-			const updatedGeneratedVariants = generatedVariants.map(
-				(variant, index) => {
-					const variantImages = variantsData
-						.filter(
-							(data) =>
-								data.key === variant.key &&
-								data.value === variant.value,
-						)
-						.map((data) => data.image);
+			const updatedGeneratedVariants = generatedVariants.map((variant) => {
+				const variantImages = variantsData
+					.filter(
+						(data) =>
+							data.key === variant.key && data.value === variant.value,
+					)
+					.map((data) => data.image);
 
-					return {
-						...variant,
-						images: variantImages,
-					};
-				},
-			);
+				return {
+					...variant,
+					images: variantImages,
+				};
+			});
 
 			const product = constructProduct(
 				inputs,
 				updatedGeneratedVariants,
 				supplierInfo,
 			);
+
 			swal({
 				title: 'Success',
 				text: 'Product added successfully',
@@ -219,6 +241,7 @@ export default function NewProduct() {
 				closeOnClickOutside: false,
 				closeOnEsc: false,
 			}).then(setLoading(false), resetAllForms);
+
 			await addProduct(product, dispatch);
 		} catch (error) {
 			showError('Error', error.message);
@@ -227,6 +250,37 @@ export default function NewProduct() {
 		}
 	};
 
+	// const constructProduct = (inputs, variants, supplierInfo) => {
+	// 	console.log('Variants:', variants);
+	// 	let productData = {
+	// 		type: inputs.type,
+	// 		...inputs,
+	// 		categories: inputs.categories.map(({ name, name_ar }) => ({
+	// 			name,
+	// 			name_ar,
+	// 		})),
+	// 		...(inputs.type === 'variable' && {
+	// 			variants: variants.map((variant) => ({
+	// 				key: variant.key,
+	// 				value: variant.value,
+	// 				quantity: variant.quantity,
+	// 				images: variant.images || [],
+	// 				price: variant.price,
+	// 				originalPrice: variant.originalPrice,
+	// 			})),
+	// 		}),
+	// 		...(inputs.type === 'simple' && {
+	// 			price: inputs.price,
+	// 			originalPrice: inputs.originalPrice,
+	// 		}),
+	// 		...(isObjectComplete(inputs.discount) && {
+	// 			discount: inputs.discount,
+	// 		}),
+	// 		...(isObjectComplete(inputs.promo) && { promo: inputs.promo }),
+	// 		supplierId: supplierInfo._id,
+	// 	};
+	// 	return productData;
+	// };
 	const constructProduct = (inputs, variants, supplierInfo) => {
 		let productData = {
 			type: inputs.type,
@@ -239,10 +293,16 @@ export default function NewProduct() {
 				variants: variants.map((variant) => ({
 					key: variant.key,
 					value: variant.value,
+					quantity: variant.quantity,
 					images: variant.images || [],
 					price: variant.price,
 					originalPrice: variant.originalPrice,
 				})),
+			}),
+			...(inputs.type === 'simple' && {
+				price: inputs.price,
+				originalPrice: inputs.originalPrice,
+				images: previewImages, // <-- Use previewImages instead of inputs.file
 			}),
 			...(isObjectComplete(inputs.discount) && {
 				discount: inputs.discount,
@@ -321,10 +381,13 @@ export default function NewProduct() {
 			};
 			keys.forEach((key, index) => {
 				variantObj[key] = combination[index];
+				variantObj.key = key;
+				variantObj.value = combination[index];
 			});
 			return variantObj;
 		});
 		setGeneratedVariants(newGeneratedVariants);
+		setExpandedVariants(newGeneratedVariants.map(() => true));
 	};
 
 	const removeGeneratedVariant = (index) => {
@@ -442,6 +505,33 @@ export default function NewProduct() {
 									/>
 								</div>
 							</div>
+							{inputs.type === 'simple' && (
+								<div className='form-section'>
+									<h2>Pricing</h2>
+									<div className='form-group'>
+										<label>Price $</label>
+										<input
+											name='price'
+											type='number'
+											min='0'
+											placeholder='Price'
+											value={inputs.price}
+											onChange={handleChange}
+										/>
+									</div>
+									<div className='form-group'>
+										<label>Original Price $</label>
+										<input
+											name='originalPrice'
+											type='number'
+											min='0'
+											placeholder='Original Price'
+											value={inputs.originalPrice}
+											onChange={handleChange}
+										/>
+									</div>
+								</div>
+							)}
 							<div className='form-section'>
 								<h2>Categories</h2>
 								{inputs.categories.map((category, index) => (
@@ -486,37 +576,41 @@ export default function NewProduct() {
 							<div className='form-section'>
 								<h2>Product Dimensions</h2>
 								<div className='form-group'>
-									<label>Width*</label>
+									<label>Width* CM</label>
 									<input
 										name='width'
+										min='0'
 										type='number'
 										placeholder='200'
 										onChange={handleChange}
 									/>
 								</div>
 								<div className='form-group'>
-									<label>Height*</label>
+									<label>Height* CM</label>
 									<input
 										name='height'
+										min='0'
 										type='number'
 										placeholder='200'
 										onChange={handleChange}
 									/>
 								</div>
 								<div className='form-group'>
-									<label>Length*</label>
+									<label>Length* CM</label>
 									<input
 										name='length'
+										min='0'
 										type='number'
 										placeholder='200'
 										onChange={handleChange}
 									/>
 								</div>
 								<div className='form-group'>
-									<label>Weight*</label>
+									<label>Weight* CM</label>
 									<input
 										name='weight'
 										type='number'
+										min='0'
 										placeholder='200'
 										onChange={handleChange}
 									/>
@@ -553,10 +647,11 @@ export default function NewProduct() {
 											/>
 										</div>
 										<div className='form-group'>
-											<label>Discount Amount</label>
+											<label>Discount Amount %</label>
 											<input
 												name='discount.discount'
 												type='number'
+												min='0'
 												onChange={handleChange}
 											/>
 										</div>
@@ -611,14 +706,21 @@ export default function NewProduct() {
 									<label>Images</label>
 									<input
 										type='file'
-										onChange={(e) =>
-											setInputs((prev) => ({
-												...prev,
-												file: e.target.files[0],
-											}))
-										}
+										onChange={handleImageChange}
 										multiple
 									/>
+									<div className='image-preview-grid'>
+										{previewImages.map((imageUrl, index) => (
+											<div
+												key={index}
+												className='image-preview-item'>
+												<img
+													src={imageUrl}
+													alt={`Preview ${index}`}
+												/>
+											</div>
+										))}
+									</div>
 									<div
 										className='file-dragndrop'
 										onDragEnter={() => setDraggedFile(true)}
@@ -630,9 +732,6 @@ export default function NewProduct() {
 										) : (
 											<>
 												<p>Drag and drop your files here or</p>
-												<label className='browse-button'>
-													Browse
-												</label>
 											</>
 										)}
 									</div>
@@ -698,7 +797,7 @@ export default function NewProduct() {
 											<div
 												key={index}
 												className='generated-variant-item'>
-												<div onClick={() => toggleVariant(index)}>
+												<div>
 													{Object.entries(variant).map(
 														([key, value]) => (
 															<div key={key}>
@@ -723,6 +822,7 @@ export default function NewProduct() {
 															<label>Quantity</label>
 															<input
 																type='number'
+																min='0'
 																placeholder='Quantity'
 																value={variant.quantity}
 																onChange={(e) => {
@@ -730,7 +830,10 @@ export default function NewProduct() {
 																		[...generatedVariants];
 																	newGeneratedVariants[
 																		index
-																	].quantity = e.target.value;
+																	].quantity = parseInt(
+																		e.target.value,
+																	); // Convert to integer
+
 																	setGeneratedVariants(
 																		newGeneratedVariants,
 																	);
@@ -757,9 +860,10 @@ export default function NewProduct() {
 															/>
 														</div>
 														<div className='form-group'>
-															<label>Price</label>
+															<label>Price $</label>
 															<input
 																type='number'
+																min='0'
 																placeholder='Price'
 																value={variant.price}
 																onChange={(e) => {
@@ -775,9 +879,10 @@ export default function NewProduct() {
 															/>
 														</div>
 														<div className='form-group'>
-															<label>Original Price</label>
+															<label>Original Price $</label>
 															<input
 																type='number'
+																min='0'
 																placeholder='Original Price'
 																value={variant.originalPrice}
 																onChange={(e) => {

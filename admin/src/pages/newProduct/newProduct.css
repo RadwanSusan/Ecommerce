@@ -101,6 +101,27 @@
 .browse-button:hover {
 	transform: scale(1.1);
 }
+.image-preview-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+	grid-gap: 10px;
+	margin-top: 10px;
+}
+
+.image-preview-item {
+	position: relative;
+	width: 100%;
+	padding-top: 100%;
+}
+
+.image-preview-item img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
 
 .generated-variants {
 	margin-top: 20px;

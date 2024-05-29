@@ -16,6 +16,10 @@ const ProductSchema = new mongoose.Schema({
 	height: { type: Number, required: true },
 	length: { type: Number, required: true },
 	weight: { type: Number, required: true },
+	price: { type: Number },
+	originalPrice: { type: Number },
+	images: [{ type: String }], // Include this field
+
 	variants: [
 		{
 			key: { type: String },

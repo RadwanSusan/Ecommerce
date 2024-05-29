@@ -5,18 +5,31 @@ router.post('/', async (req, res) => {
 	const newProduct = new Product({
 		...req.body,
 		supplier: req.body.supplierId,
+		...(req.body.type === 'simple' && {
+			price: req.body.price,
+			originalPrice: req.body.originalPrice,
+			images: req.body.images,
+		}),
 		variants: variants.map((variant) => ({
 			...variant,
 			key: variant.key,
 			value: variant.value,
 			price: variant.price,
 			originalPrice: variant.originalPrice,
+			quantity: variant.quantity,
 			images: variant.images || [],
 		})),
 	});
+	console.log('New Product:', newProduct); // Add this line
 	try {
 		const savedProduct = await newProduct.save();
-		res.status(201).json(savedProduct);
+		// res.status(201).json(savedProduct);
+		res.status(201).json({
+			...savedProduct._doc,
+			price: savedProduct.price,
+			originalPrice: savedProduct.originalPrice,
+			images: savedProduct.images,
+		});
 	} catch (err) {
 		res.status(500).json(err);
 		console.error(err);
