@@ -174,10 +174,19 @@ const Product = ({ item }) => {
 		return null;
 	}
 
+	const getProductImage = () => {
+		if (item.type === 'simple' && item.images && item.images.length > 0) {
+			return item.images[0];
+		} else if (item.type === 'variable') {
+			return item.variants[0].images[0];
+		}
+		return '';
+	};
+
 	return (
 		<Container>
 			<Circle />
-			<Image src={item.variants[0].img[0]} />
+			<Image src={getProductImage()} />
 
 			<Info>
 				<Icon>

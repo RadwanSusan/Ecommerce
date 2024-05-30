@@ -115,6 +115,8 @@ export const addProduct = async (product, dispatch) => {
 		const res = await userRequest.post(`/products`, product);
 		dispatch(addProductSuccess(res.data));
 	} catch (err) {
+		res.status(500).json(err.message); // Send the error message as the response
+
 		dispatch(addProductFailure());
 	}
 };

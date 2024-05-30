@@ -16,29 +16,39 @@ import swal from 'sweetalert';
 import { selectCurrentUserId } from '../redux/userRedux';
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 import { LanguageContext } from '../components/LanguageContext';
+
 const Container = styled.div`
 	user-select: none;
 `;
+
 const Wrapper = styled.div`
 	padding: 50px;
 	display: flex;
 	${mobile({ padding: '10px', flexDirection: 'column' })}
 	${(props) => props.language === 'ar' && 'flex-direction: row-reverse'}
 `;
+
 const ImgContainer = styled.div`
 	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 `;
+
 const Image = styled.img`
-	width: 90%;
-	height: 70vh;
-	object-fit: cover;
-	${mobile({ height: '40vh' })}
-`;
-const Image2 = styled.img`
-	height: 650px;
-	width: 900px;
+	width: 100%;
+	height: 500px;
 	object-fit: contain;
+	${mobile({ height: '300px' })}
 `;
+
+const CenterIcons = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 20px;
+`;
+
 const InfoContainer = styled.div`
 	flex: 1;
 	padding: 0px 50px;
@@ -47,88 +57,93 @@ const InfoContainer = styled.div`
 		props.language === 'ar' &&
 		`
     text-align: -webkit-right;
-
   `}
 `;
+
 const Title = styled.h1`
 	font-weight: 200;
+	margin-bottom: 20px;
 `;
+
 const Desc = styled.p`
 	margin: 20px 0px;
 `;
+
+const PriceContainer = styled.div`
+	display: flex;
+	align-items: center;
+	margin-bottom: 20px;
+`;
+
 const Price = styled.span`
 	font-weight: 100;
 	font-size: 40px;
+	margin-right: 20px;
+
+	&.original-price {
+		text-decoration: line-through;
+		color: #999;
+	}
 `;
+
 const FilterContainer = styled.div`
-	width: 50%;
-	margin: 30px 0px;
-	display: flex;
-	justify-content: space-between;
-	${mobile({ width: '100%' })}
+	margin-bottom: 30px;
 `;
+
 const Filter = styled.div`
 	display: flex;
 	align-items: center;
+	margin-bottom: 10px;
 	flex-direction: ${(props) =>
 		props.language === 'ar' ? 'row-reverse' : 'row'};
 `;
+
 const FilterTitle = styled.span`
 	font-size: 20px;
 	font-weight: 200;
+	margin-right: 10px;
 `;
-const FilterColor = styled.div`
-	width: 20px;
-	height: 20px;
-	border-radius: 50%;
-	background-color: ${(props) => props.color};
+
+const FilterVariants = styled.div`
+	display: flex;
+	flex-wrap: wrap;
+`;
+
+const FilterVariant = styled.div`
+	padding: 10px 15px;
+	margin-right: 10px;
+	margin-bottom: 10px;
 	cursor: pointer;
-	margin-left: 10px;
-	border: 1px solid #000;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: ${(props) => (props.selected ? '#f0f0f0' : 'transparent')};
+	transition: background-color 0.3s ease;
+
 	&:hover {
-		outline: 3px solid #4e3f34;
+		background-color: #f0f0f0;
 	}
-	> * {
-		&:first-child {
-			outline: 3px solid #4e3f34;
-		}
-	}
+
 	${(props) =>
 		props.language === 'ar' &&
 		`
-    margin-right: 10px;
-    margin-left: 0;
+    margin-left: 10px;
+    margin-right: 0;
   `}
 `;
-const FilterSize = styled.select`
-	margin-left: 10px;
-	padding: 5px;
-	${(props) =>
-		props.language === 'ar' &&
-		`
-	margin-right: 10px;
-	margin-left: 0;
- `}
-`;
-const FilterSizeOption = styled.option``;
+
 const AddContainer = styled.div`
-	width: 50%;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	${mobile({ width: '100%' })}
+	${mobile({ flexDirection: 'column' })}
 `;
+
 const AmountContainer = styled.div`
 	display: flex;
 	align-items: center;
 	font-weight: 700;
 `;
-const CenterIcons = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin: 10px 0px;
-`;
+
 const Amount = styled.span`
 	width: 30px;
 	height: 30px;
@@ -137,24 +152,33 @@ const Amount = styled.span`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin: 0px 5px;
+	margin: 0px 10px;
 `;
+
 const Button = styled.button`
 	padding: 15px;
 	border: 2px solid teal;
 	background-color: white;
 	cursor: pointer;
 	font-weight: 500;
+	transition: background-color 0.3s ease;
+
 	&:hover {
 		background-color: #f8f4f4;
 	}
+
+	&:disabled {
+		cursor: not-allowed;
+		opacity: 0.7;
+	}
 `;
+
 const cartSelector = (state) => state.cart;
+
 const Product = () => {
 	const [product, setProduct] = useState({});
 	const [quantity, setQuantity] = useState(1);
-	const [color, setColor] = useState('');
-	const [size, setSize] = useState('');
+	const [variant, setVariant] = useState(null);
 	const dispatch = useDispatch();
 	const location = useLocation();
 	const id = location.pathname.split('/')[2];
@@ -163,14 +187,10 @@ const Product = () => {
 	const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 	const cartProducts = useSelector(cartSelector);
 	const [currentIndex, setCurrentIndex] = useState(0);
-	const [availableSizes, setAvailableSizes] = useState([]);
-	const [availableColors, setAvailableColors] = useState([]);
-	const [selectedVariant, setSelectedVariant] = useState(null);
-	const [availableQuantityAfterUpdate, setavailableQuantityAfterUpdate] =
-		useState(selectedVariant?.quantity);
+	const [availableQuantityAfterUpdate, setAvailableQuantityAfterUpdate] =
+		useState(0);
 	const { language } = useContext(LanguageContext);
 	const { dictionary } = useContext(LanguageContext);
-	const [imageSrc, setImageSrc] = useState(null);
 	const [productSupplier, setProductSupplier] = useState(null);
 
 	useEffect(() => {
@@ -178,6 +198,7 @@ const Product = () => {
 			setWishlistLogin(true);
 		}
 	}, [userId]);
+
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, []);
@@ -190,21 +211,9 @@ const Product = () => {
 					res = await publicRequest.get('/offer/find/' + id);
 				}
 				setProduct(res.data);
-				const colors = Array.from(
-					new Set(res.data.variants.flatMap((variant) => variant.color)),
-				);
-				setAvailableColors(colors);
-				const sizes = Array.from(
-					new Set(res.data.variants.flatMap((variant) => variant.size)),
-				);
-				setAvailableSizes(sizes);
-				setImageSrc(res.data.variants[0].img);
-				setSelectedVariant(
-					res.data.variants[0].size == '' ||
-						res.data.variants[0].color == ''
-						? res.data.variants[0]
-						: res.data.variants[1],
-				);
+				if (res.data.type === 'variable') {
+					setVariant(res.data.variants[0]);
+				}
 				const supplierRes = await publicRequest.get(
 					`/suppliers/${res.data.supplier}`,
 				);
@@ -213,71 +222,39 @@ const Product = () => {
 		};
 		getProduct();
 	}, [id]);
-	document.querySelectorAll('.Color').forEach((item) =>
-		item.addEventListener('click', (e) => {
-			document.querySelectorAll('.Color').forEach((item2) => {
-				item2.style.outline = 'none';
-			});
-			e.target.style.outline = '3px solid #4e3f34';
-		}),
-	);
 
 	const handleQuantity = (type) => {
-		if (
-			productSupplier &&
-			(productSupplier.role === 'supplierType1' ||
-				productSupplier.role === 'supplierType2')
-		) {
-			const cartProduct = mergedCart.find((item) =>
-				item.variants.some((variant) => variant.size.includes(size)),
-			);
-			const cartQuantity = cartProduct ? cartProduct.quantity : 0;
-			const availableQuantity = selectedVariant
-				? selectedVariant.quantity - cartQuantity
-				: 0;
-			if (type === 'dec') {
-				quantity > 1 && setQuantity(quantity - 1);
-			} else {
-				if (quantity >= availableQuantity) {
-					swal(
-						'Info',
-						'You have exceeded the number of available products!',
-						'info',
-					);
-				} else {
-					setQuantity(quantity + 1);
-				}
-			}
+		const cartProduct = mergedCart.find(
+			(item) =>
+				item._id === product._id &&
+				item.selectedVariant?._id === variant?._id,
+		);
+		const cartQuantity = cartProduct ? cartProduct.quantity : 0;
+		const availableQuantity =
+			variant?.quantity !== undefined
+				? variant.quantity - cartQuantity
+				: product.quantity - cartQuantity;
+
+		if (type === 'dec') {
+			quantity > 1 && setQuantity(quantity - 1);
 		} else {
-			const cartProduct = mergedCart.find(
-				(item) =>
-					item._id === product._id &&
-					item.selectedVariant._id === selectedVariant._id,
-			);
-			const cartQuantity = cartProduct ? cartProduct.quantity : 0;
-			const availableQuantity = selectedVariant
-				? selectedVariant.quantity - cartQuantity
-				: 0;
-			if (type === 'dec') {
-				quantity > 1 && setQuantity(quantity - 1);
+			if (quantity >= availableQuantity) {
+				swal(
+					'Info',
+					'You have exceeded the number of available products!',
+					'info',
+				);
 			} else {
-				if (quantity >= availableQuantity) {
-					swal(
-						'Info',
-						'You have exceeded the number of available products!',
-						'info',
-					);
-				} else {
-					setQuantity(quantity + 1);
-				}
+				setQuantity(quantity + 1);
 			}
 		}
 	};
+
 	const mergedCart = cartProducts.products.reduce((acc, curr) => {
 		const existingItem = acc.find(
 			(item) =>
 				item._id === curr._id &&
-				item.selectedVariant._id === curr.selectedVariant._id,
+				item.selectedVariant?._id === curr.selectedVariant?._id,
 		);
 		if (existingItem) {
 			existingItem.quantity += curr.quantity;
@@ -288,119 +265,74 @@ const Product = () => {
 	}, []);
 
 	const checkAvailability = useCallback(() => {
-		if (selectedVariant && mergedCart) {
-			if (
-				productSupplier &&
-				(productSupplier.role === 'supplierType1' ||
-					productSupplier.role === 'supplierType2')
-			) {
-				const cartProduct = mergedCart.find((item) =>
-					item.variants.some((variant) => variant.size.includes(size)),
-				);
-				const cartQuantity = cartProduct ? cartProduct.quantity : 0;
-				const availableQuantity = selectedVariant.quantity - cartQuantity;
-				setavailableQuantityAfterUpdate(availableQuantity);
-				setIsButtonDisabled(availableQuantity <= 0);
-			} else {
-				const cartProduct = mergedCart.find(
-					(item) =>
-						item._id === product._id &&
-						item.selectedVariant._id === selectedVariant._id,
-				);
-				const cartQuantity = cartProduct ? cartProduct.quantity : 0;
-				const availableQuantity = selectedVariant.quantity - cartQuantity;
-				setavailableQuantityAfterUpdate(availableQuantity);
-				setIsButtonDisabled(availableQuantity <= 0);
-			}
+		if ((variant || product.type === 'simple') && mergedCart) {
+			const cartProduct = mergedCart.find(
+				(item) =>
+					item._id === product._id &&
+					item.selectedVariant?._id === variant?._id,
+			);
+			const cartQuantity = cartProduct ? cartProduct.quantity : 0;
+			const availableQuantity =
+				variant?.quantity !== undefined
+					? variant.quantity - cartQuantity
+					: product.quantity - cartQuantity;
+			setAvailableQuantityAfterUpdate(availableQuantity);
+			setIsButtonDisabled(availableQuantity <= 0);
 		}
-	}, [mergedCart, product._id, selectedVariant, size, productSupplier]);
+	}, [mergedCart, product._id, variant, product.type, product.quantity]);
+
 	useEffect(() => {
 		checkAvailability();
 	}, [
 		mergedCart,
 		product._id,
-		selectedVariant,
+		variant,
 		quantity,
 		checkAvailability,
 		availableQuantityAfterUpdate,
+		product.type,
+		product.quantity,
 	]);
+
 	useEffect(() => {
 		const cartProduct = mergedCart.find(
 			(item) =>
 				item?._id === product?._id &&
-				item?.selectedVariant?._id === selectedVariant?._id,
+				item?.selectedVariant?._id === variant?._id,
 		);
 		if (cartProduct) {
-			setavailableQuantityAfterUpdate(
-				selectedVariant.quantity - cartProduct.quantity,
+			setAvailableQuantityAfterUpdate(
+				variant?.quantity !== undefined
+					? variant.quantity - cartProduct.quantity
+					: product.quantity - cartProduct.quantity,
 			);
 		} else {
-			setavailableQuantityAfterUpdate(
-				selectedVariant ? selectedVariant.quantity : 0,
+			setAvailableQuantityAfterUpdate(
+				variant?.quantity !== undefined
+					? variant.quantity
+					: product.quantity,
 			);
 		}
-	}, [selectedVariant, mergedCart, product._id]);
+	}, [variant, mergedCart, product._id, product.quantity]);
 
-	const setColor2 = (color) => {
-		if (
-			supplierInfo.role !== 'supplierType1' &&
-			supplierInfo.role !== 'supplierType2'
-		) {
-			const variants = product.variants.filter((variant) =>
-				variant.color.includes(color),
-			);
-			const sizes = variants.flatMap((variant) => variant.size);
-			setAvailableSizes(sizes);
-			const newSelectedVariant = variants[0];
-			setSelectedVariant(newSelectedVariant);
-			setQuantity(1);
-			setColor(color);
-			const defaultSize = sizes[0];
-			setSize(defaultSize);
-			const selectedVariant = variants.find((variant) =>
-				variant.size.includes(defaultSize),
-			);
-			const cartProduct = mergedCart.find(
-				(item) =>
-					item._id === product._id &&
-					item.selectedVariant._id === newSelectedVariant._id,
-			);
-			if (cartProduct) {
-				setavailableQuantityAfterUpdate(
-					newSelectedVariant.quantity - cartProduct.quantity,
-				);
-			} else {
-				setavailableQuantityAfterUpdate(
-					newSelectedVariant ? newSelectedVariant.quantity : 0,
-				);
-			}
-			setImageSrc(newSelectedVariant.img);
-			checkAvailability();
-		}
-	};
-	const setSize2 = (size) => {
-		const variants = product.variants;
-		const colors = [...new Set(variants.flatMap((variant) => variant.color))];
-		setAvailableColors(colors);
-		setSelectedVariant(variants[0]);
+	const setVariant2 = (selectedVariant) => {
+		setVariant(selectedVariant);
 		setQuantity(1);
-		setSize(size);
 		const cartProduct = mergedCart.find(
 			(item) =>
 				item._id === product._id &&
-				item.selectedVariant._id === variants[0]._id,
+				item.selectedVariant._id === selectedVariant._id,
 		);
 		if (cartProduct) {
-			setavailableQuantityAfterUpdate(
-				variants[0].quantity - cartProduct.quantity,
+			setAvailableQuantityAfterUpdate(
+				selectedVariant.quantity - cartProduct.quantity,
 			);
 		} else {
-			setavailableQuantityAfterUpdate(
-				variants[0] ? variants[0].quantity : 0,
-			);
+			setAvailableQuantityAfterUpdate(selectedVariant.quantity);
 		}
 		checkAvailability();
 	};
+
 	function formatPrice(price, language) {
 		return new Intl.NumberFormat(language === 'ar' ? 'ar-EG' : 'en-US', {
 			style: 'decimal',
@@ -408,8 +340,9 @@ const Product = () => {
 			maximumFractionDigits: 0,
 		}).format(price);
 	}
+
 	const handleClick = () => {
-		if (!selectedVariant) {
+		if (product.type === 'variable' && !variant) {
 			swal('Please select a variant');
 			return;
 		}
@@ -427,82 +360,28 @@ const Product = () => {
 				}
 			});
 		} else {
-			dispatch(
-				addProduct({
-					...product,
-					price: product.offerPrice || product.price,
-					quantity: quantity,
-					selectedVariant,
-				}),
-			);
+			const productToAdd = {
+				...product,
+				price: product.discount ? product.discount.discount : product.price,
+				quantity: quantity,
+				selectedVariant: variant,
+			};
+			dispatch(addProduct(productToAdd));
 			setQuantity(1);
-			setavailableQuantityAfterUpdate(selectedVariant.quantity - quantity);
+			setAvailableQuantityAfterUpdate(
+				variant?.quantity !== undefined
+					? variant.quantity - quantity
+					: product.quantity - quantity,
+			);
 			swal('Success', 'Product added to cart!', 'success');
 			checkAvailability();
 		}
 	};
-	const findSelectedVariant = () => {
-		if (product && product.variants) {
-			if (availableSizes.length === 1 && availableColors.length === 1) {
-				const selectedVariant2 = product.variants.find(
-					(variant) =>
-						variant.size.includes(availableSizes[0]) &&
-						variant.color.includes(availableColors[0]),
-				);
-				if (selectedVariant2 && selectedVariant2.size !== '') {
-					setSelectedVariant(selectedVariant2);
-				} else {
-					const variantWithSize = product.variants.find(
-						(variant) => variant.size !== '',
-					);
-					if (variantWithSize) {
-						setSelectedVariant(variantWithSize);
-					} else {
-						setSelectedVariant(null);
-					}
-				}
-			} else {
-				const selectedVariant2 = product.variants.find(
-					(variant) =>
-						variant.size.includes(size) && variant.color.includes(color),
-				);
-				if (
-					selectedVariant2 &&
-					selectedVariant2.size !== '' &&
-					selectedVariant2.color !== '' &&
-					selectedVariant2.quantity !== null
-				) {
-					setSelectedVariant(selectedVariant2);
-				} else {
-					const variantWithSize = product.variants.find(
-						(variant) =>
-							variant.size !== '' &&
-							variant.color !== '' &&
-							variant.quantity !== null,
-					);
-					if (variantWithSize) {
-						setSelectedVariant(variantWithSize);
-					} else {
-						setSelectedVariant(null);
-					}
-				}
-			}
-		}
-	};
+
 	function formatNumberToArabic(number) {
 		return new Intl.NumberFormat('ar-EG').format(number);
 	}
-	useEffect(() => {
-		findSelectedVariant();
-	}, [
-		size,
-		color,
-		product.variants,
-		checkAvailability,
-		availableQuantityAfterUpdate,
-		setColor,
-		setColor2,
-	]);
+
 	return (
 		<Container>
 			<Announcement />
@@ -510,23 +389,77 @@ const Product = () => {
 			<NavbarBottom />
 			<Wrapper language={language}>
 				<ImgContainer>
-					{Product ? (
+					{variant ? (
 						<>
-							<Image2
-								src={imageSrc}
+							<Image
+								src={variant.images[currentIndex]}
 								alt={`product-${currentIndex}`}
 							/>
 							<CenterIcons>
-								<button style={{ marginRight: '10px' }}>
+								<button
+									style={{ marginRight: '10px' }}
+									onClick={() =>
+										setCurrentIndex((prevIndex) =>
+											prevIndex === 0
+												? variant.images.length - 1
+												: prevIndex - 1,
+										)
+									}>
 									<FaArrowLeft />
 								</button>
-								<button style={{ marginLeft: '10px' }}>
+								<button
+									style={{ marginLeft: '10px' }}
+									onClick={() =>
+										setCurrentIndex((prevIndex) =>
+											prevIndex === variant.images.length - 1
+												? 0
+												: prevIndex + 1,
+										)
+									}>
 									<FaArrowRight />
 								</button>
 							</CenterIcons>
 						</>
 					) : (
-						<p>No images available</p>
+						<ImgContainer>
+							{product.images && product.images.length > 0 ? (
+								<>
+									<Image
+										src={product.images[0]}
+										alt='product'
+									/>
+									{product.images.length > 1 && (
+										<CenterIcons>
+											<button
+												style={{ marginRight: '10px' }}
+												onClick={() =>
+													setCurrentIndex((prevIndex) =>
+														prevIndex === 0
+															? product.images.length - 1
+															: prevIndex - 1,
+													)
+												}>
+												<FaArrowLeft />
+											</button>
+											<button
+												style={{ marginLeft: '10px' }}
+												onClick={() =>
+													setCurrentIndex((prevIndex) =>
+														prevIndex ===
+														product.images.length - 1
+															? 0
+															: prevIndex + 1,
+													)
+												}>
+												<FaArrowRight />
+											</button>
+										</CenterIcons>
+									)}
+								</>
+							) : (
+								<p>No images available</p>
+							)}
+						</ImgContainer>
 					)}
 				</ImgContainer>
 				<InfoContainer language={language}>
@@ -534,59 +467,58 @@ const Product = () => {
 						{language === 'ar' ? product.title_ar : product.title}
 					</Title>
 					<Desc>{language === 'ar' ? product.desc_ar : product.desc}</Desc>
-					{product.offerPrice !== undefined &&
-					product.offerPrice !== null &&
-					product.offerPrice !== '' ? (
-						<>
-							<Price className='price55'> {product.price}</Price>
-						</>
-					) : (
+					<PriceContainer>
 						<Price>
-							{language === 'ar'
+							{variant
+								? language === 'ar'
+									? `${formatPrice(variant.price, language)} $`
+									: `$ ${formatPrice(variant.price, language)}`
+								: language === 'ar'
 								? `${formatPrice(product.price, language)} $`
 								: `$ ${formatPrice(product.price, language)}`}
 						</Price>
-					)}
+					</PriceContainer>
 					<FilterContainer>
-						{productSupplier &&
-							productSupplier.role !== 'supplierType1' &&
-							productSupplier.role !== 'supplierType2' && (
-								<Filter language={language}>
-									<FilterTitle language={language}>
-										{dictionary.color}
-									</FilterTitle>
-									{availableColors.map((c) => (
-										<FilterColor
-											className='Color'
-											color={c}
-											key={c}
-											language={language}
-											onClick={() => setColor2(c)}
-										/>
-									))}
-								</Filter>
-							)}
-						<Filter language={language}>
-							<FilterTitle language={language}>
-								{dictionary.size}
-							</FilterTitle>
-							<FilterSize
-								language={language}
-								onChange={(e) => setSize2(e.target.value)}>
-								{availableSizes.map(
-									(s) =>
-										s && (
-											<FilterSizeOption
-												key={s}
-												value={s}>
-												{language === 'ar'
-													? dictionary.sizes[s] || s
-													: s}
-											</FilterSizeOption>
-										),
+						{product.variants && (
+							<>
+								{[...new Set(product.variants.map((v) => v.key))].map(
+									(key) => (
+										<Filter
+											key={key}
+											language={language}>
+											<FilterTitle>{key}:</FilterTitle>
+											<FilterVariants>
+												{[
+													...new Set(
+														product.variants
+															.filter((v) => v.key === key)
+															.map((v) => v.value),
+													),
+												].map((value) => (
+													<FilterVariant
+														key={value}
+														selected={
+															variant && variant.value === value
+														}
+														onClick={() =>
+															setVariant2(
+																product.variants.find(
+																	(v) =>
+																		v.key === key &&
+																		v.value === value,
+																),
+															)
+														}
+														language={language}>
+														{value}
+													</FilterVariant>
+												))}
+											</FilterVariants>
+										</Filter>
+									),
 								)}
-							</FilterSize>
-						</Filter>
+							</>
+						)}
 					</FilterContainer>
 					<AddContainer>
 						<AmountContainer>
@@ -612,4 +544,5 @@ const Product = () => {
 		</Container>
 	);
 };
+
 export default Product;
