@@ -175,13 +175,11 @@ const Button1 = styled.button`
 	border-radius: 10%;
 	${mobile({ width: '100%' })};
 `;
+
 const Cart = () => {
 	const cart = useSelector((state) => state.cart);
 	const [product, setProduct] = useState({});
 	const dispatch = useDispatch();
-	const [quantity, setQuantity] = useState(1);
-	let [productGet, setProductGet] = useState({});
-	let [offerGet, setOfferGet] = useState({});
 	const [stripeToken, setStripeToken] = useState(null);
 	const [AllProducts, setAllProducts] = useState([]);
 	const [AllOffers, setAllOffers] = useState([]);
@@ -189,32 +187,29 @@ const Cart = () => {
 	const { language } = useContext(LanguageContext);
 	const { dictionary } = useContext(LanguageContext);
 	const sizesTranslation = dictionary['sizes'];
+
 	const onToken = (token) => {
 		setStripeToken(token);
-		const address = {
-			line1: token.card.address_line1,
-			city: token.card.address_city,
-			state: token.card.address_state,
-			postalCode: token.card.address_zip,
-			country: token.card.address_country,
-		};
 	};
+
 	let userId = localStorage.getItem('persist:root');
 	userId = JSON.parse(userId);
 	userId = userId.user;
 	userId = JSON.parse(userId);
 	userId = userId.currentUser._id;
+
 	let email = localStorage.getItem('persist:root');
 	email = JSON.parse(email);
 	email = email.user;
 	email = JSON.parse(email);
 	email = email.currentUser.email;
+
 	const mergedCart = cart.products.reduce((acc, curr) => {
 		const existingItem = acc.find(
 			(item) =>
 				item?._id === curr?._id &&
-				item.selectedVariant?.color === curr.selectedVariant?.color &&
-				item.selectedVariant?.size === curr.selectedVariant?.size,
+				JSON.stringify(item.selectedVariant) ===
+					JSON.stringify(curr.selectedVariant),
 		);
 		if (existingItem) {
 			existingItem.quantity += curr.quantity;
@@ -223,12 +218,12 @@ const Cart = () => {
 		}
 		return acc;
 	}, []);
+
 	useEffect(() => {
 		const getAllProducts = async () => {
 			try {
 				const res = await userRequest.get('/products');
 				setAllProducts(res.data);
-				setProductGet(res.data);
 			} catch (err) {
 				console.error('Error fetching data:', err);
 			}
@@ -238,13 +233,13 @@ const Cart = () => {
 			try {
 				const res = await userRequest.get('/offer');
 				setAllOffers(res.data);
-				setOfferGet(res.data);
 			} catch (err) {
 				console.error('Error fetching data:', err);
 			}
 		};
 		getAllOffers();
 	}, []);
+
 	useEffect(() => {
 		const makeRequest = async () => {
 			if (cart.total * 100 === 0) {
@@ -339,47 +334,148 @@ const Cart = () => {
 		};
 		stripeToken && makeRequest();
 	}, [stripeToken, cart.total, history]);
+
 	function formatNumberToArabic(number) {
 		return new Intl.NumberFormat('ar-EG').format(number);
 	}
-	const handleQuantity = (type, id, selectedVariantId) => {
-		const productFind = productGet.find((item) => item._id === id);
-		const productFindSelected = productFind.variants.find(
-			(item) => item._id === selectedVariantId,
+
+	// const handleQuantity = (type, productId, variantId) => {
+	// 	const product = cart.products.find(
+	// 		(item) =>
+	// 			item._id === productId && item.selectedVariant._id === variantId,
+	// 	);
+
+	// 	if (type === 'dec') {
+	// 		if (product.quantity === 1) {
+	// 			dispatch(removeProduct({ productId, variantId }));
+	// 			swal(
+	// 				'Info',
+	// 				language === 'ar'
+	// 					? 'تمت العملية بنجاح'
+	// 					: 'Product removed successfully',
+	// 				'info',
+	// 			);
+	// 		} else {
+	// 			dispatch(decrease({ productId, variantId }));
+	// 		}
+	// 	} else {
+	// 		const productInAllProducts = AllProducts.find(
+	// 			(p) => p._id === productId,
+	// 		);
+	// 		const productInAllOffers = AllOffers.find((o) => o._id === productId);
+
+	// 		if (productInAllProducts) {
+	// 			const selectedVariant = productInAllProducts.variants.find(
+	// 				(variant) =>
+	// 					JSON.stringify(variant.keyValue) ===
+	// 					JSON.stringify(product.selectedVariant.keyValue),
+	// 			);
+	// 			if (selectedVariant) {
+	// 				dispatch(
+	// 					increase({
+	// 						productId,
+	// 						variantId,
+	// 						maxQuantity: selectedVariant.quantity,
+	// 					}),
+	// 				);
+	// 			}
+	// 		} else if (productInAllOffers) {
+	// 			dispatch(
+	// 				increase({
+	// 					productId,
+	// 					variantId,
+	// 					maxQuantity: productInAllOffers.quantity,
+	// 				}),
+	// 			);
+	// 		}
+	// 	}
+	// };
+	const handleQuantity = (type, productId, variantId) => {
+		const product = cart.products.find(
+			(item) =>
+				item._id === productId && item.selectedVariant._id === variantId,
 		);
-		const updatedQuantity = cart.products.find(
-			(item) => item.selectedVariant._id === selectedVariantId,
-		);
+
 		if (type === 'dec') {
-			if (updatedQuantity.quantity <= 1) {
-				dispatch(reset(selectedVariantId));
+			if (product.quantity === 1) {
+				// dispatch(removeProduct({ productId, variantId }));
+				dispatch(
+					removeProduct({
+						productId: product._id,
+						variantId: product.selectedVariant._id,
+					}),
+				);
+
 				swal(
 					'Info',
 					language === 'ar'
-						? 'الحد الادنى للكمية هو 1'
-						: 'The minimum quantity is 1',
+						? 'تمت العملية بنجاح'
+						: 'Product removed successfully',
 					'info',
 				);
 			} else {
-				setQuantity(updatedQuantity.quantity - 1);
+				dispatch(decrease({ productId, variantId }));
 			}
 		} else {
-			if (updatedQuantity.quantity >= productFindSelected.quantity) {
-				dispatch(reset(selectedVariantId));
-				swal(
-					'Info',
-					language === 'ar'
-						? 'لقد تجاوزت الحد الاقصى للكمية'
-						: 'You have exceeded the number of available products!, the quantity will be reset',
-					'info',
+			const productInAllProducts = AllProducts.find(
+				(p) => p._id === productId,
+			);
+			const productInAllOffers = AllOffers.find((o) => o._id === productId);
+
+			if (productInAllProducts) {
+				const selectedVariant = productInAllProducts.variants.find(
+					(variant) =>
+						JSON.stringify(variant.keyValue) ===
+						JSON.stringify(product.selectedVariant.keyValue),
 				);
+				if (selectedVariant) {
+					if (product.quantity < selectedVariant.quantity) {
+						dispatch(
+							increase({
+								productId,
+								variantId,
+								maxQuantity: selectedVariant.quantity,
+							}),
+						);
+					} else {
+						swal(
+							'Info',
+							language === 'ar'
+								? 'لا يمكنك زيادة الكمية أكثر من هذا'
+								: 'You cannot increase the quantity beyond this limit',
+							'info',
+						);
+					}
+				}
+			} else if (productInAllOffers) {
+				if (product.quantity < productInAllOffers.quantity) {
+					dispatch(
+						increase({
+							productId,
+							variantId,
+							maxQuantity: productInAllOffers.quantity,
+						}),
+					);
+				} else {
+					swal(
+						'Info',
+						language === 'ar'
+							? 'لا يمكنك زيادة الكمية أكثر من هذا'
+							: 'You cannot increase the quantity beyond this limit',
+						'info',
+					);
+				}
 			}
 		}
 	};
+
 	const [orderHave, setOrderHave] = useState([]);
+	const [matchedOrders, setMatchedOrders] = useState([]);
+
 	useEffect(() => {
-		dispatch(calc({ products: cart.products }));
+		dispatch(calc());
 	}, [cart.products]);
+
 	useEffect(() => {
 		const getOrders = async () => {
 			try {
@@ -391,7 +487,7 @@ const Cart = () => {
 		};
 		getOrders();
 	}, []);
-	const [matchedOrders, setMatchedOrders] = useState([]);
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -422,6 +518,7 @@ const Cart = () => {
 		};
 		fetchData();
 	}, []);
+
 	return (
 		<Container>
 			<Announcement />
@@ -453,9 +550,18 @@ const Cart = () => {
 							<div>{dictionary.cart['No products in the cart']}</div>
 						) : (
 							mergedCart.map((product) => (
-								<Product language={language}>
+								<Product
+									language={language}
+									key={product.selectedVariant._id}>
 									<ProductDetail language={language}>
-										<Image src={product.selectedVariant?.img[0]} />
+										<Image
+											src={
+												product.selectedVariant &&
+												product.selectedVariant.images
+													? product.selectedVariant.images[0]
+													: ''
+											}
+										/>
 										<Details language={language}>
 											<ProductName>
 												<b>{dictionary.cart['Product:']}</b>{' '}
@@ -463,17 +569,13 @@ const Cart = () => {
 													? product.title
 													: product.title_ar}
 											</ProductName>
-											<ProductColor
-												color={product.selectedVariant?.color}
-											/>
-											<ProductSize>
-												<b>{dictionary.cart['Size:']}</b>{' '}
-												{
-													sizesTranslation[
-														product.selectedVariant?.size
-													]
-												}
-											</ProductSize>
+											{product.selectedVariant.keyValue.map(
+												(item) => (
+													<ProductSize key={item._id}>
+														<b>{item.key}:</b> {item.value}
+													</ProductSize>
+												),
+											)}
 											<ProductSize>
 												<Button1
 													onClick={() => {
@@ -484,6 +586,7 @@ const Cart = () => {
 																	product.selectedVariant._id,
 															}),
 														);
+
 														swal(
 															'Info',
 															language === 'ar'
@@ -501,16 +604,13 @@ const Cart = () => {
 										<ProductAmountContainer>
 											<Remove
 												className={`DecQuantity${product._id}`}
-												onClick={() => {
-													dispatch(
-														decrease(product.selectedVariant._id),
-													);
+												onClick={() =>
 													handleQuantity(
 														'dec',
 														product._id,
 														product.selectedVariant._id,
-													);
-												}}
+													)
+												}
 											/>
 											<ProductAmount>
 												{language === 'ar'
@@ -519,16 +619,13 @@ const Cart = () => {
 											</ProductAmount>
 											<Add
 												className={`AddQuantity${product._id}`}
-												onClick={() => {
-													dispatch(
-														increase(product.selectedVariant._id),
-													);
+												onClick={() =>
 													handleQuantity(
 														'inc',
 														product._id,
 														product.selectedVariant._id,
-													);
-												}}
+													)
+												}
 											/>
 										</ProductAmountContainer>
 										<ProductPrice>
