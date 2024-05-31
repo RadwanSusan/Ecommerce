@@ -192,6 +192,7 @@ const Product = () => {
 	const { language } = useContext(LanguageContext);
 	const { dictionary } = useContext(LanguageContext);
 	const [productSupplier, setProductSupplier] = useState(null);
+	const [selectedOptions, setSelectedOptions] = useState({});
 
 	useEffect(() => {
 		if (userId !== undefined) {
@@ -212,6 +213,15 @@ const Product = () => {
 				}
 				setProduct(res.data);
 				if (res.data.type === 'variable') {
+					const initialSelectedOptions =
+						res.data.variants[0].keyValue.reduce(
+							(acc, { key, value }) => {
+								acc[key] = value;
+								return acc;
+							},
+							{},
+						);
+					setSelectedOptions(initialSelectedOptions);
 					setVariant(res.data.variants[0]);
 				}
 				const supplierRes = await publicRequest.get(
@@ -264,6 +274,66 @@ const Product = () => {
 		return acc;
 	}, []);
 
+	// const handleOptionChange = (key, value) => {
+	// 	setSelectedOptions((prevOptions) => ({
+	// 		...prevOptions,
+	// 		[key]: value,
+	// 	}));
+	// 	const selectedVariant = product.variants.find((variant) =>
+	// 		variant.keyValue.every(
+	// 			({ key, value }) => selectedOptions[key] === value || key === value,
+	// 		),
+	// 	);
+
+	// 	if (selectedVariant) {
+	// 		setVariant(selectedVariant);
+	// 		setQuantity(1);
+	// 		const cartProduct = mergedCart.find(
+	// 			(item) =>
+	// 				item._id === product._id &&
+	// 				item.selectedVariant._id === selectedVariant._id,
+	// 		);
+	// 		if (cartProduct) {
+	// 			setAvailableQuantityAfterUpdate(
+	// 				selectedVariant.quantity - cartProduct.quantity,
+	// 			);
+	// 		} else {
+	// 			setAvailableQuantityAfterUpdate(selectedVariant.quantity);
+	// 		}
+	// 		checkAvailability();
+	// 	}
+	// };
+	const handleOptionChange = (key, value) => {
+		setSelectedOptions((prevOptions) => {
+			const newOptions = { ...prevOptions, [key]: value };
+			const selectedVariant = product.variants.find((variant) =>
+				variant.keyValue.every(
+					({ key, value }) => newOptions[key] === value,
+				),
+			);
+
+			if (selectedVariant) {
+				setVariant(selectedVariant);
+				setQuantity(1);
+				const cartProduct = mergedCart.find(
+					(item) =>
+						item._id === product._id &&
+						item.selectedVariant._id === selectedVariant._id,
+				);
+				if (cartProduct) {
+					setAvailableQuantityAfterUpdate(
+						selectedVariant.quantity - cartProduct.quantity,
+					);
+				} else {
+					setAvailableQuantityAfterUpdate(selectedVariant.quantity);
+				}
+				checkAvailability();
+			}
+
+			return newOptions;
+		});
+	};
+
 	const checkAvailability = useCallback(() => {
 		if ((variant || product.type === 'simple') && mergedCart) {
 			const cartProduct = mergedCart.find(
@@ -315,6 +385,23 @@ const Product = () => {
 		}
 	}, [variant, mergedCart, product._id, product.quantity]);
 
+	// const setVariant2 = (selectedVariant) => {
+	// 	setVariant(selectedVariant);
+	// 	setQuantity(1);
+	// 	const cartProduct = mergedCart.find(
+	// 		(item) =>
+	// 			item._id === product._id &&
+	// 			item.selectedVariant._id === selectedVariant._id,
+	// 	);
+	// 	if (cartProduct) {
+	// 		setAvailableQuantityAfterUpdate(
+	// 			selectedVariant.quantity - cartProduct.quantity,
+	// 		);
+	// 	} else {
+	// 		setAvailableQuantityAfterUpdate(selectedVariant.quantity);
+	// 	}
+	// 	checkAvailability();
+	// };
 	const setVariant2 = (selectedVariant) => {
 		setVariant(selectedVariant);
 		setQuantity(1);
@@ -474,49 +561,54 @@ const Product = () => {
 									? `${formatPrice(variant.price, language)} $`
 									: `$ ${formatPrice(variant.price, language)}`
 								: language === 'ar'
-								? `${formatPrice(product.price, language)} $`
-								: `$ ${formatPrice(product.price, language)}`}
+								? `${formatPrice(product.originalPrice, language)} $`
+								: `$ ${formatPrice(product.originalPrice, language)}`}
 						</Price>
 					</PriceContainer>
 					<FilterContainer>
 						{product.variants && (
 							<>
-								{[...new Set(product.variants.map((v) => v.key))].map(
-									(key) => (
-										<Filter
-											key={key}
-											language={language}>
-											<FilterTitle>{key}:</FilterTitle>
-											<FilterVariants>
-												{[
-													...new Set(
-														product.variants
-															.filter((v) => v.key === key)
-															.map((v) => v.value),
-													),
-												].map((value) => (
-													<FilterVariant
-														key={value}
-														selected={
-															variant && variant.value === value
-														}
-														onClick={() =>
-															setVariant2(
-																product.variants.find(
-																	(v) =>
-																		v.key === key &&
-																		v.value === value,
-																),
-															)
-														}
-														language={language}>
-														{value}
-													</FilterVariant>
-												))}
-											</FilterVariants>
-										</Filter>
+								{[
+									...new Set(
+										product.variants.flatMap((v) =>
+											v.keyValue.map((kv) => kv.key),
+										),
 									),
-								)}
+								].map((key) => (
+									<Filter
+										key={key}
+										language={language}>
+										<FilterTitle>{key}:</FilterTitle>
+										<FilterVariants>
+											{[
+												...new Set(
+													product.variants
+														.filter((v) =>
+															v.keyValue.some(
+																(kv) => kv.key === key,
+															),
+														)
+														.map(
+															(v) =>
+																v.keyValue.find(
+																	(kv) => kv.key === key,
+																).value,
+														),
+												),
+											].map((value) => (
+												<FilterVariant
+													key={value}
+													selected={selectedOptions[key] === value}
+													onClick={() =>
+														handleOptionChange(key, value)
+													}
+													language={language}>
+													{value}
+												</FilterVariant>
+											))}
+										</FilterVariants>
+									</Filter>
+								))}
 							</>
 						)}
 					</FilterContainer>
