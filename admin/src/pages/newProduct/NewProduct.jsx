@@ -11,7 +11,6 @@ import { addProduct } from '../../redux/apiCalls';
 import { useDispatch, useSelector } from 'react-redux';
 import swal from 'sweetalert';
 import { FaSpinner } from 'react-icons/fa';
-
 export default function NewProduct() {
 	const [inputs, setInputs] = useState({
 		type: 'simple',
@@ -47,11 +46,9 @@ export default function NewProduct() {
 		}));
 	};
 	const [previewImages, setPreviewImages] = useState([]);
-
 	const handleImageChange = (e) => {
 		const newFiles = Array.from(e.target.files);
 		const newImageUrls = newFiles.map((file) => URL.createObjectURL(file));
-
 		setPreviewImages((prevPreviewImages) => [
 			...prevPreviewImages,
 			...newImageUrls,
@@ -61,7 +58,6 @@ export default function NewProduct() {
 			file: [...(prev.file || []), ...newFiles],
 		}));
 	};
-
 	const handleToggleDiscount = () => {
 		setInputs((prev) => ({
 			...prev,
@@ -77,7 +73,6 @@ export default function NewProduct() {
 	);
 	const dispatch = useDispatch();
 	const supplierInfo = useSelector((state) => state.user.currentUser);
-
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		if (name.startsWith('categories.')) {
@@ -104,22 +99,18 @@ export default function NewProduct() {
 			}));
 		}
 	};
-
 	const handleDragEnter = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
 	};
-
 	const handleDragLeave = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
 	};
-
 	const handleDragOver = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
 	};
-
 	const handleDrop = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
@@ -133,30 +124,14 @@ export default function NewProduct() {
 			e.dataTransfer.clearData();
 		}
 	};
-
 	const isObjectComplete = (obj) => Object.values(obj).every((value) => value);
 	const isObjectPartiallyFilled = (obj) =>
 		Object.values(obj).some((value) => value);
-
 	const showError = (title, text) => {
 		swal({ title, text, icon: 'error' });
 	};
-
 	const handleAddProduct = async (e) => {
 		e.preventDefault();
-
-		const requiredInputs = [
-			'title',
-			'desc',
-			'title_ar',
-			'desc_ar',
-			'categories',
-			'width',
-			'height',
-			'length',
-			'weight',
-		];
-
 		const promoComplete = isObjectComplete(inputs.promo);
 		const promoPartiallyFilled = isObjectPartiallyFilled(inputs.promo);
 		if (promoPartiallyFilled && !promoComplete) {
@@ -166,7 +141,6 @@ export default function NewProduct() {
 			);
 			return;
 		}
-
 		const discountComplete = isObjectComplete(inputs.discount);
 		const discountPartiallyFilled = isObjectPartiallyFilled(inputs.discount);
 		if (discountPartiallyFilled && !discountComplete) {
@@ -176,72 +150,74 @@ export default function NewProduct() {
 			);
 			return;
 		}
-
 		setLoading(true);
-
 		const minimumLoadingPromise = new Promise((resolve) =>
 			setTimeout(resolve, 1000),
 		);
-
 		try {
 			const storage = getStorage(app);
 			const uploadPromises = generatedVariants.flatMap((variant) =>
 				variant.images.map((image) => {
-					const fileName = `${new Date().getTime()}_${variant.key}_${
-						variant.value
-					}_${image.name}`;
+					const fileName = `${new Date().getTime()}_${variant.keyValue
+						.map((kv) => `${kv.key}_${kv.value}`)
+						.join('_')}_${image.name}`;
 					const storageRef = ref(storage, fileName);
 					return uploadBytesResumable(storageRef, image);
 				}),
 			);
-
 			const uploadedVariants = await Promise.all([
 				...uploadPromises,
 				minimumLoadingPromise,
 			]);
-
 			const variantsData = await Promise.all(
 				uploadedVariants
 					.filter((uploadTask) => uploadTask !== undefined)
 					.map((uploadTask) => {
-						const variantKey = uploadTask.metadata.name.split('_')[1];
-						const variantValue = uploadTask.metadata.name.split('_')[2];
+						const variantKeyValue = uploadTask.metadata.name
+							.split('_')
+							.slice(1, -1)
+							.reduce((acc, curr, index) => {
+								if (index % 2 === 0) {
+									acc.push({ key: curr, value: '' });
+								} else {
+									acc[acc.length - 1].value = curr;
+								}
+								return acc;
+							}, []);
 						return getDownloadURL(uploadTask.ref).then((url) => ({
-							key: variantKey,
-							value: variantValue,
+							keyValue: variantKeyValue,
 							image: url,
 						}));
 					}),
 			);
-
 			const updatedGeneratedVariants = generatedVariants.map((variant) => {
 				const variantImages = variantsData
 					.filter(
 						(data) =>
-							data.key === variant.key && data.value === variant.value,
+							JSON.stringify(data.keyValue) ===
+							JSON.stringify(variant.keyValue),
 					)
 					.map((data) => data.image);
-
 				return {
 					...variant,
 					images: variantImages,
 				};
 			});
-
 			const product = constructProduct(
 				inputs,
 				updatedGeneratedVariants,
 				supplierInfo,
 			);
-
 			swal({
 				title: 'Success',
 				text: 'Product added successfully',
 				icon: 'success',
 				closeOnClickOutside: false,
 				closeOnEsc: false,
-			}).then(setLoading(false), resetAllForms);
-			resetAllForms();
+			}).then(() => {
+				setLoading(false);
+				resetAllForms();
+			});
 			await addProduct(product, dispatch);
 		} catch (error) {
 			showError('Error', error.message);
@@ -249,7 +225,6 @@ export default function NewProduct() {
 			setLoading(false);
 		}
 	};
-
 	const constructProduct = (inputs, variants, supplierInfo) => {
 		let productData = {
 			type: inputs.type,
@@ -259,19 +234,34 @@ export default function NewProduct() {
 				name_ar,
 			})),
 			...(inputs.type === 'variable' && {
-				variants: variants.map((variant) => ({
-					key: variant.key,
-					value: variant.value,
-					quantity: variant.quantity,
-					images: variant.images || [],
-					price: variant.price,
-					originalPrice: variant.originalPrice,
-				})),
+				variants: variants.map((variant) => {
+					const variantObj = {
+						quantity: variant.quantity,
+						images: variant.images || [],
+						price: variant.price,
+						originalPrice: variant.originalPrice,
+					};
+					const keyValueArray = Object.entries(variant).map(
+						([key, value]) => ({
+							key,
+							value,
+						}),
+					);
+					variantObj.keyValue = keyValueArray.filter(
+						(pair) =>
+							pair.key !== 'quantity' &&
+							pair.key !== 'images' &&
+							pair.key !== 'price' &&
+							pair.key !== 'originalPrice',
+					);
+					variantObj.keyValue = variantObj.keyValue[0].value;
+					return variantObj;
+				}),
 			}),
 			...(inputs.type === 'simple' && {
 				price: inputs.price,
 				originalPrice: inputs.originalPrice,
-				images: previewImages, // <-- Use previewImages instead of inputs.file
+				images: previewImages,
 			}),
 			...(isObjectComplete(inputs.discount) && {
 				discount: inputs.discount,
@@ -281,13 +271,6 @@ export default function NewProduct() {
 		};
 		return productData;
 	};
-
-	// const resetAllForms = () => {
-	// 	resetInputs();
-	// 	resetVariants();
-	// 	resetCategories();
-	// 	resetPreviewImages(); // Add this line
-	// };
 	const resetAllForms = () => {
 		console.log('Resetting all forms');
 		resetInputs();
@@ -301,11 +284,11 @@ export default function NewProduct() {
 				images: [],
 				price: '',
 				originalPrice: '',
+				quantity: '',
 			})),
 		);
 		setExpandedVariants([]);
 	};
-
 	const resetInputs = () => {
 		setInputs({
 			type: 'simple',
@@ -335,22 +318,18 @@ export default function NewProduct() {
 			images: [],
 		});
 	};
-
 	const resetVariants = () => {
 		setVariants([{ key: '', values: [] }]);
 	};
-
 	const resetCategories = () => {
 		setInputs((prev) => ({
 			...prev,
 			categories: [{ name: '', name_ar: '' }],
 		}));
 	};
-
 	const resetPreviewImages = () => {
 		setPreviewImages([]);
 	};
-
 	const handleVariantChange = (index, field, value) => {
 		const newVariants = [...variants];
 		if (field === 'key') {
@@ -360,17 +339,14 @@ export default function NewProduct() {
 		}
 		setVariants(newVariants);
 	};
-
 	const addVariant = () => {
 		setVariants([...variants, { key: '', values: [] }]);
 	};
-
 	const removeVariant = (index) => {
 		const newVariants = [...variants];
 		newVariants.splice(index, 1);
 		setVariants(newVariants);
 	};
-
 	const generateVariants = () => {
 		const keys = variants.map((variant) => variant.key);
 		const values = variants.map((variant) => variant.values);
@@ -381,53 +357,42 @@ export default function NewProduct() {
 				images: [],
 				price: '',
 				originalPrice: '',
+				keyValue: [],
 			};
 			keys.forEach((key, index) => {
-				variantObj[key] = combination[index];
-				variantObj.key = key;
-				variantObj.value = combination[index];
+				variantObj.keyValue.push({
+					key: key,
+					value: combination[index],
+				});
 			});
 			return variantObj;
 		});
 		setGeneratedVariants(newGeneratedVariants);
 		setExpandedVariants(newGeneratedVariants.map(() => true));
 	};
-
 	const removeGeneratedVariant = (index) => {
 		const newGeneratedVariants = [...generatedVariants];
 		newGeneratedVariants.splice(index, 1);
 		setGeneratedVariants(newGeneratedVariants);
 	};
-
-	const toggleVariant = (index) => {
-		setExpandedVariants((prevExpandedVariants) => {
-			const newExpandedVariants = [...prevExpandedVariants];
-			newExpandedVariants[index] = !newExpandedVariants[index];
-			return newExpandedVariants;
-		});
-	};
-
 	const cartesianProduct = (...arrays) => {
 		return arrays.reduce(
 			(a, b) => a.flatMap((d) => b.map((e) => [d, e].flat())),
 			[[]],
 		);
 	};
-
 	const addCategory = () => {
 		setInputs((prev) => ({
 			...prev,
 			categories: [...prev.categories, { name: '', name_ar: '' }],
 		}));
 	};
-
 	const removeCategory = (index) => {
 		setInputs((prev) => ({
 			...prev,
 			categories: prev.categories.filter((_, i) => i !== index),
 		}));
 	};
-
 	return (
 		<div
 			className='newProduct'
@@ -508,6 +473,7 @@ export default function NewProduct() {
 									/>
 								</div>
 							</div>
+
 							{inputs.type === 'simple' && (
 								<div className='form-section'>
 									<h2>Pricing</h2>
@@ -619,7 +585,6 @@ export default function NewProduct() {
 									/>
 								</div>
 							</div>
-
 							<div className='form-section'>
 								<h2>Discount</h2>
 								<div className='form-group'>
@@ -701,45 +666,63 @@ export default function NewProduct() {
 									</>
 								)}
 							</div>
-						</div>
-						<div className='form-column'>
-							<div className='form-section'>
-								<h2>Product Images</h2>
-								<div className='form-group'>
-									<label>Images</label>
-									<input
-										type='file'
-										onChange={handleImageChange}
-										multiple
-									/>
-									<div className='image-preview-grid'>
-										{previewImages.map((imageUrl, index) => (
-											<div
-												key={index}
-												className='image-preview-item'>
-												<img
-													src={imageUrl}
-													alt={`Preview ${index}`}
-												/>
-											</div>
-										))}
-									</div>
-									<div
-										className='file-dragndrop'
-										onDragEnter={() => setDraggedFile(true)}
-										onDragLeave={() => setDraggedFile(false)}
-										onDragOver={(e) => e.preventDefault()}
-										onDrop={handleDrop}>
-										{draggedFile ? (
-											<p>Drop your files here</p>
-										) : (
-											<>
-												<p>Drag and drop your files here or</p>
-											</>
-										)}
+							{inputs.type === 'simple' && (
+								<div className='form-section'>
+									<h2>Quantity</h2>
+									<div className='form-group'>
+										<label>Quantity</label>
+										<input
+											name='quantity'
+											type='number'
+											min='0'
+											placeholder='Quantity'
+											value={inputs.quantity}
+											onChange={handleChange}
+										/>
 									</div>
 								</div>
-							</div>
+							)}
+						</div>
+						<div className='form-column'>
+							{inputs.type === 'simple' && (
+								<div className='form-section'>
+									<h2>Product Images</h2>
+									<div className='form-group'>
+										<label>Images</label>
+										<input
+											type='file'
+											onChange={handleImageChange}
+											multiple
+										/>
+										<div className='image-preview-grid'>
+											{previewImages.map((imageUrl, index) => (
+												<div
+													key={index}
+													className='image-preview-item'>
+													<img
+														src={imageUrl}
+														alt={`Preview ${index}`}
+													/>
+												</div>
+											))}
+										</div>
+										<div
+											className='file-dragndrop'
+											onDragEnter={() => setDraggedFile(true)}
+											onDragLeave={() => setDraggedFile(false)}
+											onDragOver={(e) => e.preventDefault()}
+											onDrop={handleDrop}>
+											{draggedFile ? (
+												<p>Drop your files here</p>
+											) : (
+												<>
+													<p>Drag and drop your files here or</p>
+												</>
+											)}
+										</div>
+									</div>
+								</div>
+							)}
 							{inputs.type === 'variable' && (
 								<div className='form-section'>
 									<h2>Variants</h2>
@@ -801,22 +784,21 @@ export default function NewProduct() {
 												key={index}
 												className='generated-variant-item'>
 												<div>
-													{Object.entries(variant).map(
-														([key, value]) => (
-															<div key={key}>
-																<span>
-																	{key}:{' '}
-																	{key === 'images'
-																		? value
-																				.map(
-																					(file) =>
-																						file.name,
-																				)
-																				.join(', ')
-																		: value}
-																</span>
-															</div>
-														),
+													{variant.keyValue &&
+													variant.keyValue.length > 0 ? (
+														variant.keyValue.map(
+															({ key, value }) => (
+																<div key={`${key}-${value}`}>
+																	<span>
+																		{key}: {value}
+																	</span>
+																</div>
+															),
+														)
+													) : (
+														<div>
+															No key-value pairs available
+														</div>
 													)}
 												</div>
 												{expandedVariants[index] && (
@@ -835,8 +817,7 @@ export default function NewProduct() {
 																		index
 																	].quantity = parseInt(
 																		e.target.value,
-																	); // Convert to integer
-
+																	);
 																	setGeneratedVariants(
 																		newGeneratedVariants,
 																	);

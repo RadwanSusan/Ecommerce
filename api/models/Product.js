@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const ProductSchema = new mongoose.Schema({
 	type: { type: String, enum: ['simple', 'variable'], required: true },
 	title: { type: String, required: true },
@@ -18,12 +17,17 @@ const ProductSchema = new mongoose.Schema({
 	length: { type: Number, required: true },
 	weight: { type: Number, required: true },
 	price: { type: Number },
+	quantity: { type: Number },
 	originalPrice: { type: Number },
 	images: [{ type: String }],
 	variants: [
 		{
-			key: { type: String },
-			value: { type: String },
+			keyValue: [
+				{
+					key: { type: String },
+					value: { type: String },
+				},
+			],
 			quantity: { type: Number },
 			images: [{ type: String }],
 			price: { type: Number },
@@ -42,7 +46,6 @@ const ProductSchema = new mongoose.Schema({
 	},
 	supplier: { type: mongoose.Schema.Types.ObjectId, ref: 'UserAdmin' },
 });
-
 ProductSchema.pre('validate', function (next) {
 	if (
 		this.type === 'variable' &&
@@ -53,7 +56,6 @@ ProductSchema.pre('validate', function (next) {
 		next();
 	}
 });
-
 module.exports = {
 	Product: mongoose.model('Product', ProductSchema),
 };
