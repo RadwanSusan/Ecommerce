@@ -342,12 +342,22 @@ const Cart = () => {
 	// const handleQuantity = (type, productId, variantId) => {
 	// 	const product = cart.products.find(
 	// 		(item) =>
-	// 			item._id === productId && item.selectedVariant._id === variantId,
+	// 			item._id === productId &&
+	// 			(item.type === 'simple' || item.selectedVariant._id === variantId),
 	// 	);
 
 	// 	if (type === 'dec') {
 	// 		if (product.quantity === 1) {
-	// 			dispatch(removeProduct({ productId, variantId }));
+	// 			dispatch(
+	// 				removeProduct({
+	// 					productId: product._id,
+	// 					variantId:
+	// 						product.type === 'variable'
+	// 							? product.selectedVariant._id
+	// 							: null,
+	// 				}),
+	// 			);
+
 	// 			swal(
 	// 				'Info',
 	// 				language === 'ar'
@@ -365,44 +375,84 @@ const Cart = () => {
 	// 		const productInAllOffers = AllOffers.find((o) => o._id === productId);
 
 	// 		if (productInAllProducts) {
-	// 			const selectedVariant = productInAllProducts.variants.find(
-	// 				(variant) =>
-	// 					JSON.stringify(variant.keyValue) ===
-	// 					JSON.stringify(product.selectedVariant.keyValue),
-	// 			);
-	// 			if (selectedVariant) {
+	// 			if (productInAllProducts.type === 'variable') {
+	// 				const selectedVariant = productInAllProducts.variants.find(
+	// 					(variant) =>
+	// 						JSON.stringify(variant.keyValue) ===
+	// 						JSON.stringify(product.selectedVariant.keyValue),
+	// 				);
+	// 				if (selectedVariant) {
+	// 					if (product.quantity < selectedVariant.quantity) {
+	// 						dispatch(
+	// 							increase({
+	// 								productId,
+	// 								variantId,
+	// 								maxQuantity: selectedVariant.quantity,
+	// 							}),
+	// 						);
+	// 					} else {
+	// 						swal(
+	// 							'Info',
+	// 							language === 'ar'
+	// 								? 'لا يمكنك زيادة الكمية أكثر من هذا'
+	// 								: 'You cannot increase the quantity beyond this limit',
+	// 							'info',
+	// 						);
+	// 					}
+	// 				}
+	// 			} else if (productInAllProducts.type === 'simple') {
+	// 				if (product.quantity < productInAllProducts.quantity) {
+	// 					dispatch(
+	// 						increase({
+	// 							productId,
+	// 							variantId: null,
+	// 							maxQuantity: productInAllProducts.quantity,
+	// 						}),
+	// 					);
+	// 				} else {
+	// 					swal(
+	// 						'Info',
+	// 						language === 'ar'
+	// 							? 'لا يمكنك زيادة الكمية أكثر من هذا'
+	// 							: 'You cannot increase the quantity beyond this limit',
+	// 						'info',
+	// 					);
+	// 				}
+	// 			}
+	// 		} else if (productInAllOffers) {
+	// 			if (product.quantity < productInAllOffers.quantity) {
 	// 				dispatch(
 	// 					increase({
 	// 						productId,
-	// 						variantId,
-	// 						maxQuantity: selectedVariant.quantity,
+	// 						variantId: null,
+	// 						maxQuantity: productInAllOffers.quantity,
 	// 					}),
 	// 				);
+	// 			} else {
+	// 				swal(
+	// 					'Info',
+	// 					language === 'ar'
+	// 						? 'لا يمكنك زيادة الكمية أكثر من هذا'
+	// 						: 'You cannot increase the quantity beyond this limit',
+	// 					'info',
+	// 				);
 	// 			}
-	// 		} else if (productInAllOffers) {
-	// 			dispatch(
-	// 				increase({
-	// 					productId,
-	// 					variantId,
-	// 					maxQuantity: productInAllOffers.quantity,
-	// 				}),
-	// 			);
 	// 		}
 	// 	}
 	// };
 	const handleQuantity = (type, productId, variantId) => {
 		const product = cart.products.find(
 			(item) =>
-				item._id === productId && item.selectedVariant._id === variantId,
+				item._id === productId &&
+				(item.type === 'simple' || item.selectedVariant?._id === variantId),
 		);
 
 		if (type === 'dec') {
 			if (product.quantity === 1) {
-				// dispatch(removeProduct({ productId, variantId }));
 				dispatch(
 					removeProduct({
 						productId: product._id,
-						variantId: product.selectedVariant._id,
+						variantId: product.type === 'variable' ? variantId : null,
 					}),
 				);
 
@@ -414,7 +464,12 @@ const Cart = () => {
 					'info',
 				);
 			} else {
-				dispatch(decrease({ productId, variantId }));
+				dispatch(
+					decrease({
+						productId,
+						variantId: product.type === 'variable' ? variantId : null,
+					}),
+				);
 			}
 		} else {
 			const productInAllProducts = AllProducts.find(
@@ -423,18 +478,38 @@ const Cart = () => {
 			const productInAllOffers = AllOffers.find((o) => o._id === productId);
 
 			if (productInAllProducts) {
-				const selectedVariant = productInAllProducts.variants.find(
-					(variant) =>
-						JSON.stringify(variant.keyValue) ===
-						JSON.stringify(product.selectedVariant.keyValue),
-				);
-				if (selectedVariant) {
-					if (product.quantity < selectedVariant.quantity) {
+				if (productInAllProducts.type === 'variable') {
+					const selectedVariant = productInAllProducts.variants.find(
+						(variant) =>
+							JSON.stringify(variant.keyValue) ===
+							JSON.stringify(product.selectedVariant?.keyValue),
+					);
+					if (selectedVariant) {
+						if (product.quantity < selectedVariant.quantity) {
+							dispatch(
+								increase({
+									productId,
+									variantId,
+									maxQuantity: selectedVariant.quantity,
+								}),
+							);
+						} else {
+							swal(
+								'Info',
+								language === 'ar'
+									? 'لا يمكنك زيادة الكمية أكثر من هذا'
+									: 'You cannot increase the quantity beyond this limit',
+								'info',
+							);
+						}
+					}
+				} else if (productInAllProducts.type === 'simple') {
+					if (product.quantity < productInAllProducts.quantity) {
 						dispatch(
 							increase({
 								productId,
-								variantId,
-								maxQuantity: selectedVariant.quantity,
+								variantId: null,
+								maxQuantity: productInAllProducts.quantity,
 							}),
 						);
 					} else {
@@ -452,7 +527,7 @@ const Cart = () => {
 					dispatch(
 						increase({
 							productId,
-							variantId,
+							variantId: null,
 							maxQuantity: productInAllOffers.quantity,
 						}),
 					);
@@ -552,7 +627,7 @@ const Cart = () => {
 							mergedCart.map((product) => (
 								<Product
 									language={language}
-									key={product.selectedVariant._id}>
+									key={product?.selectedVariant?._id}>
 									<ProductDetail language={language}>
 										<Image
 											src={
@@ -562,6 +637,7 @@ const Cart = () => {
 													: ''
 											}
 										/>
+
 										<Details language={language}>
 											<ProductName>
 												<b>{dictionary.cart['Product:']}</b>{' '}
@@ -569,13 +645,19 @@ const Cart = () => {
 													? product.title
 													: product.title_ar}
 											</ProductName>
-											{product.selectedVariant.keyValue.map(
-												(item) => (
-													<ProductSize key={item._id}>
-														<b>{item.key}:</b> {item.value}
-													</ProductSize>
-												),
-											)}
+											{product.selectedVariant &&
+												product.selectedVariant.keyValue && (
+													<>
+														{product.selectedVariant.keyValue.map(
+															(item) => (
+																<ProductSize key={item._id}>
+																	<b>{item.key}:</b>{' '}
+																	{item.value}
+																</ProductSize>
+															),
+														)}
+													</>
+												)}
 											<ProductSize>
 												<Button1
 													onClick={() => {
@@ -583,7 +665,10 @@ const Cart = () => {
 															removeProduct({
 																productId: product._id,
 																variantId:
-																	product.selectedVariant._id,
+																	product.selectedVariant
+																		? product.selectedVariant
+																				._id
+																		: null,
 															}),
 														);
 
@@ -601,7 +686,7 @@ const Cart = () => {
 										</Details>
 									</ProductDetail>
 									<PriceDetail>
-										<ProductAmountContainer>
+										{/* <ProductAmountContainer>
 											<Remove
 												className={`DecQuantity${product._id}`}
 												onClick={() =>
@@ -627,13 +712,48 @@ const Cart = () => {
 													)
 												}
 											/>
+										</ProductAmountContainer> */}
+										<ProductAmountContainer>
+											<Remove
+												className={`DecQuantity${product._id}`}
+												onClick={() =>
+													handleQuantity(
+														'dec',
+														product._id,
+														product.selectedVariant?._id,
+													)
+												}
+											/>
+											<ProductAmount>
+												{language === 'ar'
+													? formatNumberToArabic(product.quantity)
+													: product.quantity}
+											</ProductAmount>
+											<Add
+												className={`AddQuantity${product._id}`}
+												onClick={() =>
+													handleQuantity(
+														'inc',
+														product._id,
+														product.selectedVariant?._id,
+													)
+												}
+											/>
 										</ProductAmountContainer>
+										{console.log(product)}
+
 										<ProductPrice>
 											${' '}
 											{language === 'ar'
 												? formatNumberToArabic(
-														product.price * product.quantity,
+														product.type === 'variable'
+															? product.selectedVariant?.price *
+																	product.quantity
+															: product.price * product.quantity,
 												  )
+												: product.type === 'variable'
+												? product.selectedVariant?.price *
+												  product.quantity
 												: product.price * product.quantity}
 										</ProductPrice>
 									</PriceDetail>

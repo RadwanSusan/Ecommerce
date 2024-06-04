@@ -174,11 +174,26 @@ const Product = ({ item }) => {
 		return null;
 	}
 
+	// const getProductImage = () => {
+	// 	if (item.type === 'simple' && item.images && item.images.length > 0) {
+	// 		return item.images[0];
+	// 	} else if (item.type === 'variable') {
+	// 		return item.variants[0].images[0];
+	// 	}
+	// 	return '';
+	// };
 	const getProductImage = () => {
 		if (item.type === 'simple' && item.images && item.images.length > 0) {
 			return item.images[0];
-		} else if (item.type === 'variable') {
-			return item.variants[0].images[0];
+		} else if (
+			item.type === 'variable' &&
+			item.variants &&
+			item.variants.length > 0
+		) {
+			const firstVariant = item.variants[0];
+			if (firstVariant.images && firstVariant.images.length > 0) {
+				return firstVariant.images[0];
+			}
 		}
 		return '';
 	};

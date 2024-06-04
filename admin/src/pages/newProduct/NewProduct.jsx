@@ -130,6 +130,7 @@ export default function NewProduct() {
 	const showError = (title, text) => {
 		swal({ title, text, icon: 'error' });
 	};
+
 	const handleAddProduct = async (e) => {
 		e.preventDefault();
 		const promoComplete = isObjectComplete(inputs.promo);
@@ -156,58 +157,72 @@ export default function NewProduct() {
 		);
 		try {
 			const storage = getStorage(app);
-			const uploadPromises = generatedVariants.flatMap((variant) =>
-				variant.images.map((image) => {
-					const fileName = `${new Date().getTime()}_${variant.keyValue
-						.map((kv) => `${kv.key}_${kv.value}`)
-						.join('_')}_${image.name}`;
-					const storageRef = ref(storage, fileName);
-					return uploadBytesResumable(storageRef, image);
-				}),
+			const uploadPromises = [];
+
+			// Upload images for simple product type
+			if (inputs.type === 'simple') {
+				uploadPromises.push(
+					...inputs.file.map((file) => {
+						const fileName = new Date().getTime() + '_' + file.name;
+						const storageRef = ref(storage, fileName);
+						return uploadBytesResumable(storageRef, file);
+					}),
+				);
+			}
+
+			// Upload images for variable product type
+			uploadPromises.push(
+				...generatedVariants.flatMap((variant) =>
+					variant.images.map((image) => {
+						const fileName =
+							new Date().getTime() +
+							'_' +
+							variant.keyValue
+								.map((kv) => `${kv.key}_${kv.value}`)
+								.join('_') +
+							'_' +
+							image.name;
+						const storageRef = ref(storage, fileName);
+						return uploadBytesResumable(storageRef, image);
+					}),
+				),
 			);
-			const uploadedVariants = await Promise.all([
+
+			const uploadedImages = await Promise.all([
 				...uploadPromises,
 				minimumLoadingPromise,
 			]);
-			const variantsData = await Promise.all(
-				uploadedVariants
+
+			const imagesData = await Promise.all(
+				uploadedImages
 					.filter((uploadTask) => uploadTask !== undefined)
-					.map((uploadTask) => {
-						const variantKeyValue = uploadTask.metadata.name
-							.split('_')
-							.slice(1, -1)
-							.reduce((acc, curr, index) => {
-								if (index % 2 === 0) {
-									acc.push({ key: curr, value: '' });
-								} else {
-									acc[acc.length - 1].value = curr;
-								}
-								return acc;
-							}, []);
-						return getDownloadURL(uploadTask.ref).then((url) => ({
-							keyValue: variantKeyValue,
-							image: url,
-						}));
-					}),
+					.map((uploadTask) => getDownloadURL(uploadTask.ref)),
 			);
-			const updatedGeneratedVariants = generatedVariants.map((variant) => {
-				const variantImages = variantsData
-					.filter(
-						(data) =>
-							JSON.stringify(data.keyValue) ===
-							JSON.stringify(variant.keyValue),
-					)
-					.map((data) => data.image);
-				return {
-					...variant,
-					images: variantImages,
-				};
-			});
+
+			const updatedInputs = {
+				...inputs,
+				images: inputs.type === 'simple' ? imagesData : [],
+			};
+
+			const updatedGeneratedVariants = generatedVariants.map(
+				(variant, index) => {
+					const startIndex =
+						inputs.type === 'simple' ? inputs.file.length : 0;
+					const endIndex = startIndex + variant.images.length;
+					const variantImages = imagesData.slice(startIndex, endIndex);
+					return {
+						...variant,
+						images: variantImages,
+					};
+				},
+			);
+
 			const product = constructProduct(
-				inputs,
+				updatedInputs,
 				updatedGeneratedVariants,
 				supplierInfo,
 			);
+
 			swal({
 				title: 'Success',
 				text: 'Product added successfully',
@@ -218,6 +233,7 @@ export default function NewProduct() {
 				setLoading(false);
 				resetAllForms();
 			});
+
 			await addProduct(product, dispatch);
 		} catch (error) {
 			showError('Error', error.message);
@@ -225,6 +241,7 @@ export default function NewProduct() {
 			setLoading(false);
 		}
 	};
+
 	const constructProduct = (inputs, variants, supplierInfo) => {
 		let productData = {
 			type: inputs.type,
@@ -237,7 +254,12 @@ export default function NewProduct() {
 				variants: variants.map((variant) => {
 					const variantObj = {
 						quantity: variant.quantity,
-						images: variant.images || [],
+						images: variant.images.map((url) => {
+							const fileName = decodeURIComponent(
+								url.split('/').pop().split('?')[0],
+							);
+							return `https://firebasestorage.googleapis.com/v0/b/pme-ecommerce.appspot.com/o/${fileName}?alt=media`;
+						}),
 						price: variant.price,
 						originalPrice: variant.originalPrice,
 					};
@@ -261,7 +283,12 @@ export default function NewProduct() {
 			...(inputs.type === 'simple' && {
 				price: inputs.price,
 				originalPrice: inputs.originalPrice,
-				images: previewImages,
+				images: inputs.images.map((url) => {
+					const fileName = decodeURIComponent(
+						url.split('/').pop().split('?')[0],
+					);
+					return `https://firebasestorage.googleapis.com/v0/b/pme-ecommerce.appspot.com/o/${fileName}?alt=media`;
+				}),
 			}),
 			...(isObjectComplete(inputs.discount) && {
 				discount: inputs.discount,

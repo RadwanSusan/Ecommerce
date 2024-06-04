@@ -191,7 +191,6 @@ const Product = () => {
 		useState(0);
 	const { language } = useContext(LanguageContext);
 	const { dictionary } = useContext(LanguageContext);
-	const [productSupplier, setProductSupplier] = useState(null);
 	const [selectedOptions, setSelectedOptions] = useState({});
 
 	useEffect(() => {
@@ -212,6 +211,7 @@ const Product = () => {
 					res = await publicRequest.get('/offer/find/' + id);
 				}
 				setProduct(res.data);
+				console.log('product', res.data.type);
 				if (res.data.type === 'variable') {
 					const initialSelectedOptions =
 						res.data.variants[0].keyValue.reduce(
@@ -224,11 +224,9 @@ const Product = () => {
 					setSelectedOptions(initialSelectedOptions);
 					setVariant(res.data.variants[0]);
 				}
-				const supplierRes = await publicRequest.get(
-					`/suppliers/${res.data.supplier}`,
-				);
-				setProductSupplier(supplierRes.data);
-			} catch {}
+			} catch {
+				console.log('error');
+			}
 		};
 		getProduct();
 	}, [id]);
@@ -274,35 +272,6 @@ const Product = () => {
 		return acc;
 	}, []);
 
-	// const handleOptionChange = (key, value) => {
-	// 	setSelectedOptions((prevOptions) => ({
-	// 		...prevOptions,
-	// 		[key]: value,
-	// 	}));
-	// 	const selectedVariant = product.variants.find((variant) =>
-	// 		variant.keyValue.every(
-	// 			({ key, value }) => selectedOptions[key] === value || key === value,
-	// 		),
-	// 	);
-
-	// 	if (selectedVariant) {
-	// 		setVariant(selectedVariant);
-	// 		setQuantity(1);
-	// 		const cartProduct = mergedCart.find(
-	// 			(item) =>
-	// 				item._id === product._id &&
-	// 				item.selectedVariant._id === selectedVariant._id,
-	// 		);
-	// 		if (cartProduct) {
-	// 			setAvailableQuantityAfterUpdate(
-	// 				selectedVariant.quantity - cartProduct.quantity,
-	// 			);
-	// 		} else {
-	// 			setAvailableQuantityAfterUpdate(selectedVariant.quantity);
-	// 		}
-	// 		checkAvailability();
-	// 	}
-	// };
 	const handleOptionChange = (key, value) => {
 		setSelectedOptions((prevOptions) => {
 			const newOptions = { ...prevOptions, [key]: value };
@@ -385,23 +354,6 @@ const Product = () => {
 		}
 	}, [variant, mergedCart, product._id, product.quantity]);
 
-	// const setVariant2 = (selectedVariant) => {
-	// 	setVariant(selectedVariant);
-	// 	setQuantity(1);
-	// 	const cartProduct = mergedCart.find(
-	// 		(item) =>
-	// 			item._id === product._id &&
-	// 			item.selectedVariant._id === selectedVariant._id,
-	// 	);
-	// 	if (cartProduct) {
-	// 		setAvailableQuantityAfterUpdate(
-	// 			selectedVariant.quantity - cartProduct.quantity,
-	// 		);
-	// 	} else {
-	// 		setAvailableQuantityAfterUpdate(selectedVariant.quantity);
-	// 	}
-	// 	checkAvailability();
-	// };
 	const setVariant2 = (selectedVariant) => {
 		setVariant(selectedVariant);
 		setQuantity(1);
@@ -449,7 +401,7 @@ const Product = () => {
 		} else {
 			const productToAdd = {
 				...product,
-				price: product.discount ? product.discount.discount : product.price,
+				price: product.price,
 				quantity: quantity,
 				selectedVariant: variant,
 			};
@@ -561,8 +513,8 @@ const Product = () => {
 									? `${formatPrice(variant.price, language)} $`
 									: `$ ${formatPrice(variant.price, language)}`
 								: language === 'ar'
-								? `${formatPrice(product.originalPrice, language)} $`
-								: `$ ${formatPrice(product.originalPrice, language)}`}
+								? `${formatPrice(product.price, language)} $`
+								: `$ ${formatPrice(product.price, language)}`}
 						</Price>
 					</PriceContainer>
 					<FilterContainer>
