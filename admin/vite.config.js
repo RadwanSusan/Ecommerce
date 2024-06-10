@@ -6,7 +6,7 @@ import dsv from '@rollup/plugin-dsv';
 export default defineConfig({
 	server: {
 		host: true,
-		port: 5001,
+		port: 6666,
 	},
 	build: {
 		outDir: 'build',

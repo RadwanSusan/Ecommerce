@@ -36,8 +36,8 @@
 		"web-vitals": "^1.1.2"
 	},
 	"scripts": {
-		"start": "PORT=5001 vite",
-		"build": "PORT=5001 vite build",
+		"start": "PORT=6666 vite",
+		"build": "PORT=6666 vite build",
 		"serve": "vite preview"
 	},
 	"browserslist": {
