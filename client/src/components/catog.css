@@ -2193,6 +2193,7 @@ input[type='radio'] + label {
 	justify-content: center;
 	align-items: center;
 	z-index: 500;
+	height: 500px;
 }
 
 .columns11 {

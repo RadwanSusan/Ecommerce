@@ -120,17 +120,30 @@ const Catog = ({ item }) => {
 	const showSuccessMessage = (message) => {
 		swal('Success', message, 'success');
 	};
-	const createRadioElement = (color) => {
+	// const createRadioElement = (color) => {
+	// 	const input = document.createElement('input');
+	// 	input.classList.add('radio_button2');
+	// 	input.setAttribute('id', `radioColor ${color}`);
+	// 	input.setAttribute('name', 'colorOfItem');
+	// 	input.setAttribute('checked', 'checked');
+	// 	input.setAttribute('value', color);
+	// 	const label = document.createElement('label');
+	// 	label.setAttribute('for', `radioColor ${color}`);
+	// 	label.classList.add('block_goodColor__radio', 'block_goodColor__black');
+	// 	label.style.backgroundColor = color;
+	// 	return { input, label };
+	// };
+	const createRadioElement = (value) => {
 		const input = document.createElement('input');
 		input.classList.add('radio_button2');
-		input.setAttribute('id', `radioColor ${color}`);
-		input.setAttribute('name', 'colorOfItem');
+		input.setAttribute('id', `radioOption ${value}`);
+		input.setAttribute('name', 'optionItem');
 		input.setAttribute('checked', 'checked');
-		input.setAttribute('value', color);
+		input.setAttribute('value', value);
 		const label = document.createElement('label');
-		label.setAttribute('for', `radioColor ${color}`);
-		label.classList.add('block_goodColor__radio', 'block_goodColor__black');
-		label.style.backgroundColor = color;
+		label.setAttribute('for', `radioOption ${value}`);
+		label.classList.add('block_goodOption__radio');
+		label.textContent = value;
 		return { input, label };
 	};
 	const handleShowCartClick = useCallback(
@@ -199,89 +212,66 @@ const Catog = ({ item }) => {
 		}
 	};
 	const handleQuantityIncrement = () => {
-		const selectedColorLabel = document.querySelector('label.selectedColor');
-		const associatedInput = document?.getElementById(
-			selectedColorLabel?.getAttribute('for'),
-		)?.value;
-		const filterSizeCatog = document.querySelector('.FilterSizeCatog1');
-		const selectedSizeNew =
-			filterSizeCatog.options[filterSizeCatog.length - 1].getAttribute(
-				'selected',
-			);
-		if (!associatedInput) {
-			swal(
-				'Error',
-				language === 'en' ? 'Please select a color' : 'يرجى تحديد اللون',
-				'error',
-			);
-			return;
-		}
-		if (!selectedSize && !selectedSizeNew) {
-			swal(
-				'Error',
-				language === 'en' ? 'Please select a size' : 'يرجى تحديد الحجم',
-				'error',
-			);
+		const selectedVariant = selectedVariantTemp.current;
 
-			return;
-		}
-		const selectedOption =
-			filterSizeCatog.options[filterSizeCatog.length - 1];
-		const quantity501 = parseInt(selectedOption.getAttribute('quantity'));
-		if (!quantity501) {
+		if (!selectedVariant) {
 			swal(
 				'Error',
-				language === 'en' ? 'Please select a size' : 'يرجى تحديد الحجم',
+				language === 'en' ? 'Please select a variant' : 'يرجى اختيار حزمة',
 				'error',
 			);
 			return;
 		}
-		if (viewArrCatog) {
-			if (quantity501 - 1 <= 0) {
-				swal(
-					'Error',
-					language === 'en'
-						? 'The maximum quantity is ' + quantity
-						: 'The maximum quantity is ' + quantity,
-					'error',
-				);
-			} else {
-				setQuantity((prevQuantity) => {
-					const newQuantity = prevQuantity + 1;
-					selectedOption.setAttribute('quantity', quantity501 - 1);
-					return newQuantity;
-				});
-			}
+
+		const cartItem = mergedCart.find(
+			(item) => item.selectedVariant._id === selectedVariant._id,
+		);
+		const cartQuantity =
+			cartItem && cartItem.quantity ? cartItem.quantity : 0;
+
+		if (quantity >= selectedVariant.quantity - cartQuantity) {
+			swal(
+				'Error',
+				language === 'en'
+					? 'The maximum quantity is ' +
+							(selectedVariant.quantity - cartQuantity)
+					: 'الحد الأقصى للكمية هو ' +
+							(selectedVariant.quantity - cartQuantity),
+				'error',
+			);
+		} else {
+			setQuantity((prevQuantity) => prevQuantity + 1);
 		}
 	};
+
 	useEffect(() => {
+		console.log('viewArrCatog', viewArrCatog);
 		if (!viewArrCatog || selectedSize) return;
 		aramex.innerHTML = '';
 		filterSizeCatog.innerHTML = '';
-		const addedColors = new Set();
-		const allSizes = new Set();
+		const addedKeys = new Set();
+		const allValues = new Set();
 		viewArrCatog.variants.forEach((variant) => {
-			variant.color.forEach((color) => {
-				if (!addedColors.has(color)) {
-					addedColors.add(color);
-					allSizes.add(...variant.size);
-					const { input, label } = createRadioElement(color);
+			variant.keyValue.forEach(({ key, value }) => {
+				if (!addedKeys.has(key)) {
+					addedKeys.add(key);
+					allValues.add(value);
+					const { input, label } = createRadioElement(value);
 					aramex.appendChild(input);
 					aramex.appendChild(label);
 				}
 			});
 		});
-		const uniqueSizes = Array.from(allSizes);
-		uniqueSizes.forEach((size) => {
-			const translatedSize = sizesTranslation[size];
-			const option = new Option(translatedSize, size);
-			setSize(size);
+		const uniqueValues = Array.from(allValues);
+		uniqueValues.forEach((value) => {
+			const option = new Option(value, value);
+			setSize(value);
 			filterSizeCatog.appendChild(option);
 		});
 		const handleSizeChange = (event) => {
 			setSelectedSize(event.target.value);
 			const selectedVariant = viewArrCatog.variants.find((variant) =>
-				variant.size.includes(event.target.value),
+				variant.keyValue.some(({ value }) => value === event.target.value),
 			);
 			selectedVariantTemp.current = selectedVariant;
 			if (selectedVariant) {
@@ -294,13 +284,7 @@ const Catog = ({ item }) => {
 			}
 		};
 		filterSizeCatog.addEventListener('click', handleSizeChange);
-	}, [
-		viewArrCatog,
-		selectedVariantTemp,
-		setSelectedColor,
-		setSelectedSize,
-		setQuantity,
-	]);
+	}, [viewArrCatog, selectedVariantTemp, setSelectedSize, setQuantity]);
 	const mergedCart = useMemo(() => {
 		return cartProducts.products.reduce((acc, curr) => {
 			const existingItem = acc.find(
@@ -316,91 +300,79 @@ const Catog = ({ item }) => {
 			return acc;
 		}, []);
 	}, [cartProducts]);
+
+	const createDropdownElement = (key, values) => {
+		const select = document.createElement('select');
+		select.classList.add('variant-select');
+		select.setAttribute('name', key);
+
+		const defaultOption = document.createElement('option');
+		defaultOption.textContent = `Select ${key}`;
+		defaultOption.value = '';
+		select.appendChild(defaultOption);
+
+		values.forEach((value) => {
+			const option = document.createElement('option');
+			option.textContent = value;
+			option.value = value;
+			select.appendChild(option);
+		});
+
+		return select;
+	};
 	useEffect(() => {
 		if (viewArrCatog && !selectedSize) {
 			aramex.innerHTML = '';
-			let option;
-			const addedColors = new Set();
-			viewArrCatog.variants.forEach((variant) => {
-				variant.color.forEach((color) => {
-					if (!addedColors.has(color)) {
-						addedColors.add(color);
-						const { input, label } = createRadioElement(color);
-						aramex.appendChild(input);
-						aramex.appendChild(label);
-						input.addEventListener('click', (event) => {
-							setSelectedColor(event.target.value);
-							const previousSelectedColor =
-								document.querySelector('.selectedColor');
-							if (previousSelectedColor) {
-								previousSelectedColor.classList.remove('selectedColor');
-							}
-							label.classList.add('selectedColor');
-							const selectedVariants = viewArrCatog.variants.filter(
-								(variant) => variant.color.includes(event.target.value),
-							);
-							const sizesForSelectedColor = Array.from(
-								new Set(
-									selectedVariants.flatMap((variant) => variant.size),
-								),
-							);
-							document
-								.querySelectorAll('.block_quantity__number')
-								.forEach((input) => {
-									input.value = 1;
-								});
-							setQuantity(1);
-							filterSizeCatog.innerHTML = '';
-							filterSizeCatog.addEventListener('click', (event) => {
-								setSize(event.target.value);
-								const selectedVariant = selectedVariants.find(
-									(variant) =>
-										variant.size.includes(event.target.value),
-								);
-								selectedVariantTemp.current = selectedVariant;
-								setQuantity(1);
-								sizesForSelectedColor.find((size) => {
-									if (size === event.target.value) {
-										option.setAttribute('selected', 'selected');
-										const cartItem = mergedCart.find(
-											(item) =>
-												item.selectedVariant._id ===
-												selectedVariant._id,
-										);
-										const cartQuantity =
-											cartItem && cartItem.quantity
-												? cartItem.quantity
-												: cartQuantityValue;
-										option.setAttribute(
-											'quantity',
-											selectedVariant.quantity - cartQuantity,
-										);
-										if (option.getAttribute('quantity') === '0') {
-											disableAddCartBtn(addCartBtn);
-										}
-									}
-								});
-							});
-							sizesForSelectedColor.forEach((size) => {
-								const translatedSize = sizesTranslation[size];
-								option = new Option(translatedSize, size);
-								setSize(size);
-								filterSizeCatog.appendChild(option);
-							});
+			const variantKeys = new Set(
+				viewArrCatog.variants.flatMap((variant) =>
+					variant.keyValue.map(({ key }) => key),
+				),
+			);
+
+			variantKeys.forEach((key) => {
+				const variantValues = new Set(
+					viewArrCatog.variants.flatMap((variant) =>
+						variant.keyValue
+							.filter(({ key: variantKey }) => variantKey === key)
+							.map(({ value }) => value),
+					),
+				);
+
+				const dropdown = createDropdownElement(
+					key,
+					Array.from(variantValues),
+				);
+				aramex.appendChild(dropdown);
+
+				dropdown.addEventListener('change', () => {
+					const selectedOptions = {};
+					aramex.querySelectorAll('.variant-select').forEach((select) => {
+						selectedOptions[select.name] = select.value;
+					});
+
+					const selectedVariant = viewArrCatog.variants.find((variant) =>
+						Object.entries(selectedOptions).every(([key, value]) =>
+							variant.keyValue.some(
+								(keyValue) =>
+									keyValue.key === key && keyValue.value === value,
+							),
+						),
+					);
+
+					selectedVariantTemp.current = selectedVariant;
+					setQuantity(1);
+
+					if (selectedVariant) {
+						if (selectedVariant.quantity > 0) {
 							enableAddCartBtn(addCartBtn);
-						});
+						} else {
+							disableAddCartBtn(addCartBtn);
+						}
 					}
 				});
 			});
 		}
-	}, [
-		viewArrCatog,
-		selectedVariantTemp,
-		setSelectedColor,
-		setSelectedSize,
-		setQuantity,
-		cartQuantityValue,
-	]);
+	}, [viewArrCatog, selectedSize]);
 	showCartItems.forEach((item) => {
 		item.addEventListener('click', (event) => {
 			setQuantity(1);
@@ -427,55 +399,42 @@ const Catog = ({ item }) => {
 	};
 	const addToCart = (ele) => {
 		const productId = ele.target.getAttribute('product_id');
-		const selectedLabel = document.querySelector('.selectedColor');
-		const inputId = selectedLabel ? selectedLabel.htmlFor : null;
-		const inputElement = document.getElementById(inputId);
+		const selectedVariant = selectedVariantTemp.current;
 
-		if (!inputElement || !inputElement.value) {
+		if (!selectedVariant) {
 			showInfoMessage(
 				language === 'en'
-					? 'Please select a color and size'
-					: 'الرجاء تحديد اللون والمقاس',
+					? 'Please select a variant'
+					: 'الرجاء اختيار حزمة',
 			);
 			return;
 		}
-		const colorSelected = inputElement.value;
-		const sizeSelected = document.querySelector('.FilterSizeCatog1').value;
+
 		const item = findItemById(productId);
-		const selectedvariantsNew = item.variants.find(
-			(variant) =>
-				variant.color[0] === colorSelected &&
-				variant.size[0] === sizeSelected,
-		);
-		if (selectedvariantsNew === undefined) {
-			showInfoMessage(
-				language === 'en'
-					? 'Please select a color and size'
-					: 'الرجاء تحديد اللون والمقاس',
-			);
-			return;
-		}
+
 		if (!item) {
 			showInfoMessage(
 				language === 'en' ? 'Product not found!' : 'المنتج غير موجود!',
-				s,
 			);
 			return;
 		}
+
 		const cartItem = mergedCart.find(
-			(item) => item.selectedVariant._id === selectedvariantsNew._id,
+			(item) => item.selectedVariant._id === selectedVariant._id,
 		);
 		const cartQuantity =
 			cartItem && cartItem.quantity ? cartItem.quantity : 0;
-		if (quantity > selectedvariantsNew.quantity - cartQuantity) {
+
+		if (quantity > selectedVariant.quantity - cartQuantity) {
 			disableAddCartBtn(addCartBtn);
 			return;
 		}
+
 		if (quantity > 0) {
 			const newItem = {
 				...item,
 				quantity,
-				selectedVariant: selectedvariantsNew,
+				selectedVariant,
 			};
 			let existingProducts = localStorage.getItem('persist:root');
 			existingProducts = existingProducts
@@ -754,8 +713,8 @@ const Catog = ({ item }) => {
 												<div className='block_goodColor'>
 													<span className='text_specification'>
 														{language === 'en'
-															? 'Choose your colors:'
-															: 'اختر الالوان:'}
+															? 'Choose your variants:'
+															: 'اختر حزمتك:'}
 													</span>
 													<div
 														className='zaid'
@@ -871,6 +830,57 @@ const Catog = ({ item }) => {
 																			<div
 																				className='product-item-info'
 																				data-container='product-grid'>
+																				{/* <Link
+																					to={`/product/${data._id}`}
+																					className='action quickview-handler sm_quickview_handler'
+																					title='Quick View'
+																					href=''>
+																					<div className='image-product'>
+																						<a
+																							href='#'
+																							className='product photo product-item-photo'
+																							tabIndex='-1'>
+																							<span
+																								className='product-image-container product-image-container-1 style-bH5WH'
+																								id='style-bH5WH'>
+																								<span
+																									className='product-image-wrapper style-MbttD'
+																									id='style-MbttD'>
+																									<img
+																										className='product-image-photo'
+																										src={
+																											'http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-01.jpg'
+																										}
+																										data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-01.jpg'
+																										loading='lazy'
+																										alt={
+																											language ===
+																											'en'
+																												? data.title
+																												: data.title_ar
+																										}
+																									/>
+																								</span>
+																							</span>
+																						</a>
+																						<Link
+																							to={``}
+																							className='action quickview-handler sm_quickview_handler show-cart2'
+																							title='Quick View'
+																							href=''
+																							catog-id={
+																								data._id
+																							}>
+																							<AiOutlineEye />
+																							<span>
+																								{language ===
+																								'en'
+																									? 'Quick View'
+																									: 'مشاهدة سريعة'}
+																							</span>
+																						</Link>
+																					</div>
+																				</Link> */}
 																				<Link
 																					to={`/product/${data._id}`}
 																					className='action quickview-handler sm_quickview_handler'
@@ -890,9 +900,13 @@ const Catog = ({ item }) => {
 																									<img
 																										className='product-image-photo'
 																										src={
-																											data
-																												.variants[0]
-																												.img
+																											data.type ===
+																											'simple'
+																												? data
+																														.images[0]
+																												: data
+																														.variants[0]
+																														.images[0]
 																										}
 																										data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-01.jpg'
 																										loading='lazy'

@@ -6,30 +6,46 @@ import {
 
 const ImageSlider = ({ viewArrCatog }) => {
 	const [currentSlide, setCurrentSlide] = useState(0);
-	const slides = (viewArrCatog?.variants || []).map((variant) => ({
-		image: variant.img[0],
-		alt: viewArrCatog.title,
-	}));
+
+	const slides = viewArrCatog
+		? viewArrCatog.type === 'simple'
+			? viewArrCatog.images.map((image, index) => ({
+					image,
+					alt: viewArrCatog.title,
+					key: `simple-${index}`,
+			  }))
+			: viewArrCatog.variants.flatMap((variant, variantIndex) =>
+					variant.images.map((image, imageIndex) => ({
+						image,
+						alt: viewArrCatog.title,
+						key: `variant-${variantIndex}-${imageIndex}`,
+					})),
+			  )
+		: [];
+
 	const goToNextSlide = useCallback(() => {
 		setCurrentSlide((prevSlide) =>
 			prevSlide >= slides.length - 1 ? 0 : prevSlide + 1,
 		);
 	}, [slides.length]);
+
 	const goToPreviousSlide = useCallback(() => {
 		setCurrentSlide((prevSlide) =>
 			prevSlide <= 0 ? slides.length - 1 : prevSlide - 1,
 		);
 	}, [slides.length]);
+
 	useEffect(() => {
 		const interval = setInterval(goToNextSlide, 3000);
 		return () => clearInterval(interval);
 	}, [goToNextSlide]);
+
 	return (
 		<div className='sliderBlock'>
 			<ul className='sliderBlock_items50'>
 				{slides.map((slide, index) => (
 					<li
-						key={slide.image}
+						key={slide.key}
 						className={`sliderBlock_items__itemPhoto2 ${
 							index === currentSlide ? 'sliderBlock_items__showing2' : ''
 						}`}>
@@ -72,4 +88,5 @@ const ImageSlider = ({ viewArrCatog }) => {
 		</div>
 	);
 };
+
 export default ImageSlider;
