@@ -923,9 +923,8 @@ const Offer = () => {
 																						src={
 																							data
 																								.variants[0]
-																								.img
+																								.images
 																						}
-																						data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/l/-/l-03_1.jpg /'
 																						loading='lazy'
 																						width='250'
 																						height='250'
@@ -970,14 +969,23 @@ const Offer = () => {
 																				data-price-type='finalPrice'
 																				className='price-wrapper '>
 																				<span className='price55'>
-																					$ {data.price}
+																					${' '}
+																					{
+																						data
+																							.variants[0]
+																							.price
+																					}
 																				</span>
 																				<span className='priceOffer'>
 																					${' '}
-																					{
-																						data.discount
-																							.discount
-																					}
+																					{data.variants[0]
+																						.price -
+																						(data.discount
+																							.discount /
+																							100) *
+																							data
+																								.variants[0]
+																								.price}
 																				</span>
 																			</span>
 																		</span>

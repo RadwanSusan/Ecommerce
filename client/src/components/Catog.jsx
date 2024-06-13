@@ -603,12 +603,9 @@ const Catog = ({ item }) => {
 		}
 	};
 	const getDiscountedPrice2 = (product) => {
-		const now = new Date();
-		const startDate = new Date(product.discount.startDate);
-		const endDate = new Date(product.discount.endDate);
-		if (now >= startDate && now <= endDate) {
-			return (product.price * (100 - product.discount.discount)) / 100;
-		} else {
+		if (product.type === 'variable') {
+			return product.variants[0].price;
+		} else if (product.type === 'simple') {
 			return product.price;
 		}
 	};
@@ -1221,9 +1218,13 @@ const Catog = ({ item }) => {
 																									<img
 																										className='product-image-photo'
 																										src={
-																											data
-																												.variants[0]
-																												.img
+																											data.type ===
+																											'simple'
+																												? data
+																														.images[0]
+																												: data
+																														.variants[0]
+																														.images[0]
 																										}
 																										data-src='http://magento2.magentech.com/themes/sm_venuse/pub/media/catalog/product/cache/dc42f9c8bdb17f8e403f23b47495efd2/m/-/m-01.jpg'
 																										loading='lazy'
