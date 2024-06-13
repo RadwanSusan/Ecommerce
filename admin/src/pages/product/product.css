@@ -116,6 +116,8 @@
 	background-color: darkblue;
 	color: white;
 	font-weight: 600;
+	height: 50px;
+	margin-top: auto;
 	cursor: pointer;
 }
 @media only screen and (max-width: 600px) {

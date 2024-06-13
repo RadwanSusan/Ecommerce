@@ -42,7 +42,7 @@
 	},
 	"scripts": {
 		"start": "PORT=2066 vite",
-		"dev": "vite --host",
+		"dev": "PORT=2066 vite --host",
 		"build": "PORT=2066 vite build",
 		"serve": "vite preview"
 	},
