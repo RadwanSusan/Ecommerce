@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import swal from 'sweetalert';
 import './reset.css';
+import React from 'react';
 const Reset = () => {
 	const [password, setPassword] = useState('');
 	return (
