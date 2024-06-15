@@ -935,7 +935,7 @@ const Offer = () => {
 																				</span>
 																			</span>
 																		</div>
-																		<Link
+																		{/* <Link
 																			to={``}
 																			className='action quickview-handler sm_quickview_handler show-cart3'
 																			title='Quick View'
@@ -946,7 +946,7 @@ const Offer = () => {
 																					? 'Quick View'
 																					: 'مشاهدة سريعة'}
 																			</span>
-																		</Link>
+																		</Link> */}
 																	</div>
 																</Link>
 																<div className='product details product-item-details'>

@@ -878,7 +878,7 @@ const Catog = ({ item }) => {
 																						</Link>
 																					</div>
 																				</Link> */}
-																				<Link
+																				{/* <Link
 																					to={`/product/${data._id}`}
 																					className='action quickview-handler sm_quickview_handler'
 																					title='Quick View'
@@ -934,7 +934,7 @@ const Catog = ({ item }) => {
 																							</span>
 																						</Link>
 																					</div>
-																				</Link>
+																				</Link> */}
 																				<div className='product details product-item-details'>
 																					<strong className='product name product-item-name'>
 																						{language ===
